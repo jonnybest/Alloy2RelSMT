@@ -1,7 +1,9 @@
+package examples.alloyAsSpec.prepend;
+
 /*
  * Very simply implementation of a null-terminated linked list.
  */
- 
+
 class LL {
     private Entry head;
 

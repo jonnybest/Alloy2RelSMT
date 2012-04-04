@@ -111,6 +111,11 @@ public class Main {
 	 * the parsed module on success, null otherwise
 	 */
 	private ParsedModule parse (String filename) {
+		if(filename == null) {
+			System.err.println ("Parameter cannot be empty!");
+			return null;
+		}
+		
 		File f = new File (filename);
 		if (!f.exists()) {
 			System.err.println (filename + " does not exist!");
