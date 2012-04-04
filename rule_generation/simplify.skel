@@ -1,0 +1,291 @@
+diffNone {
+  \find (diff<% AR R %>(<% REL R ar %>,none[!1 ar]<% AR R %>[/!1]))
+  \replacewith (<% REFREL R %>)
+  \heuristics (simplify)
+  \displayname "diff_concrete"
+};
+
+diffNone_ {
+  \find (diff<% AR R %>(none[!1 ar]<% AR R %>[/!1],<% REL R ar %>))
+  \replacewith (none[!1 ar]<% AR R %>[/!1])
+  \heuristics (simplify)
+  \displayname "diff_concrete"
+};
+
+diff_same {
+  \find (diff<% AR R %>(<% REL R ar %>,<% REFREL R %>))
+  \replacewith (none[!1 ar]<% AR R %>[/!1])
+  \heuristics (simplify)
+  \displayname "diff_concrete"
+};
+
+unionIdemp {
+  \find (union<% AR R %>(<% REL R ar %>,<% REFREL R %>))
+  \replacewith (<% REFREL R %>)
+  \heuristics (simplify)
+  \displayname "union_idempotent"
+};
+
+unionNone {
+  \find (union<% AR R %>(<% REL R ar %>,none[!1 ar]<% AR R %>[/!1]))
+  \replacewith (<% REFREL R %>)
+  \heuristics (simplify)
+  \displayname "union_concrete"
+};
+
+unionNone_ {
+  \find (union<% AR R %>(none[!1 ar]<% AR R %>[/!1],<% REL R ar %>))
+  \replacewith (<% REFREL R %>)
+  \heuristics (simplify)
+  \displayname "union_concrete"
+};
+
+interIdemp {
+  \find (inter<% AR R %>(<% REL R ar %>,<% REFREL R %>))
+  \replacewith (<% REFREL R %>)
+  \heuristics (simplify)
+  \displayname "inter_idempotent"
+};
+
+interNone {
+  \find (inter<% AR R %>(<% REL R ar %>,none[!1 ar]<% AR R %>[/!1]))
+  \replacewith (none[!1 ar]<% AR R %>[/!1])
+  \heuristics (simplify)
+  \displayname "union_concrete"
+};
+
+interNone_ {
+  \find (inter<% AR R %>(none[!1 ar]<% AR R %>[/!1],<% REL R ar %>))
+  \replacewith (none[!1 ar]<% AR R %>[/!1])
+  \heuristics (simplify)
+  \displayname "union_concrete"
+};
+
+overrNone {
+  \find (overr<% AR R %>(<% REL R ar %>,none[!1 ar]<% AR R %>[/!1]))
+  \replacewith (<% REFREL R %>)
+  \heuristics (simplify)
+  \displayname "overr_concrete"
+};
+
+overrNone_ {
+  \find (overr<% AR R %>(none[!1 ar]<% AR R %>[/!1],<% REL R ar %>))
+  \replacewith (<% REFREL R %>)
+  \heuristics (simplify)
+  \displayname "overr_concrete"
+};
+
+diffDisj {
+  <% SVREL S ar %>
+  \assumes (disj(<% REL R ar %>,S) ==>)
+  \find (diff<% AR R %>(<% REFREL R %>,S))
+  \sameUpdateLevel
+  \replacewith (<% REFREL R %>)
+  \heuristics (simplify)
+  \displayname "diff_simplify"
+};
+
+diffDisj_ {
+  <% SVREL S ar %>
+  \assumes (disj(S,<% REL R ar %>) ==>)
+  \find (diff<% AR R %>(<% REFREL R %>,S))
+  \sameUpdateLevel
+  \replacewith (<% REFREL R %>)
+  \heuristics (simplify)
+  \displayname "diff_simplify"
+};
+
+interDisj {
+  <% SVREL S ar %>
+  \assumes (disj(<% REL R ar %>,S) ==>)
+  \find (inter<% AR R %>(<% REFREL R %>,S))
+  \sameUpdateLevel
+  \replacewith (none[!1 ar]<% AR R %>[/!1])
+  \heuristics (simplify)
+  \displayname "inter_simplify"
+};
+
+interDisj_ {
+  <% SVREL S ar %>
+  \assumes (disj(S,<% REL R ar %>) ==>)
+  \find (inter<% AR R %>(<% REFREL R %>,S))
+  \sameUpdateLevel
+  \replacewith (none[!1 ar]<% AR R %>[/!1])
+  \heuristics (simplify)
+  \displayname "inter_simplify"
+};
+
+unionSubrel {
+  <% SVREL S ar %>
+  \assumes (subrel(<% REL R ar %>,S) ==>)
+  \find (union<% AR R %>(<% REFREL R %>,S))
+  \sameUpdateLevel
+  \replacewith (S)
+  \heuristics (simplify)
+  \displayname "union_simplify"
+};
+
+unionSubrel_ {
+  <% SVREL S ar %>
+  \assumes (subrel(<% REL R ar %>,S) ==>)
+  \find (union<% AR R %>(S,<% REFREL R %>))
+  \sameUpdateLevel
+  \replacewith (S)
+  \heuristics (simplify)
+  \displayname "union_simplify"
+};
+
+interSubrel {
+  <% SVREL S ar %>
+  \assumes (subrel(<% REL R ar %>,S) ==>)
+  \find (inter<% AR R %>(<% REFREL R %>,S))
+  \sameUpdateLevel
+  \replacewith (<% REFREL R %>)
+  \heuristics (simplify)
+  \displayname "union_simplify"
+};
+
+interSubrel_ {
+  <% SVREL S ar %>
+  \assumes (subrel(<% REL R ar %>,S) ==>)
+  \find (inter<% AR R %>(S,<% REFREL R %>))
+  \sameUpdateLevel
+  \replacewith (<% REFREL R %>)
+  \heuristics (simplify)
+  \displayname "union_simplify"
+};
+
+diffSubrel {
+  <% SVREL S ar %>
+  \assumes (subrel(<% REL R ar %>,S) ==>)
+  \find (diff<% AR R %>(<% REFREL R %>,S))
+  \sameUpdateLevel
+  \replacewith (none[!1 ar]<% AR R %>[/!1])
+  \heuristics (simplify)
+  \displayname "diff_simplify"
+};
+
+unionSin {
+  \assumes (<% IN a R %> ==>)
+  \find (union<% AR R %>(<% REL R ar %>,sin[!1 ar]<% AR R %>[/!1](<% REFTUP a %>)))
+  \sameUpdateLevel
+  \replacewith (<% REFREL R %>)
+  \heuristics (simplify)
+  \displayname "union_concrete"
+};
+
+unionSin_ {
+  \assumes (<% IN a R %> ==>)
+  \find (union<% AR R %>(sin[!1 ar]<% AR R %>[/!1](<% REFTUP a %>),<% REL R ar %>))
+  \sameUpdateLevel
+  \replacewith (<% REFREL R %>)
+  \heuristics (simplify)
+  \displayname "union_concrete"
+};
+
+interSinTrue {
+  \assumes (<% IN a R %> ==>)
+  \find (inter<% AR R %>(<% REL R ar %>,sin[!1 ar]<% AR R %>[/!1](<% REFTUP a %>)))
+  \sameUpdateLevel
+  \replacewith (sin[!1 ar]<% AR R %>[/!1](<% REFTUP a %>))
+  \heuristics (simplify)
+  \displayname "inter_concrete"
+};
+
+interSinTrue_ {
+  \assumes (<% IN a R %> ==>)
+  \find (inter<% AR R %>(sin[!1 ar]<% AR R %>[/!1](<% REFTUP a %>),<% REL R ar %>))
+  \sameUpdateLevel
+  \replacewith (sin[!1 ar]<% AR R %>[/!1](<% REFTUP a %>))
+  \heuristics (simplify)
+  \displayname "inter_concrete"
+};
+
+interSinFalse {
+  \assumes (==> <% IN a R %>)
+  \find (inter<% AR R %>(<% REL R ar %>,sin[!1 ar]<% AR R %>[/!1](<% REFTUP a %>)))
+  \sameUpdateLevel
+  \replacewith (none[!1 ar]<% AR R %>[/!1])
+  \heuristics (simplify)
+  \displayname "inter_concrete"
+};
+
+interSinFalse_ {
+  \assumes (==> <% IN a R %>)
+  \find (inter<% AR R %>(sin[!1 ar]<% AR R %>[/!1](<% REFTUP a %>),<% REL R ar %>))
+  \sameUpdateLevel
+  \replacewith (none[!1 ar]<% AR R %>[/!1])
+  \heuristics (simplify)
+  \displayname "inter_concrete"
+};
+
+diffSin {
+  \assumes (==> <% IN a R %>)
+  \find (diff<% AR R %>(<% REL R ar %>,sin[!1 ar]<% AR R %>[/!1](<% REFTUP a %>)))
+  \sameUpdateLevel
+  \replacewith (<% REFREL R %>)
+  \heuristics (simplify)
+  \displayname "diff_concrete"
+};
+
+diffSin2 {
+  \assumes (==> <% IN a R %>)
+  \find (diff<% AR R %>(sin[!1 ar]<% AR R %>[/!1](<% REFTUP a %>),<% REL R ar %>))
+  \sameUpdateLevel
+  \replacewith (sin[!1 ar]<% AR R %>[/!1](<% REFTUP a %>))
+  \heuristics (simplify)
+  \displayname "diff_concrete"
+};
+
+diffSin3 {
+  \assumes (<% IN a R %> ==>)
+  \find (diff<% AR R %>(sin[!1 ar]<% AR R %>[/!1](<% REFTUP a %>),<% REL R ar %>))
+  \sameUpdateLevel
+  \replacewith (none[!1 ar]<% AR R %>[/!1])
+  \heuristics (simplify)
+  \displayname "diff_concrete"
+};
+
+subrelNone {
+  \find (subrel(none[!1 ar]<% AR R %>[/!1],<% REL R ar %>))
+  \replacewith (true)
+  \heuristics (simplify)
+  \displayname "subrel_simplify"
+};
+
+subrelNone2 {
+  \assumes (subrel(<% REL R ar %>,none[!1 ar]<% AR R %>[/!1]) ==>)
+  \find (<% REFREL R %>)
+  \replacewith (none[!1 ar]<% AR R %>[/!1])
+  \heuristics (simplify,focusNotInAssumes)
+};
+
+subrelSame {
+  \find (subrel(<% REL R ar %>,<% REFREL R %>))
+  \replacewith (true)
+  \heuristics (simplify)
+  \displayname "subrel_simplify"
+};
+
+subrelSin {
+  <% SVTUP a ar %>
+  \find (subrel(sin[!1 ar]<% AR R %>[/!1](a),<% REL R ar %>))
+  \replacewith (in(a,<% REFREL R %>))
+  \heuristics (simplify)
+  \displayname "subrel_simplify"
+};
+
+disjSin {
+  <% SVTUP a ar %>
+  \find (disj(sin[!1 ar]<% AR R %>[/!1](a),<% REL R ar %>))
+  \replacewith (!in(a,<% REFREL R %>))
+  \heuristics (simplify)
+};
+
+disjSin_ {
+  <% SVTUP a ar %>
+  \find (disj(<% REL R ar %>,sin[!1 ar]<% AR R %>[/!1](a)))
+  \replacewith (!in(a,<% REFREL R %>))
+  \heuristics (simplify)
+};
+

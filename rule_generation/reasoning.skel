@@ -1,0 +1,444 @@
+applyDisj { 
+  <% SVREL S ar %>
+  \assumes (disj(<% REL R ar %>,S) ==>)
+  \find (<% IN a R %> ==>)
+  \add (==> in(<% REFTUP a %>,S))
+  \heuristics (normalization)
+  \displayname "use_disj"
+};
+applyDisj_ { 
+  <% SVREL S ar %>
+  \assumes (disj(S,<% REL R ar %>) ==>)
+  \find (<% IN a R %> ==>)
+  \add (==> in(<% REFTUP a %>,S))
+  \heuristics (normalization)
+  \displayname "use_disj"
+};
+applyOne { 
+  \assumes (<% IN a R %>, one(<% REL R ar %>) ==>)
+  \find (<% REFREL R %>)
+  \sameUpdateLevel
+  \replacewith (sin[!1 ar]<% AR R %>[/!1](<% REFTUP a %>))
+  \heuristics (simplify, focusNotInAssumes)
+  \displayname "replace_with_sin"
+};
+applyOneMult { 
+  \assumes (<% IN a R %>, one(<% REL R ar %>) ==>)
+  \find (<% IN b R %>)
+  \sameUpdateLevel
+  \replacewith (<% REFTUP a %> = <% REFTUP b %>)
+  \heuristics (simplify, focusNotInAssumes)
+  \displayname "apply_mult_one"
+};
+applyLone { 
+  \assumes (<% IN a R %>, lone(<% REL R ar %>) ==>)
+  \find (<% REFREL R %>)
+  \sameUpdateLevel
+  \replacewith (sin[!1 ar]<% AR R %>[/!1](<% REFTUP a %>))
+  \heuristics (simplify, focusNotInAssumes)
+  \displayname "replace_with_sin"
+};
+applyLoneMult { 
+  \assumes (<% IN a R %>, lone(<% REL R ar %>) ==>)
+  \find (<% IN b R %>)
+  \sameUpdateLevel
+  \replacewith (<% REFTUP a %> = <% REFTUP b %>)
+  \heuristics (simplify, focusNotInAssumes)
+  \displayname "apply_mult_lone"
+};
+subrelTransitive {
+  <% SVREL S ar %>
+  <% SVREL T ar %> 
+  \assumes (subrel(S,T) ==>)
+  \find (subrel(<% REL R ar %>,S) ==>)
+  \add (subrel (<% REFREL R %>,T) ==>)
+  //\heuristics (implications3)
+  \displayname "subrel_transitivity"
+};
+applySubrel { 
+  <% SVREL S ar %>
+  \assumes (subrel(<% REL R ar %>,S) ==>)
+  \find (<% IN a R %> ==>)
+  \add (in(<% REFTUP a %>,S) ==>)
+  \heuristics (implications1)
+  \displayname "use_subrel"
+};
+applySubrel2 { 
+  <% SVREL S ar %>
+  \assumes (subrel(S,<% REL R ar %>) ==>)
+  \find (==> <% IN a R %>)
+  \add (==> in(<% REFTUP a %>,S))
+  \heuristics (implications2)
+  \displayname "use_subrel"
+};
+
+subrelJoin1 { 
+  \assumes (subrel(join1x2(R1,S2),T1), in(a,R1) ==>)
+  \find (in(binary(a,b),S2) ==>)
+  \add (in(b,T1) ==>)
+  \heuristics (implications1)
+  \displayname "use_subrel"
+};
+subrelJoin2 { 
+    \assumes (subrel(join1x3(R1,S3),T2), in(a,R1) ==>)
+    \find (in(ternary(a,b,c),S3) ==>)
+    \add (in(binary(b,c),T2) ==>)
+    \heuristics (implications1)
+    \displayname "use_subrel"
+};
+subrelJoin3 { 
+    \assumes (subrel(join2x2(R2,S2),T2), in(binary(a,b),R2) ==>)
+    \find (in(binary(b,c),S2) ==>)
+    \add (in(binary(a,c),T2) ==>)
+    \heuristics (implications1)
+    \displayname "use_subrel"
+};
+subrelJoin4 { 
+    \assumes (subrel(join2x1(R2,S1),T1), in(b,S1) ==>)
+    \find (in(binary(a,b),R2) ==>)
+    \add (in(a,T1) ==>)
+    \heuristics (implications1)
+    \displayname "use_subrel"
+};
+subrelJoin5 { 
+    \assumes (subrel(join3x1(R3,S1),T2), in(c,S1) ==>)
+    \find (in(ternary(a,b,c),R3) ==>)
+    \add (in(binary(a,b),T2) ==>)
+    \heuristics (implications1)
+    \displayname "use_subrel"
+};
+
+subrelDiff1 {
+  \assumes (subrel(diff1(R1,S1),T1), in(a,R1) ==>)
+  \find (==> in(a,S1))
+  \add (in(a,T1) ==>)
+  \heuristics (implications1)
+  \displayname "use_subrel"
+};
+subrelDiff2 {
+    \assumes (subrel(diff2(R2,S2),T2), in(a2,R2) ==>)
+    \find (==> in(a2,S2))
+    \add (in(a2,T2) ==>)
+    \heuristics (implications1)
+    \displayname "use_subrel"
+};
+subrelDiff3 {
+    \assumes (subrel(diff3(R3,S3),T3), in(a3,R3) ==>)
+    \find (==> in(a3,S3))
+    \add (in(a3,T3) ==>)
+    \heuristics (implications1)
+    \displayname "use_subrel"
+};
+
+
+subrelDiff4 {
+  <% SVREL R ar %>
+  <% SVREL T ar %>
+  \assumes (subrel(R,diff<% AR ar %>(<% REL S ar %>,T)) ==>)
+  \find (==> <% IN a S %>)
+  \add (==> in(<% REFTUP a %>,R))
+  \heuristics (implications2)
+  \displayname "use_subrel"
+};
+subrelDiff7 {
+  <% SVREL R ar %>
+  <% SVREL S ar %>
+  \assumes (subrel(R,diff<% AR ar %>(S,<% REL T ar %>)) ==>)
+  \find (<% IN a T %> ==>)
+  \add (==> in(<% REFTUP a %>,R))
+  \heuristics (implications2)
+  \displayname "use_subrel"
+};
+
+subrelUnion4 { 
+    \assumes (subrel(T1,union1(R1,S1)) ==> in(a,R1))
+    \find (==> in(a,S1))
+    \add (==> in(a,T1))
+    \heuristics (implications2)
+    \displayname "subrel_union"
+};
+subrelUnion5 { 
+    \assumes (subrel(T2,union2(R2,S2)) ==> in(a2,R2))
+    \find (==> in(a2,S2))
+    \add (==> in(a2,T2))
+    \heuristics (implications2)
+    \displayname "subrel_union"
+};
+subrelUnion6 { 
+    \assumes (subrel(T3,union3(R3,S3)) ==> in(a3,R3))
+    \find (==> in(a3,S3))
+    \add (==> in(a3,T3))
+    \heuristics (implications2)
+    \displayname "subrel_union"
+};
+subrelInterLeft1 {
+    \assumes (subrel(inter1(R1,S1),T1), in(a,R1) ==>)
+    \find (in(a,S1) ==>)
+    \add (in(a,T1) ==>)
+    \heuristics (implications1)
+    \displayname "use_subrel"
+};
+subrelInterLeft2 {
+    \assumes (subrel(inter2(R2,S2),T2), in(a2,R2) ==>)
+    \find (in(a2,S2) ==>)
+    \add (in(a2,T2) ==>)
+    \heuristics (implications1)
+    \displayname "use_subrel"
+};
+subrelInterLeft3 {
+    \assumes (subrel(inter3(R3,S3),T3), in(a3,R3) ==>)
+    \find (in(a3,S3) ==>)
+    \add (in(a3,T3) ==>)
+    \heuristics (implications1)
+    \displayname "use_subrel"
+};
+subrelOverr {
+  <% SVREL R ar %>
+  <% SVREL T ar %>
+  \assumes (subrel(overr<% AR ar %>(R,<% REL S ar %>),T) ==>)
+  \find (<% IN a S %> ==>)
+  \add (in(<% REFTUP a %>,T) ==>)
+  \heuristics (implications1)
+  \displayname "use_subrel"
+};
+subrelOverr3 { 
+  \assumes (subrel(R2,overr2(S2,T2)) ==> in(a2,T2))
+  \find (==> in(a2,S2))
+  \add (==> in(a2,R2))
+  \heuristics (implications2)
+  \displayname "use_subrel"
+};
+subrelOverr4 { 
+    \assumes (subrel(R3,overr3(S3,T3)) ==> in(a3,T3))
+    \find (==> in(a3,S3))
+    \add (==> in(a3,R3))
+    \heuristics (implications2)
+    \displayname "use_subrel"
+};
+subrelProd1 { 
+    \assumes (subrel(prod1x1(R1,S1),T2), in(b,S1) ==>)
+    \find (in(a,R1) ==>)
+    \add (in(binary(a,b),T2) ==>)
+    \heuristics (implications1)
+    \displayname "use_subrel"
+};
+subrelProd2 { 
+    \assumes (subrel(prod1x2(R1,S2),T3), in(binary(b,c),S2) ==>)
+    \find (in(a,R1) ==>)
+    \add (in(ternary(a,b,c),T3) ==>)
+    \heuristics (implications1)
+    \displayname "use_subrel"
+};
+subrelProd3 { 
+    \assumes (subrel(prod2x1(R2,S1),T3), in(c,S1) ==>)
+    \find (in(binary(a,b),R2) ==>)
+    \add (in(ternary(a,b,c),T3) ==>)
+    \heuristics (implications1)
+    \displayname "use_subrel"
+};
+subrelProd4 { 
+    \assumes (subrel(R2,prod1x1(S1,T1)) ==> in(a,S1))
+    \find (in(binary(a,b),R2) ==>)
+    \replacewith (false ==>)
+    \heuristics (closure)
+    \displayname "use_subrel_close"
+};
+subrelProd5 { 
+    \assumes (subrel(R2,prod1x1(S1,T1)) ==> in(b,T1))
+    \find (in(binary(a,b),R2) ==>)
+    \replacewith (false ==>)
+    \heuristics (closure)
+    \displayname "use_subrel_close"
+};
+subrelProd6 { 
+    \assumes (subrel(R3,prod1x2(S1,T2)) ==> in(a,S1))
+    \find (in(ternary(a,b,c),R3) ==>)
+    \replacewith (false ==>)
+    \heuristics (closure)
+    \displayname "use_subrel_close"
+};
+subrelProd7 { 
+    \assumes (subrel(R3,prod1x2(S1,T2)) ==> in(binary(b,c),T2))
+    \find (in(ternary(a,b,c),R3) ==>)
+    \replacewith (false ==>)
+    \heuristics (closure)
+    \displayname "use_subrel_close"
+};
+subrelProd8 { 
+    \assumes (subrel(R3,prod2x1(S2,T1)) ==> in(binary(a,b),S2))
+    \find (in(ternary(a,b,c),R3) ==>)
+    \replacewith (false ==>)
+    \heuristics (closure)
+    \displayname "use_subrel_close"
+};
+subrelProd9 { 
+    \assumes (subrel(R3,prod2x1(S2,T1)) ==> in(c,T1))
+    \find (in(ternary(a,b,c),R3) ==>)
+    \replacewith (false ==>)
+    \heuristics (closure)
+    \displayname "use_subrel_close"
+};
+subrelTransp2 { 
+    \assumes (subrel(transp(R2),S2) ==>)
+    \find (in(binary(a,b),R2) ==>)
+    \add (in(binary(b,a),S2) ==>)
+    \heuristics (implications1)
+    \displayname "use_subrel"
+};
+subrelTransp3 { 
+    \assumes (subrel(R2,transp(S2)) ==>)
+    \find (==> in(binary(a,b),S2))
+    \add (==> in(binary(b,a),R2))
+    \heuristics (implications2)
+    \displayname "use_subrel"
+};
+subrelDomRestr1 { 
+    \assumes (subrel(domRestr2(R1,S2),T2), in(a,R1) ==>)
+    \find (in(binary(a,b),S2) ==>)
+    \add (in(binary(a,b),T2) ==>)
+    \heuristics (implications1)
+    \displayname "use_subrel"
+};
+subrelDomRestr2 { 
+    \assumes (subrel(domRestr3(R1,S3),T3), in(a,R1) ==>)
+    \find (in(ternary(a,b,c),S3) ==>)
+    \add (in(ternary(a,b,c),T3) ==>)
+    \heuristics (implications1)
+    \displayname "use_subrel"
+};
+subrelDomRestr3 { 
+    \assumes (subrel(R2,domRestr2(S1,T2)) ==> in(a,S1))
+    \find (in(binary(a,b),R2) ==>)
+    \replacewith (false ==>)
+    \heuristics (closure)
+    \displayname "use_subrel_close"
+};
+subrelDomRestr4 { 
+    \assumes (subrel(R3,domRestr3(S1,T3)) ==> in(a,S1))
+    \find (in(ternary(a,b,c),R3) ==>)
+    \replacewith (false ==>)
+    \heuristics (closure)
+    \displayname "use_subrel_close"
+};
+
+subrelDomRestr5 { 
+  <% SVREL R ar %>
+  \schemaVar \term Rel1 S;
+  \assumes (subrel(R,domRestr<% AR ar %>(S,<% REL T ar %>)) ==>)
+  \find (==> <% IN a T %>)
+  \add (==> in(<% REFTUP a %>,R))
+  \heuristics (implications2)
+  \displayname "use_subrel"
+};
+subrelRangeRestr1 { 
+    \assumes (subrel(rangeRestr2(R2,S1),T2), in(b,S1) ==>)
+    \find (in(binary(a,b),R2) ==>)
+    \add (in(binary(a,b),T2) ==>)
+    \heuristics (implications1)
+    \displayname "use_subrel"
+};
+subrelRangeRestr2 { 
+    \assumes (subrel(rangeRestr3(R3,S1),T3), in(c,S1) ==>)
+    \find (in(ternary(a,b,c),R3) ==>)
+    \add (in(ternary(a,b,c),T3) ==>)
+    \heuristics (implications1)
+    \displayname "use_subrel"
+};
+subrelRangeRestr3 { 
+    \assumes (subrel(R2,rangeRestr2(S2,T1)) ==> in(b,T1))
+    \find (in(binary(a,b),R2) ==>)
+    \replacewith (false ==>)
+    \heuristics (closure)
+    \displayname "use_subrel_close"
+};
+subrelRangeRestr4 { 
+    \assumes (subrel(R3,rangeRestr3(S3,T1)) ==> in(c,T1))
+    \find (in(ternary(a,b,c),R3) ==>)
+    \replacewith (false ==>)
+    \heuristics (closure)
+    \displayname "use_subrel_close"
+};
+
+subrelRangeRestr5 { 
+    <% SVREL R ar %>
+    \schemaVar \term Rel1 T;
+    \assumes (subrel(R,rangeRestr<% AR ar %>(<% REL S ar %>,T)) ==>)
+    \find (==> <% IN a S %>)
+    \replacewith (==> in(<% REFTUP a %>,R))
+    \heuristics (implications2)
+    \displayname "use_subrel"
+};
+
+subrelDisj {
+  <% SVREL S ar %>
+  \assumes (disj(<% REL R ar %>,S) ==>)
+  \find (subrel(<% REFREL R %>,S) ==>)
+  \add (<% REFREL R %> = none[!1 ar]<% AR ar %>[/!1] ==>)
+  \heuristics (normalization, noDuplicateApp)
+  \displayname "subrel_disjoint"
+};
+subrelDisj_ {
+  <% SVREL S ar %>
+  \assumes (disj(S,<% REL R ar %>) ==>)
+  \find (subrel(<% REFREL R %>,S) ==>)
+  \add (<% REFREL R %> = none[!1 ar]<% AR ar %>[/!1] ==>)
+  \heuristics (normalization, noDuplicateApp)
+  \displayname "subrel_disjoint"
+};
+
+obtainUnionSubrel {
+  <% SVREL S ar %>
+  \find (union<% AR ar %>(<% REL R ar %>,S))
+  \add (subrel(<% REFREL R %>,union<% AR ar %>(<% REFREL R %>,S)), subrel(S,union<% AR ar %>(<% REFREL R %>,S)) ==>)
+  \heuristics (implications3)
+};
+
+obtainDiffSubrel {
+  <% SVREL S ar %>
+  \find (diff<% AR ar %>(<% REL R ar %>,S))
+  \add (subrel(diff<% AR ar %>(<% REFREL R %>,S),<% REFREL R %>) ==>)
+  \heuristics (implications3)
+};
+
+obtainInterSubrel {
+  <% SVREL S ar %>
+  \find (inter<% AR ar %>(<% REL R ar %>,S))
+  \add (subrel(inter<% AR ar %>(<% REFREL R %>,S),<% REFREL R %>), subrel(inter<% AR ar %>(<% REFREL R %>,S),S) ==>)
+  \heuristics (implications3)
+};
+
+obtainOverrSubrel {
+  <% SVREL S ar %>
+  \find (overr<% AR ar %>(<% REL R ar %>,S))
+  \add (subrel(S,overr<% AR ar %>(<% REFREL R %>,S)) ==>)
+  \heuristics (implications3)
+};
+
+obtainDomRestrSubrel {
+  \schemaVar \term Rel1 R;        
+  \find (domRestr<% AR ar %>(R,<% REL S ar %>))
+  \add (subrel(domRestr<% AR ar %>(R,<% REFREL S %>),<% REFREL S %>) ==>)
+  \heuristics (implications3)
+};
+
+obtainRangeRestrSubrel {
+  \schemaVar \term Rel1 S;               
+  \find (rangeRestr<% AR ar %>(<% REL R ar %>,S))
+  \add (subrel(rangeRestr<% AR ar %>(<% REFREL R %>,S),<% REFREL R %>) ==>)
+  \heuristics (implications3)
+};
+
+oneUnion {
+  <% SVREL S ar %>
+  \find (one(union<% AR ar %>(<% REL R ar %>,S)) ==>)
+  \add (lone(<% REFREL R %>), lone(S) ==>)
+  \heuristics (implications3)
+};
+
+oneDominatesLone {
+  \assumes (one(<% REL R ar %>) ==>)
+  \find (lone(<% REFREL R %>))
+  \replacewith (true)
+  \heuristics (simplify)
+};
+

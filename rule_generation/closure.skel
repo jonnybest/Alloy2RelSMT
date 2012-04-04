@@ -1,0 +1,64 @@
+tc_firstIteration1 {
+  \assumes (<% IN a R %> ==>)
+  \find (==> in(<% REFTUP a %>,transClos(<% REL R 2 %>)))
+  \replacewith (==> true)
+  \heuristics (closure)
+  \displayname "tc_close"
+};
+
+tc_firstIteration2 {
+  <% SVREL S 2 %>
+  \assumes (<% IN a R %> ==>)
+  \find (==> in(<% REFTUP a %>,transClos(union2(<% REL R 2 %>,S))))
+  \replacewith (==> true)
+  \heuristics (closure)
+  \displayname "tc_close"
+};
+
+tc_firstIteration3 {
+  <% SVREL S 2 %>
+  \assumes (<% IN a R %> ==>)
+  \find (==> in(<% REFTUP a %>,transClos(union2(S,<% REL R 2 %>))))
+  \replacewith (==> true)
+  \heuristics (closure)
+  \displayname "tc_close"
+};
+
+tc_firstIteration4 {
+  <% SVREL S 2 %>
+  \assumes (<% IN a R %>, in(<% REFTUP a %>,S) ==>)
+  \find (==> in(<% REFTUP a %>,transClos(inter2(<% REL R 2 %>,S))))
+  \replacewith (==> true)
+  \heuristics (closure)
+  \displayname "tc_close"
+};
+
+tc_firstIteration5 {
+  <% SVREL S 2 %>
+  \assumes (<% IN a R %>, in(<% REFTUP a %>,S) ==>)
+  \find (==> in(<% REFTUP a %>,transClos(inter2(S,<% REL R 2 %>))))
+  \replacewith (==> true)
+  \heuristics (closure)
+  \displayname "tc_close"
+};
+
+tc_firstIteration6 {
+  <% SVREL S 2 %>
+  \assumes (<% IN a R %> ==> in(<% REFTUP a %>,S))
+  \find (==> in(<% REFTUP a %>,transClos(diff2(<% REL R 2 %>,S))))
+  \replacewith (==> true)
+  \heuristics (closure)
+  \displayname "tc_close"
+};
+
+tc_firstIteration7 {
+  <% SVREL S 2 %>
+  \assumes (in(<% REFTUP a %>,S) ==> <% IN a R %>)
+  \find (==> in(<% REFTUP a %>,transClos(diff2(S,<% REL R 2 %>))))
+  \replacewith (==> true)
+  \heuristics (closure)
+  \displayname "tc_close"
+};
+
+
+

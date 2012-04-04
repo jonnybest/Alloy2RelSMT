@@ -1,0 +1,18 @@
+Alloy2KeY
+---------
+
+Translate an Alloy model to First-Order logic in KeY syntax.
+
+Compilation:
+------------
+To compile Alloy2KeY, run ant within the project's top-level
+directory. This will compile everything to the build directory.
+
+Running Alloy2KeY:
+------------------
+Use the alloy2key script located in the project's top-level directory
+to translate an alloy specification.
+
+alloy2key takes the input Alloy model as first command line argument.
+A second (optional) argument defines the output file. For details call
+the program without any arguments.

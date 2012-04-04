@@ -1,0 +1,92 @@
+Documentation for rule generation
+---------------------------------
+
+SKELETON DEFINITION
+-------------------
+The rule generation script generates KeY taclets from "skeletons". A
+skeleton taclet is like a normal taclet, but may contain some of the
+following constructs:
+
+<% REL id ar %>
+Placeholder for a relation that gets replaced by
+    i) a simple schema variable of any needed arity
+    ii) every join-sin combination for the needed arity (only if
+        membership to that relation is involved)
+id is an identifier for this relation to be used in other constructs.
+ar is a metavariable to store the arity of the generated relation.
+
+<% REFREL id %>
+insert the relation identified by id at this point.
+
+<% AR x %>
+gets replaced with the arity stored in the metavariable x.
+
+<% IN x id %>
+gets replaced by the membership of a term identified by x to the
+relation identified by id. The proper declaration of x is handled by
+the script. So far, this construct must only be used once for the same
+x within one taclet. If x was used as identifier here, then x1, x2
+etc. must not be used anywhere in the skeleton taclet.
+
+<% REFTUP x %>
+insert a tuple term introduced via IN, identified by x, at this point.
+
+<% SVREL r ar %>
+inserts the declaration of a schema variable r of relation type to the
+taclet. The arity of the relation is defined by the metavariable ar.
+
+<% SVTUP t ar %>
+like SVREL, but declaring a tuple instead of a relation.
+
+[!1 x]...[/!1]
+everything within this directive is ignored iff the meta variable x is
+1.
+
+USAGE
+-----
+The script generateRules.pl reads the skeletons from STDIN and writes
+the generated rules to STDOUT. To read from file skeletons and write
+the output to rules.key, the following call would therefore be
+appropriate: cat skeletons | ./generateRules > rules.key
+
+NOTES
+-----
+The script also takes care of naming the generated rules, based on the
+name given in the skeleton.
+
+So far, only one dynamic relation introduced by REL is supported in
+each taclet. The identifier is therefore ignored. Also the arity
+reference is useless.
+
+The schema variable names x,y,z,REL are reserved for generation by the
+script and must not be used anywhere in the skeleton taclet.
+
+The skeleton file must not contain any comments.
+
+TODO: Implement support for multiple dynamic relations? The following
+rules might benefit from this:
+- subrelDiff1-3
+- subrelUnion4-6
+- subrelOverr3+4
+- subrelProd1-9
+- subrelDomRestr1-4
+- subrelRangeRestr1-4
+- equalityJoin1-5
+- equalityJoin1-5_
+- unionEqual2,5,6
+- unionEqual2,5,6_
+- diffEquality2,4,6
+- diffEquality2,4,6_
+- interEquality1,3,5
+- interEquality1,3,5_
+- prodEquality1-9
+- prodEquality1-9_
+- transpEquality2,3
+- transpEquality2,3_
+
+TODO: Implement restriction of dynamic relation to a certain
+arity. Rules involving transposition and closure might benefit from
+this, since these operators are only defined for relations of arity 2.
+
+
+

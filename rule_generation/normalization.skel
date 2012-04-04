@@ -1,0 +1,36 @@
+
+subrelUnion {
+  <% SVREL S ar %>
+  <% SVREL T ar %>
+  \find (subrel(union<% AR R %>(<% REL R ar %>,S),T) ==>)
+  \replacewith (subrel(<% REFREL R %>,T), subrel(S,T) ==>)
+  \heuristics (normalization)
+  \displayname "subrel_union"
+};
+
+subrelInter {
+  <% SVREL S ar %>
+  <% SVREL T ar %>
+  \find (subrel(<% REL R ar %>,inter<% AR R %>(S,T)) ==>)
+  \replacewith (subrel(<% REFREL R %>,S), subrel(<% REFREL R %>,T) ==>)
+  \heuristics (normalization)
+  \displayname "subrel_inter"
+};
+
+disjUnion {
+  <% SVREL S ar %>
+  <% SVREL T ar %>
+  \find (disj(union<% AR R %>(<% REL R ar %>,S),T) ==>)
+  \replacewith (disj(<% REFREL R %>,T), disj(S,T) ==>)
+  \heuristics (normalization)
+  \displayname "disj_union"
+};
+
+disjUnion_ {
+  <% SVREL S ar %>
+  <% SVREL T ar %>
+  \find (disj(T,union<% AR R %>(<% REL R ar %>,S)) ==>)
+  \replacewith (disj(T,<% REFREL R %>), disj(T,S) ==>)
+  \heuristics (normalization)
+  \displayname "disj_union"
+};

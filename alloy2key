@@ -1,0 +1,43 @@
+#!/bin/sh
+
+if [ -z "$JAVA_HOME" ] ; then
+    JAVA=`which java`
+    if [ -z "$JAVA" ] ; then
+	echo "Cannot find JAVA. Please set your PATH or \$JAVA_HOME."
+	exit 1
+    fi
+else
+    if [ "$UNAME" = "darwin" ] ; then
+	JRE=$JAVA_HOME/Home
+	JAVA=$JRE/bin/java
+# other OS
+    else
+	JRE=$JAVA_HOME/jre
+	JAVA=$JRE/bin/java
+    fi
+fi
+#echo "Using JDK installation from:      $JAVA_HOME"
+
+if [ $# -eq 0 ]; then
+    echo "Usage: alloy2key [options] alloyModel [output]"
+    echo ""
+    echo "options may be one of the following switches:"
+    echo "-f, --force        if output file exists, overwrite it"
+    echo "--finite=sig1,...  the named signatures are explicitely finitized"
+    echo ""
+    echo "output can either be a filename, or an existing directory. In the"
+    echo "latter case, the loadable KeY file's name will be based on the"
+    echo "input's filename and written to that directory. Despite the loadable"
+    echo "KeY file, a directory names theory/ is created in the same location."
+    echo "If output is unspecified, all files are written to the input file's"
+    echo "directory."
+fi
+
+while [ $# -ne 0 ]; do
+    arg="${arg}${1} "
+    shift
+done
+
+cp=`dirname $0`"/build"
+
+$JAVA -classpath $cp edu.kit.asa.alloy2key.Main $arg

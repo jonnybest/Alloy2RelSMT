@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<project name="Alloy2KeY" default="compile">
+	<target name="clean" description="remove compiled files">
+		<delete dir="./build"/>
+	</target>
+	<target name="compile" description="compile">
+		<mkdir dir="./build"/>
+		<javac srcdir="./src" destdir="./build"/>
+		<mkdir dir="./build/res"/>
+		<copy todir="./build/res">
+		    <fileset dir="./src/res"/>
+		</copy>
+	</target>
+	<target name="jar" depends="compile" description="compile and built jar archive">
+		<jar destfile="./alloy2key.jar" basedir="./build/">
+			<manifest>
+				<attribute name="Main-Class" value="edu.kit.asa.alloy2key.Main" />
+			</manifest>
+		</jar>
+	</target>
+</project>
