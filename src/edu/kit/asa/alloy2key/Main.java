@@ -25,8 +25,11 @@ import edu.mit.csail.sdg.alloy4.parser.ParsedModule;
 public class Main {
 
 	public static void main(String[] args) {
+		// create program object
 		Main main = new Main(args);
+		// check object and run
 		if (main.valid)
+			// run
 			main.doIt();
 	}
 	
@@ -76,14 +79,20 @@ public class Main {
 	 * true on success
 	 */
 	private boolean doIt() {
+		// parse our inputs from class var
 		ParsedModule mod = parse(input);
+		// unsuccessful parse will return null
 		if (mod == null)
 			return false;
+		// notify user about successful parse
 		System.out.println ("Successfully parsed "+input+" as "+mod.getModelName());
+		// translate the parsed file into key model
 		KeYFile key = translate (mod);
+		// unsuccessful translation will result in null
 		if (key == null)
 			return false;
 		System.out.println ("Model successfully translated.");
+		// write the translated model to disk
 		return write(key,output,input);
 	}
 	
@@ -95,8 +104,11 @@ public class Main {
 	 * null if translation fails
 	 */
 	private KeYFile translate (ParsedModule module) {
+		// create and set up a new translator
 		Translator translator = new Translator(module);
+		// assume all signatures to be finite 
 		for (int i = 0; i < ((finiteSigs == null) ? 0 : finiteSigs.length); ++i) {
+			// finitizer may return false for invalid signatures
 			if (!translator.finitize(finiteSigs[i]))
 				System.err.println ("WARNING: Could not find signature "+finiteSigs[i]+" in the model.");
 		}

@@ -62,6 +62,7 @@ public class TermCall extends Term {
 	/** {@inheritDoc} */
 	@Override
 	public String toString() {
+		// if this was an actual function call, make it look like a function
 		if (params.length > 0)
 			return name +"(" + Util.join(params, ",") + ")";
 		return name;

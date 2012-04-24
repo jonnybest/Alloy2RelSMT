@@ -13,6 +13,7 @@ public class TermNumber extends Term {
 	
 	private int n;
 	
+	/** integer constant **/
 	public TermNumber (int n) {
 		this.n = n;
 	}

@@ -6,6 +6,7 @@ import java.util.List;
 import edu.kit.asa.alloy2key.key.TermQuant.Quant;
 import edu.mit.csail.sdg.alloy4.Pair;
 
+/** represents a KeY expression **/
 public abstract class Term {
 	
 	/**
@@ -39,6 +40,7 @@ public abstract class Term {
 	}
 	
 	/**
+	 * prints this term (uses <code>Object.toString()</code>)
 	 * @return
 	 * String representation of the term
 	 */
@@ -218,22 +220,31 @@ public abstract class Term {
 	public static final Term TRUE = new Term.True();
 	public static final Term HOLE = new Hole();
 	
+	/**
+	 * make this name into a (fun/pred) call
+	 * @param name of the function
+	 * @param params one or more parameters for this function
+	 */
 	public static Term call(String name, Term... params) {
 		return new TermCall (name, params);
 	}
 	
+	/** make a variable **/
 	public static Term var(String name) {
 		return new TermVar (name);
 	}
 	
+	/** make a "for all" expression **/
 	public static Term forall(String sort, String var, Term sub) {
 		return new TermQuant(Quant.FORALL, sort, var, sub);
 	}
 	
+	/** make an "exists" expression **/
 	public static Term exists(String sort, String var, Term sub) {
 		return new TermQuant(Quant.EXISTS, sort, var, sub);
 	}
 	
+	/** make an expression which represents an integer **/
 	public static Term number(int n) {
 		return new TermNumber(n);
 	}
@@ -286,6 +297,7 @@ public abstract class Term {
 
 	}
 	
+	/** representation of a TRUE literal **/
 	public static final class True extends Term {
 
 		/** {@inheritDoc} */
@@ -350,6 +362,7 @@ public abstract class Term {
 		
 	}
 	
+	/** representation of a FALSE literal **/
 	public static final class False extends Term {
 
 		/** {@inheritDoc} */

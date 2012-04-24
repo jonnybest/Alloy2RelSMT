@@ -82,14 +82,22 @@ public class Translator implements Identifiers {
 	private KeYFile target;
 	
 	public Translator (ParsedModule m) {
-		this.idMap = new HashMap<Object,String>();
+		// the idMap saves the unique ids for all alloy entities
+		this.idMap = new HashMap<Object,String>();		
 		this.tmpIds = new Stack<ExprHasName>();
+		// alloy model. we get this from the alloy parser
 		this.mod = m;
+		// the target model (a keyfile or maybe a smtfile)
 		this.target = new KeYFile();
+		// all referenced external modules
 		this.external = new HashSet<Sig>();
+		// all modules that can be reached by our alloy model and are not built-in
 		this.reachableModules = new LinkedList<Module>();
+		// referenced modules
 		this.builtinModules = new LinkedList<KeYModule>();
+		// signatures to be assumed finite
 		this.finitizedSigs = new HashSet<Sig>();
+		// begin by adding the reachable, non built-in modules
 		reachableModules.add (mod);
 	}
 	
@@ -97,19 +105,30 @@ public class Translator implements Identifiers {
 	 * perform the translation
 	 */
 	public KeYFile translate() {
-		createGlobalIds();
+		// we need to uniquely identify all entities, so 
+		// gather all entities and make them unique if need be 
 		try {
+			createGlobalIds();
+			// translation of signature declarations ("types")
 			translateSigDecls();
+			// translating fact declarations
 			translateFacts();
+			// translate predicates (and functions)
 			translateFuncs();
+			// Translate checks 
 			translateCmds();
+			// assume signatures to be finite
 			finitize();
+			// all signatures get their own corresponding relation
 			generateSigDecls();
 		} catch (Err e) {
+			// notify user
 			System.err.println(e.dump());
 			return null;
 		}
+		// remember built-in modules for translation in modules list
 		target.modules.addAll(builtinModules);
+		// hand our translation to the caller (success)
 		return target;
 	}
 	
@@ -123,9 +142,12 @@ public class Translator implements Identifiers {
 	 * found
 	 */
 	public boolean finitize (String s) {
+		// check all available sigs
 		for (Sig sig : mod.getAllReachableSigs()) {
+			// find the matching signature (sig may contain prefix)
 			if (sig.label.equals(s) ||
 					Util.removePrefix(sig.label).equals(s)) {
+				// finitize the given sig
 				finitizedSigs.add (sig);
 				return true;
 			}
@@ -133,9 +155,9 @@ public class Translator implements Identifiers {
 		return false;
 	}
 	
-	// signatures that are used as instantiation for
-	// module imports are being declared within the
-	// translation of the first of these modules
+	/** signatures that are used as instantiation for
+	 	module imports are being declared within the
+		translation of the first of these modules **/
 	private HashSet<Sig> external;
 	
 	/*
@@ -148,8 +170,8 @@ public class Translator implements Identifiers {
 	 * names, such mappings are only declared temporarily.
 	 */
 	
-	// reserved identifiers in KeY
 	// TODO make more complete, include all functions declared by the theory!
+	/** reserved identifiers in KeY  **/
 	private static final Set<String> reserved = new HashSet<String>() {{
 		this.add ("add");this.add ("Relation");this.add ("Rel1");this.add ("Rel2");this.add ("Rel3");
 		this.add ("Rel4");this.add ("Tuple");this.add ("Atom");this.add ("Tuple2");this.add ("Tuple3");
@@ -168,10 +190,10 @@ public class Translator implements Identifiers {
 		this.add ("a2i"); this.add ("elem1"); this.add("elem2"); this.add("elem3"); this.add ("nextInt");
 	}};
 	
-	// map an Alloy entity to a KeY identifier
+	/** map an Alloy entity to a KeY identifier **/
 	private HashMap<Object,String> idMap;
 	
-	// stack of temporary identifiers
+	/** stack of temporary identifiers **/
 	private Stack<ExprHasName> tmpIds;
 	
 	/**
@@ -274,7 +296,7 @@ public class Translator implements Identifiers {
 	
 	/**
 	 * remove last added temporary identifier
-	 */
+	 **/
 	private void popId () {
 		ExprHasName e = tmpIds.pop();
 		idMap.remove(e);
@@ -674,6 +696,7 @@ public class Translator implements Identifiers {
 	 * the translation of <code>e</code> as KeY TermBase
 	 */
 	private Term translateExpr(Expr e) throws Err {
+		// translate assuming no outer let bindings and no known atoms
 		return translateExpr_p(e,new HashMap<ExprHasName,Term>(),new HashSet<ExprHasName>());
 	}
 	
@@ -691,8 +714,11 @@ public class Translator implements Identifiers {
 	 */
 	private Term translateExpr_p(Expr e, HashMap<ExprHasName,Term> letBindings,
 									 HashSet<ExprHasName> atomVars) throws Err {
+		// are you a signature?
 		if (e instanceof Sig)                                        // signature
+			// create a signature term (which will be )
 			return term ((Sig)e);
+		// are you a named entity?
 		if (e instanceof ExprHasName) {                              // identifier
 			if (letBindings.containsKey(e))
 				return letBindings.get(e);
@@ -1335,10 +1361,12 @@ public class Translator implements Identifiers {
 		return p.equals(mod.pos().filename);
 	}
 	
+	/** make a KeY expression from an alloy signature **/
 	private Term term(Sig s) {
 		return Term.call(id(s));
 	}
 	
+	/** make a KeY expression from a named entity and the given atoms **/
 	private Term term(ExprHasName e, HashSet<ExprHasName> atomVars) {
 		if (e instanceof ExprVar) {
 			if (atomVars.contains(e))
@@ -1353,14 +1381,25 @@ public class Translator implements Identifiers {
 		throw new RuntimeException ("Unexpected!");
 	}
 	
+	/** make a KeY expression from a named entity, such as a field, a let or a function parameter **/
 	private Term term(ExprHasName e) {
 		return term(e,new HashSet<ExprHasName>());
 	}
 	
+	/** make a KeY expression for the inclusion expression
+	 * @param v the variable to look for
+	 * @param s a signature containing <code>v</code>
+	 **/
 	private Term in(String v, Sig s) {
 		return Term.call("in", Term.var(v), term(s));
 	}
 	
+	/**
+	 * make a KeY function with the given name (and two parameters)
+	 * @param name of the function
+	 * @param a sig
+	 * @param b another sig
+	 */
 	private Term call(String name, Sig a, Sig b) {
 		return Term.call(name, term(a), term(b));
 	}
