@@ -1,3 +1,12 @@
+Alloy2SMT
+---------
+
+This applications translates Alloy a given Alloy model to first-order logic in SMT.
+
+
+-----------------------------
+Original Readme
+-----------------------------
 Alloy2KeY
 ---------
 
