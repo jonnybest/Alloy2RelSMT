@@ -269,7 +269,7 @@ public abstract class Term {
 		/** {@inheritDoc} */
 		@Override
 		public String toStringTaclet() {
-			throw new RuntimeException ("Unexpected!");
+			throw new RuntimeException ("Unexpected operation! This term is a hole. Holes cannot be expressed as taclet.");
 		}
 
 		/** {@inheritDoc} */
