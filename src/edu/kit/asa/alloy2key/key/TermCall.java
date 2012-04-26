@@ -41,11 +41,14 @@ public class TermCall extends Term {
 	 * might be <code>null</code> if no parameters
 	 */
 	public TermCall (String name, Term... params) {
+		// set name
 		this.name = name;
 		
+		// set parameters if any
 		if (params != null)
 			this.params = params;
 		else
+			// params need not be null!
 			this.params = new Term[0];
 	}
 	
@@ -53,6 +56,8 @@ public class TermCall extends Term {
 	@Override
 	public List<Pair<String,String>> getQuantVars() {
 		List<Pair<String,String>> decls = new LinkedList<Pair<String,String>>();
+		// since we are a function and don't have any quantifiers,
+		// our quantifiers are those of our parameters
 		for (Term t : params) {
 			decls.addAll(t.getQuantVars());
 		}
@@ -86,6 +91,7 @@ public class TermCall extends Term {
 	/** {@inheritDoc} */
 	@Override
 	public boolean occurs (String id) {
+		// some id occurs iff it occurs inside our parameters
 		for (Term t : params)
 			if (t.occurs(id))
 				return true;

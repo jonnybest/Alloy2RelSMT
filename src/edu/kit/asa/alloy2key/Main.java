@@ -53,24 +53,30 @@ public class Main {
 		valid = false;
 		finiteSigs = null;
 
+		// initialize the pattern for the "finite" switch
 		Pattern finPat = Pattern.compile("^--finite=([^,]*(?:,[^,]+)*)$");
 		
+		// parse all args
 		for (int i = 0; i < args.length; i++) {
+			// parse the "force" switch
 			if (Pattern.matches("^(?:-f|--force)$",args[i])) {
 				force = true;
 				continue;
 			}
+			// parse the "finite" switch
 			Matcher m = finPat.matcher(args[i]);
 			if (m.matches()) {
+				// save finite signatures
 				finiteSigs = m.group(1).split(",");
 				continue;
 			}
+			// if no other switches have been found, assign input and output
 			if (input == null)
 				input = args[i];
 			else if (output == null)
 				output = args[i];
 		}
-		
+		// probably does nothing
 		valid = true;
 	}
 	
@@ -112,6 +118,7 @@ public class Main {
 			if (!translator.finitize(finiteSigs[i]))
 				System.err.println ("WARNING: Could not find signature "+finiteSigs[i]+" in the model.");
 		}
+		// return the key model
 		return translator.translate();
 	}
 	
@@ -123,27 +130,34 @@ public class Main {
 	 * the parsed module on success, null otherwise
 	 */
 	private ParsedModule parse (String filename) {
+		// prevent empty file names
 		if(filename == null) {
 			System.err.println ("Parameter cannot be empty!");
 			return null;
 		}
-		
+		// careful: only create files from real file names!
 		File f = new File (filename);
+		// always false on windows
 		if (!f.exists()) {
 			System.err.println (filename + " does not exist!");
 			return null;
 		}
+		// check if user selected a directory
 		if (!f.isFile()) {
 			System.err.println (filename + " does not denote a regular file!");
 			return null;
 		}
+		// check if we have a readable file (again, shouldn't be neccessary on windows)
 		if (!f.canRead()) {
 			System.err.println ("Can not read "+filename+"! Check permissions.");
 			return null;
 		}
+		// do some real work
 		try {
+			// use the alloy parser to get a model from this file
 			return ParseUtil.parseEverything_fromFile(null, null, filename);
 		} catch (Err e) {
+			// handle errors if any
 			System.err.println (e.dump());
 			return null;
 		}
@@ -168,8 +182,11 @@ public class Main {
 	 * true on success, false otherwise
 	 */
 	private boolean write (KeYFile key, String dest, String src) {
+		// use the source file's parent directory or create a new destination file
 		File destFile = (dest == null) ? (new File(src).getAbsoluteFile().getParentFile()) : (new File (dest));
+		// write to this directory
 		File destDir;
+		// set destination directory and file if needed
 		if (destFile.isDirectory()) {
 			destDir = destFile;
 			String n = new File (src).getName();
@@ -185,19 +202,23 @@ public class Main {
 				return false;
 			}
 		}
+		// don't overwrite existing files if force switch off
 		if (destFile.exists() && !force) {
 			System.err.println ("Destination "+destFile+" already exists! Use -f to force overwrite.");
 			return false;
 		}
+		// handle IO permission error for file
 		if (destFile.exists() && !destFile.canWrite()) {
 			System.err.println ("Can not write "+destFile);
 			return false;
 		}
+		// handle IO permission error for dir
 		if (!destDir.canWrite()) {
 			System.err.println ("Can not write to "+destDir);
 			return false;			
 		}
 		
+		// do the real outputting
 		try {
 			// write KeY file
 			key.output(new FileOutputStream(destFile));
