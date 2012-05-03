@@ -431,6 +431,7 @@ public class Translator implements Identifiers {
 				continue;
 			// declare function symbol for sig
 			if (!external.contains(s))
+				// each signature gets its own function symbol of type Rel1
 				target.addFunction ("Rel1", id(s), null);
 		}
 	}
@@ -503,7 +504,7 @@ public class Translator implements Identifiers {
 				final int arity = arity(decl.expr)+1;
 				
 				for (ExprHasName f : decl.names) {
-					// declare field as constant function symbol
+					// declare field as constant function symbol; respect arity
 					target.addFunction(String.format("Rel%d",arity), id(f), null);
 					
 					//explicit typing of first component (and also include bounding type)

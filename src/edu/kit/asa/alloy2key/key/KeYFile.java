@@ -51,7 +51,7 @@ public class KeYFile {
 	 */
 	public void addFunction(String type, String name, List<String> params) throws ModelException {
 		String checkedParams = params == null ? "" : Util.join(params, " ");
-		String fun = "(declare-fun "+name+" ("+checkedParams+") "+type+")";
+		String fun = String.format("(declare-fun %s (%s) %s)", name, checkedParams, type);
 		funcs.add(fun);
 	}
 	
