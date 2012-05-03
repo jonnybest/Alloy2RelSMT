@@ -1,0 +1,10 @@
+(declare-sort a)
+(declare-sort b)
+(declare-fun a1 () a)
+(declare-fun b1 () b)
+(declare-fun do (a b) Bool)
+(assert
+  (do a1 b1)
+)
+(check-sat)
+(exit)

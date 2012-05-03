@@ -45,9 +45,7 @@ public abstract class Term {
 	 * String representation of the term
 	 */
 	@Override
-	public String toString() {
-		return super.toString();
-	}
+	public abstract String toString(); // printing make children print themselves
 
 	/**
 	 * @return
@@ -295,6 +293,12 @@ public abstract class Term {
 			return false;
 		}
 
+		@Override
+		public String toString() {
+			// holes can probably not be printed in SMT syntax
+			throw new RuntimeException ("Unexpected operation! This term is a hole. Holes cannot be expressed as strings.");
+		}
+
 	}
 	
 	/** representation of a TRUE literal **/
@@ -414,6 +418,4 @@ public abstract class Term {
 		}
 		
 	}
-
-
 }

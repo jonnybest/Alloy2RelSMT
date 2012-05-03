@@ -69,7 +69,9 @@ public class TermCall extends Term {
 	public String toString() {
 		// if this was an actual function call, make it look like a function
 		if (params.length > 0)
-			return name +"(" + Util.join(params, ",") + ")";
+			// put brackets around and set params
+			return String.format("(%s %s)", name, Util.join(params, " "));
+		// calls with no parameters cannot have brackets around them!
 		return name;
 	}
 

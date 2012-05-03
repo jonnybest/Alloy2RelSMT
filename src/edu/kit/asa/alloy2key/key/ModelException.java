@@ -11,5 +11,8 @@ package edu.kit.asa.alloy2key.key;
  */
 @SuppressWarnings("serial")
 public class ModelException extends Exception {
-	
+
+	public ModelException(String string) {
+		super(string);
+	}
 }

@@ -452,7 +452,7 @@ public class Translator implements Identifiers {
 				if (!(s instanceof PrimSig)) throw new RuntimeException ("Unexpected!");
 				PrimSig ps = (PrimSig)s;
 				
-				// sig is abstract
+				// sig is abstract // TODO smt-fy
 				if (ps.isAbstract != null) {
 					Term disj = Term.FALSE;
 					for (PrimSig sub : ps.children())
@@ -460,7 +460,7 @@ public class Translator implements Identifiers {
 					target.addAssumption(in("this", ps).implies(disj).forall("Atom", "this"));
 				}
 				
-				// all subsignatures are disjoint
+				// all subsignatures are disjoint // TODO smt-fy
 				for (int i = 0; i < ps.children().size(); ++i)
 					for (int j = i+1; j < ps.children().size(); ++j)
 						target.addAssumption(call("disj",ps.children().get(i),
@@ -468,12 +468,12 @@ public class Translator implements Identifiers {
 				
 				// sig extends parent
 				if (ps.parent != null && ps.parent != Sig.UNIV) {
-					target.addAssumption (call("subrel", ps, ps.parent));
+					target.addAssertion (call("subset_1", ps, ps.parent));
 				}
 			
-			// we have a SubsetSig
+			// we have a SubsetSig // TODO smt-fy
 			} else {
-				if (s.isSubset == null || !(s instanceof SubsetSig)) throw new RuntimeException ("Unexpected!");
+				if (s.isSubset == null || !(s instanceof SubsetSig)) throw new ModelException("The signature "+s+" was expected to be a subset, but isn't!");
 				SubsetSig ss = (SubsetSig)s;
 				if (ss.parents.size() < 1) throw new RuntimeException ("Unexpected!");
 				Term union = term(ss.parents.get(0));
@@ -484,14 +484,14 @@ public class Translator implements Identifiers {
 						term(ss), union));
 			}
 			
-			// sig's multiplicity is one
+			// sig's multiplicity is one // TODO smt-fy
 			if (s.isOne != null)
 				target.addAssumption(Term.call("one", term(s)));
 			
-			// sig's multiplicity is lone
+			// sig's multiplicity is lone // TODO smt-fy
 			if (s.isLone != null)
 				target.addAssumption(Term.call("lone", term(s)));			
-			// sig's multiplicity is some
+			// sig's multiplicity is some // TODO smt-fy
 			if (s.isSome != null)
 				target.addAssumption(Term.call("some", term(s)));
 			
@@ -507,7 +507,7 @@ public class Translator implements Identifiers {
 					// declare field as constant function symbol; respect arity
 					target.addFunction(String.format("Rel%d",arity), id(f), null);
 					
-					//explicit typing of first component (and also include bounding type)
+					//explicit typing of first component (and also include bounding type) // TODO smt-fy
 					Term t = translateExpr(s.type().product(decl.expr.type()).toExpr());
 //					System.out.println(";; "+f.label+": "+s.type().product(decl.expr.type()).toExpr());
 //					System.out.println(";; "+arity);
@@ -1595,6 +1595,11 @@ public class Translator implements Identifiers {
 				return ((TermCall)sub0).params();
 			else
 				return new Term[] {sub0};
+		}
+		@Override
+		public String toString() {
+			// not quite sure what this means, but toStringTaclet() does do anything either
+			return null;
 		}
 		
 	}

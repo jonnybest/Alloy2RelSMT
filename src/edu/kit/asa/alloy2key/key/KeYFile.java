@@ -21,6 +21,8 @@ import edu.kit.asa.alloy2key.util.Util;
  */
 public class KeYFile {
 
+
+
 	public KeYFile () {
 		includes = new LinkedList<String>();
 		funcs  =  new LinkedList<String>();
@@ -28,6 +30,7 @@ public class KeYFile {
 		rules  = new LinkedList<Taclet>();
 		assump = new LinkedList<Term>();
 		concl  = new LinkedList<Term>();
+		asserts = new LinkedList<Term>();
 	}
 	
 	/** referred modules */
@@ -54,6 +57,15 @@ public class KeYFile {
 		String fun = String.format("(declare-fun %s (%s) %s)", name, checkedParams, type);
 		funcs.add(fun);
 	}
+	
+	/** 
+	 * Add an SMT assertion (assert expression)
+	 * @param term 
+	 * Expression to be asserted (declare in SMT syntax)
+	 */
+	public void addAssertion(Term term) {
+		asserts.add(term);
+	}	
 	
 	/**
 	 * Add a predicate declaration
@@ -101,6 +113,7 @@ public class KeYFile {
 		includes.add(f);
 	}
 	
+	private Collection<Term> asserts;
 	private Collection<String> includes;
 	private Collection<String> funcs;
 	private Collection<String> preds;
@@ -110,28 +123,22 @@ public class KeYFile {
 	
 	public void output(OutputStream os) {
 		PrintStream out = new PrintStream(os);
-		out.println ("\\include \"theory/alloyHeader.key\";");
-		for (String s : includes)
-			out.println ("\\include \""+s+"\";");
-		for (KeYModule m: modules) {
-			out.println ("\\include \"theory/"+m.filename()+"\";");
-		}
+//		out.println ("\\include \"theory/alloyHeader.key\";");
+//		for (String s : includes)
+//			out.println ("\\include \""+s+"\";");
+//		for (KeYModule m: modules) {
+//			out.println ("\\include \"theory/"+m.filename()+"\";");
+//		}
 		out.println (";;\\functions {");
 		out.println (Util.join(funcs, "\n"));
 		out.println (";; end functions}\n");
-		out.println ("\\predicates {");
-		out.println (Util.join(preds, "\n"));
-		out.println ("}\n");
-		out.println ("\\rules {");
-		out.println (Util.join(rules, "\n"));
-		out.println ("}\n");
-		out.println ("\\problem {(");
-		out.println (Util.join(assump, " &\n"));
-		out.println (")-> (");
-		out.println (Util.join(concl, " &\n"));
-		out.println (")}");
+		out.println (";; assertions ");
+		for (Term a : asserts) {
+			out.println (String.format("(assert\n  %s)", a.toString()));
+		}
+		out.println (";; (end assertions)\n");
+		
+		out.println ("(check-sat)");
 		out.close();
 	}
-
-
 }

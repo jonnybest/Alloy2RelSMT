@@ -11,7 +11,7 @@
 (declare-sort Tuple2)
 
 ;; Constants
-(declare-fun emptySet_1 () Rel1)
+(declare-fun emptyset_1 () Rel1)
 
 ;; Operations 
 
@@ -19,7 +19,7 @@
 (declare-fun in_2 (Tuple2 Rel2) Bool)
 ;// in_n are uninterpreted predicate
 
-(declare-fun subSet_1 (Rel1 Rel1) Bool)
+(declare-fun subset_1 (Rel1 Rel1) Bool)
 ;// Axiomatization of subSet_1
 
 (declare-fun union_1 (Rel1 Rel1) Rel1)
