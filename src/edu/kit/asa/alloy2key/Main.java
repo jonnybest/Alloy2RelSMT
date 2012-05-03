@@ -14,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import edu.kit.asa.alloy2key.key.KeYFile;
+import edu.kit.asa.alloy2key.key.ModelException;
 import edu.kit.asa.alloy2key.modules.KeYModule;
 import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4.parser.ParseUtil;
@@ -119,7 +120,12 @@ public class Main {
 				System.err.println ("WARNING: Could not find signature "+finiteSigs[i]+" in the model.");
 		}
 		// return the key model
-		return translator.translate();
+		try {
+			return translator.translate();
+		} catch (ModelException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	/**

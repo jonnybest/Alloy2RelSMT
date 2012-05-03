@@ -13,6 +13,7 @@ import java.util.Stack;
 import java.util.Vector;
 
 import edu.kit.asa.alloy2key.key.KeYFile;
+import edu.kit.asa.alloy2key.key.ModelException;
 import edu.kit.asa.alloy2key.key.Taclet;
 import edu.kit.asa.alloy2key.key.Term;
 import edu.kit.asa.alloy2key.key.TermCall;
@@ -103,8 +104,9 @@ public class Translator implements Identifiers {
 	
 	/**
 	 * perform the translation
+	 * @throws ModelException 
 	 */
-	public KeYFile translate() {
+	public KeYFile translate() throws ModelException {
 		// we need to uniquely identify all entities, so 
 		// gather all entities and make them unique if need be 
 		try {
@@ -421,21 +423,23 @@ public class Translator implements Identifiers {
 	
 	/**
 	 * declare all signature symbols
+	 * @throws ModelException 
 	 */
-	private void generateSigDecls() {
+	private void generateSigDecls() throws ModelException {
 		for (Sig s : reachableSigs) {
 			if (s.builtin)
 				continue;
 			// declare function symbol for sig
 			if (!external.contains(s))
-				target.addFunction ("Rel1 "+id(s)+";");
+				target.addFunction ("Rel1", id(s), null);
 		}
 	}
 	
 	/**
 	 * translate the model's type hierarchy
+	 * @throws ModelException 
 	 */
-	private void translateSigDecls() throws Err {
+	private void translateSigDecls() throws Err, ModelException {
 		
 		for (Sig s : reachableSigs) {
 			// ignore built-in sigs
@@ -500,7 +504,7 @@ public class Translator implements Identifiers {
 				
 				for (ExprHasName f : decl.names) {
 					// declare field as constant function symbol
-					target.addFunction(String.format("Rel%d %s;",arity,id(f)));
+					target.addFunction(String.format("Rel%d",arity), id(f), null);
 					
 					//explicit typing of first component (and also include bounding type)
 					Term t = translateExpr(s.type().product(decl.expr.type()).toExpr());

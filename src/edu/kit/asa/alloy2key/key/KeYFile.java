@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import edu.kit.asa.alloy2key.modules.KeYModule;
@@ -33,11 +34,24 @@ public class KeYFile {
 	public Queue<KeYModule> modules = KeYModule.NIL;
 	
 	/**
-	 * Add a function declaration
+	 * Add a function declaration (free text)
 	 * @param fun
 	 * declaration in KeY syntax, e.g. Rel1 f;
 	 */
 	public void addFunction (String fun) {
+		funcs.add(fun);
+	}
+	
+	/**
+	 * Add a typed function declaration with parameters
+	 * @param Type
+	 * @param Name
+	 * @param Parameter-String
+	 * @throws ModelException 
+	 */
+	public void addFunction(String type, String name, List<String> params) throws ModelException {
+		String checkedParams = params == null ? "" : Util.join(params, " ");
+		String fun = "(declare-fun "+name+" ("+checkedParams+") "+type+")";
 		funcs.add(fun);
 	}
 	
@@ -102,9 +116,9 @@ public class KeYFile {
 		for (KeYModule m: modules) {
 			out.println ("\\include \"theory/"+m.filename()+"\";");
 		}
-		out.println ("\\functions {");
+		out.println (";;\\functions {");
 		out.println (Util.join(funcs, "\n"));
-		out.println ("}\n");
+		out.println (";; end functions}\n");
 		out.println ("\\predicates {");
 		out.println (Util.join(preds, "\n"));
 		out.println ("}\n");
@@ -118,5 +132,6 @@ public class KeYFile {
 		out.println (")}");
 		out.close();
 	}
-	
+
+
 }
