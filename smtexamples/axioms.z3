@@ -26,7 +26,7 @@
 ;// Axiomatization of subSet_1
 (assert
  (forall ((t Tuple1) (r1 Rel1) (r2 Rel1))
-   (=>
+   (=
     (subSet_1 r1 r2)
     (=> 
     	(in_1 t r1)
@@ -35,6 +35,10 @@
 
 (declare-fun union_1 (Rel1 Rel1) Rel1)
 ;// Axiomatization of union_1
+(assert
+ (forall ((t Tuple1) (r1 Rel1) (r2 Rel1))
+   (=
+     (in_1 t  
 
 (declare-fun inter_1 (Rel1 Rel1) Rel1)
 ;// Axiomatization of inter_1

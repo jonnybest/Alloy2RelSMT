@@ -224,6 +224,8 @@ public class Main {
 			key.output(new FileOutputStream(destFile));
 			System.out.println ("Output written to "+destFile);
 			
+			return true; // TODO: remove me
+			/*
 			// write theory directory
 			File theoryDir = copyTheory(destDir);
 			
@@ -232,12 +234,13 @@ public class Main {
 			while ((m = key.modules.poll()) != null) {
 				m.buildModule(theoryDir);
 			}
+			*/
 		} catch (IOException ioe) {
 			System.err.println (ioe.getMessage());
 			return false;
 		}
 		
-		return true;
+		//return true; // TODO: remove comment
 	}
 	
 	/**
