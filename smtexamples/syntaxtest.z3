@@ -3,8 +3,12 @@
 (declare-fun a1 () a)
 (declare-fun b1 () b)
 (declare-fun do (a b) Bool)
+(declare-fun dont (a) Bool)
 (assert
-  (do a1 b1)
+  (and (do a1 b1) false)
+)
+(assert
+  (not (dont a1))
 )
 (check-sat)
 (exit)

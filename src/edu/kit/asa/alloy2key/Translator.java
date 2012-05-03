@@ -455,9 +455,12 @@ public class Translator implements Identifiers {
 				// sig is abstract // TODO smt-fy
 				if (ps.isAbstract != null) {
 					Term disj = Term.FALSE;
-					for (PrimSig sub : ps.children())
+					// for all subsigs, assume they are disjoint
+					for (PrimSig sub : ps.children()){
 						disj = disj.or(in("this", sub));
-					target.addAssumption(in("this", ps).implies(disj).forall("Atom", "this"));
+					}
+					target.addAssertion(
+							in("this", ps).implies(disj).forall("Tuple1", "this"));
 				}
 				
 				// all subsignatures are disjoint // TODO smt-fy
@@ -1396,7 +1399,7 @@ public class Translator implements Identifiers {
 	 * @param s a signature containing <code>v</code>
 	 **/
 	private Term in(String v, Sig s) {
-		return Term.call("in", Term.var(v), term(s));
+		return Term.call("in_1", Term.var(v), term(s));
 	}
 	
 	/**

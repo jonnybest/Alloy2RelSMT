@@ -44,37 +44,37 @@ public class TermBinOp extends Term {
 	}
 	
 	private String buildTerm (String l, String r) {
-		switch (operator) {
+		switch (operator) {	
 		case IFF:
-			return "("+ l + ")<->(" + r + ")";
+			return "("+ l + ")<->(" + r + ")";	// TODO: make this smt-syntax
 		case IMPLIES:
-			return "("+ l + ")->(" + r + ")";
+			return "(=> "+ l + " " + r + ")";	// smt-syntax
 		case AND:
-			return "("+ l + ")&(" + r + ")";			
+			return "(and "+ l + " " + r + ")";	// smt-syntax
 		case OR:
-			return "("+ l + ")|(" + r + ")";
+			return "(or "+ l + " " + r + ")";	// smt-syntax
 		case EQUALS:
-			return "("+ l + ")=(" + r + ")";
+			return "(= "+ l + " " + r + ")";	// TODO: make this smt-syntax
 		case LT:
-			return "("+ l + ")<(" + r + ")";
+			return "("+ l + ")<(" + r + ")";	// TODO: make this smt-syntax
 		case LTE:
-			return "("+ l + ")<=(" + r + ")";
+			return "("+ l + ")<=(" + r + ")";	// TODO: make this smt-syntax
 		case GT:
-			return "("+ l + ")>(" + r + ")";
+			return "("+ l + ")>(" + r + ")";	// TODO: make this smt-syntax
 		case GTE:
-			return "("+ l + ")>=(" + r + ")";
+			return "("+ l + ")>=(" + r + ")";	// TODO: make this smt-syntax
 		case PLUS:
-			return "("+ l + ")+(" + r + ")";
+			return "("+ l + ")+(" + r + ")";	// TODO: make this smt-syntax
 		case MINUS:
-			return "("+ l + ")-(" + r + ")";
+			return "("+ l + ")-(" + r + ")";	// TODO: make this smt-syntax
 		case MUL:
-			return "mul("+ l+"," + r + ")";
+			return "mul("+ l+"," + r + ")";	// TODO: make this smt-syntax
 		case DIV:
-			return "div("+ l + "," + r + ")";
+			return "div("+ l + "," + r + ")";	// TODO: make this smt-syntax
 		case REM:
-			return "mod("+ l + "," + r + ")";
+			return "mod("+ l + "," + r + ")";	// TODO: make this smt-syntax
 		default:
-			throw new RuntimeException ("");
+			throw new RuntimeException(new ModelException("This binary term does not know how to deal with this operator: "+ operator.name()) );
 		}
 	}
 

@@ -129,14 +129,27 @@ public class KeYFile {
 //		for (KeYModule m: modules) {
 //			out.println ("\\include \"theory/"+m.filename()+"\";");
 //		}
-		out.println (";;\\functions {");
+		out.println (";; functions");
 		out.println (Util.join(funcs, "\n"));
-		out.println (";; end functions}\n");
-		out.println (";; assertions ");
+		out.println (";; --end functions\n");
+		out.println (";; assertions");
 		for (Term a : asserts) {
-			out.println (String.format("(assert\n  %s)", a.toString()));
+			out.println (String.format("(assert\n  %s\n)", a.toString()));
 		}
-		out.println (";; (end assertions)\n");
+		out.println (";; --end assertions\n");
+		
+		out.println (";; -- key stuff for debugging --");
+		out.println ("\\rules {");
+		out.println (Util.join(rules, "\n"));
+		out.println ("}\n");
+		out.println ("\\problem {(");
+		out.println (Util.join(assump, " &\n"));
+		out.println (")-> (");
+		out.println (Util.join(concl, " &\n"));
+		out.println (";;\\predicates {");
+		out.println (Util.join(preds, "\n"));
+		out.println (";;}\n");
+		out.println (";; -- END key stuff --");
 		
 		out.println ("(check-sat)");
 		out.close();

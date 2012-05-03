@@ -11,6 +11,7 @@ import edu.mit.csail.sdg.alloy4.Pair;
  * A quantified formula (existential/universal)
  * 
  * @author Ulrich Geilmann
+ * @author Jonny
  *
  */
 public class TermQuant extends Term {
@@ -28,7 +29,7 @@ public class TermQuant extends Term {
 	private String sort;
 	
 	/**
-	 * construct a quantified formula
+	 * construct a quantified formula; FIXME: only supports a single bound var 
 	 * @param quantifier
 	 * the quantifier
 	 * @param sort
@@ -50,20 +51,20 @@ public class TermQuant extends Term {
 		StringBuffer buf = new StringBuffer();
 		switch (quant) {
 		case FORALL:
-			buf.append ("\\forall ");
+			buf.append ("(forall ((");
 			break;
 		case EXISTS:
-			buf.append ("\\exists ");
+			buf.append ("(exists ((");
 			break;
 		}
-		buf.append(sort).append(" ").
-			append(var).append("; (").append(sub.toString()).append(")");
+		buf.append(var).append(" ").
+			append(sort).append(")) ").append(sub.toString()).append(")");
 		return buf.toString();
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public String toStringTaclet() {
+	public String toStringTaclet() {	// TODO: make smt-ready 
 		StringBuffer buf = new StringBuffer();
 		switch (quant) {
 		case FORALL:
