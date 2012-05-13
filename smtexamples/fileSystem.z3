@@ -7,7 +7,7 @@
 (declare-sort Rel1)
 (declare-sort Rel2)
 
-(declare-sort Tuple1) ;; Tuple1 = Atom
+(declare-sort Atom) ;; Atom = Tuple1
 (declare-sort Tuple2)
 
 ;; Constants
@@ -15,7 +15,7 @@
 
 ;; Operations 
 
-(declare-fun in_1 (Tuple1 Rel1) Bool)
+(declare-fun in_1 (Atom Rel1) Bool)
 (declare-fun in_2 (Tuple2 Rel2) Bool)
 ;// in_n are uninterpreted predicate
 
@@ -38,7 +38,7 @@
 ;// Axiomatization of join_2x1
 
 
-(declare-fun rel_1 (Tuple1) Rel1)
+(declare-fun rel_1 (Atom) Rel1)
 ;// Axiomatization of rel_1
 
 (declare-fun lone_1 (Rel1) Bool)
@@ -101,7 +101,7 @@
  (subSet_1 (join_2x1 parent Dir) FSO))
 
 (assert
- (forall ((t Tuple1))
+ (forall ((t Atom))
    (=>
     (in_1 t FSO)
     (lone_1 (join_1x2 (rel_1 t) parent)))))
@@ -123,7 +123,7 @@
 
 ;; fact: all o: FSO, d: Dir | o in d.entries => o.parent = d
 (assert
- (forall ((o Tuple1) (d Tuple1))
+ (forall ((o Atom) (d Atom))
   (=>
    (and
     (in_1 o FSO)
@@ -142,7 +142,7 @@
 ;
 (assert
  (not
-  (forall ((o Tuple1))
+  (forall ((o Atom))
    (=>
     (in_1 o (diff_1 FSO Root))
     (one_1 (join_1x2 (rel_1 o) parent))

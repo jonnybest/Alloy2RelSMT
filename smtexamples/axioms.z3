@@ -8,24 +8,25 @@
 
 ;; Sorts
 (declare-sort Rel1 0)
-(declare-sort Rel2 0)
+(declare-sort AbstractRel2 2)
+(declare-sort AbstractRel3 3)
+(define-sort Rel2 () (AbstractRel2 Rel1 Rel1))
+(define-sort Rel3 () (AbstractRel3 Rel1 Rel1 Rel1))
 
-(declare-sort Tuple1 0) ;; Tuple1 = Atom
-(declare-sort Tuple2 0)
+(declare-sort Atom 0) ;; Atom = Tuple1
 
 ;; Constants
-(declare-fun emptySet_1 () Rel1)
+(declare-fun emptyset_1 () Rel1)
 
 ;; Operations 
-
-(declare-fun in_1 (Tuple1 Rel1) Bool)
-(declare-fun in_2 (Tuple2 Rel2) Bool)
+(declare-fun in_1 (Atom Rel1) Bool)
+(declare-fun in_2 (Atom Atom Rel2) Bool)
 ;// in_n are uninterpreted predicate
 
-(declare-fun subSet_1 (Rel1 Rel1) Bool)
+(declare-fun subset_1 (Rel1 Rel1) Bool)
 ;// Axiomatization of subSet_1
 (assert
- (forall ((t Tuple1) (r1 Rel1) (r2 Rel1))
+ (forall ((t Atom) (r1 Rel1) (r2 Rel1))
    (=
     (subSet_1 r1 r2)
     (=> 
@@ -36,7 +37,7 @@
 (declare-fun union_1 (Rel1 Rel1) Rel1)
 ;// Axiomatization of union_1
 (assert
- (forall ((t Tuple1) (r1 Rel1) (r2 Rel1))
+ (forall ((t Atom) (r1 Rel1) (r2 Rel1))
    (=
      (in_1 t  
 
@@ -53,7 +54,7 @@
 ;// Axiomatization of join_2x1
 
 
-(declare-fun rel_1 (Tuple1) Rel1)
+(declare-fun rel_1 (Atom) Rel1)
 ;// Axiomatization of rel_1
 
 (declare-fun lone_1 (Rel1) Bool)

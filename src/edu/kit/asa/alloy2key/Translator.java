@@ -460,7 +460,7 @@ public class Translator implements Identifiers {
 						disj = disj.or(in("this", sub));
 					}
 					target.addAssertion(
-							in("this", ps).implies(disj).forall("Tuple1", "this"));
+							in("this", ps).implies(disj).forall("Atom", "this"));
 				}
 				
 				// all subsignatures are disjoint // TODO smt-fy

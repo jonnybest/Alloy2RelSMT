@@ -123,6 +123,7 @@ public class KeYFile {
 	
 	public void output(OutputStream os) {
 		PrintStream out = new PrintStream(os);
+		printTheory(out);
 //		out.println ("\\include \"theory/alloyHeader.key\";");
 //		for (String s : includes)
 //			out.println ("\\include \""+s+"\";");
@@ -153,5 +154,22 @@ public class KeYFile {
 		
 		out.println ("(check-sat)");
 		out.close();
+	}
+
+	private void printTheory(PrintStream outStream) {
+		// TODO generate a proper theory from model
+		// for the meantime, just print our static axioms from file
+		outStream.println("(declare-sort Rel1 0)"
++"(declare-sort AbstractRel2 2)"
++"(declare-sort AbstractRel3 3)"
++"(define-sort Rel2 () (AbstractRel2 Rel1 Rel1))"
++"(define-sort Rel3 () (AbstractRel3 Rel1 Rel1 Rel1))"
++"(declare-sort Atom 0)"
++"(declare-fun emptyset_1 () Rel1)"
++"(declare-fun in_1 (Atom Rel1) Bool)"
++"(declare-fun subset_1 (Rel1 Rel1) Bool)"
++"(declare-fun union_1 (Rel1 Rel1) Rel1)"
++"(declare-fun inter_1 (Rel1 Rel1) Rel1)"
++"(declare-fun diff_1 (Rel1 Rel1) Rel1)");		
 	}
 }
