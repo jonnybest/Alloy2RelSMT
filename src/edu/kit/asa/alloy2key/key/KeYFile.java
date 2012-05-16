@@ -140,9 +140,9 @@ public class KeYFile {
 		out.println (";; --end assertions\n");
 		
 		out.println (";; -- key stuff for debugging --");
-		out.println ("\\rules {");
-		out.println (Util.join(rules, "\n"));
-		out.println ("}\n");
+//		out.println ("\\rules {");
+//		out.println (Util.join(rules, "\n"));
+//		out.println ("}\n");
 		out.println ("\\problem {(");
 		out.println (Util.join(assump, " &\n"));
 		out.println (")-> (");
@@ -170,6 +170,7 @@ public class KeYFile {
 +"(declare-fun subset_1 (Rel1 Rel1) Bool)"
 +"(declare-fun union_1 (Rel1 Rel1) Rel1)"
 +"(declare-fun inter_1 (Rel1 Rel1) Rel1)"
-+"(declare-fun diff_1 (Rel1 Rel1) Rel1)");		
++"(declare-fun diff_1 (Rel1 Rel1) Rel1)"
++"(declare-fun disjoint_1 (Rel1 Rel1) Rel1)");		
 	}
 }

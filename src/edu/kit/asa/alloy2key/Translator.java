@@ -447,44 +447,45 @@ public class Translator implements Identifiers {
 			if (s.builtin)
 				continue;
 			
-			// we have a PrimSig
+			// we have a PRIMARY SIGNATURE
 			if (s.isSubsig != null) {
 				if (!(s instanceof PrimSig)) throw new RuntimeException ("Unexpected!");
 				PrimSig ps = (PrimSig)s;
 				
-				// sig is abstract // TODO smt-fy
+				// sig is abstract
 				if (ps.isAbstract != null) {
-					Term disj = Term.FALSE;
-					// for all subsigs, assume they are disjoint
+					Term disjunction = Term.FALSE;
+					// membership theorem for subsigs. (FIXME isn't this already covered by union?)
 					for (PrimSig sub : ps.children()){
-						disj = disj.or(in("this", sub));
+						disjunction = disjunction.or(in("this", sub));
 					}
 					target.addAssertion(
-							in("this", ps).implies(disj).forall("Atom", "this"));
+							in("this", ps).implies(disjunction).forall("Atom", "this"));
 				}
 				
-				// all subsignatures are disjoint // TODO smt-fy
+				// all subsignatures are disjoint
 				for (int i = 0; i < ps.children().size(); ++i)
-					for (int j = i+1; j < ps.children().size(); ++j)
-						target.addAssumption(call("disj",ps.children().get(i),
+					for (int j = i+1; j < ps.children().size(); ++j){
+						target.addAssertion(call("disjoint_1",ps.children().get(i),
 														 ps.children().get(j)));
-				
+						// TODO: I'd rather have the "intersection(i, j) == emptyset" formula here
+					}
 				// sig extends parent
 				if (ps.parent != null && ps.parent != Sig.UNIV) {
 					target.addAssertion (call("subset_1", ps, ps.parent));
 				}
 			
-			// we have a SubsetSig // TODO smt-fy
+			// we have a SUB SIGNATURE // TODO smt-fy
 			} else {
 				if (s.isSubset == null || !(s instanceof SubsetSig)) throw new ModelException("The signature "+s+" was expected to be a subset, but isn't!");
 				SubsetSig ss = (SubsetSig)s;
-				if (ss.parents.size() < 1) throw new RuntimeException ("Unexpected!");
+				if (ss.parents.size() < 1) throw new ModelException ("The signature was expected to have a single parent, but had more!");
 				Term union = term(ss.parents.get(0));
 				for (int i = 1; i < ss.parents.size(); i++) {
-					union = Term.call("union1", term(ss.parents.get(i)), union);
+					union = Term.call("union_1", term(ss.parents.get(i)), union);
 				}
-				target.addAssumption(Term.call("subrel",
-						term(ss), union));
+				target.addAssumption(Term.call("subrel",    // subrel = subset, only for higher-arity relations
+						term(ss), union));    // can be expressed with 2 subset_1 if you join them left and right
 			}
 			
 			// sig's multiplicity is one // TODO smt-fy
@@ -498,7 +499,7 @@ public class Translator implements Identifiers {
 			if (s.isSome != null)
 				target.addAssumption(Term.call("some", term(s)));
 			
-			// process the sig's fields
+			// process the sig's FIELDS
 			for (Decl decl : s.getFieldDecls()) {
 				// skip private fields from submodules
 				if (!inRootMod(decl.isPrivate))
@@ -514,7 +515,7 @@ public class Translator implements Identifiers {
 					Term t = translateExpr(s.type().product(decl.expr.type()).toExpr());
 //					System.out.println(";; "+f.label+": "+s.type().product(decl.expr.type()).toExpr());
 //					System.out.println(";; "+arity);
-					target.addAssumption (Term.call ("subrel", term(f), t));
+					target.addAssertion (Term.call ("subrel", term(f), t)); // subrel = subset, only for higher-arity relations
 					
 				}
 				
@@ -538,7 +539,7 @@ public class Translator implements Identifiers {
 			if (sigs.get(i).isTopLevel()) {
 				for (int j = i+1; j < sigs.size(); ++j) {
 					if (sigs.get(j).isTopLevel())
-						target.addAssumption(call("disj", sigs.get(i), sigs.get(j)));
+						target.addAssumption(call("disjoint_1", sigs.get(i), sigs.get(j)));
 				}
 				target.addRule(Taclet.disjointTaclet(id(Sig.SIGINT), id(sigs.get(i))));
 			}
