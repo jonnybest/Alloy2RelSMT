@@ -40,7 +40,7 @@ public class TermUnary extends Term {
 	public String toString() {
 		switch (operator) {
 		case NOT:
-			return "!("+sub.toString()+")";
+			return "(not "+sub.toString()+")";    // smt ok
 		default:
 			return "";
 		}
@@ -48,7 +48,7 @@ public class TermUnary extends Term {
 
 	/** {@inheritDoc} */
 	@Override
-	public String toStringTaclet() {
+	public String toStringTaclet() {    // todo: remove taclets
 		switch (operator) {
 		case NOT:
 			return "!("+sub.toStringTaclet()+")";

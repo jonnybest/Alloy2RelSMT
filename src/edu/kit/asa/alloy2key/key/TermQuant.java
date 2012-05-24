@@ -64,7 +64,7 @@ public class TermQuant extends Term {
 
 	/** {@inheritDoc} */
 	@Override
-	public String toStringTaclet() {	// TODO: make smt-ready 
+	public String toStringTaclet() {	// TODO: make smt-ready => delete
 		StringBuffer buf = new StringBuffer();
 		switch (quant) {
 		case FORALL:

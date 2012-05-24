@@ -43,10 +43,15 @@ public class TermBinOp extends Term {
 		return buildTerm (left.toStringTaclet(), right.toStringTaclet());
 	}
 	
+	/** builds SMT style terms. some expressions may be z3-only 
+	 * @param l left hand side
+	 * @param r right hand side
+	 * @return a string in SMT syntax
+	 */
 	private String buildTerm (String l, String r) {
 		switch (operator) {	
 		case IFF:
-			return "("+ l + ")<->(" + r + ")";	// TODO: make this smt-syntax
+			return "(iff "+ l + " " + r + ")";	// z3-syntax, no smt2 standard (yet)
 		case IMPLIES:
 			return "(=> "+ l + " " + r + ")";	// smt-syntax
 		case AND:
@@ -54,25 +59,25 @@ public class TermBinOp extends Term {
 		case OR:
 			return "(or "+ l + " " + r + ")";	// smt-syntax
 		case EQUALS:
-			return "(= "+ l + " " + r + ")";	// TODO: make this smt-syntax
+			return "(= "+ l + " " + r + ")";	// smt-syntax
 		case LT:
-			return "("+ l + ")<(" + r + ")";	// TODO: make this smt-syntax
+			return "(< "+ l + " " + r + ")";	// smt-syntax
 		case LTE:
-			return "("+ l + ")<=(" + r + ")";	// TODO: make this smt-syntax
+			return "(<= "+ l + " " + r + ")";	// smt-syntax
 		case GT:
-			return "("+ l + ")>(" + r + ")";	// TODO: make this smt-syntax
+			return "(> "+ l + " " + r + ")";	// smt-syntax
 		case GTE:
-			return "("+ l + ")>=(" + r + ")";	// TODO: make this smt-syntax
+			return "(>= "+ l + " " + r + ")";	// smt-syntax
 		case PLUS:
-			return "("+ l + ")+(" + r + ")";	// TODO: make this smt-syntax
+			return "(+ "+ l + " " + r + ")";	// smt-syntax
 		case MINUS:
-			return "("+ l + ")-(" + r + ")";	// TODO: make this smt-syntax
+			return "(- "+ l + " " + r + ")";	// smt-syntax
 		case MUL:
-			return "mul("+ l+"," + r + ")";	// TODO: make this smt-syntax
+			return "(* "+ l+" " + r + ")";	    // smt-syntax
 		case DIV:
-			return "div("+ l + "," + r + ")";	// TODO: make this smt-syntax
+			return "(div "+ l + " " + r + ")";	// smt-syntax
 		case REM:
-			return "mod("+ l + "," + r + ")";	// TODO: make this smt-syntax
+			return "(mod "+ l + " " + r + ")";	// smt-syntax
 		default:
 			throw new RuntimeException(new ModelException("This binary term does not know how to deal with this operator: "+ operator.name()) );
 		}

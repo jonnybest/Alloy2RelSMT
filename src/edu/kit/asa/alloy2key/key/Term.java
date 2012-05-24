@@ -6,7 +6,7 @@ import java.util.List;
 import edu.kit.asa.alloy2key.key.TermQuant.Quant;
 import edu.mit.csail.sdg.alloy4.Pair;
 
-/** represents a KeY expression **/
+/** represents a SMT expression **/
 public abstract class Term {
 	
 	/**

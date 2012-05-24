@@ -64,6 +64,9 @@ import edu.mit.csail.sdg.alloy4.parser.ParsedModule.Open;
  */
 public class Translator implements Identifiers {
 	
+	/** maximum required aritiy of the converter function (hint for the converter) */  
+	private static int ArityOfA2R = 1; // needs to be at least 1 since we can't be sure that a2r never gets called
+
 	/** the model to translate */
 	private ParsedModule mod;
 	
@@ -459,6 +462,7 @@ public class Translator implements Identifiers {
 					for (PrimSig sub : ps.children()){
 						disjunction = disjunction.or(in("this", sub));
 					}
+					target.declareAtom();
 					target.addAssertion(
 							in("this", ps).implies(disjunction).forall("Atom", "this"));
 				}
@@ -466,12 +470,14 @@ public class Translator implements Identifiers {
 				// all subsignatures are disjoint
 				for (int i = 0; i < ps.children().size(); ++i)
 					for (int j = i+1; j < ps.children().size(); ++j){
+						target.declareDisjoint(1);
 						target.addAssertion(call("disjoint_1",ps.children().get(i),
 														 ps.children().get(j)));
 						// TODO: I'd rather have the "intersection(i, j) == emptyset" formula here
 					}
 				// sig extends parent
 				if (ps.parent != null && ps.parent != Sig.UNIV) {
+					target.declareSubset(1);
 					target.addAssertion (call("subset_1", ps, ps.parent));
 				}
 			
@@ -481,23 +487,34 @@ public class Translator implements Identifiers {
 				SubsetSig ss = (SubsetSig)s;
 				if (ss.parents.size() < 1) throw new ModelException ("The signature was expected to have a single parent, but had more!");
 				Term union = term(ss.parents.get(0));
+				target.declareUnion(1);
 				for (int i = 1; i < ss.parents.size(); i++) {
 					union = Term.call("union_1", term(ss.parents.get(i)), union);
 				}
-				target.addAssumption(Term.call("subrel",    // subrel = subset, only for higher-arity relations
+				target.declareSubset(2);
+				target.addAssumption(Term.call("subset_2",    // subrel = subset, only for higher-arity relations
 						term(ss), union));    // can be expressed with 2 subset_1 if you join them left and right
 			}
 			
 			// sig's multiplicity is one // TODO smt-fy
 			if (s.isOne != null)
-				target.addAssumption(Term.call("one", term(s)));
+			{
+				target.declareOne(1);
+				target.addAssumption(Term.call("one_1", term(s)));
+			}
 			
 			// sig's multiplicity is lone // TODO smt-fy
 			if (s.isLone != null)
-				target.addAssumption(Term.call("lone", term(s)));			
+			{
+				target.declareLone(1);
+				target.addAssumption(Term.call("lone_1", term(s)));
+			}
 			// sig's multiplicity is some // TODO smt-fy
 			if (s.isSome != null)
-				target.addAssumption(Term.call("some", term(s)));
+			{
+				target.declareSome(1);
+				target.addAssumption(Term.call("some_1", term(s)));
+			}
 			
 			// process the sig's FIELDS
 			for (Decl decl : s.getFieldDecls()) {
@@ -515,8 +532,8 @@ public class Translator implements Identifiers {
 					Term t = translateExpr(s.type().product(decl.expr.type()).toExpr());
 //					System.out.println(";; "+f.label+": "+s.type().product(decl.expr.type()).toExpr());
 //					System.out.println(";; "+arity);
-					target.addAssertion (Term.call ("subrel", term(f), t)); // subrel = subset, only for higher-arity relations
-					
+					target.declareSubset(arity);
+					target.addAssertion (Term.call ("subset_" + arity, term(f), t));					
 				}
 				
 				//generate typing and multiplicity constraints
@@ -550,20 +567,22 @@ public class Translator implements Identifiers {
 	/**
 	 * translate all facts that are reachable from this
 	 * module.
+	 * @throws ModelException 
 	 */
-	private void translateFacts() throws Err {
+	private void translateFacts() throws Err, ModelException {
 		Term facts = Term.TRUE;
 		for (Module m : reachableModules)
 			for (Pair<String,Expr> f : m.getAllFacts())
 				facts = facts.and(translateExpr(f.b));
-		target.addAssumption(facts);
+		target.addAssertion(facts);
 	}
 	
 	/**
 	 * translate all function and predicate declarations
 	 * in this, and all submodules
+	 * @throws ModelException 
 	 */
-	private void translateFuncs() throws Err {
+	private void translateFuncs() throws Err, ModelException {
 		// identifier for predicates and functions
 		for (Module m : reachableModules) {
 			for (Func func : m.getAllFunc()) {
@@ -574,10 +593,12 @@ public class Translator implements Identifiers {
 			}
 		}
 	}
+	
 	/**
 	 * translate a single function/predicate definition
+	 * @throws ModelException 
 	 */
-	private void translateFunc(Func f) throws Err {
+	private void translateFunc(Func f) throws Err, ModelException {
 		Taclet tac = new Taclet(id(f)+"_def");
 		Term[] params = new Term[f.params().size()];
 		StringBuffer paramDecl = new StringBuffer();
@@ -605,8 +626,9 @@ public class Translator implements Identifiers {
 	
 	/**
 	 * translate all check commands
+	 * @throws ModelException 
 	 */
-	private void translateCmds() throws Err {
+	private void translateCmds() throws Err, ModelException {
 		for (Command cmd : mod.getAllCommands()) {
 			if (!cmd.check) continue;
 			target.addConclusion(translateExpr(cmd.formula.not()));
@@ -632,9 +654,10 @@ public class Translator implements Identifiers {
 	 * @return
 	 * a conjunction of the typing and multiplicity
 	 * constraints for all relations being declared.
+	 * @throws ModelException 
 	 */
 	private Term translateDecl(Decl d, TermAlternation alt,
-			HashMap<ExprHasName,Term> letBindings, HashSet<ExprHasName> atomVars, boolean boundingType) throws Err {
+			HashMap<ExprHasName,Term> letBindings, HashSet<ExprHasName> atomVars, boolean boundingType) throws Err, ModelException {
 		if (alt == null)
 			alt = new TermAlternation() { public Term alter(Term t) {
 				return t;
@@ -643,20 +666,31 @@ public class Translator implements Identifiers {
 		// typing constraints
 		Term bound = translateExpr_p(d.expr, letBindings, atomVars);
 		Term f = Term.TRUE;
+		int arity;
 		for (ExprHasName n : d.names) {
 			if (atomVars.contains(n)) {
 				// include bounding type information
-				Expr bound2 = d.expr.type().toExpr();
+				Expr bound2 = d.expr.type().toExpr();				
 				if (boundingType)
-					f = f.and(Term.call("in", Term.var(id(n)), translateExpr_p(bound2, letBindings, atomVars)));
+				{
+					arity = arity(bound2);
+					target.declareIn(arity);
+					f = f.and(Term.call("in_" + arity, Term.var(id(n)), translateExpr_p(bound2, letBindings, atomVars)));
+				}
 				if (!bound2.isSame(deMult(d.expr)))
-					f = f.and(Term.call("in", Term.var(id(n)), bound));
+				{
+					arity = arity(d.expr);
+					target.declareIn(arity);
+					f = f.and(Term.call("in_" + arity, Term.var(id(n)), bound));
+				}
 			} else {
 				Expr bound2 = d.expr.type().toExpr();
+				arity = arity(bound2);
+				target.declareSubset(arity);
 				if (boundingType)
-					f = f.and(Term.call("subrel", alt.alter(term(n, atomVars)), translateExpr_p(bound2, letBindings, atomVars)));
+					f = f.and(Term.call("subset_" + arity, alt.alter(term(n, atomVars)), translateExpr_p(bound2, letBindings, atomVars)));
 				if (!bound2.isSame(deMult(d.expr))) {
-					f = f.and(Term.call("subrel", alt.alter(term(n, atomVars)), bound));
+					f = f.and(Term.call("subset_" + arity, alt.alter(term(n, atomVars)), bound));
 				}
 			}
 		}
@@ -674,8 +708,10 @@ public class Translator implements Identifiers {
 			for (int i = 0; i < d.names.size(); ++i)
 				for (int j = i+1; j < d.names.size(); ++j) {
 					Term t1 = alt.alter(term(d.names.get(i), atomVars));
-					Term t2 = alt.alter(term(d.names.get(j), atomVars));
-					f = f.and(Term.call("disj",t1,t2));
+					Term t2 = alt.alter(term(d.names.get(j), atomVars));					
+					arity = d.expr.type().arity();
+					target.declareDisjoint(arity);
+					f = f.and(Term.call("disjoint_" + arity,t1,t2));
 				}
 		}
 		
@@ -692,8 +728,9 @@ public class Translator implements Identifiers {
 	 * @return
 	 * a conjunction of the typing and multiplicity
 	 * constraints for all relations being declared.
+	 * @throws ModelException 
 	 */
-	private Term translateDecl(Decl d, TermAlternation alt, boolean boundingType) throws Err {
+	private Term translateDecl(Decl d, TermAlternation alt, boolean boundingType) throws Err, ModelException {
 		return translateDecl (d, alt, new HashMap<ExprHasName,Term>(), new HashSet<ExprHasName>(), boundingType);
 	}
 	
@@ -703,8 +740,9 @@ public class Translator implements Identifiers {
 	 * the expression to translate
 	 * @return
 	 * the translation of <code>e</code> as KeY TermBase
+	 * @throws ModelException 
 	 */
-	private Term translateExpr(Expr e) throws Err {
+	private Term translateExpr(Expr e) throws Err, ModelException {
 		// translate assuming no outer let bindings and no known atoms
 		return translateExpr_p(e,new HashMap<ExprHasName,Term>(),new HashSet<ExprHasName>());
 	}
@@ -720,9 +758,10 @@ public class Translator implements Identifiers {
 	 * surrounded by the singleton constructor.
 	 * @return
 	 * translation of <code>e</code>
+	 * @throws ModelException 
 	 */
 	private Term translateExpr_p(Expr e, HashMap<ExprHasName,Term> letBindings,
-									 HashSet<ExprHasName> atomVars) throws Err {
+									 HashSet<ExprHasName> atomVars) throws Err, ModelException {
 		// are you a signature?
 		if (e instanceof Sig)                                        // signature
 			// create a signature term (which will be )
@@ -737,29 +776,38 @@ public class Translator implements Identifiers {
 			ExprUnary ue = (ExprUnary)e;
 			if (ue.sub == null) throw new ErrorFatal("");
 			Term e_ = translateExpr_p(ue.sub, letBindings, atomVars);
+			int arity = ue.sub.type().arity();  // TODO: find out why arity was not used here before
 			switch (ue.op) {
 			case TRANSPOSE:                                          // ~e
+				target.declareTranspose();  // arity is always 2
 				return Term.call("transp", e_);
 			case CLOSURE:                                            // ^e
+				target.declareTransitiveClosure();  // arity is always 2
 				return Term.call("transClos", e_);
 			case RCLOSURE:                                           // *e
+				target.declareReflexiveTransitiveClosure();  // arity is always 2
 				return Term.call("reflTransClos", e_);
 			case NOT:                                                // !c
 				return e_.not();
 			case NO:                                                 // no e
-				return Term.call("some", e_).not();
+				target.declareSome(arity);
+				return Term.call("some_" + arity, e_).not();
 			case SOME:                                               // some e
-				return Term.call("some", e_);
+				target.declareSome(arity);
+				return Term.call("some_" + arity, e_);
 			case LONE:                                               // lone e
-				return Term.call("lone", e_);
+				target.declareLone(arity);
+				return Term.call("lone_" + arity, e_);
 			case ONE:                                                // one e
-				return Term.call("one", e_);
+				target.declareOne(arity);
+				return Term.call("one_" + arity, e_);
 			case CARDINALITY:                                        // # e
-				return Term.call ("card", e_);
+				target.declareCardinality(arity);
+				return Term.call ("card_" + arity, e_);
 			case CAST2INT:
-				return Term.call("sum", e_);
+				return Term.call("sum", e_); // TODO: verify built-in
 			case CAST2SIGINT:
-				return Term.call("I", e_);
+				return Term.call("I", e_); // TODO: verify built-in
 			case ONEOF:
 			case SOMEOF:
 			case LONEOF:
@@ -779,23 +827,30 @@ public class Translator implements Identifiers {
 			int ar2 = arity(be.right);
 			switch (be.op) {
 			case JOIN:                                               // e1.e2
-				return Term.call("join"+ar1+"x"+ar2, e1, e2);
+				target.declareJoin(ar1, ar2);
+				return Term.call("join_"+ar1+"x"+ar2, e1, e2);
 			case DOMAIN:                                             // e1 <: e2
-				return Term.call("domRestr"+ar2, e1, e2);
+				target.declareDomainRestriction(ar2);
+				return Term.call("domRestr_"+ar2, e1, e2);
 			case RANGE:                                              // e1 :> e2
-				return Term.call("rangeRestr"+ar1, e1, e2);
+				target.declareRangeRestriction(ar1);
+				return Term.call("rangeRestr_"+ar1, e1, e2);
 			case INTERSECT:                                          // e1 & e2
-				return Term.call("inter"+ar1, e1, e2);
+				target.declareIntersection(ar1);
+				return Term.call("inter_"+ar1, e1, e2);
 			case PLUSPLUS:                                           // e1 ++ e2
-				return Term.call("overr"+ar1, e1, e2);
+				target.declareOverride(ar1);
+				return Term.call("overr_"+ar1, e1, e2);
 			case PLUS:                                               // e1 + e2
 				if (e1.isInt() && e2.isInt())
 					return e1.plus(e2);
-				return Term.call("union"+ar1, e1, e2);
+				target.declareUnion(ar1);
+				return Term.call("union_"+ar1, e1, e2);
 			case MINUS:                                              // e1 - e2
 				if (e1.isInt() && e2.isInt())
 					return e1.minus(e2);
-				return Term.call("diff"+ar1, e1, e2);
+				target.declareDifference(ar1);
+				return Term.call("diff_"+ar1, e1, e2);
 			case ARROW:                                              // e1 -> e2
 			case ANY_ARROW_SOME:
 			case ANY_ARROW_ONE:
@@ -812,7 +867,8 @@ public class Translator implements Identifiers {
 			case LONE_ARROW_SOME:
 			case LONE_ARROW_ONE:
 			case LONE_ARROW_LONE:
-				return Term.call("prod"+ar1+"x"+ar2, e1, e2);
+				target.declareProduct(ar1, ar2);
+				return Term.call("prod_"+ar1+"x"+ar2, e1, e2);
 			case EQUALS:                                             // e1 = e2
 				return e1.equal(e2);
 			case NOT_EQUALS:                                         // e1 != e2
@@ -820,10 +876,12 @@ public class Translator implements Identifiers {
 			case IMPLIES:                                            // c1 => c2
 				return e1.implies(e2);
 			case IN:                                                 // e1 in e2
-				return Term.call("subrel", e1, e2).and (
+				target.declareSubset(ar1);
+				return Term.call("subset_" + ar1, e1, e2).and (
 						generateMultConstr(e1, be.right, letBindings, atomVars, false));
 			case NOT_IN:                                             // e1 !in e2
-				return Term.call("subrel", e1, e2).not();
+				target.declareSubset(ar1);
+				return Term.call("subset_" + ar1, e1, e2).not();
 			case AND:                                                // c1 && c2
 				return e1.and(e2);
 			case OR:                                                 // c1 || c2
@@ -992,6 +1050,7 @@ public class Translator implements Identifiers {
 			case FALSE:
 				return Term.FALSE;
 			case IDEN:
+				target.declareIdentity();
 				return Term.call("iden");
 			case EMPTYNESS:
 				return none(1);
@@ -1001,7 +1060,7 @@ public class Translator implements Identifiers {
 			case MAX:
 				throw new ErrorFatal ("Max/Min values of integers are not allowed!");
 			case NEXT:
-				return Term.call("nextInt");
+				return Term.call("nextInt"); // TODO: SMT-fy this
 			case STRING:
 			default:
 				throw new ErrorFatal ("Unknown constant symbol: "+ec.op);
@@ -1029,12 +1088,15 @@ public class Translator implements Identifiers {
 		// we have a multiplicity annotation
 		switch (mults.get(0)) {
 		case ONE:
+			// TODO: declareOne
 			conj = conj.and (Term.call("one", t));
 			break;
 		case SOME:
+			// TODO: declare
 			conj = conj.and (Term.call("some", t));
 			break;
 		case LONE:
+			// TODO: declare
 			conj = conj.and (Term.call("lone", t));
 			break;
 		case SET:
@@ -1073,13 +1135,13 @@ public class Translator implements Identifiers {
 		// we have a multiplicity annotation
 		switch (mults.get(mults.size()-1)) {
 		case ONE:
-			conj = conj.and (Term.call("one", t));
+			conj = conj.and (Term.call("one", t)); // TODO: declare
 			break;
 		case SOME:
-			conj = conj.and (Term.call("some", t));
+			conj = conj.and (Term.call("some", t)); // TODO: declare
 			break;
 		case LONE:
-			conj = conj.and (Term.call("lone", t));
+			conj = conj.and (Term.call("lone", t)); // TODO: declare
 			break;
 		case SET:
 			break;
@@ -1113,25 +1175,31 @@ public class Translator implements Identifiers {
 	 * whether no multiplicity of a unary expression defaults to one
 	 * @return
 	 * conjunction of multiplicity constraints
+	 * @throws ModelException 
 	 */
 	private Term generateMultConstr (Term t, Expr declExpr,
 			HashMap<ExprHasName,Term> letBindings, HashSet<ExprHasName> atomVars,
-			boolean defaultsToOne) throws Err {
+			boolean defaultsToOne) throws Err, ModelException {
 		// handle multiplicity of set-valued declaration expressions
+		int arity = declExpr.type().arity();
 		if (declExpr.mult == 1) {
 			switch (declExpr.mult()) {
 			case SOMEOF:
-				return Term.call("some", t);
+				target.declareSome(arity);
+				return Term.call("some_" + arity, t);
 			case LONEOF:
-				return Term.call("lone", t);
+				target.declareLone(arity);
+				return Term.call("lone_" + arity, t);
 			case ONEOF:
-				return Term.call("one", t);
+				target.declareOne(arity);
+				return Term.call("one_" + arity, t);
 			case SETOF:
 				return Term.TRUE;
 			}
 		} else if (arity(declExpr) == 1 && defaultsToOne) {
 			// no explicit multiplicity defaults to one
-			return Term.call("one", t);
+			target.declareOne(arity);
+			return Term.call("one_" + arity, t);
 
 			
 		// handle multiplicity of relation-valued fields
@@ -1192,7 +1260,7 @@ public class Translator implements Identifiers {
 			throw new RuntimeException ("Expressions of arity highter than 3 are currently not supported.");
 		}
 		
-		Term f = Term.call("in",q,bound).implies(body.fill(sin(arity,q)));
+		Term f = Term.call("in",q,bound).implies(body.fill(a2r(arity,q)));
 		for (int i = arity-1; i >= 0; --i) {
 			f = f.forall("Atom", atoms[i].toString());
 		}
@@ -1204,7 +1272,7 @@ public class Translator implements Identifiers {
 	// disassemble an arrow-expression to its components.
 	// returns a list of pairs of the translated expression and their arities
 	private List<Pair<Term,Integer>> createExprChain (Expr expr,
-			HashMap<ExprHasName,Term> letBindings, HashSet<ExprHasName> atomVars) throws Err {
+			HashMap<ExprHasName,Term> letBindings, HashSet<ExprHasName> atomVars) throws Err, ModelException {
 		LinkedList<Pair<Term,Integer>> ret = new LinkedList<Pair<Term,Integer>>();
 		if (expr.mult != 2) {
 			ret.add(new Pair<Term,Integer>(translateExpr_p(expr, letBindings, atomVars),arity(expr)));
@@ -1379,7 +1447,7 @@ public class Translator implements Identifiers {
 	private Term term(ExprHasName e, HashSet<ExprHasName> atomVars) {
 		if (e instanceof ExprVar) {
 			if (atomVars.contains(e))
-				return sin(arity(e), Term.var(id(e)));
+				return a2r(arity(e), Term.var(id(e)));
 			else if (e.label.equals("this"))
 				return THIS;
 			else
@@ -1398,8 +1466,10 @@ public class Translator implements Identifiers {
 	/** make a KeY expression for the inclusion expression
 	 * @param v the variable to look for
 	 * @param s a signature containing <code>v</code>
+	 * @throws ModelException 
 	 **/
-	private Term in(String v, Sig s) {
+	private Term in(String v, Sig s) throws ModelException {
+		target.declareIn(1);
 		return Term.call("in_1", Term.var(v), term(s));
 	}
 	
@@ -1414,24 +1484,34 @@ public class Translator implements Identifiers {
 	}
 	
 	private Term none(int ar) {
-		if (ar == 1)
-			return Term.call("none");
-		else
-			return Term.call("none"+ar);
+		target.declareNone(ar);
+		return Term.call("none_"+ar);
 	}
 	
-	private static Term sin(int ar, Term sub) {
+	private static Term a2r(int ar, Term sub) {
+		declareA2r(ar);
 		if (ar == 1)
-			return Term.call("sin", sub);
+			return Term.call("a2r", sub);
 		else
-			return Term.call("sin"+ar, sub);
+			return Term.call("a2r_"+ar, sub);
 	}
-	
+
+	/** static helper function to "declare" the converter function statically.
+	 * look inside for whatever mean trick I decided to use */
+	private static void declareA2r(int ar) {
+		// we declare a static integer and let the converter assert 
+		// that all a2r-calls are declared and properly axiomated  
+		if (ArityOfA2R < ar)
+			ArityOfA2R = ar;
+	}
+
 	private Term univ(int ar) {
 		if (ar == 1)
 			return term(Sig.UNIV);
-		else
+		else {
+			target.declareProduct(1, ar-1);
 			return Term.call("prod1x"+(ar-1), term(Sig.UNIV), univ(ar-1));
+		}			
 	}
 	
 	/**
@@ -1476,7 +1556,7 @@ public class Translator implements Identifiers {
 		return e;
 	}
 	
-	private static Term THIS = Term.call("sin",Term.var("this"));
+	private static Term THIS = Term.call("a2r",Term.var("this"));
 	
 	private interface TermAlternation {
 		public abstract Term alter(Term t);
@@ -1490,6 +1570,7 @@ public class Translator implements Identifiers {
 		}
 		
 		public Term alter(Term t) {
+			target.declareJoin(1, ar);
 			return Term.call("join1x"+ar, THIS, t);
 		}
 	}
@@ -1582,11 +1663,11 @@ public class Translator implements Identifiers {
 			int ar = arity;
 			if (right) {
 				for (int i = terms.length-1; i >= 0; --i) {
-					ret = Term.call("join"+(ar--)+"x1", ret, sin(1,terms[i]));
+					ret = Term.call("join"+(ar--)+"x1", ret, a2r(1,terms[i]));
 				}
 			} else {
 				for (int i = 0; i < terms.length; ++i) {
-					ret = Term.call("join1x"+(ar--), sin(1,terms[i]), ret);
+					ret = Term.call("join1x"+(ar--), a2r(1,terms[i]), ret);
 				}
 			}
 			return ret;
