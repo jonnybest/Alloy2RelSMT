@@ -48,13 +48,19 @@ public class KeYFile {
 	 * @param Type
 	 * @param Name
 	 * @param Parameter-String
+	 * @return TRUE if successfully added, FALSE if omitted
 	 * @throws ModelException 
 	 */
-	public void addFunction(String type, String name, String...params) {		
+	public boolean addFunction(String type, String name, String...params) {		
 		String checkedParams = params == null ? "" : Util.join(params, " ");
 		String fun = String.format("(declare-fun %s (%s) %s)", name, checkedParams, type);
-		if(!funcs.contains(fun))
+		if(!funcs.contains(fun)){
 			funcs.add(fun);
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	/** 
@@ -179,23 +185,24 @@ public class KeYFile {
 
 	/** adds declaration and theory for Atom */
 	public void declareAtom() {
-		// TODO Auto-generated method stub
-		
+		// TODO add declaration
+		// TODO: add axiom		
 	}
 	
 	/** adds a declaration and theory for disjoint 
 	 * @param arity arity of the expression
 	 */
 	public void declareDisjoint(int arity) {
-		// TODO Auto-generated method stub
-		
+		// TODO add declaration
+		// TODO: add axiom		
 	}
 
 	/** adds a declaration and theory for subset and subrel 
 	 * @param arity arity of the expression
 	 */
 	public void declareSubset(int i) {
-		// TODO Auto-generated method stub
+		// TODO add declaration
+		//TODO: add axiom	
 		
 	}
 
@@ -203,8 +210,19 @@ public class KeYFile {
 	 * @param arity arity of the expression
 	 */
 	public void declareA2r(int ar) {
-		// TODO Auto-generated method stub
+		// declaration
+		if(ar == 1){
+			this.addFunction("Rel1", "a2r", "Atom");
+		}
+		else {
+			String[] params = new String[ar];
+			for(int i = 0; i < ar; i++){
+				params[i] = "Atom";
+			}
+			this.addFunction("Rel" + ar, "a2r_" + ar, params);
+		}
 		
+		// TODO: add axiom		
 	}
 
 	/** adds a declaration for in (no theory) 
@@ -212,68 +230,71 @@ public class KeYFile {
 	 * @throws ModelException couldn't declare this add this function because of "addFunction"
 	 */
 	public void declareIn(int ar)   {
-		String[] strings = new String[ar];
-		List<String> params = new LinkedList<String>();
+		String[] params = new String[ar + 1];		
 		for(int i = 0; i < ar; i++)
-			params.add("Atom");
-		params.add("Rel" + ar);
-		this.addFunction("Bool", "in_" + ar, params.toArray(strings));
+			params[i] = "Atom";
+		params[ar]  = "Rel" + ar;
+		this.addFunction("Bool", "in_" + ar, params);
+		// axiom omitted: "in" does not have an axiom (uninterpreted)
 	}
 
 	/** adds a declaration and theory for "none" 
 	 * @param arity arity of none
 	 */
 	public void declareNone(int ar) {
-		// TODO Auto-generated method stub
-		
+		// TODO add declaration
+		//TODO: add axiom
 	}
 
 	public void declareProduct(int i, int j) {
-		// TODO Auto-generated method stub
-		
+		// TODO add declaration
+		//TODO: add axiom
 	}
 
 	public void declareJoin(int lar, int rar) {
 		this.addFunction("Bool", "join_" + lar + "x" + rar);
+		// TODO: add axiom
 	}
 
 	public void declareUnion(int i) {
 		this.addFunction("Rel" + i, "union_" + i);	
+		// TODO: add axiom
 	}
 
 	public void declareOne(int i)  {		
 		this.addFunction("Bool", "one_" + i, "Rel" + i);
+		// TODO: add axiom
 	}
 
 	public void declareLone(int i) {
-		// TODO Auto-generated method stub
-		
+		// TODO add declaration
+		//TODO: add axiom
 	}
 
 	public void declareSome(int i) {
-		// TODO Auto-generated method stub
-		
+		// TODO add declaration
+		//TODO: add axiom
 	}
 
 	// arity is always 2
 	public void declareTranspose() {
-		// TODO Auto-generated method stub
-		
+		// TODO add declaration
+		//TODO: add axiom
 	}
 
 	public void declareTransitiveClosure() {
-		// TODO Auto-generated method stub
-		
+		// TODO add declaration
+		//TODO: add axiom
 	}
 
 	public void declareReflexiveTransitiveClosure() {
-		// TODO Auto-generated method stub
-		
+		// TODO add declaration
+		//TODO: add axiom
 	}
 
 	public void declareCardinality(int arity) {
-		// TODO Auto-generated method stub
-		
+		// TODO add declaration
+		//TODO: add axiom
 	}
 
 	/** Declares the domain restriction operator
@@ -286,27 +307,27 @@ public class KeYFile {
 	}
 
 	public void declareDifference(int ar1) {
-		// TODO Auto-generated method stub
-		
+		// TODO add declaration
+		//TODO: add axiom
 	}
 
 	public void declareOverride(int ar1) {
-		// TODO Auto-generated method stub
-		
+		// TODO add declaration
+		//TODO: add axiom
 	}
 
 	public void declareIntersection(int ar1) {
-		// TODO Auto-generated method stub
-		
+		// TODO add declaration
+		//TODO: add axiom
 	}
 
 	public void declareRangeRestriction(int ar1) {
-		// TODO Auto-generated method stub
-		
+		// TODO add declaration
+		//TODO: add axiom
 	}
 
 	public void declareIdentity() {
-		// TODO Auto-generated method stub
-		
+		// TODO add declaration
+		//TODO: add axiom
 	}
 }

@@ -64,9 +64,6 @@ import edu.mit.csail.sdg.alloy4.parser.ParsedModule.Open;
  */
 public class Translator implements Identifiers {
 	
-	/** maximum required aritiy of the converter function (hint for the converter) */  
-	private static int ArityOfA2R = 1; // needs to be at least 1 since we can't be sure that a2r never gets called
-
 	/** the model to translate */
 	private ParsedModule mod;
 	
@@ -83,7 +80,7 @@ public class Translator implements Identifiers {
 	private Collection<Sig> finitizedSigs;
 	
 	/** the result */
-	private KeYFile target;
+	private static KeYFile target;
 	
 	public Translator (ParsedModule m) {
 		// the idMap saves the unique ids for all alloy entities
@@ -92,7 +89,7 @@ public class Translator implements Identifiers {
 		// alloy model. we get this from the alloy parser
 		this.mod = m;
 		// the target model (a keyfile or maybe a smtfile)
-		this.target = new KeYFile();
+		Translator.target = new KeYFile();
 		// all referenced external modules
 		this.external = new HashSet<Sig>();
 		// all modules that can be reached by our alloy model and are not built-in
@@ -1449,7 +1446,7 @@ public class Translator implements Identifiers {
 			if (atomVars.contains(e))
 				return a2r(arity(e), Term.var(id(e)));
 			else if (e.label.equals("this"))
-				return THIS;
+				return THISTerm();
 			else
 				return Term.var(id(e));
 		}
@@ -1499,10 +1496,8 @@ public class Translator implements Identifiers {
 	/** static helper function to "declare" the converter function statically.
 	 * look inside for whatever mean trick I decided to use */
 	private static void declareA2r(int ar) {
-		// we declare a static integer and let the converter assert 
-		// that all a2r-calls are declared and properly axiomated  
-		if (ArityOfA2R < ar)
-			ArityOfA2R = ar;
+		// "target" is now static
+		Translator.target.declareA2r(ar);
 	}
 
 	private Term univ(int ar) {
@@ -1556,7 +1551,13 @@ public class Translator implements Identifiers {
 		return e;
 	}
 	
-	private static Term THIS = Term.call("a2r",Term.var("this"));
+	/** replaces the static "THIS" expression
+	 * @return a relation containing the "THIS" atom
+	 */
+	private static Term THISTerm() {
+		target.declareA2r(1);
+		return Term.call("a2r",Term.var("this"));
+	}
 	
 	private interface TermAlternation {
 		public abstract Term alter(Term t);
@@ -1570,8 +1571,8 @@ public class Translator implements Identifiers {
 		}
 		
 		public Term alter(Term t) {
-			target.declareJoin(1, ar);
-			return Term.call("join1x"+ar, THIS, t);
+			target.declareJoin(1, ar);			
+			return Term.call("join1x"+ar, THISTerm(), t);
 		}
 	}
 	
