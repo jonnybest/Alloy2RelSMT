@@ -1491,10 +1491,7 @@ public class Translator implements Identifiers {
 	
 	private static Term a2r(int ar, Term sub) {
 		declareA2r(ar);
-		if (ar == 1)
-			return Term.call("a2r", sub);
-		else
-			return Term.call("a2r_"+ar, sub);
+		return Term.call("a2r_"+ar, sub);
 	}
 
 	/** static helper function to "declare" the converter function statically.
@@ -1560,7 +1557,7 @@ public class Translator implements Identifiers {
 	 */
 	private static Term THISTerm() {
 		target.declareA2r(1);
-		return Term.call("a2r",Term.var("this"));
+		return Term.call("a2r_1",Term.var("this"));
 	}
 	
 	private interface TermAlternation {

@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import edu.kit.asa.alloy2key.key.TermBinOp.Op;
 import edu.kit.asa.alloy2key.modules.KeYModule;
 import edu.kit.asa.alloy2key.util.Util;
 
@@ -210,19 +211,26 @@ public class KeYFile {
 	 * @param arity arity of the expression
 	 */
 	public void declareA2r(int ar) {
+				
+				
+		String[] params = new String[ar];
+		for(int i = 0; i < ar; i++){
+			params[i] = "Atom";
+		}
 		// declaration
-		if(ar == 1){
-			this.addFunction("Rel1", "a2r", "Atom");
-		}
-		else {
-			String[] params = new String[ar];
-			for(int i = 0; i < ar; i++){
-				params[i] = "Atom";
-			}
-			this.addFunction("Rel" + ar, "a2r_" + ar, params);
-		}
-		
-		// TODO: add axiom		
+		if(this.addFunction("Rel" + ar, "a2r_" + ar, params)){
+			// TODO: axiom of higher arity
+			// axiom
+			Term xInX, inImpliesEqual;
+			Term x = TermVar.var("x");
+			Term y = TermVar.var("y");
+			
+			xInX = Term.call("in_1", x, Term.call("a2r_" + ar, x));
+			inImpliesEqual = new TermBinOp(Term.call("in_1", y, Term.call("a2r_" + ar, x)), Op.IMPLIES, new TermBinOp(x, Op.EQUALS, y));
+			Term axiom = Term.forall("Atom", "x", xInX.and(Term.forall("Atom", "y", inImpliesEqual)));
+					
+			this.addAssertion(axiom);
+		}	
 	}
 
 	/** adds a declaration for in (no theory) 

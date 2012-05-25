@@ -9,7 +9,7 @@ sig Dir extends FSO {
 
 sig Root extends Dir {}
 
-fact {
+fact {	
 	one Root
 	no Root.parent
 	//FSO = Root.*entries
@@ -22,6 +22,10 @@ fact {
 //	all d: Dir | d in FSO
 //	entries = ~parent
 //}
+
+fact {
+	// testfact 
+}
 
 assert oneParent {
 	all o: FSO-Root | one o.parent
