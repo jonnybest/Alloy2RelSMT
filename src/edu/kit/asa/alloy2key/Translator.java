@@ -492,7 +492,7 @@ public class Translator implements Identifiers {
 					union = Term.call("union_1", term(ss.parents.get(i)), union);
 				}
 				target.declareSubset(2);
-				target.addAssumption(Term.call("subset_2",    // subrel = subset, only for higher-arity relations
+				target.addAssertion(Term.call("subset_2",    // subrel = subset, only for higher-arity relations
 						term(ss), union));    // can be expressed with 2 subset_1 if you join them left and right
 			}
 			
@@ -500,20 +500,20 @@ public class Translator implements Identifiers {
 			if (s.isOne != null)
 			{
 				target.declareOne(1);
-				target.addAssumption(Term.call("one_1", term(s)));
+				target.addAssertion(Term.call("one_1", term(s)));
 			}
 			
 			// sig's multiplicity is lone // TODO smt-fy
 			if (s.isLone != null)
 			{
 				target.declareLone(1);
-				target.addAssumption(Term.call("lone_1", term(s)));
+				target.addAssertion(Term.call("lone_1", term(s)));
 			}
 			// sig's multiplicity is some // TODO smt-fy
 			if (s.isSome != null)
 			{
 				target.declareSome(1);
-				target.addAssumption(Term.call("some_1", term(s)));
+				target.addAssertion(Term.call("some_1", term(s)));
 			}
 			
 			// process the sig's FIELDS
