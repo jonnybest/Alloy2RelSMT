@@ -105,8 +105,9 @@ public class Translator implements Identifiers {
 	/**
 	 * perform the translation
 	 * @throws ModelException 
+	 * @ 
 	 */
-	public KeYFile translate() throws ModelException {
+	public KeYFile translate() throws ModelException  {
 		// we need to uniquely identify all entities, so 
 		// gather all entities and make them unique if need be 
 		try {
@@ -423,22 +424,23 @@ public class Translator implements Identifiers {
 	
 	/**
 	 * declare all signature symbols
-	 * @throws ModelException 
+	 * @ 
 	 */
-	private void generateSigDecls() throws ModelException {
+	private void generateSigDecls()  {
 		for (Sig s : reachableSigs) {
 			if (s.builtin)
 				continue;
 			// declare function symbol for sig
 			if (!external.contains(s))
 				// each signature gets its own function symbol of type Rel1
-				target.addFunction ("Rel1", id(s), null);
+				target.addFunction ("Rel1", id(s));
 		}
 	}
 	
 	/**
 	 * translate the model's type hierarchy
 	 * @throws ModelException 
+	 * @ 
 	 */
 	private void translateSigDecls() throws Err, ModelException {
 		
@@ -523,7 +525,7 @@ public class Translator implements Identifiers {
 				
 				for (ExprHasName f : decl.names) {
 					// declare field as constant function symbol; respect arity
-					target.addFunction(String.format("Rel%d",arity), id(f), null);
+					target.addFunction(String.format("Rel%d",arity), id(f));
 					
 					//explicit typing of first component (and also include bounding type) // TODO smt-fy
 					Term t = translateExpr(s.type().product(decl.expr.type()).toExpr());
@@ -565,6 +567,7 @@ public class Translator implements Identifiers {
 	 * translate all facts that are reachable from this
 	 * module.
 	 * @throws ModelException 
+	 * @ 
 	 */
 	private void translateFacts() throws Err, ModelException {
 		Term facts = Term.TRUE;
@@ -578,6 +581,7 @@ public class Translator implements Identifiers {
 	 * translate all function and predicate declarations
 	 * in this, and all submodules
 	 * @throws ModelException 
+	 * @ 
 	 */
 	private void translateFuncs() throws Err, ModelException {
 		// identifier for predicates and functions
@@ -593,7 +597,7 @@ public class Translator implements Identifiers {
 	
 	/**
 	 * translate a single function/predicate definition
-	 * @throws ModelException 
+	 * @ 
 	 */
 	private void translateFunc(Func f) throws Err, ModelException {
 		Taclet tac = new Taclet(id(f)+"_def");
@@ -623,7 +627,7 @@ public class Translator implements Identifiers {
 	
 	/**
 	 * translate all check commands
-	 * @throws ModelException 
+	 * @ 
 	 */
 	private void translateCmds() throws Err, ModelException {
 		for (Command cmd : mod.getAllCommands()) {
@@ -651,7 +655,7 @@ public class Translator implements Identifiers {
 	 * @return
 	 * a conjunction of the typing and multiplicity
 	 * constraints for all relations being declared.
-	 * @throws ModelException 
+	 * @ 
 	 */
 	private Term translateDecl(Decl d, TermAlternation alt,
 			HashMap<ExprHasName,Term> letBindings, HashSet<ExprHasName> atomVars, boolean boundingType) throws Err, ModelException {
@@ -725,7 +729,7 @@ public class Translator implements Identifiers {
 	 * @return
 	 * a conjunction of the typing and multiplicity
 	 * constraints for all relations being declared.
-	 * @throws ModelException 
+	 * @ 
 	 */
 	private Term translateDecl(Decl d, TermAlternation alt, boolean boundingType) throws Err, ModelException {
 		return translateDecl (d, alt, new HashMap<ExprHasName,Term>(), new HashSet<ExprHasName>(), boundingType);
@@ -737,7 +741,7 @@ public class Translator implements Identifiers {
 	 * the expression to translate
 	 * @return
 	 * the translation of <code>e</code> as KeY TermBase
-	 * @throws ModelException 
+	 * @ 
 	 */
 	private Term translateExpr(Expr e) throws Err, ModelException {
 		// translate assuming no outer let bindings and no known atoms
@@ -755,7 +759,7 @@ public class Translator implements Identifiers {
 	 * surrounded by the singleton constructor.
 	 * @return
 	 * translation of <code>e</code>
-	 * @throws ModelException 
+	 * @ 
 	 */
 	private Term translateExpr_p(Expr e, HashMap<ExprHasName,Term> letBindings,
 									 HashSet<ExprHasName> atomVars) throws Err, ModelException {
@@ -1172,7 +1176,7 @@ public class Translator implements Identifiers {
 	 * whether no multiplicity of a unary expression defaults to one
 	 * @return
 	 * conjunction of multiplicity constraints
-	 * @throws ModelException 
+	 * @ 
 	 */
 	private Term generateMultConstr (Term t, Expr declExpr,
 			HashMap<ExprHasName,Term> letBindings, HashSet<ExprHasName> atomVars,
@@ -1463,9 +1467,9 @@ public class Translator implements Identifiers {
 	/** make a KeY expression for the inclusion expression
 	 * @param v the variable to look for
 	 * @param s a signature containing <code>v</code>
-	 * @throws ModelException 
+	 * @ 
 	 **/
-	private Term in(String v, Sig s) throws ModelException {
+	private Term in(String v, Sig s){
 		target.declareIn(1);
 		return Term.call("in_1", Term.var(v), term(s));
 	}
