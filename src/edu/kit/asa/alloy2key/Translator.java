@@ -539,14 +539,14 @@ public class Translator implements Identifiers {
 				//generate typing and multiplicity constraints
 				Term tm = translateDecl(decl,new ThisJoin(arity),false);
 				tm = in("this", s).implies(tm);
-				target.addAssumption(tm.forall("Atom", "this"));
+				target.addAssertion(tm.forall("Atom", "this"));
 			}
 			
 			// translate signature facts
 			for (Expr c : s.getFacts()) {
 				Term fact = translateExpr(c);
 				fact = in("this", s).implies(fact);
-				target.addAssumption(fact.forall("Atom","this"));
+				target.addAssertion(fact.forall("Atom","this"));
 			}
 		}
 		
@@ -556,7 +556,7 @@ public class Translator implements Identifiers {
 			if (sigs.get(i).isTopLevel()) {
 				for (int j = i+1; j < sigs.size(); ++j) {
 					if (sigs.get(j).isTopLevel())
-						target.addAssumption(call("disjoint_1", sigs.get(i), sigs.get(j)));
+						target.addAssertion(call("disjoint_1", sigs.get(i), sigs.get(j)));
 				}
 				target.addRule(Taclet.disjointTaclet(id(Sig.SIGINT), id(sigs.get(i))));
 			}
@@ -631,7 +631,7 @@ public class Translator implements Identifiers {
 	private void translateCmds() throws Err, ModelException {
 		for (Command cmd : mod.getAllCommands()) {
 			if (!cmd.check) continue;
-			target.addConclusion(translateExpr(cmd.formula.not()));
+			target.addAssertion(translateExpr(cmd.formula.not()));
 		}
 	}
 	

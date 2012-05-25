@@ -212,7 +212,7 @@ public class KeYFile {
 	 * @throws ModelException couldn't declare this add this function because of "addFunction"
 	 */
 	public void declareIn(int ar)   {
-		String[] strings = null;
+		String[] strings = new String[ar];
 		List<String> params = new LinkedList<String>();
 		for(int i = 0; i < ar; i++)
 			params.add("Atom");
