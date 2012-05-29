@@ -3,7 +3,10 @@
  */
 package edu.kit.asa.alloy2key.key;
 
+import java.util.Dictionary;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import edu.mit.csail.sdg.alloy4.Pair;
 
@@ -24,9 +27,15 @@ public class TermQuant extends Term {
 	
 	private Term sub;
 	
-	private String var;
+//	private String var;
 
-	private String sort;
+//	private String sort;
+	
+	/** contains the bound variables for this expression as 
+	 * key-value pairs in format var/sort.
+	 * key = var name / value = sort
+	 */
+	private TreeMap<String, String> vars;
 	
 	/**
 	 * construct a quantified formula; FIXME: only supports a single bound var 
@@ -41,8 +50,10 @@ public class TermQuant extends Term {
 	 */
 	public TermQuant (Quant quantifier, String sort, String variable, Term sub) {
 		this.quant = quantifier;
-		this.sort = sort;
-		this.var = variable;
+		vars = new TreeMap<String, String>();
+		vars.put(variable, sort);
+		//this.sort = sort;
+		//this.var = variable;
 		this.sub = sub;
 	}
 
@@ -51,14 +62,21 @@ public class TermQuant extends Term {
 		StringBuffer buf = new StringBuffer();
 		switch (quant) {
 		case FORALL:
-			buf.append ("(forall ((");
+			buf.append ("(forall (");
 			break;
 		case EXISTS:
-			buf.append ("(exists ((");
+			buf.append ("(exists (");
 			break;
 		}
-		buf.append(var).append(" ").
-			append(sort).append(")) ").append(sub.toString()).append(")");
+		String sort;
+		for(String var : vars.keySet()){
+			sort = vars.get(var);
+			buf.append("(");
+			buf.append(var).append(" ");
+			buf.append(sort);
+			buf.append(")) ");
+		}
+		buf.append(sub.toString()).append(")");
 		return buf.toString();
 	}
 
@@ -74,7 +92,7 @@ public class TermQuant extends Term {
 			buf.append ("\\exists ");
 			break;
 		}
-		buf.append(var).append("; (").append(sub.toStringTaclet()).append(")");
+//		buf.append(var).append("; (").append(sub.toStringTaclet()).append(")");
 		return buf.toString();
 	}
 
