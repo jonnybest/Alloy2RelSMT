@@ -3,11 +3,10 @@
  */
 package edu.kit.asa.alloy2key.key;
 
-import java.util.Dictionary;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
+import edu.kit.asa.alloy2key.key.TermQuant.Quant;
 import edu.mit.csail.sdg.alloy4.Pair;
 
 /**
@@ -26,19 +25,15 @@ public class TermQuant extends Term {
 	private Quant quant;
 	
 	private Term sub;
-	
-//	private String var;
 
-//	private String sort;
-	
 	/** contains the bound variables for this expression as 
-	 * key-value pairs in format var/sort.
-	 * key = var name / value = sort
+	 * value pairs in format var/sort.
+	 * a-value = var name / b-value = sort
 	 */
-	private TreeMap<String, String> vars;
+	private List<Pair<String, String>> vars;
 	
 	/**
-	 * construct a quantified formula; FIXME: only supports a single bound var 
+	 * construct a quantified formula 
 	 * @param quantifier
 	 * the quantifier
 	 * @param sort
@@ -50,10 +45,23 @@ public class TermQuant extends Term {
 	 */
 	public TermQuant (Quant quantifier, String sort, String variable, Term sub) {
 		this.quant = quantifier;
-		vars = new TreeMap<String, String>();
-		vars.put(variable, sort);
-		//this.sort = sort;
-		//this.var = variable;
+		vars = new LinkedList<Pair<String, String>>();
+		vars.add(new Pair<String, String>(variable, sort));
+		this.sub = sub;
+	}
+	
+	/**
+	 * construct a quantified formula 
+	 * @param quantifier
+	 * the quantifier
+	 * @param typedVars
+	 * the quantified variables as a list of name/type pairs. 
+	 * @param sub
+	 * the quantification formula
+	 */
+	public TermQuant (Quant quantifier, List<Pair<String, String>> typedVars, Term sub) {
+		this.quant = quantifier;
+		this.vars = typedVars;
 		this.sub = sub;
 	}
 
@@ -68,9 +76,10 @@ public class TermQuant extends Term {
 			buf.append ("(exists (");
 			break;
 		}
-		String sort;
-		for(String var : vars.keySet()){
-			sort = vars.get(var);
+		String var, sort;
+		for(Pair<String, String> typedVar : vars){
+			var = typedVar.a;
+			sort = typedVar.b;
 			buf.append("(");
 			buf.append(var).append(" ");
 			buf.append(sort);
@@ -100,30 +109,36 @@ public class TermQuant extends Term {
 	@Override
 	public List<Pair<String,String>> getQuantVars() {
 		List<Pair<String,String>> decls = sub.getQuantVars();
-		decls.add (new Pair<String,String>(sort,var));
+		decls.addAll(vars);
 		return decls;
 	}
 	
 	/** {@inheritDoc} */
 	@Override
-	public boolean occurs (String id) {
-		if (id.equals(var))
-			return true;
+	public boolean occurs (String id) {		
+		for(Pair<String, String> typedVar : vars){
+			if (id.equals(typedVar.a))
+				return true;
+		}
 		return sub.occurs(id);
 	}
 	
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 *  (will not substitute bound variables) 
+	 **/
 	@Override
 	public Term substitute (String a, String b) {
-		if (var.equals(a))
+		if (occurs(a))
 			return this;
-		return new TermQuant(quant,sort,var,sub.substitute(a,b));
+		// return a copy
+		return new TermQuant(quant, new LinkedList<Pair<String,String>>(vars) ,sub.substitute(a,b));
 	}
 	
 	/** {@inheritDoc} */
 	@Override
 	public Term fill(Term t) {
-		return new TermQuant(quant,sort,var,sub.fill(t));
+		// return a copy
+		return new TermQuant(quant,new LinkedList<Pair<String,String>>(vars),sub.fill(t));
 	}
 
 	/** {@inheritDoc} */
@@ -131,5 +146,12 @@ public class TermQuant extends Term {
 	public boolean isInt() {
 		return false;
 	}
-	
+
+	public static TermQuant createSingleSortedTerm(Quant quantifier, String sort, TermVar[] vars, Term sub) {
+		List<Pair<String, String>> typedVars = new LinkedList<Pair<String,String>>();
+		for(TermVar var : vars){
+			typedVars.add(new Pair<String, String>(var.toString(), sort));
+		}
+		return new TermQuant(quantifier, typedVars, sub);
+	}	
 }

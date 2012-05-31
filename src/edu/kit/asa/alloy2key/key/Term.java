@@ -228,7 +228,7 @@ public abstract class Term {
 	}
 	
 	/** make a variable **/
-	public static Term var(String name) {
+	public static TermVar var(String name) {
 		return new TermVar (name);
 	}
 	
@@ -417,5 +417,16 @@ public abstract class Term {
 			return false;
 		}
 		
+	}
+
+	public Term forall(String sort, TermVar[] vars) {
+		if(this == TRUE)
+			return this;
+		else
+			return forall(sort, vars, this);
+	}
+
+	public static Term forall(String sort, TermVar[] vars, Term sub) {
+		return TermQuant.createSingleSortedTerm(Quant.FORALL, sort, vars, sub);
 	}
 }

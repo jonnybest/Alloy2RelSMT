@@ -17,6 +17,7 @@ import edu.kit.asa.alloy2key.key.ModelException;
 import edu.kit.asa.alloy2key.key.Taclet;
 import edu.kit.asa.alloy2key.key.Term;
 import edu.kit.asa.alloy2key.key.TermCall;
+import edu.kit.asa.alloy2key.key.TermVar;
 import edu.kit.asa.alloy2key.modules.KeYModule;
 import edu.kit.asa.alloy2key.util.Util;
 import edu.mit.csail.sdg.alloy4.Err;
@@ -983,6 +984,7 @@ public class Translator implements Identifiers {
 			}
 
 			// quantifier (hopefully)
+			// TODO: fix multiple binding support, 1) remove loop 2) ??? 
 			for (int i = qt.count()-1; i >= 0; --i) {
 				final ExprVar v = qt.get(i);
 				String sort = "";
@@ -1001,13 +1003,13 @@ public class Translator implements Identifiers {
 						f = b.and(f).exists(sort, id(v)).not();
 					break;
 				case SOME:
-					f = b.and(f).exists(sort, id(v));
+					f = b.and(f).exists(sort, id(v));	// TODO: fix multiple binding support
 					break;
 				case ALL:
-					f = b.implies(f).forall(sort,id(v));
+					f = b.implies(f).forall(sort,id(v));	// TODO: fix multiple binding support
 					break;
 				case LONE:{
-					if (qt.count() > 1) throw new ErrorFatal ("Multiple variable bindings are not supported for lone quantifier.");
+					if (qt.count() > 1) throw new ModelException ("Multiple variable bindings are not supported for lone quantifier.");
 					//TODO multiple variable bindings
 					String newVar = newVar("y", b.and(f));
 					Term boundY = b.substitute(id(v), newVar);
@@ -1018,7 +1020,7 @@ public class Translator implements Identifiers {
 					f = bound.implies(s1.implies(eq)).forall(sort, newVar).forall(sort, id(v));}
 					break;
 				case ONE:{
-					if (qt.count() > 1) throw new ErrorFatal ("Multiple variable bindings are not supported for one quantifier.");
+					if (qt.count() > 1) throw new ModelException ("Multiple variable bindings are not supported for one quantifier.");
 					String newVar = newVar("y", b.and(f));
 					Term boundY = b.substitute(id(v), newVar);
 					Term fY = f.substitute(id(v), newVar);
@@ -1027,7 +1029,7 @@ public class Translator implements Identifiers {
 					f = b.and(f).and(s1).exists(sort, id(v));}
 					break;
 				default:
-					throw new ErrorFatal ("Unsupported quantifier in "+e);
+					throw new ModelException ("Unsupported quantifier in "+e);
 				}
 				// bound included in innermost quantifier, can be ignored in
 				// next iterations
@@ -1242,7 +1244,7 @@ public class Translator implements Identifiers {
 	 */
 	private Term quantify (Term body, Term bound, int arity) {
 		assert arity >= 1;
-		Term[] atoms = new Term[arity];
+		TermVar[] atoms = new TermVar[arity];
 		for (int i = 0; i < arity; ++i) {
 			atoms[i] = Term.var(newVar("x"+i,body,bound));
 		}
@@ -1261,11 +1263,8 @@ public class Translator implements Identifiers {
 			throw new RuntimeException ("Expressions of arity highter than 3 are currently not supported.");
 		}
 		
-		Term f = Term.call("in",q,bound).implies(body.fill(a2r(arity,q)));
-		for (int i = arity-1; i >= 0; --i) {
-			f = f.forall("Atom", atoms[i].toString());
-		}
-		
+		Term f = Term.call("in",q,bound).implies(body.fill(a2r(arity,q)));		
+		f = f.forall("Atom", atoms);
 		return f;
 	}
 	

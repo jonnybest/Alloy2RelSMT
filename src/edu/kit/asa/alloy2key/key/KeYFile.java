@@ -24,6 +24,7 @@ public class KeYFile {
 
 	public KeYFile () {
 		includes = new LinkedList<String>();
+		sorts = new LinkedList<String>();
 		funcs  =  new LinkedList<String>();
 		preds  = new LinkedList<String>();
 		rules  = new LinkedList<Taclet>();
@@ -38,17 +39,30 @@ public class KeYFile {
 	/**
 	 * Add a function declaration (free text)
 	 * @param fun
-	 * declaration in KeY syntax, e.g. Rel1 f;
+	 * declaration in SMT syntax, e.g. (declare-fun MyFun bool);
 	 */
 	public void addFunction (String fun) {
 		funcs.add(fun);
 	}
 	
 	/**
+	 * Add a sort declaration (free text)
+	 * @param sortDeclaration
+	 * declaration in SMT/Z3 syntax, e.g. (declare-sort MySort);
+	 * @return TRUE if successfully added, FALSE if omitted
+	 */
+	public boolean addSort (String sortDeclaration) {
+		if(!sorts.contains(sortDeclaration)){
+			sorts.add(sortDeclaration);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	/**
 	 * Add a typed function declaration with parameters
-	 * @param Type
-	 * @param Name
-	 * @param Parameter-String
 	 * @return TRUE if successfully added, FALSE if omitted
 	 * @throws ModelException 
 	 */
@@ -119,6 +133,7 @@ public class KeYFile {
 		includes.add(f);
 	}
 	
+	private Collection<String> sorts;
 	private Collection<Term> asserts;
 	private Collection<String> includes;
 	private Collection<String> funcs;
@@ -136,6 +151,9 @@ public class KeYFile {
 //		for (KeYModule m: modules) {
 //			out.println ("\\include \"theory/"+m.filename()+"\";");
 //		}
+		out.println (";; sorts");
+		out.println (Util.join(sorts, "\n"));
+		out.println (";; --end sorts\n");
 		out.println (";; functions");
 		out.println (Util.join(funcs, "\n"));
 		out.println (";; --end functions\n");
@@ -165,59 +183,57 @@ public class KeYFile {
 		out.close();
 	}
 
-	private void printTheory(PrintStream outStream) {		
-		// TODO generate a proper theory from model
-		// for the meantime, just print our static axioms from file
-		outStream.println("(declare-sort Rel1 0)\n"
-+"(declare-sort Rel2 2)\n"
-+"(declare-sort Rel3 3)\n"
-+"(declare-sort Atom 0)\n"
-+"(declare-fun emptyset_1 () Rel1)\n"
-+"(declare-fun in_1 (Atom Rel1) Bool)\n"
-+"(declare-fun subset_1 (Rel1 Rel1) Bool)\n"
-+"(declare-fun subset_2 (Rel1 Rel1) Bool)\n"
-+"(declare-fun union_1 (Rel1 Rel1) Rel1)\n"
-+"(declare-fun inter_1 (Rel1 Rel1) Rel1)\n"
-+"(declare-fun diff_1 (Rel1 Rel1) Rel1)\n"
-+"(declare-fun disjoint_1 (Rel1 Rel1) Bool)\n"
-+"(declare-fun prod_1x1 (Rel1 Rel1) Rel2)\n"
-+"(declare-fun a2r (Atom) Rel1)\n");		
-	}
-
 	/** adds declaration and theory for Atom */
 	public void declareAtom() {
-		// TODO add declaration
-		// TODO: add axiom		
+		this.addSort("(declare-sort Atom)");
 	}
 	
 	/** adds a declaration and theory for disjoint 
 	 * @param arity arity of the expression
 	 */
-	public void declareDisjoint(int arity) {
+	public void declareDisjoint(int ar) {
 		// TODO add declaration
 		// TODO: add axiom		
 	}
 
 	/** adds a declaration and theory for subset and subrel 
-	 * @param arity arity of the expression
+	 * @param arity of the set expression
 	 */
-	public void declareSubset(int i) {
-		// TODO add declaration
-		//TODO: add axiom	
-		
+	public void declareSubset(int ar) {
+		// declare prerequisite sorts
+		declareAtom();
+		declareRel(ar);
+		// declare subset function, e.g. (declare-fun subset_2 (Atom, Atom, Rel2) bool)
+		String[] params = new String[ar + 1];
+		for(int i = 0; i < ar; i++){
+			params[i] = "Atom";
+		}
+		params[ar] = "Rel" + ar;		
+		// add declaration
+		if(this.addFunction("Bool", "subset_" + ar, params)){
+			// if successfully added; add axiom(s) as well
+			//TODO: add axiom for subset
+		}
+	}
+
+	private void declareRel(int ar) {
+		this.addSort("(declare-sort Rel" + ar + ")");
 	}
 
 	/** adds a declaration and theory for the converter function 
 	 * @param arity arity of the expression
 	 */
 	public void declareA2r(int ar) {
-				
-				
+		// declare prerequisite sorts and functions
+		declareAtom();
+		declareRel(ar);
+		declareIn(ar);
+		// prepare declaration
 		String[] params = new String[ar];
 		for(int i = 0; i < ar; i++){
 			params[i] = "Atom";
 		}
-		// declaration
+		// declaration		
 		if(this.addFunction("Rel" + ar, "a2r_" + ar, params)){
 			// TODO: axiom of higher arity
 			// axiom
@@ -238,6 +254,8 @@ public class KeYFile {
 	 * @throws ModelException couldn't declare this add this function because of "addFunction"
 	 */
 	public void declareIn(int ar)   {
+		declareAtom();
+		declareRel(ar);
 		String[] params = new String[ar + 1];		
 		for(int i = 0; i < ar; i++)
 			params[i] = "Atom";
@@ -264,22 +282,24 @@ public class KeYFile {
 		// TODO: add axiom
 	}
 
-	public void declareUnion(int i) {
-		this.addFunction("Rel" + i, "union_" + i);	
+	public void declareUnion(int ar) {
+		declareRel(ar);
+		this.addFunction("Rel" + ar, "union_" + ar);	
 		// TODO: add axiom
 	}
 
-	public void declareOne(int i)  {		
-		this.addFunction("Bool", "one_" + i, "Rel" + i);
+	public void declareOne(int ar)  {		
+		declareRel(ar);
+		this.addFunction("Bool", "one_" + ar, "Rel" + ar);
 		// TODO: add axiom
 	}
 
-	public void declareLone(int i) {
+	public void declareLone(int ar) {
 		// TODO add declaration
 		//TODO: add axiom
 	}
 
-	public void declareSome(int i) {
+	public void declareSome(int ar) {
 		// TODO add declaration
 		//TODO: add axiom
 	}
@@ -300,7 +320,7 @@ public class KeYFile {
 		//TODO: add axiom
 	}
 
-	public void declareCardinality(int arity) {
+	public void declareCardinality(int ar) {
 		// TODO add declaration
 		//TODO: add axiom
 	}
