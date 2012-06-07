@@ -419,6 +419,12 @@ public abstract class Term {
 		
 	}
 
+	/** wrap this expression in a single sorted "forall" expression
+	 * 
+	 * @param sort the bounding sort
+	 * @param vars the variables, elements of the bounding sort
+	 * @return this expression, quantified with respect to sort and vars
+	 */
 	public Term forall(String sort, TermVar[] vars) {
 		if(this == TRUE)
 			return this;
@@ -426,7 +432,45 @@ public abstract class Term {
 			return forall(sort, vars, this);
 	}
 
+	/** create a single sorted "forall" expression
+	 * 
+	 * @param sort the bounding sort
+	 * @param vars the variables, elements of the bounding sort
+	 * @param sub expression to quantify
+	 * @return the sub expression, quantified with respect to sort and vars
+	 */
 	public static Term forall(String sort, TermVar[] vars, Term sub) {
 		return TermQuant.createSingleSortedTerm(Quant.FORALL, sort, vars, sub);
+	}	
+
+	/** Creates an "in()" expression 
+	 * @param bound The bounding expression which contains the tuple 
+	 * @param Atoms Any number of atom variables, or an array of atom variables (aka tuple)
+	 * @return an expression of the form (in atoms[0] atoms[1] atoms[2..etc] bound)
+	 */
+	public static Term in(Term bound, TermVar... Atoms) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/** Creates an "in()" expression 
+	 * @param bound The bounding expression which contains the tuple 
+	 * @param Atoms a list of atom variables (aka tuple)
+	 * @return an expression of the form (in atoms[0] atoms[1] atoms[2..etc] bound)
+	 */
+	public static Term in(Term bound, List<TermVar> Atoms) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/** creates a sorted "forall" expression. requires all vars to be well-sorted
+	 * 
+	 * @param vars a list of well-sorted variables
+	 * @param sub term to bind to
+	 * @return
+	 */
+	public static Term forall(List<TermVar> vars, Term sub) {
+		// TODO Auto-generated method stub
+		return TermQuant.createSortedTerm(Quant.FORALL, vars, sub);
 	}
 }

@@ -959,21 +959,21 @@ public class Translator implements Identifiers {
 			ExprQt qt = (ExprQt)e;
 			
 			for (int i = 0; i < qt.count(); ++i) {
-				pushId(qt.get(i));
-				Expr bound = qt.getBound(i);
+				pushId(qt.get(i)); // create name in id map
+				Expr bound = qt.getBound(i); // right hand side of var decl
 				if (arity(bound) == 1 && mult(bound) == Mult.ONE) {
-					atomVars.add(qt.get(i));
+					atomVars.add(qt.get(i)); // save name as atom
 				}
 			}
-			Term f = translateExpr_p(qt.sub, letBindings, atomVars);
+			Term f = translateExpr_p(qt.sub, letBindings, atomVars); // same thing for subterm
 			Term b = Term.TRUE;
 			for (Decl d : qt.decls) {
-				b = b.and(translateDecl(d, null, letBindings, atomVars, true));
+				b = b.and(translateDecl(d, null, letBindings, atomVars, true)); // create constraint
 			}
 			
 
 			// comprehension
-			if (qt.op == Op.COMPREHENSION) {
+			if (qt.op == Op.COMPREHENSION) { // TODO: exception 
 				String[] vars = new String[qt.count()];
 				for (int i = 0; i < qt.count(); ++i) {
 					final ExprVar v = qt.get(i);
@@ -986,14 +986,14 @@ public class Translator implements Identifiers {
 			// quantifier (hopefully)
 			// TODO: fix multiple binding support, 1) remove loop 2) ??? 
 			for (int i = qt.count()-1; i >= 0; --i) {
-				final ExprVar v = qt.get(i);
+				final ExprVar v = qt.get(i); // kommt von alloy (?)
 				String sort = "";
 				if (atomVars.contains(v))
 					sort = "Atom";
 				else
 					sort = "Rel"+arity(qt.getBound(i));
 				
-				atomVars.remove(v);
+				atomVars.remove(v); // end loop here & dont forget to deal with popId and b
 
 				switch (qt.op) {
 				case NO:

@@ -153,5 +153,13 @@ public class TermQuant extends Term {
 			typedVars.add(new Pair<String, String>(var.toString(), sort));
 		}
 		return new TermQuant(quantifier, typedVars, sub);
+	}
+
+	public static Term createSortedTerm(Quant quantifier, List<TermVar> vars, Term sub) {
+		List<Pair<String, String>> typedVars = new LinkedList<Pair<String,String>>();
+		for(TermVar var : vars){
+			typedVars.add(new Pair<String, String>(var.getName(), var.getSort()));
+		}
+		return new TermQuant(quantifier, typedVars, sub);
 	}	
 }

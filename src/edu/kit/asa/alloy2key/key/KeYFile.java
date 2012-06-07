@@ -203,16 +203,25 @@ public class KeYFile {
 		// declare prerequisite sorts
 		declareAtom();
 		declareRel(ar);
-		// declare subset function, e.g. (declare-fun subset_2 (Atom, Atom, Rel2) bool)
-		String[] params = new String[ar + 1];
-		for(int i = 0; i < ar; i++){
-			params[i] = "Atom";
-		}
-		params[ar] = "Rel" + ar;		
+		// declare subset function, e.g. (declare-fun subset_2 (Rel2, Rel2) bool)
 		// add declaration
-		if(this.addFunction("Bool", "subset_" + ar, params)){
+		String relSort = "Rel"+ar;
+		if(this.addFunction("Bool", "subset_" + ar, relSort, relSort)){			
 			// if successfully added; add axiom(s) as well
+			// prepare parameter list for in()
+			List<TermVar> atomVars = new LinkedList<TermVar>();
+			for(int i = 0; i < ar; i++){
+				atomVars.add(TermVar.var("Atom", "a" + i));
+			}
 			//TODO: add axiom for subset
+			TermVar x = TermVar.var(relSort, "x");	// a Set or Relation
+			TermVar y = TermVar.var(relSort, "y");	// another Set or Relation
+			Term subset = Term.call("subset_"+ar, x, y);
+			Term inImpliesIn = new TermBinOp(Term.in(x, atomVars), Op.IMPLIES, Term.in(y, atomVars));
+			List<TermVar> quantVars = new LinkedList<TermVar>(atomVars);
+			quantVars.add(x);
+			quantVars.add(y);
+			Term axiom = Term.forall(quantVars, (Term)new TermBinOp(subset, Op.IFF, inImpliesIn));
 		}
 	}
 
@@ -236,7 +245,7 @@ public class KeYFile {
 		// declaration		
 		if(this.addFunction("Rel" + ar, "a2r_" + ar, params)){
 			// TODO: axiom of higher arity
-			// axiom
+			// axiom 
 			Term xInX, inImpliesEqual;
 			Term x = TermVar.var("x");
 			Term y = TermVar.var("y");
