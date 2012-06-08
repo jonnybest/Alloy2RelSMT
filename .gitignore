@@ -2,3 +2,5 @@ build
 bin
 lib
 *.class
+/smtexamples/generated.z3
+*.ucls
