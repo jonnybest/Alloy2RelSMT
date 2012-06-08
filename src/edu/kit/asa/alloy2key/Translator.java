@@ -1500,7 +1500,7 @@ public class Translator implements Identifiers {
 		Translator.target.declareA2r(ar);
 	}
 
-	private Term univ(int ar) {
+	private Term univ(int ar) throws ModelException {
 		if (ar == 1)
 			return term(Sig.UNIV);
 		else {
