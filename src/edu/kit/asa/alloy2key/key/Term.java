@@ -443,29 +443,30 @@ public abstract class Term {
 		return TermQuant.createSingleSortedTerm(Quant.FORALL, sort, vars, sub);
 	}	
 
-	/** Creates an "in()" expression 
+	/** Creates an "in()" expression. 
 	 * @param bound The bounding expression which contains the tuple 
-	 * @param Atoms Any number of atom variables, or an array of atom variables (aka tuple)
+	 * @param atoms Any number of atom variables, or an array of atom variables (aka tuple)
 	 * @return an expression of the form (in atoms[0] atoms[1] atoms[2..etc] bound)
+	 * @remark It's called "reverse" because the parameter order is the other way around. 
+	 * This is a technical neccessity, since I wanted to use varargs.  
 	 */
-	public static Term in(Term bound, TermVar... Atoms) {
-		int arity = Atoms.length;
+	public static Term reverseIn(Term bound, TermVar... atoms) {
+		int arity = atoms.length;
 		Term[] params = new Term[arity + 1];
 		for(int i = 0; i < arity; i++){
-			params[i] = Atoms[i];			
+			params[i] = atoms[i];			
 		}
 		params[arity] = bound;
-		// TODO Auto-generated method stub
 		return call("in_" + arity, params);
 	}
 
-	/** Creates an "in()" expression 
+	/** Creates an "in()" expression.
+	 * @param atoms a list of atom variables (aka tuple)
 	 * @param bound The bounding expression which contains the tuple 
-	 * @param Atoms a list of atom variables (aka tuple)
 	 * @return an expression of the form (in atoms[0] atoms[1] atoms[2..etc] bound)
 	 */
-	public static Term in(Term bound, List<TermVar> Atoms) {
-		return in(bound, (TermVar[]) Atoms.toArray(new TermVar[Atoms.size()]));
+	public static Term in(List<TermVar> atoms, Term bound) {
+		return reverseIn(bound, (TermVar[]) atoms.toArray(new TermVar[atoms.size()]));
 	}
 
 	/** creates a sorted "forall" expression. requires all vars to be well-sorted

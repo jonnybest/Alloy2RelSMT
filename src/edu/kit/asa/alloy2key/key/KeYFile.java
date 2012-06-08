@@ -192,7 +192,10 @@ public class KeYFile {
 	 * @param arity arity of the expression
 	 */
 	public void declareDisjoint(int ar) {
-		// TODO add declaration
+		declareAtom();
+		declareRel(ar);
+		String relAr = "Rel" + ar;
+		this.addFunction("Bool", "disjoint_"  +ar, relAr, relAr);
 		// TODO: add axiom		
 	}
 
@@ -213,16 +216,17 @@ public class KeYFile {
 			for(int i = 0; i < ar; i++){
 				atomVars.add(TermVar.var("Atom", "a" + i));
 			}
-			//TODO: add axiom for subset
+			// declare variables
 			TermVar x = TermVar.var(relSort, "x");	// a Set or Relation
 			TermVar y = TermVar.var(relSort, "y");	// another Set or Relation
-			Term subset = Term.call("subset_"+ar, x, y);
-			Term inImpliesIn = new TermBinOp(Term.in(x, atomVars), Op.IMPLIES, Term.in(y, atomVars));
+			Term subset = Term.call("subset_"+ar, x, y);  // x is subset of y
+			Term inImpliesIn = new TermBinOp(Term.in(atomVars, x), Op.IMPLIES, Term.in(atomVars, y));  // if an atom is in x, it is also in y 
+			// now quantify the two expressions for all x, y and atoms
 			List<TermVar> quantVars = new LinkedList<TermVar>(atomVars);
 			quantVars.add(x);
 			quantVars.add(y);
 			Term axiom = Term.forall(quantVars, (Term)new TermBinOp(subset, Op.IFF, inImpliesIn));
-			this.addAssertion(axiom);
+			this.addAssertion(axiom);  // add this axiom to the list of assertions
 		}
 	}
 
@@ -278,12 +282,15 @@ public class KeYFile {
 	 * @param arity arity of none
 	 */
 	public void declareNone(int ar) {
-		// TODO add declaration
+		this.addFunction("Bool", "none_" + ar, "Rel" + ar);
 		//TODO: add axiom
 	}
 
-	public void declareProduct(int i, int j) {
-		// TODO add declaration
+	public void declareProduct(int lar, int rar) throws ModelException {
+		if(lar < 1 || rar < 1)
+			throw new ModelException("The product is not defined for arguments of arity 0.");
+		// careful with overloaded + operator
+		this.addFunction("Rel" + /*concatenation*/ (lar + /*sum*/ rar), String.format("prod_%dx%d", lar, rar), "Rel"+lar, "Rel"+rar);
 		//TODO: add axiom
 	}
 
