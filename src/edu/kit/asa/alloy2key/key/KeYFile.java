@@ -222,6 +222,7 @@ public class KeYFile {
 			quantVars.add(x);
 			quantVars.add(y);
 			Term axiom = Term.forall(quantVars, (Term)new TermBinOp(subset, Op.IFF, inImpliesIn));
+			this.addAssertion(axiom);
 		}
 	}
 

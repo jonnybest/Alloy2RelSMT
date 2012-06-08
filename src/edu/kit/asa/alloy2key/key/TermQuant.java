@@ -83,8 +83,9 @@ public class TermQuant extends Term {
 			buf.append("(");
 			buf.append(var).append(" ");
 			buf.append(sort);
-			buf.append(")) ");
+			buf.append(")");
 		}
+		buf.append(") ");
 		buf.append(sub.toString()).append(")");
 		return buf.toString();
 	}

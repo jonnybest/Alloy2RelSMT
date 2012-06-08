@@ -449,8 +449,14 @@ public abstract class Term {
 	 * @return an expression of the form (in atoms[0] atoms[1] atoms[2..etc] bound)
 	 */
 	public static Term in(Term bound, TermVar... Atoms) {
+		int arity = Atoms.length;
+		Term[] params = new Term[arity + 1];
+		for(int i = 0; i < arity; i++){
+			params[i] = Atoms[i];			
+		}
+		params[arity] = bound;
 		// TODO Auto-generated method stub
-		return null;
+		return call("in_" + arity, params);
 	}
 
 	/** Creates an "in()" expression 
@@ -459,8 +465,7 @@ public abstract class Term {
 	 * @return an expression of the form (in atoms[0] atoms[1] atoms[2..etc] bound)
 	 */
 	public static Term in(Term bound, List<TermVar> Atoms) {
-		// TODO Auto-generated method stub
-		return null;
+		return in(bound, (TermVar[]) Atoms.toArray(new TermVar[Atoms.size()]));
 	}
 
 	/** creates a sorted "forall" expression. requires all vars to be well-sorted
