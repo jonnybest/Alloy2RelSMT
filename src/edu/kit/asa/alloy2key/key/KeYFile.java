@@ -312,33 +312,40 @@ public class KeYFile {
 	}
 
 	public void declareLone(int ar) {
-		// TODO add declaration
+		declareRel(ar);
+		this.addFunction("Bool", "lone_" + ar, "Rel" + ar);
 		//TODO: add axiom
 	}
 
 	public void declareSome(int ar) {
-		// TODO add declaration
+		declareRel(ar);
+		this.addFunction("Bool", "some_" + ar, "Rel" + ar);
 		//TODO: add axiom
 	}
 
 	// arity is always 2
 	public void declareTranspose() {
-		// TODO add declaration
+		declareRel(2);
+		this.addFunction("Rel2", "transpose", "Rel2");
 		//TODO: add axiom
 	}
 
+	// arity is always 2
 	public void declareTransitiveClosure() {
-		// TODO add declaration
+		declareRel(2);
+		this.addFunction("Rel2", "tCl", "Rel2");
 		//TODO: add axiom
 	}
 
 	public void declareReflexiveTransitiveClosure() {
-		// TODO add declaration
+		declareRel(2);
+		this.addFunction("Rel2", "rtCl", "Rel2");
 		//TODO: add axiom
 	}
 
 	public void declareCardinality(int ar) {
-		// TODO add declaration
+		declareRel(ar);
+		this.addFunction("Int", "card_" + ar, "Rel" + ar);
 		//TODO: add axiom
 	}
 
