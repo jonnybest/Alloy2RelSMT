@@ -1,5 +1,7 @@
 package edu.kit.asa.alloy2key.key;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -478,5 +480,14 @@ public abstract class Term {
 	public static Term forall(List<TermVar> vars, Term sub) {
 		// TODO Auto-generated method stub
 		return TermQuant.createSortedTerm(Quant.FORALL, vars, sub);
+	}
+
+	/** wrap this expression in a "forall" expression
+	 * 
+	 * @param vars well-sorted variables to bind this to
+	 * @return an expression representing "forall (vars) this"
+	 */
+	public Term forall(TermVar... vars) {				
+		return forall(Arrays.asList(vars), this);
 	}
 }

@@ -196,7 +196,20 @@ public class KeYFile {
 		declareRel(ar);
 		String relAr = "Rel" + ar;
 		this.addFunction("Bool", "disjoint_"  +ar, relAr, relAr);
-		// TODO: add axiom		
+		
+		// forall a in A, b in B | not a in B.
+		// or maybe: forall a in A, b in B | not a in B and not b in A...?
+		TermVar a, b, A, B;
+		a = TermVar.var("Atom", "a");
+		b = TermVar.var("Atom", "b");
+		A = TermVar.var(relAr, "A");
+		B = TermVar.var(relAr, "B");
+		Term aInA = Term.reverseIn(B, b);
+		Term bInB = Term.reverseIn(A, a);
+		Term typeRestriction = aInA.and(bInB);		
+		Term notAinB = new TermUnary(TermUnary.Op.NOT, Term.reverseIn(B, a));		
+		Term axiom = Term.call("disjoint_", A, B).iff(typeRestriction.and(notAinB)).forall(a, A, b, B);;
+		this.addAssertion(axiom); // add this axiom to the list of assertions
 	}
 
 	/** adds a declaration and theory for subset and subrel 
@@ -351,35 +364,52 @@ public class KeYFile {
 
 	/** Declares the domain restriction operator
 	 * @param rar arity of the right-hand parameter
+	 * @rem left-hand arity is required to be 1 (type:set)
 	 */
 	public void declareDomainRestriction(int rar) {
-		// left-hand arity is required to be 1 (type:set)
+		declareRel(1);
+		declareRel(rar);
+		String relar = "Rel"+rar;
+		this.addFunction(relar, "domRestr_" + rar, "Rel1", relar);
 		// TODO Auto-generated method stub
-		
 	}
 
-	public void declareDifference(int ar1) {
-		// TODO add declaration
+	public void declareDifference(int ar) {
+		declareRel(ar);
+		String relar = "Rel"+ar;
+		this.addFunction(relar, "diff_" + ar, relar, relar);
 		//TODO: add axiom
 	}
 
-	public void declareOverride(int ar1) {
-		// TODO add declaration
+	public void declareOverride(int ar) {
+		declareRel(ar);
+		String relar = "Rel"+ar;
+		this.addFunction(relar, "overr_" + ar, relar, relar);
 		//TODO: add axiom
 	}
 
-	public void declareIntersection(int ar1) {
-		// TODO add declaration
+	public void declareIntersection(int ar) {
+		declareRel(ar);
+		String relar = "Rel"+ar;
+		this.addFunction(relar, "inter_" + ar, relar, relar);
 		//TODO: add axiom
 	}
 
-	public void declareRangeRestriction(int ar1) {
-		// TODO add declaration
+	/** Declares the range restriction operator
+	 * @param lar arity of the left-hand parameter
+	 * @rem right-hand arity is required to be 1 (type:set)
+	 */
+	public void declareRangeRestriction(int lar) {
+		declareRel(1);
+		declareRel(lar);
+		String relar = "Rel"+lar;
+		this.addFunction(relar, "rangeRestr_" + lar, relar, "Rel1");
 		//TODO: add axiom
 	}
 
 	public void declareIdentity() {
-		// TODO add declaration
+		declareRel(2);		
+		this.addFunction("Rel"+2, "iden");
 		//TODO: add axiom
 	}
 }
