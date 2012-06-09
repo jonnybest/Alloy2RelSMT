@@ -335,7 +335,7 @@ public class KeYFile {
 		String name = "some_" + ar;
 		String relar = "Rel" + ar;
 		this.addFunction("Bool", name, relar);
-		// axiom: some means that there is
+		// axiom: some means that there is any Atom/Tuple inside the argument expression
 		TermVar A = TermVar.var(relar, "A");
 		
 		TermVar[] aTuple = new TermVar[ar];
@@ -353,20 +353,20 @@ public class KeYFile {
 	// arity is always 2
 	public void declareTranspose() {
 		declareRel(2);
-		this.addFunction("Rel2", "transpose", "Rel2");
+		this.addFunction("Rel2", "transp", "Rel2");
 		//TODO: add axiom
 	}
 
 	// arity is always 2
 	public void declareTransitiveClosure() {
 		declareRel(2);
-		this.addFunction("Rel2", "tCl", "Rel2");
+		this.addFunction("Rel2", "transClos", "Rel2");
 		//TODO: add axiom
 	}
 
 	public void declareReflexiveTransitiveClosure() {
 		declareRel(2);
-		this.addFunction("Rel2", "rtCl", "Rel2");
+		this.addFunction("Rel2", "reflTransClos", "Rel2");
 		//TODO: add axiom
 	}
 
