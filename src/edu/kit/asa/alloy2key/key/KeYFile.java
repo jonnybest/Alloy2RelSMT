@@ -276,7 +276,7 @@ public class KeYFile {
 		}	
 	}
 
-	/** adds a declaration for in (no theory) 
+	/** adds a declaration for in (no axiom) 
 	 * @param arity arity of the expression
 	 * @throws ModelException couldn't declare this add this function because of "addFunction"
 	 */
@@ -332,8 +332,22 @@ public class KeYFile {
 
 	public void declareSome(int ar) {
 		declareRel(ar);
-		this.addFunction("Bool", "some_" + ar, "Rel" + ar);
-		//TODO: add axiom
+		String name = "some_" + ar;
+		String relar = "Rel" + ar;
+		this.addFunction("Bool", name, relar);
+		// axiom: some means that there is
+		TermVar A = TermVar.var(relar, "A");
+		
+		TermVar[] aTuple = new TermVar[ar];
+		for(int i = 0; i < ar; i++)
+		{
+			aTuple[i] = TermVar.var("Atom", "a"+i);
+		}
+		
+		Term some = Term.call(name, A);
+		Term xInA = Term.reverseIn(A, aTuple);
+		Term axiom = some.iff(xInA.exists(aTuple));
+		this.addAssertion(axiom);
 	}
 
 	// arity is always 2

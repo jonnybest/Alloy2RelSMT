@@ -471,14 +471,13 @@ public abstract class Term {
 		return reverseIn(bound, (TermVar[]) atoms.toArray(new TermVar[atoms.size()]));
 	}
 
-	/** creates a sorted "forall" expression. requires all vars to be well-sorted
+	/** creates a multi sorted "forall" expression. requires all vars to be well-sorted
 	 * 
 	 * @param vars a list of well-sorted variables
 	 * @param sub term to bind to
 	 * @return
 	 */
 	public static Term forall(List<TermVar> vars, Term sub) {
-		// TODO Auto-generated method stub
 		return TermQuant.createSortedTerm(Quant.FORALL, vars, sub);
 	}
 
@@ -489,5 +488,24 @@ public abstract class Term {
 	 */
 	public Term forall(TermVar... vars) {				
 		return forall(Arrays.asList(vars), this);
+	}
+
+	/** wrap this expression in an "exists" expression
+	 * 
+	 * @param vars well-sorted variables to bind this to
+	 * @return an expression representing "exists (vars) this"
+	 */
+	public Term exists(TermVar... vars) {
+		return exists(Arrays.asList(vars), this);
+	}
+
+	/** creates a multi sorted "exists" expression. requires all vars to be well-sorted
+	 * 
+	 * @param vars a list of well-sorted variables
+	 * @param sub term to bind to
+	 * @return
+	 */
+	private Term exists(List<TermVar> vars, Term sub) {
+		return TermQuant.createSortedTerm(Quant.EXISTS, vars, sub);
 	}
 }
