@@ -318,36 +318,85 @@ public class KeYFile {
 		// TODO: add axiom
 	}
 
+	/** declares and defines the operator "one" for a given arity.
+	 *  "one" means "one and only one"
+	 * @param ar arity of the expression
+	 */
 	public void declareOne(int ar)  {		
 		declareRel(ar);
 		this.addFunction("Bool", "one_" + ar, "Rel" + ar);
 		// TODO: add axiom
 	}
 
+	/** declares and defines the operator "lone" for a given arity.
+	 *  "lone" means "at most one"
+	 * @param ar arity of the expression
+	 */
 	public void declareLone(int ar) {
+		List<TermVar> argList = new LinkedList<TermVar>();
 		declareRel(ar);
-		this.addFunction("Bool", "lone_" + ar, "Rel" + ar);
-		//TODO: add axiom
+		String name = "lone_" + ar;
+		String relar = "Rel" + ar;
+		if(this.addFunction("Bool", name, relar))
+		{
+			//TODO: add axiom
+			TermVar X = TermVar.var(relar, "X");
+			argList.add(X);
+			
+			TermVar[] aTuple = new TermVar[ar];
+			for(int i = 0; i < ar; i++)
+			{
+				aTuple[i] = TermVar.var("Atom", "a"+i);
+				argList.add(aTuple[i]);
+			}
+			
+			TermVar[] bTuple = new TermVar[ar];
+			for(int i = 0; i < ar; i++)
+			{
+				bTuple[i] = TermVar.var("Atom", "b"+i);
+				argList.add(bTuple[i]);
+			}
+			
+			Term lone = Term.call(name, X);
+			
+			// make the a == b expression 
+			Term aEqualsBTerm = Term.TRUE;
+			for(int i = 0; i < aTuple.length; i++)
+			{
+				aEqualsBTerm = aEqualsBTerm.and(aTuple[i].equal(bTuple[i]));
+			}
+			
+			Term aInX = Term.reverseIn(X, aTuple);
+			Term bInX = Term.reverseIn(X, bTuple);
+			Term aAndBinX = aInX.and(bInX);
+			Term bothExist = aAndBinX.exists(argList);
+			Term existImpliesEqual = bothExist.implies(aEqualsBTerm);
+			
+			Term axiom = (lone.iff(existImpliesEqual));
+			this.addAssertion(axiom);
+		}
 	}
 
 	public void declareSome(int ar) {
 		declareRel(ar);
 		String name = "some_" + ar;
 		String relar = "Rel" + ar;
-		this.addFunction("Bool", name, relar);
-		// axiom: some means that there is any Atom/Tuple inside the argument expression
-		TermVar A = TermVar.var(relar, "A");
-		
-		TermVar[] aTuple = new TermVar[ar];
-		for(int i = 0; i < ar; i++)
+		if(this.addFunction("Bool", name, relar))
 		{
-			aTuple[i] = TermVar.var("Atom", "a"+i);
+			// axiom: some means that there is any Atom/Tuple inside the argument expression
+			TermVar A = TermVar.var(relar, "A");
+			
+			TermVar[] aTuple = new TermVar[ar];
+			for(int i = 0; i < ar; i++)
+			{
+				aTuple[i] = TermVar.var("Atom", "a"+i);
+			}
+			
+			Term some = Term.call(name, A);
+			Term xInA = Term.reverseIn(A, aTuple);
+			Term axiom = some.iff(xInA.exists(aTuple));
+			this.addAssertion(axiom);
 		}
-		
-		Term some = Term.call(name, A);
-		Term xInA = Term.reverseIn(A, aTuple);
-		Term axiom = some.iff(xInA.exists(aTuple));
-		this.addAssertion(axiom);
 	}
 
 	// arity is always 2

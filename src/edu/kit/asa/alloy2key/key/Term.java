@@ -508,4 +508,8 @@ public abstract class Term {
 	private Term exists(List<TermVar> vars, Term sub) {
 		return TermQuant.createSortedTerm(Quant.EXISTS, vars, sub);
 	}
+
+	public Term exists(List<TermVar> vars) {
+		return exists(vars, this);
+	}
 }
