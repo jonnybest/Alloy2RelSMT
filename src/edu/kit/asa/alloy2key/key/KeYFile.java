@@ -208,7 +208,7 @@ public class KeYFile {
 		Term bInB = Term.reverseIn(A, a);
 		Term typeRestriction = aInA.and(bInB);		
 		Term notAinB = new TermUnary(TermUnary.Op.NOT, Term.reverseIn(B, a));		
-		Term axiom = Term.call("disjoint_", A, B).iff(typeRestriction.and(notAinB)).forall(a, A, b, B);;
+		Term axiom = Term.call("disjoint_" + ar, A, B).iff(typeRestriction.and(notAinB)).forall(a, A, b, B);;
 		this.addAssertion(axiom); // add this axiom to the list of assertions
 	}
 
