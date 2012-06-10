@@ -333,52 +333,56 @@ public class KeYFile {
 	 * @param ar arity of the expression
 	 */
 	public void declareLone(int ar) {
-		List<TermVar> argList = new LinkedList<TermVar>();
-		declareRel(ar);
-		String name = "lone_" + ar;
-		String relar = "Rel" + ar;
+		declareAtom();               // we work with Atom, so declare it first
+		declareRel(ar);              // declare Rel1, Rel2, Rel3 etc before working with it 
+		String name = "lone_" + ar;  // we will need the name of this function twice later on
+		String relar = "Rel" + ar;   // representing Rel2, Rel3 Rel4 etc. depending on which we need here
 		if(this.addFunction("Bool", name, relar))
 		{
-			//TODO: add axiom
-			TermVar X = TermVar.var(relar, "X");
-			argList.add(X);
+			// add axiom: there is at most one a satisfying X
+			// that means the same thing as: if a is in X and b is in X, then a == b 
+			TermVar X = TermVar.var(relar, "X");  // X will be the relation representing the satisfying expression
+			List<TermVar> quantArgList = new LinkedList<TermVar>();
+			quantArgList.add(X);                  // add X to the list of quantified vars 
 			
-			TermVar[] aTuple = new TermVar[ar];
-			for(int i = 0; i < ar; i++)
+			TermVar[] aTuple = new TermVar[ar];   // this array of Atoms is how we represent tuples
+			for(int i = 0; i < ar; i++)           // we may need more than one atom to express lone_2, lone_3 etc
 			{
 				aTuple[i] = TermVar.var("Atom", "a"+i);
-				argList.add(aTuple[i]);
+				quantArgList.add(aTuple[i]);      // any of these atoms will also be quantified later
 			}
 			
-			TermVar[] bTuple = new TermVar[ar];
+			TermVar[] bTuple = new TermVar[ar];   // this is the "b" variable. 
 			for(int i = 0; i < ar; i++)
 			{
 				bTuple[i] = TermVar.var("Atom", "b"+i);
-				argList.add(bTuple[i]);
+				quantArgList.add(bTuple[i]);      // any of these atoms will also be quantified later
 			}
 			
-			Term lone = Term.call(name, X);
+			Term lone = Term.call(name, X);       // this is a call to lone_1, lone_2 etc
 			
-			// make the a == b expression 
+			// make the a == b expression
 			Term aEqualsBTerm = Term.TRUE;
+			// a == b means that each atom is the same as the other atom at the corresponding position
 			for(int i = 0; i < aTuple.length; i++)
 			{
 				aEqualsBTerm = aEqualsBTerm.and(aTuple[i].equal(bTuple[i]));
 			}
 			
-			Term aInX = Term.reverseIn(X, aTuple);
-			Term bInX = Term.reverseIn(X, bTuple);
-			Term aAndBinX = aInX.and(bInX);
-			Term bothExist = aAndBinX.exists(argList);
-			Term existImpliesEqual = bothExist.implies(aEqualsBTerm);
+			Term aInX = Term.reverseIn(X, aTuple);  // a is in X
+			Term bInX = Term.reverseIn(X, bTuple);  // b is in X
+			Term aAndBinX = aInX.and(bInX);         // (a is in X) and (b is in X)
+			Term bothExist = aAndBinX.exists(quantArgList);           // this call quantifies a, b and X
+			Term existImpliesEqual = bothExist.implies(aEqualsBTerm); // if they exist, they must be equal
 			
-			Term axiom = (lone.iff(existImpliesEqual));
-			this.addAssertion(axiom);
+			Term axiom = (lone.iff(existImpliesEqual));               // also, the lone-function means exactly that 
+			this.addAssertion(axiom);               // done! safe this axiom for printing
 		}
 	}
 
 	public void declareSome(int ar) {
-		declareRel(ar);
+		declareAtom();               // we work with Atom, so declare it first
+		declareRel(ar);              // declare Rel1, Rel2, Rel3 etc before working with it 
 		String name = "some_" + ar;
 		String relar = "Rel" + ar;
 		if(this.addFunction("Bool", name, relar))
