@@ -482,7 +482,7 @@ public class KeYFile {
 		String name = "diff_" + ar;
 		if(this.addFunction(relar, name, relar, relar))
 		{
-			//TODO: add axiom
+			// add axiom
 			List<TermVar> argList = new LinkedList<TermVar>(); // this is a list of all quantified variables in the forall expression
 			
 			TermVar A, B;     // these are the left and right arg in "(diff_x A B)"
