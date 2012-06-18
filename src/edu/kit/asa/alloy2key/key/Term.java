@@ -512,4 +512,8 @@ public abstract class Term {
 	public Term exists(List<TermVar> vars) {
 		return exists(vars, this);
 	}
+
+	public Term forall(List<TermVar> vars) {
+		return forall(vars, this);
+	}
 }

@@ -15,9 +15,10 @@ import edu.kit.asa.alloy2key.modules.KeYModule;
 import edu.kit.asa.alloy2key.util.Util;
 
 /**
- * capturing output to a .key file
+ * capturing output to an .SMT file
  * 
  * @author Ulrich Geilmann
+ * @author Jonny
  *
  */
 public class KeYFile {
@@ -341,7 +342,6 @@ public class KeYFile {
 		{
 			//TODO: add axiom
 			TermVar X = TermVar.var(relar, "X");
-			argList.add(X);
 			
 			TermVar[] aTuple = new TermVar[ar];
 			for(int i = 0; i < ar; i++)
@@ -369,10 +369,9 @@ public class KeYFile {
 			Term aInX = Term.reverseIn(X, aTuple);
 			Term bInX = Term.reverseIn(X, bTuple);
 			Term aAndBinX = aInX.and(bInX);
-			Term bothExist = aAndBinX.exists(argList);
-			Term existImpliesEqual = bothExist.implies(aEqualsBTerm);
+			Term existanceImpliesEqual = aAndBinX.implies(aEqualsBTerm).forall(argList);
 			
-			Term axiom = (lone.iff(existImpliesEqual));
+			Term axiom = (lone.iff(existanceImpliesEqual)).forall(X);
 			this.addAssertion(axiom);
 		}
 	}
