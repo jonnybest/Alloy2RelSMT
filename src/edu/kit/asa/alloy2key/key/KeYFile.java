@@ -5,6 +5,7 @@ package edu.kit.asa.alloy2key.key;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -478,10 +479,30 @@ public class KeYFile {
 	public void declareDifference(int ar) {
 		declareRel(ar);
 		String relar = "Rel"+ar;
-		if(this.addFunction(relar, "diff_" + ar, relar, relar))
+		String name = "diff_" + ar;
+		if(this.addFunction(relar, name, relar, relar))
 		{
 			//TODO: add axiom
+			List<TermVar> argList = new LinkedList<TermVar>(); // this is a list of all quantified variables in the forall expression
 			
+			TermVar A, B;     // these are the left and right arg in "(diff_x A B)"
+			A = TermVar.var(relar, "A");
+			B = TermVar.var(relar, "B");
+			argList.add(A);
+			argList.add(B);
+			
+			TermVar[] aTuple = new TermVar[ar]; // this is a "tuple". it consists of
+			for(int i = 0; i < ar; i++)         // one atom per rank
+			{
+				aTuple[i] = TermVar.var("Atom", "a"+i); // the atoms are named "a0" "a1" etc
+				
+				argList.add(aTuple[i]);         // we will also quantify over those
+			}
+			
+			Term somethingIsInTheCallToDiff = Term.in(Arrays.asList(aTuple), Term.call(name, A, B));
+			Term inAandNotB = Term.in(Arrays.asList(aTuple), A).and(Term.in(Arrays.asList(aTuple), B).not());
+			Term axiom = somethingIsInTheCallToDiff.iff(inAandNotB).forall(argList);
+			this.addAssertion(axiom);
 		}
 	}
 
