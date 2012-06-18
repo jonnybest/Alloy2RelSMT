@@ -330,7 +330,7 @@ public class KeYFile {
 		String relar = "Rel" + ar;
 		if(this.addFunction("Bool", name, relar))
 		{
-			//TODO: add axiom
+			// add axiom
 			TermVar X = TermVar.var(relar, "X");
 			
 			TermVar[] aTuple = new TermVar[ar];
@@ -349,9 +349,7 @@ public class KeYFile {
 				argList.add(bTuple[i]);
 			}
 			
-			Term one = Term.call(name, X);
-			
-			
+			Term one = Term.call(name, X);			
 			
 			// make the a == b expression 
 			Term aEqualsBTerm = Term.TRUE;
@@ -381,7 +379,7 @@ public class KeYFile {
 		String relar = "Rel" + ar;
 		if(this.addFunction("Bool", name, relar))
 		{
-			//TODO: add axiom
+			// add axiom
 			TermVar X = TermVar.var(relar, "X");
 			
 			TermVar[] aTuple = new TermVar[ar];
@@ -434,7 +432,7 @@ public class KeYFile {
 			
 			Term some = Term.call(name, A);
 			Term xInA = Term.reverseIn(A, aTuple);
-			Term axiom = some.iff(xInA.exists(aTuple));
+			Term axiom = some.iff(xInA.exists(aTuple)).forall(A);
 			this.addAssertion(axiom);
 		}
 	}
@@ -480,8 +478,11 @@ public class KeYFile {
 	public void declareDifference(int ar) {
 		declareRel(ar);
 		String relar = "Rel"+ar;
-		this.addFunction(relar, "diff_" + ar, relar, relar);
-		//TODO: add axiom
+		if(this.addFunction(relar, "diff_" + ar, relar, relar))
+		{
+			//TODO: add axiom
+			
+		}
 	}
 
 	public void declareOverride(int ar) {
