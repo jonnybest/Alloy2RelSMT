@@ -516,4 +516,8 @@ public abstract class Term {
 	public Term forall(List<TermVar> vars) {
 		return forall(vars, this);
 	}
+
+	public static Term exists(TermVar[] vars, Term sub) {
+		return TermQuant.createSortedTerm(Quant.EXISTS, Arrays.asList(vars), sub);
+	}
 }

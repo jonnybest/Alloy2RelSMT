@@ -324,9 +324,50 @@ public class KeYFile {
 	 * @param ar arity of the expression
 	 */
 	public void declareOne(int ar)  {		
+		List<TermVar> argList = new LinkedList<TermVar>();
 		declareRel(ar);
-		this.addFunction("Bool", "one_" + ar, "Rel" + ar);
-		// TODO: add axiom
+		String name = "one_" + ar;
+		String relar = "Rel" + ar;
+		if(this.addFunction("Bool", name, relar))
+		{
+			//TODO: add axiom
+			TermVar X = TermVar.var(relar, "X");
+			
+			TermVar[] aTuple = new TermVar[ar];
+			for(int i = 0; i < ar; i++)
+			{
+				aTuple[i] = TermVar.var("Atom", "a"+i);
+				argList.add(aTuple[i]);
+			}
+			
+			Term notEmpty = Term.exists(aTuple, Term.in(argList, X));
+			
+			TermVar[] bTuple = new TermVar[ar];
+			for(int i = 0; i < ar; i++)
+			{
+				bTuple[i] = TermVar.var("Atom", "b"+i);
+				argList.add(bTuple[i]);
+			}
+			
+			Term one = Term.call(name, X);
+			
+			
+			
+			// make the a == b expression 
+			Term aEqualsBTerm = Term.TRUE;
+			for(int i = 0; i < aTuple.length; i++)
+			{
+				aEqualsBTerm = aEqualsBTerm.and(aTuple[i].equal(bTuple[i]));
+			}
+			
+			Term aInX = Term.reverseIn(X, aTuple);
+			Term bInX = Term.reverseIn(X, bTuple);
+			Term aAndBinX = aInX.and(bInX);
+			Term existanceImpliesEqual = aAndBinX.implies(aEqualsBTerm).forall(argList);
+			
+			Term axiom = (one.iff(notEmpty.and(existanceImpliesEqual))).forall(X);
+			this.addAssertion(axiom);
+		}
 	}
 
 	/** declares and defines the operator "lone" for a given arity.
