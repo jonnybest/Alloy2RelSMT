@@ -1560,7 +1560,7 @@ public class Translator implements Identifiers {
 	}
 	
 	private interface TermAlternation {
-		public abstract Term alter(Term t);
+		public abstract Term alter(Term t) throws ModelException;
 	}
 	
 	private class ThisJoin implements TermAlternation {
@@ -1570,7 +1570,7 @@ public class Translator implements Identifiers {
 			ar = arity;
 		}
 		
-		public Term alter(Term t) {
+		public Term alter(Term t) throws ModelException {
 			target.declareJoin(1, ar);			
 			return Term.call("join1x"+ar, THISTerm(), t);
 		}

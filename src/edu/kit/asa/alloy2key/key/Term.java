@@ -520,4 +520,9 @@ public abstract class Term {
 	public static Term exists(TermVar[] vars, Term sub) {
 		return TermQuant.createSortedTerm(Quant.EXISTS, Arrays.asList(vars), sub);
 	}
+
+	public static Term call(String name, List<TermVar> params) {
+		TermVar[] paramArray = new TermVar[params.size()];
+		return call(name, params.toArray(paramArray));
+	}
 }

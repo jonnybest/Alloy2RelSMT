@@ -5,6 +5,7 @@ package edu.kit.asa.alloy2key.key;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -309,9 +310,51 @@ public class KeYFile {
 		//TODO: add axiom
 	}
 
-	public void declareJoin(int lar, int rar) {
-		this.addFunction("Bool", "join_" + lar + "x" + rar);
-		// TODO: add axiom
+	public void declareJoin(int lar, int rar) throws ModelException {
+		if(lar < 1 || rar < 1)
+			throw new ModelException("The join is not defined for arguments of arity 0.");
+		if(lar + rar < 3)
+			throw new ModelException("The dot-join is not defined for two arguments of arity 1.");
+		declareAtom();
+		declareRel(lar);    // declare left relation
+		declareRel(rar);    // declare right relation
+		declareRel(rar + lar - 2); // declare result relation
+		declareA2r(rar);    // declare the conversion function
+		declareSubset(rar); // declare subset
+		String leftRelar = "Rel"+lar;
+		String rightRelar = "Rel"+rar; 
+		String name = "join_" + lar + "x" + rar;
+		if(this.addFunction("Bool", name, leftRelar, rightRelar))
+		{
+			// add axiom
+			if(lar != 1 && rar != 2)
+				throw new ModelException("not implemented yet");
+			// TODO: support higher arity
+			/* For the expression (join_1x2 A B) this axiom should read (infix):
+			 * \forall A Rel1, B Rel2, y Atom| (y \elem join_1x2) 
+			 *     iff [(\exist x Atom| x \elem A) and (a2r_2(x y) \subset B)]
+			 */
+			TermVar A, B;			
+			A = TermVar.var(leftRelar, "A");            // the left relation
+			B = TermVar.var(rightRelar, "B");           // the right relation
+			List<TermVar> y = new ArrayList<TermVar>(); // the tuple for the "y" variable
+			y.add(TermVar.var("Atom", "y"));            // will be dynamic later on
+			
+			Term somethingInTheJoin = Term.in(y, Term.call(name, A, B));
+			
+			TermVar x = TermVar.var("Atom", "x");       // the atom to join on
+			Term xInA = Term.reverseIn(A, x);
+			List<TermVar> xyList = new LinkedList<TermVar>();
+			xyList.add(x);
+			xyList.addAll(y);
+			Term xyInB = Term.call("subset_2", Term.call("a2r_2", xyList), B);
+			List<TermVar> arglist = new LinkedList<TermVar>();
+			arglist.add(A);
+			arglist.add(B);
+			arglist.addAll(y);
+			Term axiom = somethingInTheJoin.iff((xInA.and(xyInB)).exists(x)).forall(arglist);
+			this.addAssertion(axiom);
+		}
 	}
 
 	public void declareUnion(int ar) {
