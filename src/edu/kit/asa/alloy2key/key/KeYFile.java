@@ -315,43 +315,53 @@ public class KeYFile {
 			throw new ModelException("The join is not defined for arguments of arity 0.");
 		if(lar + rar < 3)
 			throw new ModelException("The dot-join is not defined for two arguments of arity 1.");
-		declareAtom();
+		declareAtom();      // we work with atoms in this axiom
 		declareRel(lar);    // declare left relation
 		declareRel(rar);    // declare right relation
-		declareRel(rar + lar - 2); // declare result relation
+		int resultArity = rar + lar - 2; // this is the arity of the resulting relation
+		declareRel(resultArity); // declare result relation
 		declareA2r(rar);    // declare the conversion function
 		declareSubset(rar); // declare subset
-		String leftRelar = "Rel"+lar;
-		String rightRelar = "Rel"+rar; 
-		String name = "join_" + lar + "x" + rar;
+		declareIn(rar);     // declare the in-function for the right hand argument
+		declareIn(lar);     // declare the in-function for the right hand argument
+		declareIn(resultArity);  // declare the in-function for the result
+		String leftRelar = "Rel"+lar;  // shorthand for Rel+lar
+		String rightRelar = "Rel"+rar; // shorthand for Rel+lar
+		String name = "join_" + lar + "x" + rar; // this function name
 		if(this.addFunction("Bool", name, leftRelar, rightRelar))
 		{
 			// add axiom
-			if(lar != 1 && rar != 2)
-				throw new ModelException("not implemented yet");
-			// TODO: support higher arity
 			/* For the expression (join_1x2 A B) this axiom should read (infix):
 			 * \forall A Rel1, B Rel2, y Atom| (y \elem join_1x2) 
 			 *     iff [(\exist x Atom| x \elem A) and (a2r_2(x y) \subset B)]
 			 */
-			TermVar A, B;			
+			TermVar A, B; // relation symbols for our two arguments			
 			A = TermVar.var(leftRelar, "A");            // the left relation
 			B = TermVar.var(rightRelar, "B");           // the right relation
 			List<TermVar> y = new ArrayList<TermVar>(); // the tuple for the "y" variable
-			y.add(TermVar.var("Atom", "y"));            // will be dynamic later on
+			for(int i = 0; i < resultArity; i++)
+			{
+				y.add(TermVar.var("Atom", "y"+i));      // y is actually a tuple
+			}
 			
-			Term somethingInTheJoin = Term.in(y, Term.call(name, A, B));
+			Term somethingInTheJoin = Term.in(y, Term.call(name, A, B)); // a call to "join"
 			
-			TermVar x = TermVar.var("Atom", "x");       // the atom to join on
-			Term xInA = Term.reverseIn(A, x);
-			List<TermVar> xyList = new LinkedList<TermVar>();
-			xyList.add(x);
-			xyList.addAll(y);
-			Term xyInB = Term.call("subset_2", Term.call("a2r_2", xyList), B);
-			List<TermVar> arglist = new LinkedList<TermVar>();
-			arglist.add(A);
-			arglist.add(B);
-			arglist.addAll(y);
+			TermVar[] x = new TermVar[lar];                          // the left hand tuple
+			for(int i = 0; i < lar; i++){               
+					x[i] = TermVar.var("Atom", "x"+i);               // x is actually a tuple, too
+			}
+			TermVar xLast = x[lar-1];                                // the atom to join on is the last atom in the x-tuple
+			
+			Term xInA = Term.reverseIn(A, x);                        // this means: x \elem A
+			List<TermVar> matchingtuple = new LinkedList<TermVar>(); // this is a tuple to join on (element of B)
+			matchingtuple.add(xLast);                                // add the last atom in x as the first atom in the match
+			matchingtuple.addAll(y);                                 // then follow up with the remaining atoms from the result
+			// xyInB means, for B of Rel2: (subset_2 (a2r_2 x y) B)
+			Term xyInB = Term.call("subset_" + rar, Term.call("a2r_" + rar, matchingtuple), B);
+			List<TermVar> arglist = new LinkedList<TermVar>();	// universally quantified vars for this axiom
+			arglist.add(A);                 					// quantify over A 
+			arglist.add(B);    									// quantify over B
+			arglist.addAll(y); 									// quantify over all atoms in the y-tuple 
 			Term axiom = somethingInTheJoin.iff((xInA.and(xyInB)).exists(x)).forall(arglist);
 			this.addAssertion(axiom);
 		}
