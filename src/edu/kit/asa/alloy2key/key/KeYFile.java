@@ -457,7 +457,9 @@ public class KeYFile {
 			TermVar X = TermVar.var(relar, "X");
 			
 			TermVar[] aTuple = makeTuple(ar, "a");
+			argList.addAll(Arrays.asList(aTuple));
 			TermVar[] bTuple = makeTuple(ar, "b");
+			argList.addAll(Arrays.asList(bTuple));
 			
 			Term lone = Term.call(name, X);
 			
