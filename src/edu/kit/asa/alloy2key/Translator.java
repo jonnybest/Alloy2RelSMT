@@ -1572,7 +1572,7 @@ public class Translator implements Identifiers {
 		
 		public Term alter(Term t) throws ModelException {
 			target.declareJoin(1, ar);			
-			return Term.call("join1x"+ar, THISTerm(), t);
+			return Term.call("join_1x"+ar, THISTerm(), t);
 		}
 	}
 	
@@ -1664,11 +1664,11 @@ public class Translator implements Identifiers {
 			int ar = arity;
 			if (right) {
 				for (int i = terms.length-1; i >= 0; --i) {
-					ret = Term.call("join"+(ar--)+"x1", ret, a2r(1,terms[i]));
+					ret = Term.call("join_"+(ar--)+"x1", ret, a2r(1,terms[i]));
 				}
 			} else {
 				for (int i = 0; i < terms.length; ++i) {
-					ret = Term.call("join1x"+(ar--), a2r(1,terms[i]), ret);
+					ret = Term.call("join_1x"+(ar--), a2r(1,terms[i]), ret);
 				}
 			}
 			return ret;
