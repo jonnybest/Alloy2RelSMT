@@ -360,7 +360,7 @@ public class KeYFile {
 		String leftRelar = "Rel"+lar;  // shorthand for Rel+lar
 		String rightRelar = "Rel"+rar; // shorthand for Rel+lar
 		String name = "join_" + lar + "x" + rar; // this function name
-		if(this.addFunction("Bool", name, leftRelar, rightRelar))
+		if(this.addFunction("Rel"+resultArity, name, leftRelar, rightRelar))
 		{
 			// add axiom
 			/* For the expression (join_1x2 A B) this axiom should read (infix):
