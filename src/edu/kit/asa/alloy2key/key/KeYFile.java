@@ -305,9 +305,41 @@ public class KeYFile {
 	public void declareProduct(int lar, int rar) throws ModelException {
 		if(lar < 1 || rar < 1)
 			throw new ModelException("The product is not defined for arguments of arity 0.");
+		declareAtom();
+		declareRel(rar);
+		declareRel(lar);
+		declareRel(lar + rar);
+		declareIn(rar);
+		declareIn(lar);
+		declareIn(lar + rar);
 		// careful with overloaded + operator
-		this.addFunction("Rel" + /*concatenation*/ (lar + /*sum*/ rar), String.format("prod_%dx%d", lar, rar), "Rel"+lar, "Rel"+rar);
-		//TODO: add axiom
+		String name = String.format("prod_%dx%d", lar, rar);
+		String leftRelar = "Rel"+lar;
+		String rightRelar = "Rel"+rar;
+		if(this.addFunction("Rel" + /*concatenation*/ (lar + /*sum*/ rar), name, leftRelar, rightRelar))
+		{
+			// add axiom
+			// these are the two parameters for the product function
+			TermVar A = TermVar.var(leftRelar, "A"),
+					B = TermVar.var(rightRelar, "B"); 
+			TermVar[] x = new TermVar[lar], 
+					y = new TermVar[rar]; // these are two elements, one of A and one of B
+			for (int i = 0; i < x.length; i++) {
+				x[i] = TermVar.var("Atom", "x"+i);
+			}
+			for (int i = 0; i < y.length; i++) {
+				y[i] = TermVar.var("Atom", "y"+i);
+			}
+			Term somethingIsInProduct = Term.reverseIn(Term.call(name, A, B), Util.concat(x, y));
+			Term xInAandYInB = new TermBinOp(Term.reverseIn(A, x), Op.AND, Term.reverseIn(B, y));
+			List<TermVar> arglist = new LinkedList<TermVar>();
+			arglist.add(A);
+			arglist.add(B);
+			arglist.addAll(Arrays.asList(x));
+			arglist.addAll(Arrays.asList(y));
+			Term axiom = somethingIsInProduct.iff(xInAandYInB).forall(arglist);
+			this.addAssertion(axiom);
+		}
 	}
 
 	public void declareJoin(int lar, int rar) throws ModelException {
