@@ -264,19 +264,27 @@ public class KeYFile {
 			params[i] = "Atom";
 		}
 		// declaration		
-		if(this.addFunction("Rel" + ar, "a2r_" + ar, params)){
-			// TODO: axiom of higher arity
+		String name = "a2r_" + ar;
+		if(this.addFunction("Rel" + ar, name, params)){
 			// axiom 
 			Term xInX, inImpliesEqual;
-			Term x = TermVar.var("x");
-			Term y = TermVar.var("y");
+			TermVar[] x = makeTuple(ar, "x"),
+				y = makeTuple(ar, "y");
 			
-			xInX = Term.call("in_1", x, Term.call("a2r_" + ar, x));
-			inImpliesEqual = new TermBinOp(Term.call("in_1", y, Term.call("a2r_" + ar, x)), Op.IMPLIES, new TermBinOp(x, Op.EQUALS, y));
-			Term axiom = Term.forall("Atom", "x", xInX.and(Term.forall("Atom", "y", inImpliesEqual)));
+			xInX = Term.reverseIn(Term.call(name, x), x);
+			inImpliesEqual = new TermBinOp(Term.reverseIn(Term.call(name, x), y), Op.IMPLIES, TermBinOp.equals(x, y));
+			Term axiom = Term.forall("Atom", x, xInX.and(Term.forall("Atom", y, inImpliesEqual)));
 					
 			this.addAssertion(axiom);
 		}	
+	}
+
+	private TermVar[] makeTuple(int ar, String basename) {
+		TermVar[] x = new TermVar[ar];
+		for (int i = 0; i < x.length; i++) {
+				x[i] = TermVar.var("Atom", basename+i); // the atoms are named "a0" "a1" etc
+		}
+		return x;
 	}
 
 	/** adds a declaration for in (no axiom) 
@@ -322,14 +330,9 @@ public class KeYFile {
 			// these are the two parameters for the product function
 			TermVar A = TermVar.var(leftRelar, "A"),
 					B = TermVar.var(rightRelar, "B"); 
-			TermVar[] x = new TermVar[lar], 
-					y = new TermVar[rar]; // these are two elements, one of A and one of B
-			for (int i = 0; i < x.length; i++) {
-				x[i] = TermVar.var("Atom", "x"+i);
-			}
-			for (int i = 0; i < y.length; i++) {
-				y[i] = TermVar.var("Atom", "y"+i);
-			}
+			TermVar[] x = makeTuple(lar, "x"), 
+					y = makeTuple(rar, "y"); // these are two elements, one of A and one of B
+
 			Term somethingIsInProduct = Term.reverseIn(Term.call(name, A, B), Util.concat(x, y));
 			Term xInAandYInB = new TermBinOp(Term.reverseIn(A, x), Op.AND, Term.reverseIn(B, y));
 			List<TermVar> arglist = new LinkedList<TermVar>();
@@ -378,10 +381,7 @@ public class KeYFile {
 			
 			Term somethingInTheJoin = Term.in(y, Term.call(name, A, B)); // a call to "join"
 			
-			TermVar[] x = new TermVar[lar];                          // the left hand tuple
-			for(int i = 0; i < lar; i++){               
-					x[i] = TermVar.var("Atom", "x"+i);               // x is actually a tuple, too
-			}
+			TermVar[] x = makeTuple(lar, "x");                       // the left hand tuple
 			TermVar xLast = x[lar-1];                                // the atom to join on is the last atom in the x-tuple
 			
 			Term xInA = Term.reverseIn(A, x);                        // this means: x \elem A
@@ -419,30 +419,18 @@ public class KeYFile {
 			// add axiom
 			TermVar X = TermVar.var(relar, "X");
 			
-			TermVar[] aTuple = new TermVar[ar];
-			for(int i = 0; i < ar; i++)
-			{
-				aTuple[i] = TermVar.var("Atom", "a"+i);
-				argList.add(aTuple[i]);
-			}
+			TermVar[] aTuple = makeTuple(ar, "a");
+			argList.addAll(Arrays.asList(aTuple));
 			
 			Term notEmpty = Term.exists(aTuple, Term.in(argList, X));
 			
-			TermVar[] bTuple = new TermVar[ar];
-			for(int i = 0; i < ar; i++)
-			{
-				bTuple[i] = TermVar.var("Atom", "b"+i);
-				argList.add(bTuple[i]);
-			}
+			TermVar[] bTuple = makeTuple(ar, "b");
+			argList.addAll(Arrays.asList(bTuple));
 			
 			Term one = Term.call(name, X);			
 			
 			// make the a == b expression 
-			Term aEqualsBTerm = Term.TRUE;
-			for(int i = 0; i < aTuple.length; i++)
-			{
-				aEqualsBTerm = aEqualsBTerm.and(aTuple[i].equal(bTuple[i]));
-			}
+			Term aEqualsBTerm = TermBinOp.equals(aTuple, bTuple);
 			
 			Term aInX = Term.reverseIn(X, aTuple);
 			Term bInX = Term.reverseIn(X, bTuple);
@@ -468,28 +456,12 @@ public class KeYFile {
 			// add axiom
 			TermVar X = TermVar.var(relar, "X");
 			
-			TermVar[] aTuple = new TermVar[ar];
-			for(int i = 0; i < ar; i++)
-			{
-				aTuple[i] = TermVar.var("Atom", "a"+i);
-				argList.add(aTuple[i]);
-			}
-			
-			TermVar[] bTuple = new TermVar[ar];
-			for(int i = 0; i < ar; i++)
-			{
-				bTuple[i] = TermVar.var("Atom", "b"+i);
-				argList.add(bTuple[i]);
-			}
+			TermVar[] aTuple = makeTuple(ar, "a");
+			TermVar[] bTuple = makeTuple(ar, "b");
 			
 			Term lone = Term.call(name, X);
 			
-			// make the a == b expression 
-			Term aEqualsBTerm = Term.TRUE;
-			for(int i = 0; i < aTuple.length; i++)
-			{
-				aEqualsBTerm = aEqualsBTerm.and(aTuple[i].equal(bTuple[i]));
-			}
+			Term aEqualsBTerm = TermBinOp.equals(aTuple, bTuple);
 			
 			Term aInX = Term.reverseIn(X, aTuple);
 			Term bInX = Term.reverseIn(X, bTuple);
@@ -510,11 +482,7 @@ public class KeYFile {
 			// axiom: some means that there is any Atom/Tuple inside the argument expression
 			TermVar A = TermVar.var(relar, "A");
 			
-			TermVar[] aTuple = new TermVar[ar];
-			for(int i = 0; i < ar; i++)
-			{
-				aTuple[i] = TermVar.var("Atom", "a"+i);
-			}
+			TermVar[] aTuple = makeTuple(ar, "a");
 			
 			Term some = Term.call(name, A);
 			Term xInA = Term.reverseIn(A, aTuple);
@@ -576,13 +544,9 @@ public class KeYFile {
 			argList.add(A);
 			argList.add(B);
 			
-			TermVar[] aTuple = new TermVar[ar]; // this is a "tuple". it consists of
-			for(int i = 0; i < ar; i++)         // one atom per rank
-			{
-				aTuple[i] = TermVar.var("Atom", "a"+i); // the atoms are named "a0" "a1" etc
-				
-				argList.add(aTuple[i]);         // we will also quantify over those
-			}
+			TermVar[] aTuple = makeTuple(ar, "a"); // this is a "tuple". it consists of one atom per rank
+			argList.addAll(Arrays.asList(aTuple)); // we will also quantify over those
+			
 			
 			Term somethingIsInTheCallToDiff = Term.in(Arrays.asList(aTuple), Term.call(name, A, B));
 			Term inAandNotB = Term.in(Arrays.asList(aTuple), A).and(Term.in(Arrays.asList(aTuple), B).not());
