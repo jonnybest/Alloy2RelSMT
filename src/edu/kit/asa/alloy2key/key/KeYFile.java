@@ -204,14 +204,12 @@ public class KeYFile {
 		// or maybe: forall a in A, b in B | not a in B and not b in A...?
 		TermVar a, b, A, B;
 		a = TermVar.var("Atom", "a");
-		b = TermVar.var("Atom", "b");
 		A = TermVar.var(relAr, "A");
 		B = TermVar.var(relAr, "B");
-		Term aInA = Term.reverseIn(B, b);
-		Term bInB = Term.reverseIn(A, a);
-		Term typeRestriction = aInA.and(bInB);		
-		Term notAinB = new TermUnary(TermUnary.Op.NOT, Term.reverseIn(B, a));		
-		Term axiom = Term.call("disjoint_" + ar, A, B).iff(typeRestriction.and(notAinB)).forall(a, A, b, B);;
+		Term notAInB = Term.reverseIn(B, a).not();
+		Term aInA = Term.reverseIn(A, a);
+		Term exclusive = aInA.implies(notAInB);
+		Term axiom = Term.call("disjoint_" + ar, A, B).iff(exclusive.forall(a)).forall(A, B);
 		this.addAssertion(axiom); // add this axiom to the list of assertions
 	}
 
