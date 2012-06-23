@@ -13,9 +13,9 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import edu.kit.asa.alloy2key.key.KeYFile;
-import edu.kit.asa.alloy2key.key.ModelException;
 import edu.kit.asa.alloy2key.modules.KeYModule;
+import edu.kit.asa.alloy2key.smt.ModelException;
+import edu.kit.asa.alloy2key.smt.SMTFile;
 import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4.parser.ParseUtil;
 import edu.mit.csail.sdg.alloy4.parser.ParsedModule;
@@ -94,7 +94,7 @@ public class Main {
 		// notify user about successful parse
 		System.out.println ("Successfully parsed "+input+" as "+mod.getModelName());
 		// translate the parsed file into key model
-		KeYFile key = translate (mod);
+		SMTFile key = translate (mod);
 		// unsuccessful translation will result in null
 		if (key == null)
 			return false;
@@ -110,18 +110,18 @@ public class Main {
 	 * @return
 	 * null if translation fails
 	 */
-	private KeYFile translate (ParsedModule module) {
+	private SMTFile translate (ParsedModule module) {
 		// create and set up a new translator
-		Translator translator = new Translator(module);
+		SMTTranslator sMTTranslator = new SMTTranslator(module);
 		// assume all signatures to be finite 
 		for (int i = 0; i < ((finiteSigs == null) ? 0 : finiteSigs.length); ++i) {
 			// finitizer may return false for invalid signatures
-			if (!translator.finitize(finiteSigs[i]))
+			if (!sMTTranslator.finitize(finiteSigs[i]))
 				System.err.println ("WARNING: Could not find signature "+finiteSigs[i]+" in the model.");
 		}
 		// return the key model
 		try {
-			return translator.translate();
+			return sMTTranslator.translate();
 		} catch (ModelException e) {
 			e.printStackTrace();
 			return null;
@@ -187,7 +187,7 @@ public class Main {
 	 * @return
 	 * true on success, false otherwise
 	 */
-	private boolean write (KeYFile key, String dest, String src) {
+	private boolean write (SMTFile key, String dest, String src) {
 		// use the source file's parent directory or create a new destination file
 		File destFile = (dest == null) ? (new File(src).getAbsoluteFile().getParentFile()) : (new File (dest));
 		// write to this directory
