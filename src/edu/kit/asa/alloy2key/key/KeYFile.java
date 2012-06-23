@@ -5,6 +5,8 @@ package edu.kit.asa.alloy2key.key;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,9 +17,10 @@ import edu.kit.asa.alloy2key.modules.KeYModule;
 import edu.kit.asa.alloy2key.util.Util;
 
 /**
- * capturing output to a .key file
+ * capturing output to an .SMT file
  * 
  * @author Ulrich Geilmann
+ * @author Jonny
  *
  */
 public class KeYFile {
@@ -261,19 +264,27 @@ public class KeYFile {
 			params[i] = "Atom";
 		}
 		// declaration		
-		if(this.addFunction("Rel" + ar, "a2r_" + ar, params)){
-			// TODO: axiom of higher arity
+		String name = "a2r_" + ar;
+		if(this.addFunction("Rel" + ar, name, params)){
 			// axiom 
 			Term xInX, inImpliesEqual;
-			Term x = TermVar.var("x");
-			Term y = TermVar.var("y");
+			TermVar[] x = makeTuple(ar, "x"),
+				y = makeTuple(ar, "y");
 			
-			xInX = Term.call("in_1", x, Term.call("a2r_" + ar, x));
-			inImpliesEqual = new TermBinOp(Term.call("in_1", y, Term.call("a2r_" + ar, x)), Op.IMPLIES, new TermBinOp(x, Op.EQUALS, y));
-			Term axiom = Term.forall("Atom", "x", xInX.and(Term.forall("Atom", "y", inImpliesEqual)));
+			xInX = Term.reverseIn(Term.call(name, x), x);
+			inImpliesEqual = new TermBinOp(Term.reverseIn(Term.call(name, x), y), Op.IMPLIES, TermBinOp.equals(x, y));
+			Term axiom = Term.forall("Atom", x, xInX.and(Term.forall("Atom", y, inImpliesEqual)));
 					
 			this.addAssertion(axiom);
 		}	
+	}
+
+	private TermVar[] makeTuple(int ar, String basename) {
+		TermVar[] x = new TermVar[ar];
+		for (int i = 0; i < x.length; i++) {
+				x[i] = TermVar.var("Atom", basename+i); // the atoms are named "a0" "a1" etc
+		}
+		return x;
 	}
 
 	/** adds a declaration for in (no axiom) 
@@ -302,14 +313,90 @@ public class KeYFile {
 	public void declareProduct(int lar, int rar) throws ModelException {
 		if(lar < 1 || rar < 1)
 			throw new ModelException("The product is not defined for arguments of arity 0.");
+		declareAtom();
+		declareRel(rar);
+		declareRel(lar);
+		declareRel(lar + rar);
+		declareIn(rar);
+		declareIn(lar);
+		declareIn(lar + rar);
 		// careful with overloaded + operator
-		this.addFunction("Rel" + /*concatenation*/ (lar + /*sum*/ rar), String.format("prod_%dx%d", lar, rar), "Rel"+lar, "Rel"+rar);
-		//TODO: add axiom
+		String name = String.format("prod_%dx%d", lar, rar);
+		String leftRelar = "Rel"+lar;
+		String rightRelar = "Rel"+rar;
+		if(this.addFunction("Rel" + /*concatenation*/ (lar + /*sum*/ rar), name, leftRelar, rightRelar))
+		{
+			// add axiom
+			// these are the two parameters for the product function
+			TermVar A = TermVar.var(leftRelar, "A"),
+					B = TermVar.var(rightRelar, "B"); 
+			TermVar[] x = makeTuple(lar, "x"), 
+					y = makeTuple(rar, "y"); // these are two elements, one of A and one of B
+
+			Term somethingIsInProduct = Term.reverseIn(Term.call(name, A, B), Util.concat(x, y));
+			Term xInAandYInB = new TermBinOp(Term.reverseIn(A, x), Op.AND, Term.reverseIn(B, y));
+			List<TermVar> arglist = new LinkedList<TermVar>();
+			arglist.add(A);
+			arglist.add(B);
+			arglist.addAll(Arrays.asList(x));
+			arglist.addAll(Arrays.asList(y));
+			Term axiom = somethingIsInProduct.iff(xInAandYInB).forall(arglist);
+			this.addAssertion(axiom);
+		}
 	}
 
-	public void declareJoin(int lar, int rar) {
-		this.addFunction("Bool", "join_" + lar + "x" + rar);
-		// TODO: add axiom
+	public void declareJoin(int lar, int rar) throws ModelException {
+		if(lar < 1 || rar < 1)
+			throw new ModelException("The join is not defined for arguments of arity 0.");
+		if(lar + rar < 3)
+			throw new ModelException("The dot-join is not defined for two arguments of arity 1.");
+		declareAtom();      // we work with atoms in this axiom
+		declareRel(lar);    // declare left relation
+		declareRel(rar);    // declare right relation
+		int resultArity = rar + lar - 2; // this is the arity of the resulting relation
+		declareRel(resultArity); // declare result relation
+		declareA2r(rar);    // declare the conversion function
+		declareSubset(rar); // declare subset
+		declareIn(rar);     // declare the in-function for the right hand argument
+		declareIn(lar);     // declare the in-function for the right hand argument
+		declareIn(resultArity);  // declare the in-function for the result
+		String leftRelar = "Rel"+lar;  // shorthand for Rel+lar
+		String rightRelar = "Rel"+rar; // shorthand for Rel+lar
+		String name = "join_" + lar + "x" + rar; // this function name
+		if(this.addFunction("Rel"+resultArity, name, leftRelar, rightRelar))
+		{
+			// add axiom
+			/* For the expression (join_1x2 A B) this axiom should read (infix):
+			 * \forall A Rel1, B Rel2, y Atom| (y \elem join_1x2) 
+			 *     iff [(\exist x Atom| x \elem A) and (a2r_2(x y) \subset B)]
+			 */
+			TermVar A, B; // relation symbols for our two arguments			
+			A = TermVar.var(leftRelar, "A");            // the left relation
+			B = TermVar.var(rightRelar, "B");           // the right relation
+			List<TermVar> y = new ArrayList<TermVar>(); // the tuple for the "y" variable
+			for(int i = 0; i < resultArity; i++)
+			{
+				y.add(TermVar.var("Atom", "y"+i));      // y is actually a tuple
+			}
+			
+			Term somethingInTheJoin = Term.in(y, Term.call(name, A, B)); // a call to "join"
+			
+			TermVar[] x = makeTuple(lar, "x");                       // the left hand tuple
+			TermVar xLast = x[lar-1];                                // the atom to join on is the last atom in the x-tuple
+			
+			Term xInA = Term.reverseIn(A, x);                        // this means: x \elem A
+			List<TermVar> matchingtuple = new LinkedList<TermVar>(); // this is a tuple to join on (element of B)
+			matchingtuple.add(xLast);                                // add the last atom in x as the first atom in the match
+			matchingtuple.addAll(y);                                 // then follow up with the remaining atoms from the result
+			// xyInB means, for B of Rel2: (subset_2 (a2r_2 x y) B)
+			Term xyInB = Term.call("subset_" + rar, Term.call("a2r_" + rar, matchingtuple), B);
+			List<TermVar> arglist = new LinkedList<TermVar>();	// universally quantified vars for this axiom
+			arglist.add(A);                 					// quantify over A 
+			arglist.add(B);    									// quantify over B
+			arglist.addAll(y); 									// quantify over all atoms in the y-tuple 
+			Term axiom = somethingInTheJoin.iff((xInA.and(xyInB)).exists(x)).forall(arglist);
+			this.addAssertion(axiom);
+		}
 	}
 
 	public void declareUnion(int ar) {
@@ -323,9 +410,36 @@ public class KeYFile {
 	 * @param ar arity of the expression
 	 */
 	public void declareOne(int ar)  {		
+		List<TermVar> argList = new LinkedList<TermVar>();
 		declareRel(ar);
-		this.addFunction("Bool", "one_" + ar, "Rel" + ar);
-		// TODO: add axiom
+		String name = "one_" + ar;
+		String relar = "Rel" + ar;
+		if(this.addFunction("Bool", name, relar))
+		{
+			// add axiom
+			TermVar X = TermVar.var(relar, "X");
+			
+			TermVar[] aTuple = makeTuple(ar, "a");
+			argList.addAll(Arrays.asList(aTuple));
+			
+			Term notEmpty = Term.exists(aTuple, Term.in(argList, X));
+			
+			TermVar[] bTuple = makeTuple(ar, "b");
+			argList.addAll(Arrays.asList(bTuple));
+			
+			Term one = Term.call(name, X);			
+			
+			// make the a == b expression 
+			Term aEqualsBTerm = TermBinOp.equals(aTuple, bTuple);
+			
+			Term aInX = Term.reverseIn(X, aTuple);
+			Term bInX = Term.reverseIn(X, bTuple);
+			Term aAndBinX = aInX.and(bInX);
+			Term existanceImpliesEqual = aAndBinX.implies(aEqualsBTerm).forall(argList);
+			
+			Term axiom = (one.iff(notEmpty.and(existanceImpliesEqual))).forall(X);
+			this.addAssertion(axiom);
+		}
 	}
 
 	/** declares and defines the operator "lone" for a given arity.
@@ -333,56 +447,36 @@ public class KeYFile {
 	 * @param ar arity of the expression
 	 */
 	public void declareLone(int ar) {
-		declareAtom();               // we work with Atom, so declare it first
-		declareRel(ar);              // declare Rel1, Rel2, Rel3 etc before working with it 
-		String name = "lone_" + ar;  // we will need the name of this function twice later on
-		String relar = "Rel" + ar;   // representing Rel2, Rel3 Rel4 etc. depending on which we need here
+		List<TermVar> argList = new LinkedList<TermVar>();
+		declareRel(ar);
+		String name = "lone_" + ar;
+		String relar = "Rel" + ar;
 		if(this.addFunction("Bool", name, relar))
 		{
-			// add axiom: there is at most one a satisfying X
-			// that means the same thing as: if a is in X and b is in X, then a == b 
-			TermVar X = TermVar.var(relar, "X");  // X will be the relation representing the satisfying expression
-			List<TermVar> quantArgList = new LinkedList<TermVar>();
-			quantArgList.add(X);                  // add X to the list of quantified vars 
+			// add axiom
+			TermVar X = TermVar.var(relar, "X");
 			
-			TermVar[] aTuple = new TermVar[ar];   // this array of Atoms is how we represent tuples
-			for(int i = 0; i < ar; i++)           // we may need more than one atom to express lone_2, lone_3 etc
-			{
-				aTuple[i] = TermVar.var("Atom", "a"+i);
-				quantArgList.add(aTuple[i]);      // any of these atoms will also be quantified later
-			}
+			TermVar[] aTuple = makeTuple(ar, "a");
+			argList.addAll(Arrays.asList(aTuple));
+			TermVar[] bTuple = makeTuple(ar, "b");
+			argList.addAll(Arrays.asList(bTuple));
 			
-			TermVar[] bTuple = new TermVar[ar];   // this is the "b" variable. 
-			for(int i = 0; i < ar; i++)
-			{
-				bTuple[i] = TermVar.var("Atom", "b"+i);
-				quantArgList.add(bTuple[i]);      // any of these atoms will also be quantified later
-			}
+			Term lone = Term.call(name, X);
 			
-			Term lone = Term.call(name, X);       // this is a call to lone_1, lone_2 etc
+			Term aEqualsBTerm = TermBinOp.equals(aTuple, bTuple);
 			
-			// make the a == b expression
-			Term aEqualsBTerm = Term.TRUE;
-			// a == b means that each atom is the same as the other atom at the corresponding position
-			for(int i = 0; i < aTuple.length; i++)
-			{
-				aEqualsBTerm = aEqualsBTerm.and(aTuple[i].equal(bTuple[i]));
-			}
+			Term aInX = Term.reverseIn(X, aTuple);
+			Term bInX = Term.reverseIn(X, bTuple);
+			Term aAndBinX = aInX.and(bInX);
+			Term existanceImpliesEqual = aAndBinX.implies(aEqualsBTerm).forall(argList);
 			
-			Term aInX = Term.reverseIn(X, aTuple);  // a is in X
-			Term bInX = Term.reverseIn(X, bTuple);  // b is in X
-			Term aAndBinX = aInX.and(bInX);         // (a is in X) and (b is in X)
-			Term bothExist = aAndBinX.exists(quantArgList);           // this call quantifies a, b and X
-			Term existImpliesEqual = bothExist.implies(aEqualsBTerm); // if they exist, they must be equal
-			
-			Term axiom = (lone.iff(existImpliesEqual));               // also, the lone-function means exactly that 
-			this.addAssertion(axiom);               // done! safe this axiom for printing
+			Term axiom = (lone.iff(existanceImpliesEqual)).forall(X);
+			this.addAssertion(axiom);
 		}
 	}
 
 	public void declareSome(int ar) {
-		declareAtom();               // we work with Atom, so declare it first
-		declareRel(ar);              // declare Rel1, Rel2, Rel3 etc before working with it 
+		declareRel(ar);
 		String name = "some_" + ar;
 		String relar = "Rel" + ar;
 		if(this.addFunction("Bool", name, relar))
@@ -390,15 +484,11 @@ public class KeYFile {
 			// axiom: some means that there is any Atom/Tuple inside the argument expression
 			TermVar A = TermVar.var(relar, "A");
 			
-			TermVar[] aTuple = new TermVar[ar];
-			for(int i = 0; i < ar; i++)
-			{
-				aTuple[i] = TermVar.var("Atom", "a"+i);
-			}
+			TermVar[] aTuple = makeTuple(ar, "a");
 			
 			Term some = Term.call(name, A);
 			Term xInA = Term.reverseIn(A, aTuple);
-			Term axiom = some.iff(xInA.exists(aTuple));
+			Term axiom = some.iff(xInA.exists(aTuple)).forall(A);
 			this.addAssertion(axiom);
 		}
 	}
@@ -444,8 +534,27 @@ public class KeYFile {
 	public void declareDifference(int ar) {
 		declareRel(ar);
 		String relar = "Rel"+ar;
-		this.addFunction(relar, "diff_" + ar, relar, relar);
-		//TODO: add axiom
+		String name = "diff_" + ar;
+		if(this.addFunction(relar, name, relar, relar))
+		{
+			// add axiom
+			List<TermVar> argList = new LinkedList<TermVar>(); // this is a list of all quantified variables in the forall expression
+			
+			TermVar A, B;     // these are the left and right arg in "(diff_x A B)"
+			A = TermVar.var(relar, "A");
+			B = TermVar.var(relar, "B");
+			argList.add(A);
+			argList.add(B);
+			
+			TermVar[] aTuple = makeTuple(ar, "a"); // this is a "tuple". it consists of one atom per rank
+			argList.addAll(Arrays.asList(aTuple)); // we will also quantify over those
+			
+			
+			Term somethingIsInTheCallToDiff = Term.in(Arrays.asList(aTuple), Term.call(name, A, B));
+			Term inAandNotB = Term.in(Arrays.asList(aTuple), A).and(Term.in(Arrays.asList(aTuple), B).not());
+			Term axiom = somethingIsInTheCallToDiff.iff(inAandNotB).forall(argList);
+			this.addAssertion(axiom);
+		}
 	}
 
 	public void declareOverride(int ar) {

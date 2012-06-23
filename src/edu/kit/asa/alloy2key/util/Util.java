@@ -11,6 +11,7 @@ import java.net.JarURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -141,4 +142,16 @@ public class Util {
 		out.close();
 	}
 	
+	/** creates the concatenation of two arrays
+	 * 
+	 * @param first array containing the first few elements
+	 * @param second array containing the last few elements
+	 * @return the concatenation of the two input arrays
+	 * @see http://stackoverflow.com/posts/784842/revisions
+	 */
+	public static <T> T[] concat(T[] first, T[] second) {
+		T[] result = Arrays.copyOf(first, first.length + second.length);
+		System.arraycopy(second, 0, result, first.length, second.length);
+		return result;
+	}
 }

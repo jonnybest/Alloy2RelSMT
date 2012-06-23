@@ -128,4 +128,14 @@ public class TermBinOp extends Term {
 		}
 	}
 	
+	public static Term equals(TermVar[] leftTuple, TermVar[] rightTuple) {
+		if (leftTuple == null || rightTuple == null)
+			return TRUE;
+		Term aEqualsBTerm = Term.TRUE;
+		for(int i = 0; i < leftTuple.length; i++)
+		{
+			aEqualsBTerm = aEqualsBTerm.and(leftTuple[i].equal(rightTuple[i]));
+		}
+		return aEqualsBTerm;
+	}
 }
