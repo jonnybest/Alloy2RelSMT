@@ -12,13 +12,13 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.Vector;
 
-import edu.kit.asa.alloy2key.key.KeYFile;
-import edu.kit.asa.alloy2key.key.ModelException;
-import edu.kit.asa.alloy2key.key.Taclet;
-import edu.kit.asa.alloy2key.key.Term;
-import edu.kit.asa.alloy2key.key.TermCall;
-import edu.kit.asa.alloy2key.key.TermVar;
 import edu.kit.asa.alloy2key.modules.KeYModule;
+import edu.kit.asa.alloy2key.smt.ModelException;
+import edu.kit.asa.alloy2key.smt.SMTFile;
+import edu.kit.asa.alloy2key.smt.Taclet;
+import edu.kit.asa.alloy2key.smt.Term;
+import edu.kit.asa.alloy2key.smt.TermCall;
+import edu.kit.asa.alloy2key.smt.TermVar;
 import edu.kit.asa.alloy2key.util.Util;
 import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4.ErrorFatal;
@@ -63,7 +63,7 @@ import edu.mit.csail.sdg.alloy4.parser.ParsedModule.Open;
  * 
  *
  */
-public class Translator implements Identifiers {
+public class SMTTranslator implements Identifiers {
 	
 	/** the model to translate */
 	private ParsedModule mod;
@@ -81,16 +81,16 @@ public class Translator implements Identifiers {
 	private Collection<Sig> finitizedSigs;
 	
 	/** the result */
-	private static KeYFile target;
+	private static SMTFile target;
 	
-	public Translator (ParsedModule m) {
+	public SMTTranslator (ParsedModule m) {
 		// the idMap saves the unique ids for all alloy entities
 		this.idMap = new HashMap<Object,String>();		
 		this.tmpIds = new Stack<ExprHasName>();
 		// alloy model. we get this from the alloy parser
 		this.mod = m;
 		// the target model (a keyfile or maybe a smtfile)
-		Translator.target = new KeYFile();
+		SMTTranslator.target = new SMTFile();
 		// all referenced external modules
 		this.external = new HashSet<Sig>();
 		// all modules that can be reached by our alloy model and are not built-in
@@ -108,7 +108,7 @@ public class Translator implements Identifiers {
 	 * @throws ModelException 
 	 * @ 
 	 */
-	public KeYFile translate() throws ModelException  {
+	public SMTFile translate() throws ModelException  {
 		// we need to uniquely identify all entities, so 
 		// gather all entities and make them unique if need be 
 		try {
@@ -1497,7 +1497,7 @@ public class Translator implements Identifiers {
 	 * look inside for whatever mean trick I decided to use */
 	private static void declareA2r(int ar) {
 		// "target" is now static
-		Translator.target.declareA2r(ar);
+		SMTTranslator.target.declareA2r(ar);
 	}
 
 	private Term univ(int ar) throws ModelException {

@@ -1,7 +1,7 @@
 /**
  * Created on 14.02.2011
  */
-package edu.kit.asa.alloy2key.key;
+package edu.kit.asa.alloy2key.smt;
 
 import java.util.List;
 

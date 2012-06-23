@@ -1,7 +1,7 @@
 /**
  * Created on 07.02.2011
  */
-package edu.kit.asa.alloy2key.key;
+package edu.kit.asa.alloy2key.smt;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -12,8 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import edu.kit.asa.alloy2key.key.TermBinOp.Op;
 import edu.kit.asa.alloy2key.modules.KeYModule;
+import edu.kit.asa.alloy2key.smt.TermBinOp.Op;
 import edu.kit.asa.alloy2key.util.Util;
 
 /**
@@ -23,9 +23,9 @@ import edu.kit.asa.alloy2key.util.Util;
  * @author Jonny
  *
  */
-public class KeYFile {
+public class SMTFile {
 
-	public KeYFile () {
+	public SMTFile () {
 		includes = new LinkedList<String>();
 		sorts = new LinkedList<String>();
 		funcs  =  new LinkedList<String>();
