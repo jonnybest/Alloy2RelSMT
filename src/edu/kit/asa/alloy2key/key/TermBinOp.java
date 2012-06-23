@@ -5,6 +5,8 @@ package edu.kit.asa.alloy2key.key;
 
 import java.util.List;
 
+import sun.security.util.Debug;
+
 import edu.mit.csail.sdg.alloy4.Pair;
 
 /**
@@ -52,7 +54,8 @@ public class TermBinOp extends Term {
 	private String buildTerm (String l, String r) {
 		switch (operator) {	
 		case IFF:
-			return "(iff "+ l + " " + r + ")";	// z3-syntax, no smt2 standard (yet)
+			Debug.println("Warning", "\"iff\" operator is deprecated. Using \"=\" instead.");
+			return "(= "+ l + " " + r + ")";	// there is no more "iff" operator in SMT. replacing with equality
 		case IMPLIES:
 			return "(=> "+ l + " " + r + ")";	// smt-syntax
 		case AND:
