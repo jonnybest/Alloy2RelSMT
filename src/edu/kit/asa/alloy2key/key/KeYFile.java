@@ -202,8 +202,8 @@ public class KeYFile {
 		
 		// forall a in A, b in B | not a in B.
 		// or maybe: forall a in A, b in B | not a in B and not b in A...?
-		TermVar a, b, A, B;
-		a = TermVar.var("Atom", "a");
+		TermVar A, B;
+		TermVar[] a = makeTuple(ar, "a");
 		A = TermVar.var(relAr, "A");
 		B = TermVar.var(relAr, "B");
 		Term notAInB = Term.reverseIn(B, a).not();
