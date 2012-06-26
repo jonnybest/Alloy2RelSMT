@@ -136,6 +136,18 @@ public class KeYFile {
 		includes.add(f);
 	}
 	
+	/** 
+	 * Add an SMT assertion as "lemma" (assert expression)
+	 * @param term 
+	 * Expression to be asserted (declare in SMT syntax)
+	 * @comment 
+	 * there is no difference in SMT between lemmas and normal assertions. 
+	 * lemmas are added by the converter to help the SMT solver find a solution.
+	 */
+	public void addLemma(Term term){
+		lemmas.add(term);
+	}
+	
 	private Collection<String> sorts;
 	private Collection<Term> asserts;
 	private Collection<String> includes;
@@ -144,6 +156,7 @@ public class KeYFile {
 	private Collection<Taclet> rules;
 	private Collection<Term> assump;
 	private Collection<Term> concl;
+	private Collection<Term> lemmas;
 	
 	public void output(OutputStream os) {
 		PrintStream out = new PrintStream(os);
@@ -165,7 +178,11 @@ public class KeYFile {
 			out.println (String.format("(assert\n  %s\n)", a.toString()));
 		}
 		out.println (";; --end assertions\n");
-		
+		out.println (";; lemmas");
+		for (Term a : lemmas) {
+			out.println (String.format("(assert\n  %s\n)", a.toString()));
+		}
+		out.println (";; --end lemmas\n");
 		
 		out.println (";; -- key stuff for debugging --");
 //		out.println ("\\rules {");
