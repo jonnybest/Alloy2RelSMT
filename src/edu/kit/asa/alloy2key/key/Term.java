@@ -1,7 +1,6 @@
 package edu.kit.asa.alloy2key.key;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 

@@ -6,7 +6,6 @@ package edu.kit.asa.alloy2key.key;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.kit.asa.alloy2key.key.TermQuant.Quant;
 import edu.mit.csail.sdg.alloy4.Pair;
 
 /**

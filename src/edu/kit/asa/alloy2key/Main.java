@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
 
 import edu.kit.asa.alloy2key.key.KeYFile;
 import edu.kit.asa.alloy2key.key.ModelException;
-import edu.kit.asa.alloy2key.modules.KeYModule;
 import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4.parser.ParseUtil;
 import edu.mit.csail.sdg.alloy4.parser.ParsedModule;
