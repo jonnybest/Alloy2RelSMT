@@ -526,21 +526,34 @@ public class KeYFile {
 		String name = "transClos";
 		if(this.addFunction("Rel2", name, "Rel2"))
 		{
-			//TODO: add axiom
+			/// add axiom
 			// first we define what transitive means
+			this.addFunction("Bool", "trans", "Rel2");
+			// 
 			TermVar a1 = TermVar.var("Atom", "a1");
 			TermVar a2 = TermVar.var("Atom", "a2");
 			TermVar a3 = TermVar.var("Atom", "a3");
 			TermVar r = TermVar.var("Rel2", "r");
+			//
 			Term a12reachR = Term.reverseIn(r, a1, a2);
 			Term a23reachR = Term.reverseIn(r, a2, a3);
 			Term a13reachR = Term.reverseIn(r, a1, a3);
 			Term meaning = (a12reachR.and(a23reachR)).implies(a13reachR);
 			Term fun = Term.call("trans", r);
-			Term axiom = fun.iff(meaning.forall(a1, a2, a3)).forall(r);
-			this.addAssertion(axiom);
+			Term axiomtransitivity = fun.iff(meaning.forall(a1, a2, a3)).forall(r);
+			this.addAssertion(axiomtransitivity);
 			// then we define what a transitive closure is
-			
+			// this is split into 3 assertions
+			// 1. assert r is in trans(r)
+			this.addAssertion(Term.call("subset_2", r, Term.call(name, r)).forall(r));
+			// 2. assert that the transitive closure is -in fact- transitive
+			this.addAssertion(Term.call("trans", Term.call(name, r)).forall(r));
+			// 3. assert that tcl is minimal
+			TermVar r1 = TermVar.var("Rel2", "r1");
+			TermVar r2 = TermVar.var("Rel2", "r2");
+			Term subsetAndTrans = Term.call("subset_2", r1, r2).and(Term.call("trans", r2));
+			Term minimalaxiom = subsetAndTrans.implies(Term.call("subset_2", Term.call(name, r1), r2)).forall(r1, r2);
+			this.addAssertion(minimalaxiom);
 		}
 	}
 
