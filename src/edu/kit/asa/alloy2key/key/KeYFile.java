@@ -34,6 +34,7 @@ public class KeYFile {
 		assump = new LinkedList<Term>();
 		concl  = new LinkedList<Term>();
 		asserts = new LinkedList<Term>();
+		lemmas = new LinkedList<Term>();
 	}
 	
 	/** referred modules */
@@ -167,6 +168,8 @@ public class KeYFile {
 //		for (KeYModule m: modules) {
 //			out.println ("\\include \"theory/"+m.filename()+"\";");
 //		}
+		out.println ("(set-logic UFBV)\n(set-option :macro-finder true)");
+		//
 		out.println (";; sorts");
 		out.println (Util.join(sorts, "\n"));
 		out.println (";; --end sorts\n");
@@ -517,9 +520,28 @@ public class KeYFile {
 
 	// arity is always 2
 	public void declareTransitiveClosure() {
+		declareAtom();
+		declareIn(2);
 		declareRel(2);
-		this.addFunction("Rel2", "transClos", "Rel2");
-		//TODO: add axiom
+		String name = "transClos";
+		if(this.addFunction("Rel2", name, "Rel2"))
+		{
+			//TODO: add axiom
+			// first we define what transitive means
+			TermVar a1 = TermVar.var("Atom", "a1");
+			TermVar a2 = TermVar.var("Atom", "a2");
+			TermVar a3 = TermVar.var("Atom", "a3");
+			TermVar r = TermVar.var("Rel2", "r");
+			Term a12reachR = Term.reverseIn(r, a1, a2);
+			Term a23reachR = Term.reverseIn(r, a2, a3);
+			Term a13reachR = Term.reverseIn(r, a1, a3);
+			Term meaning = (a12reachR.and(a23reachR)).implies(a13reachR);
+			Term fun = Term.call("trans", r);
+			Term axiom = fun.iff(meaning.forall(a1, a2, a3)).forall(r);
+			this.addAssertion(axiom);
+			// then we define what a transitive closure is
+			
+		}
 	}
 
 	public void declareReflexiveTransitiveClosure() {
