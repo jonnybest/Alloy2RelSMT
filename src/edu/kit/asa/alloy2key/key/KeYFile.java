@@ -254,12 +254,9 @@ public class KeYFile {
 			TermVar x = TermVar.var(relSort, "x");	// a Set or Relation
 			TermVar y = TermVar.var(relSort, "y");	// another Set or Relation
 			Term subset = Term.call("subset_"+ar, x, y);  // x is subset of y
-			Term inImpliesIn = new TermBinOp(Term.in(atomVars, x), Op.IMPLIES, Term.in(atomVars, y));  // if an atom is in x, it is also in y 
+			Term inImpliesIn = Term.in(atomVars, x).implies(Term.in(atomVars, y));  // if an atom is in x, it is also in y 
 			// now quantify the two expressions for all x, y and atoms
-			List<TermVar> quantVars = new LinkedList<TermVar>(atomVars);
-			quantVars.add(x);
-			quantVars.add(y);
-			Term axiom = Term.forall(quantVars, (Term)new TermBinOp(subset, Op.IFF, inImpliesIn));
+			Term axiom = subset.equal(inImpliesIn.forall(atomVars)).forall(x, y);
 			this.addAssertion(axiom);  // add this axiom to the list of assertions
 		}
 	}
