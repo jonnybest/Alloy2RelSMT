@@ -437,10 +437,24 @@ public class KeYFile {
 
 	public void declareUnion(int ar) {
 		declareRel(ar);
-		if(this.addFunction("Rel" + ar, "union_" + ar))
+		String relar = "Rel" + ar;
+		String name = "union_" + ar;
+		if(this.addFunction(relar, name, relar, relar))
 		{
 			// TODO: add axiom
-			
+			// x in union A B = { x in A or x in B }
+			List<TermVar> arglist = new LinkedList<TermVar>();
+			TermVar[] x = makeTuple(ar, "x");
+			TermVar A = TermVar.var(relar, "A");
+			TermVar B = TermVar.var(relar, "B");
+			Term xInA = Term.reverseIn(A, x);
+			Term xInB = Term.reverseIn(B, x);
+			Term orTerm = xInA.or(xInB);
+			Term call = Term.call(name, A, B);
+			arglist.addAll(Arrays.asList(x));
+			arglist.add(A);
+			arglist.add(B);
+			this.addAssertion(Term.reverseIn(call, x).iff(orTerm).forall(arglist));
 		}
 	}
 
