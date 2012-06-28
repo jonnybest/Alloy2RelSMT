@@ -427,16 +427,21 @@ public class KeYFile {
 		Term lastInJoin = Term.reverseIn(Term.call("join_" + lar + "x" + rar, firstFewOfA2Rel, r), a[rar-1]);
 		Term membershipImpliesResult = aInR.implies(lastInJoin);
 		// there
-		this.addLemma(membershipImpliesResult.forall(Util.concat(a, r)));
+		TermVar[] argList = Arrays.copyOf(a, a.length + 1);
+		argList[a.length] = r;
+		this.addLemma(membershipImpliesResult.forall(argList));
 		// and back
 		Term resultImpliesMembership = lastInJoin.implies(aInR);
-		this.addLemma(resultImpliesMembership.forall(Util.concat(a, r)));
+		this.addLemma(resultImpliesMembership.forall(argList));
 	}
 
 	public void declareUnion(int ar) {
 		declareRel(ar);
-		this.addFunction("Rel" + ar, "union_" + ar);	
-		// TODO: add axiom
+		if(this.addFunction("Rel" + ar, "union_" + ar))
+		{
+			// TODO: add axiom
+			
+		}
 	}
 
 	/** declares and defines the operator "one" for a given arity.
@@ -556,7 +561,29 @@ public class KeYFile {
 			Term subsetAndTrans = Term.call("subset_2", r1, r2).and(Term.call("trans", r2));
 			Term minimalaxiom = subsetAndTrans.implies(Term.call("subset_2", Term.call(name, r1), r2)).forall(r1, r2);
 			this.addAssertion(minimalaxiom);
+			// also, add some lemma about in_2 and the transCl
+			assertLemmasTCL("transClos");
 		}
+	}
+
+	private void assertLemmasTCL(String name) {
+		TermVar a1 = TermVar.var("Atom", "a1");
+		TermVar a2 = TermVar.var("Atom", "a2");		
+		TermVar r = TermVar.var("Rel2", "r");
+		Term tCl = Term.call(name, r);
+		
+		Term a12inTCL = Term.reverseIn(tCl, a1, a2);
+		
+		TermVar a3 = TermVar.var("Atom", "a3");
+		Term a13inR = Term.reverseIn(r, a1, a3);		
+		Term a32inTCL = Term.reverseIn(tCl, a3, a2);
+		
+		this.addLemma(a12inTCL.implies(a13inR.and(a32inTCL).exists(a3)).forall(a1, a2, r));
+		
+		Term a32inR = Term.reverseIn(tCl, a3, a2);
+		Term a13inTCL = Term.reverseIn(r, a1, a3);
+		
+		this.addLemma(a12inTCL.implies(a32inR.and(a13inTCL).exists(a3)).forall(a1, a2, r));
 	}
 
 	private void declareTrans() {
@@ -604,6 +631,8 @@ public class KeYFile {
 			Term subsetAndTrans = Term.call("subset_2", r1, r2).and(Term.call("trans", r2));
 			Term minimalaxiom = subsetAndTrans.implies(Term.call("subset_2", Term.call(name, r1), r2)).forall(r1, r2);
 			this.addAssertion(minimalaxiom);
+			// don't forget our lemmas
+			assertLemmasTCL(name);
 		}
 	}
 
