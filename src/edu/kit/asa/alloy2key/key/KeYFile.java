@@ -523,12 +523,31 @@ public class KeYFile {
 		declareAtom();
 		declareIn(2);
 		declareRel(2);
+		// helper function to make transitive closure more readable and less redundant
+		declareTrans();
 		String name = "transClos";
 		if(this.addFunction("Rel2", name, "Rel2"))
 		{
 			/// add axiom
-			// first we define what transitive means
-			this.addFunction("Bool", "trans", "Rel2");
+			// we define what a transitive closure is
+			// this is split into 2 assertions
+			TermVar r = TermVar.var("Rel2", "r");
+			// 1. assert that the transitive closure is -in fact- transitive
+			this.addAssertion(Term.call("trans", Term.call(name, r)).forall(r));
+			// 2. assert that tcl is minimal
+			TermVar r1 = TermVar.var("Rel2", "r1");
+			TermVar r2 = TermVar.var("Rel2", "r2");
+			Term subsetAndTrans = Term.call("subset_2", r1, r2).and(Term.call("trans", r2));
+			Term minimalaxiom = subsetAndTrans.implies(Term.call("subset_2", Term.call(name, r1), r2)).forall(r1, r2);
+			this.addAssertion(minimalaxiom);
+		}
+	}
+
+	private void declareTrans() {
+		declareAtom();
+		declareRel(2);
+		declareIn(2);
+		if(this.addFunction("Bool", "trans", "Rel2")){
 			// 
 			TermVar a1 = TermVar.var("Atom", "a1");
 			TermVar a2 = TermVar.var("Atom", "a2");
@@ -542,9 +561,24 @@ public class KeYFile {
 			Term fun = Term.call("trans", r);
 			Term axiomtransitivity = fun.iff(meaning.forall(a1, a2, a3)).forall(r);
 			this.addAssertion(axiomtransitivity);
+		}
+	}
+
+	public void declareReflexiveTransitiveClosure() {
+		declareAtom();
+		declareIn(2);
+		declareRel(2);
+		declareTrans();
+		String name = "reflTransClos";
+		if(this.addFunction("Rel2", name, "Rel2"))
+		{
+			/// add axiom
+			// first we define what transitive means
+			declareTrans();
 			// then we define what a transitive closure is
 			// this is split into 3 assertions
 			// 1. assert r is in trans(r)
+			TermVar r = TermVar.var("Rel2", "r");
 			this.addAssertion(Term.call("subset_2", r, Term.call(name, r)).forall(r));
 			// 2. assert that the transitive closure is -in fact- transitive
 			this.addAssertion(Term.call("trans", Term.call(name, r)).forall(r));
@@ -555,12 +589,6 @@ public class KeYFile {
 			Term minimalaxiom = subsetAndTrans.implies(Term.call("subset_2", Term.call(name, r1), r2)).forall(r1, r2);
 			this.addAssertion(minimalaxiom);
 		}
-	}
-
-	public void declareReflexiveTransitiveClosure() {
-		declareRel(2);
-		this.addFunction("Rel2", "reflTransClos", "Rel2");
-		//TODO: add axiom
 	}
 
 	public void declareCardinality(int ar) {
