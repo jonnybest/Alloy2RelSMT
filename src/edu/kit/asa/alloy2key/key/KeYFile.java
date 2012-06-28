@@ -407,7 +407,7 @@ public class KeYFile {
 			matchingtuple.add(xLast);                                // add the last atom in x as the first atom in the match
 			matchingtuple.addAll(y);                                 // then follow up with the remaining atoms from the result
 			// xyInB means, for B of Rel2: (subset_2 (a2r_2 x y) B)
-			Term xyInB = Term.call("subset_" + rar, Term.call("a2r_" + rar, matchingtuple), B);
+			Term xyInB = Term.in(matchingtuple, B);
 			List<TermVar> arglist = new LinkedList<TermVar>();	// universally quantified vars for this axiom
 			arglist.add(A);                 					// quantify over A 
 			arglist.add(B);    									// quantify over B
