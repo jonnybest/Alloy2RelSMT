@@ -414,7 +414,23 @@ public class KeYFile {
 			arglist.addAll(y); 									// quantify over all atoms in the y-tuple 
 			Term axiom = somethingInTheJoin.iff((xInA.and(xyInB)).exists(x)).forall(arglist);
 			this.addAssertion(axiom);
+			// to work properly, we also add some neccessary lemmas
+			assertLemmasJoin(lar, rar);
 		}
+	}
+
+	private void assertLemmasJoin(int lar, int rar) {
+		TermVar r = TermVar.var("Rel"+rar, "r");
+		TermVar[] a = makeTuple(rar, "a");
+		Term aInR = Term.reverseIn(r, a);
+		Term firstFewOfA2Rel = Term.call("a2r_"+lar, Arrays.copyOf(a, lar));
+		Term lastInJoin = Term.reverseIn(Term.call("join_" + lar + "x" + rar, firstFewOfA2Rel, r), a[rar-1]);
+		Term membershipImpliesResult = aInR.implies(lastInJoin);
+		// there
+		this.addLemma(membershipImpliesResult.forall(Util.concat(a, r)));
+		// and back
+		Term resultImpliesMembership = lastInJoin.implies(aInR);
+		this.addLemma(resultImpliesMembership.forall(Util.concat(a, r)));
 	}
 
 	public void declareUnion(int ar) {

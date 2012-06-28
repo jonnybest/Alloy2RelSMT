@@ -154,4 +154,17 @@ public class Util {
 		System.arraycopy(second, 0, result, first.length, second.length);
 		return result;
 	}
+	
+	/** creates the concatenation of two arrays
+	 * 
+	 * @param first array containing the first few elements
+	 * @param second array containing the last few elements
+	 * @return the concatenation of the two input arrays
+	 * @see http://stackoverflow.com/posts/784842/revisions
+	 */
+	public static <T> T[] concat(T[] first, T second) {
+		T[] result = Arrays.copyOf(first, first.length + 1);
+		result[first.length] = second;
+		return result;
+	}
 }
