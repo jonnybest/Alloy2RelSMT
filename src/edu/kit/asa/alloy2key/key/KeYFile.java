@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import sun.org.mozilla.javascript.tools.ToolErrorReporter;
+
 import edu.kit.asa.alloy2key.key.TermBinOp.Op;
 import edu.kit.asa.alloy2key.modules.KeYModule;
 import edu.kit.asa.alloy2key.util.Util;
@@ -565,11 +567,13 @@ public class KeYFile {
 		{
 			/// add axiom
 			// we define what a transitive closure is
-			// this is split into 2 assertions
+			// this is split into 3 assertions
+			// 1. assert r in trans(r)
 			TermVar r = TermVar.var("Rel2", "r");
-			// 1. assert that the transitive closure is -in fact- transitive
+			this.addAssertion(Term.call("subset_2", r, Term.call(name, r)).forall(r));
+			// 2. assert that the transitive closure is -in fact- transitive
 			this.addAssertion(Term.call("trans", Term.call(name, r)).forall(r));
-			// 2. assert that tcl is minimal
+			// 3. assert that tcl is minimal
 			TermVar r1 = TermVar.var("Rel2", "r1");
 			TermVar r2 = TermVar.var("Rel2", "r2");
 			Term subsetAndTrans = Term.call("subset_2", r1, r2).and(Term.call("trans", r2));
@@ -626,6 +630,7 @@ public class KeYFile {
 		declareIn(2);
 		declareRel(2);
 		declareTrans();
+		declareIdentity();
 		String name = "reflTransClos";
 		if(this.addFunction("Rel2", name, "Rel2"))
 		{
@@ -645,6 +650,9 @@ public class KeYFile {
 			Term subsetAndTrans = Term.call("subset_2", r1, r2).and(Term.call("trans", r2));
 			Term minimalaxiom = subsetAndTrans.implies(Term.call("subset_2", Term.call(name, r1), r2)).forall(r1, r2);
 			this.addAssertion(minimalaxiom);
+			// 4. assert iden in TCL
+			Term idenInTCL = Term.call("subset_2", Term.call("iden"), Term.call(name, r)).forall(r);
+			this.addAssertion(idenInTCL);
 			// don't forget our lemmas
 			assertLemmasTCL(name);
 		}
@@ -722,7 +730,11 @@ public class KeYFile {
 
 	public void declareIdentity() {
 		declareRel(2);		
-		this.addFunction("Rel"+2, "iden");
-		//TODO: add axiom
+		if(this.addFunction("Rel"+2, "iden"))
+		{
+			TermVar	a0 = TermVar.var("Atom", "a0");
+			Term axiom = Term.reverseIn(Term.call("iden"), a0, a0);			
+			this.addAssertion(axiom.forall(a0));
+		}
 	}
 }
