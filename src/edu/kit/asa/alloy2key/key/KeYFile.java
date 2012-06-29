@@ -593,10 +593,10 @@ public class KeYFile {
 		
 		this.addLemma(a12inTCL.implies(a13inR.and(a32inTCL).exists(a3)).forall(a1, a2, r));
 		
-		Term a32inR = Term.reverseIn(tCl, a3, a2);
-		Term a13inTCL = Term.reverseIn(r, a1, a3);
+		Term a13inTCL = Term.reverseIn(tCl, a1, a3);
+		Term a32inR = Term.reverseIn(r, a1, a2);
 		
-		this.addLemma(a12inTCL.implies(a32inR.and(a13inTCL).exists(a3)).forall(a1, a2, r));
+		this.addLemma(a12inTCL.implies(a13inTCL.and(a32inR).exists(a3)).forall(a1, a2, r));
 	}
 
 	private void declareTrans() {
