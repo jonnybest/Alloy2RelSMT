@@ -639,7 +639,15 @@ public class Translator implements Identifiers {
 					"more than one check command. Please consider deleting all checks except one.");
 		for (Command cmd : mod.getAllCommands()) {
 			if (!cmd.check) continue;
-			target.addAssertion(translateExpr(cmd.formula.not()));
+			Expr assertExpression = null;
+			for(Pair<String, Expr> item : mod.getAllAssertions())
+			{
+				if (item.a.equals(cmd.label)) {
+					assertExpression = item.b;
+					break;
+				}
+			} 
+			target.addAssertion(translateExpr(assertExpression.not()));
 		}
 	}
 	
