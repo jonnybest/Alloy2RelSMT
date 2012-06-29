@@ -12,6 +12,8 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.Vector;
 
+import sun.security.util.Debug;
+
 import edu.kit.asa.alloy2key.key.KeYFile;
 import edu.kit.asa.alloy2key.key.ModelException;
 import edu.kit.asa.alloy2key.key.Taclet;
@@ -631,6 +633,10 @@ public class Translator implements Identifiers {
 	 * @ 
 	 */
 	private void translateCmds() throws Err, ModelException {
+		// SMT has problems with multiple commands, so warn for more than one cmd
+		if(mod.getAllCommands().size() > 1)
+			Debug.println("Warning", "Model contains more than one command. SMT has issues with " +
+					"more than one check command. Please consider deleting all checks except one.");
 		for (Command cmd : mod.getAllCommands()) {
 			if (!cmd.check) continue;
 			target.addAssertion(translateExpr(cmd.formula.not()));
