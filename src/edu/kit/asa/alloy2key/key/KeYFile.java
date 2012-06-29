@@ -370,7 +370,6 @@ public class KeYFile {
 		declareRel(rar);    // declare right relation
 		int resultArity = rar + lar - 2; // this is the arity of the resulting relation
 		declareRel(resultArity); // declare result relation
-		declareA2r(rar);    // declare the conversion function
 		declareSubset(rar); // declare subset
 		declareIn(rar);     // declare the in-function for the right hand argument
 		declareIn(lar);     // declare the in-function for the right hand argument
