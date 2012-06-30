@@ -17,7 +17,6 @@ import edu.mit.csail.sdg.alloy4.Pair;
  */
 public class TermBinOp extends Term {
 	
-	// TODO: make AND and OR variadic operators to conform to SMT mechanics
 	public enum Op {
 		IFF, IMPLIES, AND, OR, EQUALS,
 		LT, LTE, GT, GTE, PLUS, MINUS, MUL, DIV, REM, SHL, SHR, SHA
