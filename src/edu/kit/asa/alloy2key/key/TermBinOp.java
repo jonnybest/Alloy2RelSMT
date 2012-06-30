@@ -27,7 +27,7 @@ public class TermBinOp extends Term {
 	private Term left, right;
 	
 	// the operator
-	private Op operator;
+	protected Op operator;
 	
 	public TermBinOp (Term left, Op op, Term right) {
 		this.left = left;
@@ -85,6 +85,19 @@ public class TermBinOp extends Term {
 		default:
 			throw new RuntimeException(new ModelException("This binary term does not know how to deal with this operator: "+ operator.name()) );
 		}
+	}
+	
+	/**
+	 * @return
+	 * formula representing <code>this & right</code>
+	 */
+	public Term and (Term right) {
+		if (right == TRUE)
+			return this;
+		if (this.operator == Op.AND) {
+			return new TermVarOp(this.operator, this.left, this.right, right);
+		}
+		return new TermBinOp (this,TermBinOp.Op.AND,right);
 	}
 
 	/** {@inheritDoc} */
