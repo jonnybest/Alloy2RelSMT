@@ -893,8 +893,17 @@ public class Translator implements Identifiers {
 				return e1.implies(e2);
 			case IN:                                                 // e1 in e2
 				target.declareSubset(ar1);
-				return Term.call("subset_" + ar1, e1, e2).and (
+				Term membershipCall = null;
+				if(e1 instanceof TermCall && ((TermCall)e1).toString().equals( a2r(ar1, ((TermCall)e1).params()).toString()))
+				{					
+					membershipCall = Term.call("in_"+ar1, ((TermCall)e1).params()[0], e2);	
+				}
+				else {
+					membershipCall = Term.call("subset_" + ar1, e1, e2);
+				}
+				return membershipCall.and (
 						generateMultConstr(e1, be.right, letBindings, atomVars, false));
+				
 			case NOT_IN:                                             // e1 !in e2
 				target.declareSubset(ar1);
 				return Term.call("subset_" + ar1, e1, e2).not();
@@ -1502,7 +1511,7 @@ public class Translator implements Identifiers {
 		return Term.call("none_"+ar);
 	}
 	
-	private static Term a2r(int ar, Term sub) {
+	private static Term a2r(int ar, Term ... sub) {
 		declareA2r(ar);
 		return Term.call("a2r_"+ar, sub);
 	}
