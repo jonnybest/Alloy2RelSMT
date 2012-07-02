@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import edu.kit.asa.alloy2key.key.TermBinOp.Op;
 import edu.kit.asa.alloy2key.modules.KeYModule;
 import edu.kit.asa.alloy2key.util.Util;
 
@@ -88,7 +87,10 @@ public class KeYFile {
 	 * Expression to be asserted (declare in SMT syntax)
 	 */
 	public void addAssertion(Term term) {
-		asserts.add(term);
+		// we don't need to assert the expression "TRUE"
+		if (!term.equals(Term.TRUE)) {
+			asserts.add(term);
+		}
 	}	
 	
 	/**
