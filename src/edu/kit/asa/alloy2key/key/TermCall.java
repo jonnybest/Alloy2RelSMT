@@ -32,6 +32,26 @@ public class TermCall extends Term {
 		return params;
 	}
 	
+	public boolean equals(Object o)	{
+		if(o instanceof TermCall)
+		{
+			TermCall call = (TermCall) o;
+			if (call.name.equals(this.name) && params.length == call.params.length) {
+				for (int i = 0; i < params.length; i++) {
+					if (params[i] != call.params[i]) {
+						return false;
+					}
+				}
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else
+			return false;
+	}
+	
 	/**
 	 * construct a function/predicate call
 	 * @param name
