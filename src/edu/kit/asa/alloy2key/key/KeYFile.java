@@ -287,7 +287,7 @@ public class KeYFile {
 				y = makeTuple(ar, "y");
 			
 			xInX = Term.reverseIn(Term.call(name, x), x);
-			inImpliesEqual = new TermBinOp(Term.reverseIn(Term.call(name, x), y), Op.IMPLIES, TermBinOp.equals(x, y));
+			inImpliesEqual = Term.reverseIn(Term.call(name, x), y).implies(TermBinOp.equals(x, y));
 			Term axiom = Term.forall("Atom", x, xInX.and(Term.forall("Atom", y, inImpliesEqual)));
 					
 			this.addAssertion(axiom);
@@ -349,7 +349,7 @@ public class KeYFile {
 					y = makeTuple(rar, "y"); // these are two elements, one of A and one of B
 
 			Term somethingIsInProduct = Term.reverseIn(Term.call(name, A, B), Util.concat(x, y));
-			Term xInAandYInB = new TermBinOp(Term.reverseIn(A, x), Op.AND, Term.reverseIn(B, y));
+			Term xInAandYInB = Term.reverseIn(A, x).and(Term.reverseIn(B, y));
 			List<TermVar> arglist = new LinkedList<TermVar>();
 			arglist.add(A);
 			arglist.add(B);

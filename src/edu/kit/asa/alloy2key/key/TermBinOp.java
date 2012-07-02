@@ -98,6 +98,19 @@ public class TermBinOp extends Term {
 		}
 		return new TermBinOp (this,TermBinOp.Op.AND,right);
 	}
+	
+	/**
+	 * @return
+	 * formula representing <code>this | right</code>
+	 */
+	public Term or (Term right) {
+		if (right == TRUE)
+			return this;
+		if (this.operator == Op.OR) {
+			return new TermVarOp(this.operator, this.left, this.right, right);
+		}
+		return new TermBinOp (this,TermBinOp.Op.OR,right);
+	}
 
 	/** {@inheritDoc} */
 	@Override
