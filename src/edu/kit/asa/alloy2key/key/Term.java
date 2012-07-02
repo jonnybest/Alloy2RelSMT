@@ -235,12 +235,18 @@ public abstract class Term {
 	
 	/** make a "for all" expression **/
 	public static Term forall(String sort, String var, Term sub) {
-		return new TermQuant(Quant.FORALL, sort, var, sub);
+		TermVar sortedVar = TermVar.var(sort, var);
+		List<TermVar> varlist = new LinkedList<TermVar>();
+		varlist.add(sortedVar);
+		return TermQuant.createSortedTerm(Quant.FORALL, varlist, sub);
 	}
 	
 	/** make an "exists" expression **/
 	public static Term exists(String sort, String var, Term sub) {
-		return new TermQuant(Quant.EXISTS, sort, var, sub);
+		TermVar sortedVar = TermVar.var(sort, var);
+		List<TermVar> varlist = new LinkedList<TermVar>();
+		varlist.add(sortedVar);
+		return TermQuant.createSortedTerm(Quant.EXISTS, varlist, sub);
 	}
 	
 	/** make an expression which represents an integer **/
@@ -441,7 +447,11 @@ public abstract class Term {
 	 * @return the sub expression, quantified with respect to sort and vars
 	 */
 	public static Term forall(String sort, TermVar[] vars, Term sub) {
-		return TermQuant.createSingleSortedTerm(Quant.FORALL, sort, vars, sub);
+		List<TermVar> varList = new LinkedList<TermVar>();
+		for (TermVar termVar : vars) {
+			varList.add(TermVar.var(sort, termVar.getName()));
+		}
+		return TermQuant.createSortedTerm(Quant.FORALL, varList, sub);
 	}	
 
 	/** Creates an "in()" expression. 
