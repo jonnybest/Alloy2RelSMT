@@ -69,9 +69,10 @@ public class TermUnary extends Term {
 		return new TermUnary(operator,sub.substitute(a,b));
 	}
 	
-	/** {@inheritDoc} */
+	/** {@inheritDoc} 
+	 * @throws ModelException */
 	@Override
-	public Term fill(Term t) {
+	public Term fill(Term t) throws ModelException {
 		return new TermUnary(operator,sub.fill(t));
 	}
 	

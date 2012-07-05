@@ -223,8 +223,12 @@ public abstract class Term {
 	 * make this name into a (fun/pred) call
 	 * @param name of the function
 	 * @param params one or more parameters for this function
+	 * @throws ModelException 
 	 */
-	public static Term call(String name, Term... params) {
+	public static Term call(String name, Term... params) throws ModelException {
+		if (Arrays.asList(params).contains(null)) {
+			throw new ModelException("Something went wrong creating a call. Parameters cannot be null.");
+		}
 		return new TermCall (name, params);
 	}
 	
@@ -261,8 +265,9 @@ public abstract class Term {
 	
 	/**
 	 * fill all occurrences of <code>HOLE</code> with <code>t</code>
+	 * @throws ModelException 
 	 */
-	public abstract Term fill(Term t);
+	public abstract Term fill(Term t) throws ModelException;
 	
 	/**
 	 * Placeholder in a Term. Can later be replaced with
@@ -458,10 +463,11 @@ public abstract class Term {
 	 * @param bound The bounding expression which contains the tuple 
 	 * @param atoms Any number of atom variables, or an array of atom variables (aka tuple)
 	 * @return an expression of the form (in atoms[0] atoms[1] atoms[2..etc] bound)
+	 * @throws ModelException 
 	 * @remark It's called "reverse" because the parameter order is the other way around. 
 	 * This is a technical neccessity, since I wanted to use varargs.  
 	 */
-	public static Term reverseIn(Term bound, TermVar... atoms) {
+	public static Term reverseIn(Term bound, TermVar... atoms) throws ModelException {
 		int arity = atoms.length;
 		Term[] params = new Term[arity + 1];
 		for(int i = 0; i < arity; i++){
@@ -475,8 +481,9 @@ public abstract class Term {
 	 * @param atoms a list of atom variables (aka tuple)
 	 * @param bound The bounding expression which contains the tuple 
 	 * @return an expression of the form (in atoms[0] atoms[1] atoms[2..etc] bound)
+	 * @throws ModelException 
 	 */
-	public static Term in(List<TermVar> atoms, Term bound) {
+	public static Term in(List<TermVar> atoms, Term bound) throws ModelException {
 		return reverseIn(bound, (TermVar[]) atoms.toArray(new TermVar[atoms.size()]));
 	}
 
@@ -530,7 +537,7 @@ public abstract class Term {
 		return TermQuant.createSortedTerm(Quant.EXISTS, Arrays.asList(vars), sub);
 	}
 
-	public static Term call(String name, List<TermVar> params) {
+	public static Term call(String name, List<TermVar> params) throws ModelException {
 		TermVar[] paramArray = new TermVar[params.size()];
 		return call(name, params.toArray(paramArray));
 	}

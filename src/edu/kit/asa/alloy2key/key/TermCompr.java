@@ -79,9 +79,10 @@ public class TermCompr extends Term {
 		return new TermCompr(sub.substitute(a,b), vars);
 	}
 	
-	/** {@inheritDoc} */
+	/** {@inheritDoc} 
+	 * @throws ModelException */
 	@Override
-	public Term fill(Term t) {
+	public Term fill(Term t) throws ModelException {
 		return new TermCompr(sub.fill(t),vars);
 	}
 	

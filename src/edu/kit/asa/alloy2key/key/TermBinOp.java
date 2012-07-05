@@ -132,9 +132,10 @@ public class TermBinOp extends Term {
 		return new TermBinOp(left.substitute(a,b), operator, right.substitute(a,b));
 	}
 	
-	/** {@inheritDoc} */
+	/** {@inheritDoc} 
+	 * @throws ModelException */
 	@Override
-	public Term fill(Term t) {
+	public Term fill(Term t) throws ModelException {
 		return new TermBinOp(left.fill(t), operator, right.fill(t));
 	}
 	

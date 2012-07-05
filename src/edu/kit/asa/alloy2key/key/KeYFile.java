@@ -215,8 +215,9 @@ public class KeYFile {
 	
 	/** adds a declaration and theory for disjoint 
 	 * @param arity arity of the expression
+	 * @throws ModelException 
 	 */
-	public void declareDisjoint(int ar) {
+	public void declareDisjoint(int ar) throws ModelException {
 		declareAtom();
 		declareRel(ar);
 		String relAr = "Rel" + ar;
@@ -237,8 +238,9 @@ public class KeYFile {
 
 	/** adds a declaration and theory for subset and subrel 
 	 * @param arity of the set expression
+	 * @throws ModelException 
 	 */
-	public void declareSubset(int ar) {
+	public void declareSubset(int ar) throws ModelException {
 		// declare prerequisite sorts
 		declareAtom();
 		declareRel(ar);
@@ -269,8 +271,9 @@ public class KeYFile {
 
 	/** adds a declaration and theory for the converter function 
 	 * @param arity arity of the expression
+	 * @throws ModelException 
 	 */
-	public void declareA2r(int ar) {
+	public void declareA2r(int ar) throws ModelException {
 		// declare prerequisite sorts and functions
 		declareAtom();
 		declareRel(ar);
@@ -417,7 +420,7 @@ public class KeYFile {
 		}
 	}
 
-	private void assertLemmasJoin(int lar, int rar) {
+	private void assertLemmasJoin(int lar, int rar) throws ModelException {
 		TermVar r = TermVar.var("Rel"+rar, "r");
 		TermVar[] a = makeTuple(rar, "a");
 		Term aInR = Term.reverseIn(r, a);
@@ -433,7 +436,7 @@ public class KeYFile {
 		this.addLemma(resultImpliesMembership.forall(argList));
 	}
 
-	public void declareUnion(int ar) {
+	public void declareUnion(int ar) throws ModelException {
 		declareRel(ar);
 		String relar = "Rel" + ar;
 		String name = "union_" + ar;
@@ -459,8 +462,9 @@ public class KeYFile {
 	/** declares and defines the operator "one" for a given arity.
 	 *  "one" means "one and only one"
 	 * @param ar arity of the expression
+	 * @throws ModelException 
 	 */
-	public void declareOne(int ar)  {		
+	public void declareOne(int ar) throws ModelException  {		
 		List<TermVar> argList = new LinkedList<TermVar>();
 		declareRel(ar);
 		String name = "one_" + ar;
@@ -496,8 +500,9 @@ public class KeYFile {
 	/** declares and defines the operator "lone" for a given arity.
 	 *  "lone" means "at most one"
 	 * @param ar arity of the expression
+	 * @throws ModelException 
 	 */
-	public void declareLone(int ar) {
+	public void declareLone(int ar) throws ModelException {
 		List<TermVar> argList = new LinkedList<TermVar>();
 		declareRel(ar);
 		String name = "lone_" + ar;
@@ -526,7 +531,7 @@ public class KeYFile {
 		}
 	}
 
-	public void declareSome(int ar) {
+	public void declareSome(int ar) throws ModelException {
 		declareRel(ar);
 		String name = "some_" + ar;
 		String relar = "Rel" + ar;
@@ -552,7 +557,7 @@ public class KeYFile {
 	}
 
 	// arity is always 2
-	public void declareTransitiveClosure() {
+	public void declareTransitiveClosure() throws ModelException {
 		declareAtom();
 		declareIn(2);
 		declareRel(2);
@@ -580,7 +585,7 @@ public class KeYFile {
 		}
 	}
 
-	private void assertLemmasTCL(String name) {
+	private void assertLemmasTCL(String name) throws ModelException {
 		TermVar a1 = TermVar.var("Atom", "a1");
 		TermVar a2 = TermVar.var("Atom", "a2");		
 		TermVar r = TermVar.var("Rel2", "r");
@@ -600,7 +605,7 @@ public class KeYFile {
 		this.addLemma(a12inTCL.implies(a13inTCL.and(a32inR).exists(a3)).forall(a1, a2, r));
 	}
 
-	private void declareTrans() {
+	private void declareTrans() throws ModelException {
 		declareAtom();
 		declareRel(2);
 		declareIn(2);
@@ -621,7 +626,7 @@ public class KeYFile {
 		}
 	}
 
-	public void declareReflexiveTransitiveClosure() {
+	public void declareReflexiveTransitiveClosure() throws ModelException {
 		declareAtom();
 		declareIn(2);
 		declareRel(2);
@@ -672,7 +677,7 @@ public class KeYFile {
 		// TODO Auto-generated method stub
 	}
 
-	public void declareDifference(int ar) {
+	public void declareDifference(int ar) throws ModelException {
 		declareRel(ar);
 		String relar = "Rel"+ar;
 		String name = "diff_" + ar;
@@ -724,7 +729,7 @@ public class KeYFile {
 		//TODO: add axiom
 	}
 
-	public void declareIdentity() {
+	public void declareIdentity() throws ModelException {
 		declareRel(2);		
 		if(this.addFunction("Rel"+2, "iden"))
 		{

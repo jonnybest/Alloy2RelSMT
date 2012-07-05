@@ -130,9 +130,10 @@ public class TermCall extends Term {
 		return new TermCall(name,p);
 	}
 	
-	/** {@inheritDoc} */
+	/** {@inheritDoc} 
+	 * @throws ModelException */
 	@Override
-	public Term fill(Term t) {
+	public Term fill(Term t) throws ModelException {
 		Term[] p = new Term[params.length];
 		for (int i = 0; i < params.length; i++) {
 			p[i] = params[i].fill(t);

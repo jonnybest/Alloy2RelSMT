@@ -207,11 +207,13 @@ public class Translator implements Identifiers {
 	 * the KeY identifier associated with a given
 	 * Alloy entity
 	 */
+	@Override
 	public String id(Object o) {
 		return idMap.get(o);
 	}
 	
 	/** {@inheritDoc} */
+	@Override
 	public boolean setId(Object o, String id) {
 		if (idMap.get(o) != null)
 			return false;
@@ -222,6 +224,7 @@ public class Translator implements Identifiers {
 	}
 	
 	/** {@inheritDoc} */
+	@Override
 	public String newId(String base) {
 		return newIdFor(base);
 	}
@@ -418,8 +421,9 @@ public class Translator implements Identifiers {
 	
 	/**
 	 * finitize the sigs
+	 * @throws ModelException 
 	 */
-	private void finitize() {
+	private void finitize() throws ModelException {
 		for (Sig s : finitizedSigs) {
 			target.addAssumption(Term.call("finite", term(s)));
 		}
@@ -675,7 +679,8 @@ public class Translator implements Identifiers {
 	private Term translateDecl(Decl d, TermAlternation alt,
 			HashMap<ExprHasName,Term> letBindings, HashSet<ExprHasName> atomVars, boolean boundingType) throws Err, ModelException {
 		if (alt == null)
-			alt = new TermAlternation() { public Term alter(Term t) {
+			alt = new TermAlternation() { @Override
+			public Term alter(Term t) {
 				return t;
 			}};
 			
@@ -1086,7 +1091,7 @@ public class Translator implements Identifiers {
 		throw new ErrorFatal ("Could not translate expression: "+e);
 	}
 
-	private Term expressMembership(int ar1, Term e1, Term e2) {
+	private Term expressMembership(int ar1, Term e1, Term e2) throws ModelException {
 		Term membershipCall;
 		if(e1 instanceof TermCall && ((TermCall)e1).equals( a2r(ar1, ((TermCall)e1).params())))
 		{					
@@ -1113,8 +1118,9 @@ public class Translator implements Identifiers {
 	 * i.e. the m1,m2 etc. in the exemplary declaration above. 
 	 * @return
 	 * conjunction of the multiplicity constraints
+	 * @throws ModelException 
 	 */
-	private Term generateMultConstrRight (Term t, List<Pair<Term,Integer>> typing, List<Mult> mults) {
+	private Term generateMultConstrRight (Term t, List<Pair<Term,Integer>> typing, List<Mult> mults) throws ModelException {
 		Term conj = Term.TRUE;
 		// we have a multiplicity annotation
 		switch (mults.get(0)) {
@@ -1160,8 +1166,9 @@ public class Translator implements Identifiers {
 	 * i.e. the m1,m2 etc. in the exemplary declaration above. 
 	 * @return
 	 * conjunction of the multiplicity constraints
+	 * @throws ModelException 
 	 */
-	private Term generateMultConstrLeft (Term t, List<Pair<Term,Integer>> typing, List<Mult> mults) {
+	private Term generateMultConstrLeft (Term t, List<Pair<Term,Integer>> typing, List<Mult> mults) throws ModelException {
 		Term conj = Term.TRUE;
 		// we have a multiplicity annotation
 		switch (mults.get(mults.size()-1)) {
@@ -1269,8 +1276,9 @@ public class Translator implements Identifiers {
 	 * @return
 	 * formula of the form
 	 * <code>\forall Atom x; \forall Atom y; (in(binary(x,y),bound) -> body[sin2(binary(x,y))])</code>
+	 * @throws ModelException 
 	 */
-	private Term quantify (Term body, Term bound, int arity) {
+	private Term quantify (Term body, Term bound, int arity) throws ModelException {
 		assert arity >= 1;
 		TermVar[] atoms = new TermVar[arity];
 		for (int i = 0; i < arity; ++i) {
@@ -1466,13 +1474,15 @@ public class Translator implements Identifiers {
 		return p.equals(mod.pos().filename);
 	}
 	
-	/** make a KeY expression from an alloy signature **/
-	private Term term(Sig s) {
+	/** make a KeY expression from an alloy signature 
+	 * @throws ModelException **/
+	private Term term(Sig s) throws ModelException {
 		return Term.call(id(s));
 	}
 	
-	/** make a KeY expression from a named entity and the given atoms **/
-	private Term term(ExprHasName e, HashSet<ExprHasName> atomVars) {
+	/** make a KeY expression from a named entity and the given atoms 
+	 * @throws ModelException **/
+	private Term term(ExprHasName e, HashSet<ExprHasName> atomVars) throws ModelException {
 		if (e instanceof ExprVar) {
 			if (atomVars.contains(e))
 				return a2r(arity(e), Term.var(id(e)));
@@ -1486,17 +1496,19 @@ public class Translator implements Identifiers {
 		throw new RuntimeException ("Unexpected!");
 	}
 	
-	/** make a KeY expression from a named entity, such as a field, a let or a function parameter **/
-	private Term term(ExprHasName e) {
+	/** make a KeY expression from a named entity, such as a field, a let or a function parameter 
+	 * @throws ModelException **/
+	private Term term(ExprHasName e) throws ModelException {
 		return term(e,new HashSet<ExprHasName>());
 	}
 	
 	/** make a KeY expression for the inclusion expression
 	 * @param v the variable to look for
 	 * @param s a signature containing <code>v</code>
+	 * @throws ModelException 
 	 * @ 
 	 **/
-	private Term in(String v, Sig s){
+	private Term in(String v, Sig s) throws ModelException{
 		target.declareIn(1);
 		return Term.call("in_1", Term.var(v), term(s));
 	}
@@ -1506,24 +1518,26 @@ public class Translator implements Identifiers {
 	 * @param name of the function
 	 * @param a sig
 	 * @param b another sig
+	 * @throws ModelException 
 	 */
-	private Term call(String name, Sig a, Sig b) {
+	private Term call(String name, Sig a, Sig b) throws ModelException {
 		return Term.call(name, term(a), term(b));
 	}
 	
-	private Term none(int ar) {
+	private Term none(int ar) throws ModelException {
 		target.declareNone(ar);
 		return Term.call("none_"+ar);
 	}
 	
-	private static Term a2r(int ar, Term ... sub) {
+	private static Term a2r(int ar, Term ... sub) throws ModelException {
 		declareA2r(ar);
 		return Term.call("a2r_"+ar, sub);
 	}
 
 	/** static helper function to "declare" the converter function statically.
-	 * look inside for whatever mean trick I decided to use */
-	private static void declareA2r(int ar) {
+	 * look inside for whatever mean trick I decided to use 
+	 * @throws ModelException */
+	private static void declareA2r(int ar) throws ModelException {
 		// "target" is now static
 		Translator.target.declareA2r(ar);
 	}
@@ -1581,8 +1595,9 @@ public class Translator implements Identifiers {
 	
 	/** replaces the static "THIS" expression
 	 * @return a relation containing the "THIS" atom
+	 * @throws ModelException 
 	 */
-	private static Term THISTerm() {
+	private static Term THISTerm() throws ModelException {
 		target.declareA2r(1);
 		return Term.call("a2r_1",Term.var("this"));
 	}
@@ -1598,6 +1613,7 @@ public class Translator implements Identifiers {
 			ar = arity;
 		}
 		
+		@Override
 		public Term alter(Term t) throws ModelException {
 			target.declareJoin(1, ar);			
 			return Term.call("join_1x"+ar, THISTerm(), t);
@@ -1682,9 +1698,10 @@ public class Translator implements Identifiers {
 			return false;
 		}
 
-		/** {@inheritDoc} */
+		/** {@inheritDoc} 
+		 * @throws ModelException */
 		@Override
-		public Term fill(Term t) {
+		public Term fill(Term t) throws ModelException {
 			Term[] terms = getElements(t);
 			if (terms.length <= 0 || terms.length > 3 || terms.length >= arity)
 				throw new RuntimeException("");

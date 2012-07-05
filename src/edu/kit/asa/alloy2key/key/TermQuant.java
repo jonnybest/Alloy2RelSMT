@@ -134,9 +134,10 @@ public class TermQuant extends Term {
 		return new TermQuant(quant, new LinkedList<Pair<String,String>>(vars) ,sub.substitute(a,b));
 	}
 	
-	/** {@inheritDoc} */
+	/** {@inheritDoc} 
+	 * @throws ModelException */
 	@Override
-	public Term fill(Term t) {
+	public Term fill(Term t) throws ModelException {
 		// return a copy
 		return new TermQuant(quant,new LinkedList<Pair<String,String>>(vars),sub.fill(t));
 	}

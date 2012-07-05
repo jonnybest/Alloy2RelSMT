@@ -62,9 +62,10 @@ public class TermITE extends Term {
 		return c.substitute(a,b).ite(t1.substitute(a,b), t2.substitute(a,b));
 	}
 	
-	/** {@inheritDoc} */
+	/** {@inheritDoc} 
+	 * @throws ModelException */
 	@Override
-	public Term fill(Term t) {
+	public Term fill(Term t) throws ModelException {
 		return c.fill(t).ite(t1.fill(t), t2.fill(t));
 	}
 	
