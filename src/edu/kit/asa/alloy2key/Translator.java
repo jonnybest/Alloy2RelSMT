@@ -561,8 +561,10 @@ public class Translator implements Identifiers {
 		for (int i = 0; i < sigs.size(); ++i) {
 			if (sigs.get(i).isTopLevel()) {
 				for (int j = i+1; j < sigs.size(); ++j) {
-					if (sigs.get(j).isTopLevel())
+					if (sigs.get(j).isTopLevel()){
+						target.declareDisjoint(1);
 						target.addAssertion(call("disjoint_1", sigs.get(i), sigs.get(j)));
+					}
 				}
 				target.addRule(Taclet.disjointTaclet(id(Sig.SIGINT), id(sigs.get(i))));
 			}
