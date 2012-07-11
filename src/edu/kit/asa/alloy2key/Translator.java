@@ -1281,24 +1281,11 @@ public class Translator implements Identifiers {
 		TermVar[] atoms = new TermVar[arity];
 		for (int i = 0; i < arity; ++i) {
 			atoms[i] = Term.var(newVar("x"+i,body,bound));
+			atoms[i].setSort("Atom");
 		}
-		Term q;
-		switch (arity) {
-		case 1:
-			q = atoms[0];
-			break;
-		case 2:
-			q = Term.call ("binary", atoms);
-			break;
-		case 3:
-			q = Term.call ("ternary", atoms);
-			break;
-		default:
-			throw new RuntimeException ("Expressions of arity highter than 3 are currently not supported.");
-		}
-		
-		Term f = Term.call("in",q,bound).implies(body.fill(a2r(arity,q)));		
-		f = f.forall("Atom", atoms);
+				
+		Term f = Term.reverseIn(bound, atoms).implies(body.fill(a2r(arity, atoms)));		
+		f = f.forall(atoms);
 		return f;
 	}
 	
