@@ -425,7 +425,8 @@ public class KeYFile {
 		TermVar[] a = makeTuple(rar, "a");
 		Term aInR = Term.reverseIn(r, a);
 		Term firstFewOfA2Rel = Term.call("a2r_"+lar, Arrays.copyOf(a, lar));
-		Term lastInJoin = Term.reverseIn(Term.call("join_" + lar + "x" + rar, firstFewOfA2Rel, r), a[rar-1]);
+		TermVar[] rest = Arrays.copyOfRange(a, lar, rar);
+		Term lastInJoin = Term.reverseIn(Term.call("join_" + lar + "x" + rar, firstFewOfA2Rel, r), rest);
 		Term membershipImpliesResult = aInR.implies(lastInJoin);
 		// there
 		TermVar[] argList = Arrays.copyOf(a, a.length + 1);
