@@ -1118,21 +1118,21 @@ public class Translator implements Identifiers {
 	 * conjunction of the multiplicity constraints
 	 * @throws ModelException 
 	 */
-	private Term generateMultConstrRight (Term t, List<Pair<Term,Integer>> typing, List<Mult> mults) throws ModelException {
+	private Term generateMultConstrRight (SpecialJoin t, List<Pair<Term,Integer>> typing, List<Mult> mults) throws ModelException {
 		Term conj = Term.TRUE;
 		// we have a multiplicity annotation
 		switch (mults.get(0)) {
 		case ONE:
-			// TODO: declareOne
-			conj = conj.and (Term.call("one", t));
+			target.declareOne(t.arity);
+			conj = conj.and (Term.call("one_" + t.arity, t));
 			break;
 		case SOME:
-			// TODO: declare
-			conj = conj.and (Term.call("some", t));
+			target.declareSome(t.arity);
+			conj = conj.and (Term.call("some_" + t.arity, t));
 			break;
 		case LONE:
-			// TODO: declare
-			conj = conj.and (Term.call("lone", t));
+			target.declareLone(t.arity);
+			conj = conj.and (Term.call("lone_" + t.arity, t));
 			break;
 		case SET:
 			break;
@@ -1166,18 +1166,21 @@ public class Translator implements Identifiers {
 	 * conjunction of the multiplicity constraints
 	 * @throws ModelException 
 	 */
-	private Term generateMultConstrLeft (Term t, List<Pair<Term,Integer>> typing, List<Mult> mults) throws ModelException {
+	private Term generateMultConstrLeft (SpecialJoin t, List<Pair<Term,Integer>> typing, List<Mult> mults) throws ModelException {
 		Term conj = Term.TRUE;
 		// we have a multiplicity annotation
 		switch (mults.get(mults.size()-1)) {
 		case ONE:
-			conj = conj.and (Term.call("one", t)); // TODO: declare
+			target.declareOne(t.arity);
+			conj = conj.and (Term.call("one_" + t.arity, t));
 			break;
 		case SOME:
-			conj = conj.and (Term.call("some", t)); // TODO: declare
+			target.declareSome(t.arity);
+			conj = conj.and (Term.call("some_" + t.arity, t));
 			break;
 		case LONE:
-			conj = conj.and (Term.call("lone", t)); // TODO: declare
+			target.declareLone(t.arity);
+			conj = conj.and (Term.call("lone_" + t.arity, t));
 			break;
 		case SET:
 			break;
@@ -1646,10 +1649,10 @@ public class Translator implements Identifiers {
 		private Term sub;
 		private int arity;
 		
-		public static Term right(Term sub, int ar) {
+		public static SpecialJoin right(Term sub, int ar) {
 			return new SpecialJoin(true, sub, ar);
 		}
-		public static Term left (Term sub, int ar) {
+		public static SpecialJoin left (Term sub, int ar) {
 			return new SpecialJoin(false, sub, ar);
 		}
 		
