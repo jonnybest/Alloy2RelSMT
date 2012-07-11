@@ -609,22 +609,20 @@ public class Translator implements Identifiers {
 	private void translateFunc(Func f) throws Err, ModelException {
 		Taclet tac = new Taclet(id(f)+"_def");
 		Term[] params = new Term[f.params().size()];
-		StringBuffer paramDecl = new StringBuffer();
+		String[] paramDecl = new String[f.params().size()];
 		for (int i = 0; i < f.params().size(); i++) {
 			ExprVar v = f.params().get(i);
 			pushId(v);
 			tac.addSchemaVar("Rel"+arity(v), id(v));
 			params[i] = term(v);
-			if (paramDecl.length() > 0)
-				paramDecl.append(",");
-			paramDecl.append("Rel"+arity(v));
+			paramDecl[i] = "Rel"+arity(v);
 		}
 		if (f.isPred) {
-			target.addPredicate(String.format("%s%s;",id(f),
-					(f.count() == 0) ? "" : ("("+paramDecl+")")));
+			target.addFunction("Bool",id(f),
+					(f.count() == 0) ? null : paramDecl);
 		} else {
-			target.addFunction(String.format("Rel%d %s%s;",arity(f.returnDecl),id(f),
-					(f.count() == 0) ? "" : ("("+paramDecl+")")));
+			target.addFunction("Rel" + arity(f.returnDecl),id(f),
+					(f.count() == 0) ? null : paramDecl);
 		}
 		tac.setFind(Term.call(id(f), params));
 		tac.setReplacewith(translateExpr(f.getBody()));
