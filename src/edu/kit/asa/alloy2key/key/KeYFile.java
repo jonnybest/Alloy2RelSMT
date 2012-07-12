@@ -421,23 +421,39 @@ public class KeYFile {
 	}
 
 	private void assertLemmasJoin(int lar, int rar) throws ModelException {
-		if (lar > rar) {
-			throw new ModelException("Right hand joins are currently not supported.");
+		if(rar < lar){	
+			TermVar r = TermVar.var("Rel"+rar, "r");
+			TermVar[] a = makeTuple(rar, "a");
+			Term aInR = Term.reverseIn(r, a);
+			Term firstFewOfA2Rel = Term.call("a2r_"+lar, Arrays.copyOf(a, lar));
+			TermVar[] rest = Arrays.copyOfRange(a, lar, rar);
+			Term lastInJoin = Term.reverseIn(Term.call("join_" + lar + "x" + rar, firstFewOfA2Rel, r), rest);
+			Term membershipImpliesResult = aInR.implies(lastInJoin);
+			// there
+			TermVar[] argList = Arrays.copyOf(a, a.length + 1);
+			argList[a.length] = r;
+			this.addLemma(membershipImpliesResult.forall(argList));
+			// and back
+			Term resultImpliesMembership = lastInJoin.implies(aInR);
+			this.addLemma(resultImpliesMembership.forall(argList));
 		}
-		TermVar r = TermVar.var("Rel"+rar, "r");
-		TermVar[] a = makeTuple(rar, "a");
-		Term aInR = Term.reverseIn(r, a);
-		Term firstFewOfA2Rel = Term.call("a2r_"+lar, Arrays.copyOf(a, lar));
-		TermVar[] rest = Arrays.copyOfRange(a, lar, rar);
-		Term lastInJoin = Term.reverseIn(Term.call("join_" + lar + "x" + rar, firstFewOfA2Rel, r), rest);
-		Term membershipImpliesResult = aInR.implies(lastInJoin);
-		// there
-		TermVar[] argList = Arrays.copyOf(a, a.length + 1);
-		argList[a.length] = r;
-		this.addLemma(membershipImpliesResult.forall(argList));
-		// and back
-		Term resultImpliesMembership = lastInJoin.implies(aInR);
-		this.addLemma(resultImpliesMembership.forall(argList));
+		else {
+			int uniquerows = lar + rar -1;
+			TermVar r = TermVar.var("Rel"+lar, "r");
+			TermVar[] atoms = makeTuple(uniquerows, "a");
+			TermVar[] relmembers = Arrays.copyOf(atoms, lar);
+			TermVar[] singles = Arrays.copyOfRange(atoms, lar, uniquerows);
+			TermVar[] result = new TermVar[uniquerows - 1];
+			for (int i = 0; i < relmembers.length -1; i++) {
+				result[i] = relmembers[i];
+			}
+			for (int i = 1; i < singles.length; i++) {
+				result[relmembers.length - 2 + i] = singles[i];
+			}
+			Term aInR = Term.reverseIn(r, relmembers);
+			Term relOfSingles = Term.call("a2r_"+lar, singles);
+			Term lastInJoin = Term.reverseIn(Term.call("join_" + lar + "x" + rar, firstFewOfA2Rel, r), rest);
+		}
 	}
 
 	public void declareUnion(int ar) throws ModelException {
