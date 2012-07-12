@@ -421,6 +421,9 @@ public class KeYFile {
 	}
 
 	private void assertLemmasJoin(int lar, int rar) throws ModelException {
+		if (lar > rar) {
+			throw new ModelException("Right hand joins are currently not supported.");
+		}
 		TermVar r = TermVar.var("Rel"+rar, "r");
 		TermVar[] a = makeTuple(rar, "a");
 		Term aInR = Term.reverseIn(r, a);
