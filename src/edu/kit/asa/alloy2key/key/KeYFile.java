@@ -421,39 +421,38 @@ public class KeYFile {
 	}
 
 	private void assertLemmasJoin(int lar, int rar) throws ModelException {
-		if(rar < lar){	
-			TermVar r = TermVar.var("Rel"+rar, "r");
-			TermVar[] a = makeTuple(rar, "a");
-			Term aInR = Term.reverseIn(r, a);
-			Term firstFewOfA2Rel = Term.call("a2r_"+lar, Arrays.copyOf(a, lar));
-			TermVar[] rest = Arrays.copyOfRange(a, lar, rar);
-			Term lastInJoin = Term.reverseIn(Term.call("join_" + lar + "x" + rar, firstFewOfA2Rel, r), rest);
-			Term membershipImpliesResult = aInR.implies(lastInJoin);
-			// there
-			TermVar[] argList = Arrays.copyOf(a, a.length + 1);
-			argList[a.length] = r;
-			this.addLemma(membershipImpliesResult.forall(argList));
-			// and back
-			Term resultImpliesMembership = lastInJoin.implies(aInR);
-			this.addLemma(resultImpliesMembership.forall(argList));
+		// lar <= rar is default case
+		int uniquerows = lar + rar -1;
+		int largerarity = lar > rar ? lar : rar;
+		TermVar r = TermVar.var("Rel"+largerarity, "r");
+		TermVar[] atoms = makeTuple(uniquerows, "a");
+		TermVar[] relmembers = Arrays.copyOf(atoms, largerarity);
+		TermVar[] singles = Arrays.copyOfRange(atoms, largerarity - 1, uniquerows);
+		TermVar[] result = new TermVar[uniquerows - 1];
+		for (int i = 0; i < relmembers.length -1; i++) {
+			result[i] = relmembers[i];
+		}
+		for (int i = 1; i < singles.length; i++) {
+			result[relmembers.length - 2 + i] = singles[i];
+		}
+		Term lhs, rhs;
+		if (lar > rar) {
+			lhs = r;
+			rhs = Term.call("a2r_"+lar, singles);
 		}
 		else {
-			int uniquerows = lar + rar -1;
-			TermVar r = TermVar.var("Rel"+lar, "r");
-			TermVar[] atoms = makeTuple(uniquerows, "a");
-			TermVar[] relmembers = Arrays.copyOf(atoms, lar);
-			TermVar[] singles = Arrays.copyOfRange(atoms, lar, uniquerows);
-			TermVar[] result = new TermVar[uniquerows - 1];
-			for (int i = 0; i < relmembers.length -1; i++) {
-				result[i] = relmembers[i];
-			}
-			for (int i = 1; i < singles.length; i++) {
-				result[relmembers.length - 2 + i] = singles[i];
-			}
-			Term aInR = Term.reverseIn(r, relmembers);
-			Term relOfSingles = Term.call("a2r_"+lar, singles);
-			Term lastInJoin = Term.reverseIn(Term.call("join_" + lar + "x" + rar, firstFewOfA2Rel, r), rest);
+			// interestingly, the lemma holds for both cases if we just reverse the arrays
+			atoms = Util.reverse(atoms); // not really needed, but looks nicer
+			relmembers = Util.reverse(relmembers);
+			singles = Util.reverse(singles);
+			result = Util.reverse(result);
+			lhs = Term.call("a2r_"+lar, singles);
+			rhs = r;
 		}
+		Term aInR = Term.reverseIn(r, relmembers);
+		Term resultInJoin = Term.reverseIn(Term.call("join_" + lar + "x" + rar, lhs, rhs), result);
+		this.addLemma(resultInJoin.implies(aInR).forall(Util.concat(atoms, r)));
+		this.addLemma(aInR.implies(resultInJoin).forall(Util.concat(atoms, r)));
 	}
 
 	public void declareUnion(int ar) throws ModelException {

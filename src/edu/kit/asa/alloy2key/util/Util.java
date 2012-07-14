@@ -17,6 +17,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.jar.JarEntry;
 
+import edu.kit.asa.alloy2key.key.Term;
+import edu.kit.asa.alloy2key.key.TermVar;
+
 /**
  * @author Ulrich Geilmann
  */
@@ -165,6 +168,14 @@ public class Util {
 	public static <T> T[] concat(T[] first, T second) {
 		T[] result = Arrays.copyOf(first, first.length + 1);
 		result[first.length] = second;
+		return result;
+	}
+
+	public static TermVar[] reverse(TermVar[] reverseme) {
+		TermVar[] result = new TermVar[reverseme.length];
+		for(int i = 0; i < reverseme.length; i++) {
+		    result[i] = reverseme[reverseme.length - 1 - i];
+		}
 		return result;
 	}
 }
