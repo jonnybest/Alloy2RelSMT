@@ -609,13 +609,13 @@ public class Translator implements Identifiers {
 	 * @ 
 	 */
 	private void translateFunc(Func f) throws Err, ModelException {
-		Taclet tac = new Taclet(id(f)+"_def");
 		Term[] params = new Term[f.params().size()];
+		List<TermVar> paramList = new LinkedList<TermVar>();
 		String[] paramDecl = new String[f.params().size()];
 		for (int i = 0; i < f.params().size(); i++) {
 			ExprVar v = f.params().get(i);
 			pushId(v);
-			tac.addSchemaVar("Rel"+arity(v), id(v));
+			paramList.add(TermVar.var("Rel"+arity(v), id(v)));
 			params[i] = term(v);
 			paramDecl[i] = "Rel"+arity(v);
 		}
@@ -626,10 +626,9 @@ public class Translator implements Identifiers {
 			target.addFunction("Rel" + arity(f.returnDecl),id(f),
 					(f.count() == 0) ? null : paramDecl);
 		}
-		tac.setFind(Term.call(id(f), params));
-		tac.setReplacewith(translateExpr(f.getBody()));
+		Term body = Term.call(id(f), params).equal(translateExpr(f.getBody())).forall(paramList);
 		popId(params.length);
-		target.addRule (tac);
+		target.addAssertion(body);
 	}
 	
 	/**
