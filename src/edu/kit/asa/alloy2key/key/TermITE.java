@@ -41,7 +41,7 @@ public class TermITE extends Term {
 	/** {@inheritDoc} */
 	@Override
 	public String toString() {
-		return "\\if("+c+") \\then("+t1+") \\else("+t2+")";
+		return "(ite "+c+" "+t1+" "+t2+")";
 	}
 
 	/** {@inheritDoc} */
