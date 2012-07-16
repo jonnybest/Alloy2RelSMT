@@ -505,20 +505,20 @@ public class Translator implements Identifiers {
 			// sig's multiplicity is one // TODO smt-fy
 			if (s.isOne != null)
 			{
-				target.declareOne(1);
+				target.declareOne();
 				target.addAssertion(Term.call("one_1", term(s)));
 			}
 			
 			// sig's multiplicity is lone // TODO smt-fy
 			if (s.isLone != null)
 			{
-				target.declareLone(1);
+				target.declareLone();
 				target.addAssertion(Term.call("lone_1", term(s)));
 			}
 			// sig's multiplicity is some // TODO smt-fy
 			if (s.isSome != null)
 			{
-				target.declareSome(1);
+				target.declareSome();
 				target.addAssertion(Term.call("some_1", term(s)));
 			}
 			
@@ -810,16 +810,16 @@ public class Translator implements Identifiers {
 			case NOT:                                                // !c
 				return e_.not();
 			case NO:                                                 // no e
-				target.declareSome(arity);
+				target.declareSome();
 				return Term.call("some_" + arity, e_).not();
 			case SOME:                                               // some e
-				target.declareSome(arity);
+				target.declareSome();
 				return Term.call("some_" + arity, e_);
 			case LONE:                                               // lone e
-				target.declareLone(arity);
+				target.declareLone();
 				return Term.call("lone_" + arity, e_);
 			case ONE:                                                // one e
-				target.declareOne(arity);
+				target.declareOne();
 				return Term.call("one_" + arity, e_);
 			case CARDINALITY:                                        // # e
 				target.declareCardinality(arity);
@@ -1124,16 +1124,16 @@ public class Translator implements Identifiers {
 		// we have a multiplicity annotation
 		switch (mults.get(0)) {
 		case ONE:
-			target.declareOne(t.arity);
-			conj = conj.and (Term.call("one_" + t.arity, t));
+			target.declareOne();
+			conj = conj.and (Term.call("one_1", t));
 			break;
 		case SOME:
-			target.declareSome(t.arity);
-			conj = conj.and (Term.call("some_" + t.arity, t));
+			target.declareSome();
+			conj = conj.and (Term.call("some_1", t));
 			break;
 		case LONE:
-			target.declareLone(t.arity);
-			conj = conj.and (Term.call("lone_" + t.arity, t));
+			target.declareLone();
+			conj = conj.and (Term.call("lone_1", t));
 			break;
 		case SET:
 			break;
@@ -1172,16 +1172,16 @@ public class Translator implements Identifiers {
 		// we have a multiplicity annotation
 		switch (mults.get(mults.size()-1)) {
 		case ONE:
-			target.declareOne(t.arity);
-			conj = conj.and (Term.call("one_" + t.arity, t));
+			target.declareOne();
+			conj = conj.and (Term.call("one_1", t));
 			break;
 		case SOME:
-			target.declareSome(t.arity);
-			conj = conj.and (Term.call("some_" + t.arity, t));
+			target.declareSome();
+			conj = conj.and (Term.call("some_1", t));
 			break;
 		case LONE:
-			target.declareLone(t.arity);
-			conj = conj.and (Term.call("lone_" + t.arity, t));
+			target.declareLone();
+			conj = conj.and (Term.call("lone_1", t));
 			break;
 		case SET:
 			break;
@@ -1221,25 +1221,25 @@ public class Translator implements Identifiers {
 			HashMap<ExprHasName,Term> letBindings, HashSet<ExprHasName> atomVars,
 			boolean defaultsToOne) throws Err, ModelException {
 		// handle multiplicity of set-valued declaration expressions
-		int arity = declExpr.type().arity();
+		// multiplicity constraints are always of arity = 1
 		if (declExpr.mult == 1) {
 			switch (declExpr.mult()) {
 			case SOMEOF:
-				target.declareSome(arity);
-				return Term.call("some_" + arity, t);
+				target.declareSome();
+				return Term.call("some_1", t);
 			case LONEOF:
-				target.declareLone(arity);
-				return Term.call("lone_" + arity, t);
+				target.declareLone();
+				return Term.call("lone_1", t);
 			case ONEOF:
-				target.declareOne(arity);
-				return Term.call("one_" + arity, t);
+				target.declareOne();
+				return Term.call("one_1", t);
 			case SETOF:
 				return Term.TRUE;
 			}
 		} else if (arity(declExpr) == 1 && defaultsToOne) {
 			// no explicit multiplicity defaults to one
-			target.declareOne(arity);
-			return Term.call("one_" + arity, t);
+			target.declareOne();
+			return Term.call("one_1", t);
 
 			
 		// handle multiplicity of relation-valued fields

@@ -324,10 +324,12 @@ public class KeYFile {
 
 	/** adds a declaration and theory for "none" 
 	 * @param arity arity of none
+	 * @throws ModelException 
 	 */
-	public void declareNone(int ar) {
+	public void declareNone(int ar) throws ModelException {
 		this.addFunction("Bool", "none_" + ar, "Rel" + ar);
 		//TODO: add axiom
+		throw new ModelException("None has not yet been implemented.");
 	}
 
 	public void declareProduct(int lar, int rar) throws ModelException {
@@ -478,27 +480,26 @@ public class KeYFile {
 		}
 	}
 
-	/** declares and defines the operator "one" for a given arity.
+	/** declares and defines the operator "one" for arity = 1.
 	 *  "one" means "one and only one"
-	 * @param ar arity of the expression
 	 * @throws ModelException 
 	 */
-	public void declareOne(int ar) throws ModelException  {		
+	public void declareOne() throws ModelException  {
 		List<TermVar> argList = new LinkedList<TermVar>();
-		declareRel(ar);
-		String name = "one_" + ar;
-		String relar = "Rel" + ar;
+		declareRel(1);
+		String name = "one_1";
+		String relar = "Rel1";
 		if(this.addFunction("Bool", name, relar))
 		{
 			// add axiom
 			TermVar X = TermVar.var(relar, "X");
 			
-			TermVar[] aTuple = makeTuple(ar, "a");
+			TermVar[] aTuple = makeTuple(1, "a");
 			argList.addAll(Arrays.asList(aTuple));
 			
 			Term notEmpty = Term.exists(aTuple, Term.in(argList, X));
 			
-			TermVar[] bTuple = makeTuple(ar, "b");
+			TermVar[] bTuple = makeTuple(1, "b");
 			argList.addAll(Arrays.asList(bTuple));
 			
 			Term one = Term.call(name, X);			
@@ -516,24 +517,23 @@ public class KeYFile {
 		}
 	}
 
-	/** declares and defines the operator "lone" for a given arity.
+	/** declares and defines the operator "lone" for arity 1.
 	 *  "lone" means "at most one"
-	 * @param ar arity of the expression
 	 * @throws ModelException 
 	 */
-	public void declareLone(int ar) throws ModelException {
+	public void declareLone() throws ModelException {
 		List<TermVar> argList = new LinkedList<TermVar>();
-		declareRel(ar);
-		String name = "lone_" + ar;
-		String relar = "Rel" + ar;
+		declareRel(1);
+		String name = "lone_1";
+		String relar = "Rel1";
 		if(this.addFunction("Bool", name, relar))
 		{
 			// add axiom
 			TermVar X = TermVar.var(relar, "X");
 			
-			TermVar[] aTuple = makeTuple(ar, "a");
+			TermVar[] aTuple = makeTuple(1, "a");
 			argList.addAll(Arrays.asList(aTuple));
-			TermVar[] bTuple = makeTuple(ar, "b");
+			TermVar[] bTuple = makeTuple(1, "b");
 			argList.addAll(Arrays.asList(bTuple));
 			
 			Term lone = Term.call(name, X);
@@ -550,16 +550,21 @@ public class KeYFile {
 		}
 	}
 
-	public void declareSome(int ar) throws ModelException {
-		declareRel(ar);
-		String name = "some_" + ar;
-		String relar = "Rel" + ar;
+	/** declares the multiplicity constraint "some". 
+	 *  Does not take any parameters because multiplicity constraints are always of arity = 1  
+	 * 
+	 * @throws ModelException
+	 */
+	public void declareSome() throws ModelException {
+		declareRel(1);
+		String name = "some_1";
+		String relar = "Rel1";
 		if(this.addFunction("Bool", name, relar))
 		{
 			// axiom: some means that there is any Atom/Tuple inside the argument expression
 			TermVar A = TermVar.var(relar, "A");
 			
-			TermVar[] aTuple = makeTuple(ar, "a");
+			TermVar[] aTuple = makeTuple(1, "a");
 			
 			Term some = Term.call(name, A);
 			Term xInA = Term.reverseIn(A, aTuple);
@@ -604,6 +609,12 @@ public class KeYFile {
 		}
 	}
 
+	/**
+	 * Adds lemmas for transitive closure to work properly. 
+	 * These lemmas are the result of experimentation with the z3 solver. 
+	 * @param name
+	 * @throws ModelException
+	 */
 	private void assertLemmasTCL(String name) throws ModelException {
 		TermVar a1 = TermVar.var("Atom", "a1");
 		TermVar a2 = TermVar.var("Atom", "a2");		
