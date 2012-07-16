@@ -416,6 +416,7 @@ public class KeYFile {
 			arglist.add(B);    									// quantify over B
 			arglist.addAll(y); 									// quantify over all atoms in the y-tuple 
 			Term axiom = somethingInTheJoin.iff((xInA.and(xyInB)).exists(x)).forall(arglist);
+			axiom.setComment("axiom for " + name);
 			this.addAssertion(axiom);
 			// to work properly, we also add some neccessary lemmas
 			assertLemmasJoin(lar, rar);
@@ -452,9 +453,14 @@ public class KeYFile {
 			rhs = r;
 		}
 		Term aInR = Term.reverseIn(r, relmembers);
-		Term resultInJoin = Term.reverseIn(Term.call("join_" + lar + "x" + rar, lhs, rhs), result);
-		this.addLemma(resultInJoin.implies(aInR).forall(Util.concat(atoms, r)));
-		this.addLemma(aInR.implies(resultInJoin).forall(Util.concat(atoms, r)));
+		String name = "join_" + lar + "x" + rar;
+		Term resultInJoin = Term.reverseIn(Term.call(name, lhs, rhs), result);
+		Term lemma = resultInJoin.implies(aInR).forall(Util.concat(atoms, r));
+		lemma.setComment("1. lemma for "+name+". direction: join to in");
+		this.addLemma(lemma);
+		lemma = aInR.implies(resultInJoin).forall(Util.concat(atoms, r));
+		lemma.setComment("2. lemma for "+name+". direction: in to join");
+		this.addLemma(lemma);
 	}
 
 	public void declareUnion(int ar) throws ModelException {

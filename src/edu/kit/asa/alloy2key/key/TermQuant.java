@@ -67,6 +67,9 @@ public class TermQuant extends Term {
 	@Override
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
+		if (comment != null) {
+			buf.append("; "+comment+"\n");			
+		}
 		switch (quant) {
 		case FORALL:
 			buf.append ("(forall (");

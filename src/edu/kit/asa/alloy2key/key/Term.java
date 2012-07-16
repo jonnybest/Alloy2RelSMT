@@ -10,6 +10,8 @@ import edu.mit.csail.sdg.alloy4.Pair;
 /** represents a SMT expression **/
 public abstract class Term {
 	
+	protected String comment = null;
+	
 	/**
 	 * check whether a variable occurs in this term
 	 * @param id
@@ -537,5 +539,9 @@ public abstract class Term {
 	public static Term call(String name, List<TermVar> params) throws ModelException {
 		TermVar[] paramArray = new TermVar[params.size()];
 		return call(name, params.toArray(paramArray));
+	}
+	
+	public void setComment(String comment){
+		this.comment = comment;
 	}
 }
