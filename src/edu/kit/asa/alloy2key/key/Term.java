@@ -198,7 +198,7 @@ public abstract class Term {
 	
 	/**
 	 * @return
-	 * term representing <code>\if (this) \then sub1 \else sub2
+	 * term representing <code>(ite this sub1 sub2)</code>
 	 */
 	public Term ite(Term sub1, Term sub2) {
 		return new TermITE(this,sub1,sub2);
