@@ -1092,7 +1092,7 @@ public class Translator implements Identifiers {
 
 	private Term expressMembership(int ar1, Term e1, Term e2) throws ModelException {
 		Term membershipCall;
-		if(e1 instanceof TermCall && ((TermCall)e1).equals( a2r(ar1, ((TermCall)e1).params())))
+		if(e1 instanceof TermCall && ((TermCall)e1).equals( target.a2r(ar1, ((TermCall)e1).params())))
 		{					
 			target.declareIn(ar1);
 			membershipCall = Term.call("in_"+ar1, ((TermCall)e1).params()[0], e2);	
@@ -1288,7 +1288,7 @@ public class Translator implements Identifiers {
 			atoms[i].setSort("Atom");
 		}
 				
-		Term f = Term.reverseIn(bound, atoms).implies(body.fill(a2r(arity, atoms)));		
+		Term f = Term.reverseIn(bound, atoms).implies(body.fill(target.a2r(arity, atoms)));		
 		f = f.forall(atoms);
 		return f;
 	}
@@ -1474,7 +1474,7 @@ public class Translator implements Identifiers {
 	private Term term(ExprHasName e, HashSet<ExprHasName> atomVars) throws ModelException {
 		if (e instanceof ExprVar) {
 			if (atomVars.contains(e))
-				return a2r(arity(e), Term.var(id(e)));
+				return target.a2r(arity(e), Term.var(id(e)));
 			else if (e.label.equals("this"))
 				return THISTerm();
 			else
@@ -1516,19 +1516,6 @@ public class Translator implements Identifiers {
 	private Term none(int ar) throws ModelException {
 		target.declareNone(ar);
 		return Term.call("none_"+ar);
-	}
-	
-	private static Term a2r(int ar, Term ... sub) throws ModelException {
-		declareA2r(ar);
-		return Term.call("a2r_"+ar, sub);
-	}
-
-	/** static helper function to "declare" the converter function statically.
-	 * look inside for whatever mean trick I decided to use 
-	 * @throws ModelException */
-	private static void declareA2r(int ar) throws ModelException {
-		// "target" is now static
-		Translator.target.declareA2r(ar);
 	}
 
 	private Term univ(int ar) throws ModelException {
@@ -1698,11 +1685,11 @@ public class Translator implements Identifiers {
 			int ar = arity;
 			if (right) {
 				for (int i = terms.length-1; i >= 0; --i) {
-					ret = Term.call("join_"+(ar--)+"x1", ret, a2r(1,terms[i]));
+					ret = Term.call("join_"+(ar--)+"x1", ret, target.a2r(1,terms[i]));
 				}
 			} else {
 				for (int i = 0; i < terms.length; ++i) {
-					ret = Term.call("join_1x"+(ar--), a2r(1,terms[i]), ret);
+					ret = Term.call("join_1x"+(ar--), target.a2r(1,terms[i]), ret);
 				}
 			}
 			return ret;

@@ -441,6 +441,7 @@ public class KeYFile {
 		Term lhs, rhs;
 		if (lar > rar) {
 			lhs = r;
+			declareA2r(lar);
 			rhs = Term.call("a2r_"+lar, singles);
 		}
 		else {
@@ -449,7 +450,9 @@ public class KeYFile {
 			relmembers = Util.reverse(relmembers);
 			singles = Util.reverse(singles);
 			result = Util.reverse(result);
-			lhs = Term.call("a2r_"+lar, singles);
+			declareA2r(singles.length);
+			lhs = Term.call("a2r_"+singles.length, singles);
+			lhs.comment = "(swapped)";
 			rhs = r;
 		}
 		Term aInR = Term.reverseIn(r, relmembers);
@@ -773,5 +776,10 @@ public class KeYFile {
 			Term axiom = Term.reverseIn(Term.call("iden"), a0, a0);			
 			this.addAssertion(axiom.forall(a0));
 		}
+	}
+
+	public Term a2r(int ar, Term ... sub) throws ModelException {
+		declareA2r(ar);
+		return Term.call("a2r_"+ar, sub);
 	}
 }
