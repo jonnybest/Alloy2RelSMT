@@ -36,10 +36,7 @@ public class TermBinOp extends Term {
 	
 	@Override
 	public String toString() {
-		if(comment != null)
-			return "; " + comment + "\n" + buildTerm (left.toString(), right.toString());
-		else
-			return buildTerm (left.toString(), right.toString());
+		return getFormattedComment() + buildTerm (left.toString(), right.toString());
 	}
 
 	/** {@inheritDoc} */

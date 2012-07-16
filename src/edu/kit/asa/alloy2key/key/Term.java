@@ -12,6 +12,16 @@ public abstract class Term {
 	
 	protected String comment = null;
 	
+	protected String getFormattedComment()
+	{
+		if (comment != null) {
+			return "; " + comment + "\n";
+		}
+		else {
+			return "";
+		}
+	}
+	
 	/**
 	 * check whether a variable occurs in this term
 	 * @param id
