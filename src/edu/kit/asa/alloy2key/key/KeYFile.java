@@ -441,8 +441,7 @@ public class KeYFile {
 		Term lhs, rhs;
 		if (lar > rar) {
 			lhs = r;
-			declareA2r(lar);
-			rhs = Term.call("a2r_"+lar, singles);
+			rhs = a2r(singles);
 		}
 		else {
 			// interestingly, the lemma holds for both cases if we just reverse the arrays
@@ -451,7 +450,7 @@ public class KeYFile {
 			singles = Util.reverse(singles);
 			result = Util.reverse(result);
 			declareA2r(singles.length);
-			lhs = Term.call("a2r_"+singles.length, singles);
+			lhs = a2r(singles);
 			lhs.comment = "(swapped)";
 			rhs = r;
 		}
@@ -464,6 +463,10 @@ public class KeYFile {
 		lemma = aInR.implies(resultInJoin).forall(Util.concat(atoms, r));
 		lemma.setComment("2. lemma for "+name+". direction: in to join");
 		this.addLemma(lemma);
+	}
+
+	private Term a2r(TermVar[] vars) throws ModelException {
+		return a2r(vars.length, vars);
 	}
 
 	public void declareUnion(int ar) throws ModelException {
