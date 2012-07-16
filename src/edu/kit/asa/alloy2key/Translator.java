@@ -1125,15 +1125,15 @@ public class Translator implements Identifiers {
 		switch (mults.get(0)) {
 		case ONE:
 			target.declareOne(t.arity);
-			conj = conj.and (Term.call("one_1", t));
+			conj = conj.and (Term.call("one_" + t.arity, t));
 			break;
 		case SOME:
 			target.declareSome(t.arity);
-			conj = conj.and (Term.call("some_1", t));
+			conj = conj.and (Term.call("some_" + t.arity, t));
 			break;
 		case LONE:
 			target.declareLone(t.arity);
-			conj = conj.and (Term.call("lone_1", t));
+			conj = conj.and (Term.call("lone_" + t.arity, t));
 			break;
 		case SET:
 			break;
@@ -1173,15 +1173,15 @@ public class Translator implements Identifiers {
 		switch (mults.get(mults.size()-1)) {
 		case ONE:
 			target.declareOne(t.arity);
-			conj = conj.and (Term.call("one_1", t));
+			conj = conj.and (Term.call("one_" + t.arity, t));
 			break;
 		case SOME:
 			target.declareSome(t.arity);
-			conj = conj.and (Term.call("some_1", t));
+			conj = conj.and (Term.call("some_" + t.arity, t));
 			break;
 		case LONE:
 			target.declareLone(t.arity);
-			conj = conj.and (Term.call("lone_1", t));
+			conj = conj.and (Term.call("lone_" + t.arity, t));
 			break;
 		case SET:
 			break;
