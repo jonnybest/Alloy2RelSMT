@@ -149,18 +149,22 @@ public class TermQuant extends Term {
 	}
 
 	public static Term createSortedTerm(Quant quantifier, List<TermVar> vars, Term sub) {
-		List<Pair<String, String>> typedVars = new LinkedList<Pair<String,String>>();
-		for(TermVar var : vars){
-			typedVars.add(new Pair<String, String>(var.getName(), var.getSort()));
-		}
-		if (sub instanceof TermQuant && ((TermQuant) sub).quant == quantifier) {
-			// if the quantifiers are equal, just extend the variable list
-			TermQuant q = (TermQuant) sub;
-			typedVars.addAll(q.vars);
-			return new TermQuant(quantifier, typedVars, q.sub);
-		}
+		if(sub == TRUE)
+			return sub;
 		else {
-			return new TermQuant(quantifier, typedVars, sub);
+			List<Pair<String, String>> typedVars = new LinkedList<Pair<String,String>>();
+			for(TermVar var : vars){
+				typedVars.add(new Pair<String, String>(var.getName(), var.getSort()));
+			}
+			if (sub instanceof TermQuant && ((TermQuant) sub).quant == quantifier) {
+				// if the quantifiers are equal, just extend the variable list
+				TermQuant q = (TermQuant) sub;
+				typedVars.addAll(q.vars);
+				return new TermQuant(quantifier, typedVars, q.sub);
+			}
+			else {
+				return new TermQuant(quantifier, typedVars, sub);
+			}
 		}
 	}	
 }

@@ -438,10 +438,7 @@ public abstract class Term {
 	 * @return this expression, quantified with respect to sort and vars
 	 */
 	public Term forall(String sort, TermVar[] vars) {
-		if(this == TRUE)
-			return this;
-		else
-			return forall(sort, vars, this);
+		return forall(sort, vars, this);
 	}
 
 	/** create a single sorted "forall" expression
