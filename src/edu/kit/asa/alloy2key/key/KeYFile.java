@@ -20,6 +20,7 @@ import edu.kit.asa.alloy2key.util.Util;
  * 
  * @author Ulrich Geilmann
  * @author Jonny
+ * @author Aboubakr Achraf El Ghazi
  *
  */
 public class KeYFile {
@@ -170,7 +171,11 @@ public class KeYFile {
 //		for (KeYModule m: modules) {
 //			out.println ("\\include \"theory/"+m.filename()+"\";");
 //		}
-		out.println ("(set-logic UFBV)\n(set-option :macro-finder true)");
+		out.println ("(set-logic AUFLIA)\n(set-option :macro-finder true)");
+		
+		// Only for sanity checks
+		out.println ("(set-option :produce-unsat-cores true)");
+		
 		//
 		out.println (";; sorts");
 		out.println (Util.join(sorts, "\n"));
@@ -179,13 +184,14 @@ public class KeYFile {
 		out.println (Util.join(funcs, "\n"));
 		out.println (";; --end functions\n");
 		out.println (";; assertions");
+		int i = 0;
 		for (Term a : asserts) {
-			out.println (String.format("(assert\n  %s\n)", a.toString()));
+			out.println (String.format("(assert \n (! \n  %s \n %s \n ) \n )", a.toString(), ":named a" + i++));
 		}
 		out.println (";; --end assertions\n");
 		out.println (";; lemmas");
 		for (Term a : lemmas) {
-			out.println (String.format("(assert\n  %s\n)", a.toString()));
+			out.println (String.format("(assert\n (! \n  %s \n %s \n ) \n )", a.toString(), ":named a" + i++));
 		}
 		out.println (";; --end lemmas\n");
 		
@@ -205,6 +211,10 @@ public class KeYFile {
 		out.println (";; -- END key stuff --");
 		
 		out.println ("(check-sat)");
+		
+		// Only for sanity checks
+		out.println ("(get-unsat-core)");
+		
 		out.close();
 	}
 
