@@ -195,7 +195,7 @@ public class Main {
 		if (destFile.isDirectory()) {
 			destDir = destFile;
 			String n = new File (src).getName();
-			destFile = new File (destDir,n+".key");
+			destFile = new File (destDir,n+".z3");
 			if (destFile.isDirectory()) {
 				System.err.println (destFile + " is a directory!");
 				return false;
