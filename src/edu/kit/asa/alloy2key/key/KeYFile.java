@@ -4,8 +4,7 @@
 package edu.kit.asa.alloy2key.key;
 
 import java.io.OutputStream;
-import java.io.PrintStream;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -162,7 +161,7 @@ public class KeYFile {
 	private Collection<Term> lemmas;
 	
 	public void output(OutputStream os) {
-		PrintStream out = new PrintStream(os);
+		PrintWriter out = new PrintWriter(os);
 		//printTheory(out);
 //		out.println ("\\include \"theory/alloyHeader.key\";");
 //		for (String s : includes)
