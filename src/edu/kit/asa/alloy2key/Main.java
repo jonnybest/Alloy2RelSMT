@@ -229,17 +229,7 @@ public class Main {
 			key.output(new FileOutputStream(destFile));
 			System.out.println ("Output written to "+destFile);
 			
-			return true; // TODO: remove me
-			/*
-			// write theory directory
-			File theoryDir = copyTheory(destDir);
-			
-			// write modules to theory/
-			KeYModule m;
-			while ((m = key.modules.poll()) != null) {
-				m.buildModule(theoryDir);
-			}
-			*/
+			return true;
 		} catch (IOException ioe) {
 			System.err.println (ioe.getMessage());
 			return false;
