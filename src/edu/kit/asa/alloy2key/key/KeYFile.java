@@ -394,27 +394,26 @@ public class KeYFile {
 			TermVar A, B; // relation symbols for our two arguments			
 			A = TermVar.var(leftRelar, "A");            // the left relation
 			B = TermVar.var(rightRelar, "B");           // the right relation
-			List<TermVar> y = new ArrayList<TermVar>(); // the tuple for the "y" variable
-			for(int i = 0; i < resultArity; i++)
-			{
-				y.add(TermVar.var("Atom", "y"+i));      // y is actually a tuple
+			TermVar[] y = makeTuple(resultArity, "y");  // y is a tuple of the resulting relation
+			
+			Term somethingInTheJoin = Term.reverseIn(Term.call(name, A, B), y); // a call to "join"
+			
+			TermVar x = TermVar.var("Atom", "x");	// x is the row that gets removed by the join
+			TermVar[] amembers = Arrays.copyOf(y, lar);
+			amembers[lar - 1] = x;
+			TermVar[] bmembers = new TermVar[rar]; // this is a tuple to join on (element of B)
+			bmembers[0] = x; // add the last atom in x as the first atom in the match
+			for (int i = 0; i < bmembers.length - 1; i++) {
+				bmembers[i + 1] = y[(lar-1)+i];
 			}
 			
-			Term somethingInTheJoin = Term.in(y, Term.call(name, A, B)); // a call to "join"
-			
-			TermVar[] x = makeTuple(lar, "x");                       // the left hand tuple
-			TermVar xLast = x[lar-1];                                // the atom to join on is the last atom in the x-tuple
-			
-			Term xInA = Term.reverseIn(A, x);                        // this means: x \elem A
-			List<TermVar> matchingtuple = new LinkedList<TermVar>(); // this is a tuple to join on (element of B)
-			matchingtuple.add(xLast);                                // add the last atom in x as the first atom in the match
-			matchingtuple.addAll(y);                                 // then follow up with the remaining atoms from the result
-			// xyInB means, for B of Rel2: (subset_2 (a2r_2 x y) B)
-			Term xyInB = Term.in(matchingtuple, B);
+			Term xInA = Term.reverseIn(A, amembers);  // this means: (y0 y1 .. x) \elem A
+
+			Term xyInB = Term.reverseIn(B, bmembers); // this means: (x y2 y3 ...) \elem B
 			List<TermVar> arglist = new LinkedList<TermVar>();	// universally quantified vars for this axiom
 			arglist.add(A);                 					// quantify over A 
 			arglist.add(B);    									// quantify over B
-			arglist.addAll(y); 									// quantify over all atoms in the y-tuple 
+			arglist.addAll(Arrays.asList(y));  // quantify over all atoms in the y-tuple 
 			Term axiom = somethingInTheJoin.iff((xInA.and(xyInB)).exists(x)).forall(arglist);
 			axiom.setComment("axiom for " + name);
 			this.addAssertion(axiom);
