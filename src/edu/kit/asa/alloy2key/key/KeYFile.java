@@ -169,7 +169,7 @@ public class KeYFile {
 //		for (String s : includes)
 //			out.println ("\\include \""+s+"\";");
 //		for (KeYModule m: modules) {
-//			out.println ("\\include \"theory/"+m.filename()+"\";");
+//			out.println ("\\includee \"theory/"+m.filename()+"\";");
 //		}
 		out.println ("(set-logic AUFLIA)\n(set-option :macro-finder true)");
 		
@@ -184,15 +184,19 @@ public class KeYFile {
 		out.println (Util.join(funcs, "\n"));
 		out.println (";; --end functions\n");
 		out.println (";; assertions");
+		
 		int i = 0;
 		for (Term a : asserts) {
 			out.println (String.format("(assert \n (! \n  %s \n %s \n ) \n )", a.toString(), ":named a" + i++));
 		}
+		
 		out.println (";; --end assertions\n");
 		out.println (";; lemmas");
+		
 		for (Term a : lemmas) {
 			out.println (String.format("(assert\n (! \n  %s \n %s \n ) \n )", a.toString(), ":named a" + i++));
 		}
+		
 		out.println (";; --end lemmas\n");
 		
 		out.println (";; -- key stuff for debugging --");
