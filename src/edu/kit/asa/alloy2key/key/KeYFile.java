@@ -169,7 +169,7 @@ public class KeYFile {
 //		for (String s : includes)
 //			out.println ("\\include \""+s+"\";");
 //		for (KeYModule m: modules) {
-//			out.println ("\\include \"theory/"+m.filename()+"\";");
+//			out.println ("\\includee \"theory/"+m.filename()+"\";");
 //		}
 		out.println ("(set-logic AUFLIA)\n(set-option :macro-finder true)");
 		
