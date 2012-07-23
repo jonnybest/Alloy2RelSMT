@@ -290,17 +290,20 @@
  :named a11 
  ) 
  )
-(assert 
- (! 
-  (not (forall ((h Atom)(h_ Atom)(root Atom)) (=> (and 
-    (in_1 h HeapState)
-    (in_1 h_ HeapState)
-    (in_1 root Node)
-  ) (=> (GC (a2r_1 h) (a2r_1 root) (a2r_1 h_)) (forall ((live Atom)) (=> (and (in_1 live Node) (in_1 live (reachable (a2r_1 h) (a2r_1 root)))) (and (= (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h_) left)) (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h) left))) (= (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h_) right)) (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h) right)))))))))) 
- :named a12 
- ) 
- )
 ;; --end assertions
+
+;; command
+; (assert 
+; (! 
+ ; (not (forall ((h Atom)(h_ Atom)(root Atom)) (=> (and 
+   ; (in_1 h HeapState)
+   ; (in_1 h_ HeapState)
+   ; (in_1 root Node)
+ ; ) (=> (GC (a2r_1 h) (a2r_1 root) (a2r_1 h_)) (forall ((live Atom)) (=> (and (in_1 live Node) (in_1 live (reachable (a2r_1 h) (a2r_1 root)))) (and (= (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h_) left)) (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h) left))) (= (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h_) right)) (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h) right)))))))))) 
+; :named c0 
+; ) 
+)
+;; --end command
 
 ;; lemmas
 (assert

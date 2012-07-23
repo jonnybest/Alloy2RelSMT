@@ -650,7 +650,7 @@ public class Translator implements Identifiers {
 					break;
 				}
 			} 
-			target.addAssertion(translateExpr(assertExpression.not()));
+			target.addCmdAssertion(translateExpr(assertExpression.not()));
 		}
 	}
 	

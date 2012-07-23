@@ -35,6 +35,7 @@ public class KeYFile {
 		asserts = new LinkedList<Term>();
 		lemmas = new LinkedList<Term>();
 		axioms = new LinkedList<Term>();
+		cmdasserts = new LinkedList<Term>();
 	}
 	
 	/** referred modules */
@@ -92,6 +93,15 @@ public class KeYFile {
 		if (!term.equals(Term.TRUE)) {
 			asserts.add(term);
 		}
+	}	
+	
+	/** 
+	 * Add an SMT assertion (assert expression)
+	 * @param term 
+	 * Expression to be asserted (declare in SMT syntax)
+	 */
+	public void addCmdAssertion(Term term) {
+		cmdasserts.add(term);		
 	}	
 	
 	/**
@@ -162,6 +172,7 @@ public class KeYFile {
 	private Collection<Term> concl;
 	private Collection<Term> lemmas;
 	private Collection<Term> axioms;
+	private Collection<Term> cmdasserts;
 	
 	public void output(OutputStream os) {
 		PrintWriter out = new PrintWriter(os);
@@ -200,11 +211,19 @@ public class KeYFile {
 		}
 		
 		out.println (";; --end assertions\n");
-		out.println (";; lemmas");
+		out.println (";; command");
 		
 		int k = 0;
+		for (Term a : cmdasserts) {
+			out.println (String.format("(assert \n (! \n  %s \n %s \n ) \n )", a.toString(), ":named c" + k++));
+		}
+		
+		out.println (";; --end command\n");
+		out.println (";; lemmas");
+		
+		int l = 0;
 		for (Term a : lemmas) {
-			out.println (String.format("(assert\n (! \n  %s \n %s \n ) \n )", a.toString(), ":named l" + k++));
+			out.println (String.format("(assert\n (! \n  %s \n %s \n ) \n )", a.toString(), ":named l" + l++));
 		}
 		
 		out.println (";; --end lemmas\n");
