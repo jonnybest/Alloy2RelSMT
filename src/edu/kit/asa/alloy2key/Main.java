@@ -4,12 +4,8 @@
 package edu.kit.asa.alloy2key;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -195,7 +191,7 @@ public class Main {
 		if (destFile.isDirectory()) {
 			destDir = destFile;
 			String n = new File (src).getName();
-			destFile = new File (destDir,n+".key");
+			destFile = new File (destDir,n+".z3");
 			if (destFile.isDirectory()) {
 				System.err.println (destFile + " is a directory!");
 				return false;
@@ -229,85 +225,11 @@ public class Main {
 			key.output(new FileOutputStream(destFile));
 			System.out.println ("Output written to "+destFile);
 			
-			return true; // TODO: remove me
-			/*
-			// write theory directory
-			File theoryDir = copyTheory(destDir);
-			
-			// write modules to theory/
-			KeYModule m;
-			while ((m = key.modules.poll()) != null) {
-				m.buildModule(theoryDir);
-			}
-			*/
+			return true;
 		} catch (IOException ioe) {
 			System.err.println (ioe.getMessage());
 			return false;
 		}
-		
-		//return true; // TODO: remove comment
-	}
-	
-	/**
-	 * put the theory files in place
-	 * @param parent
-	 * the directory to which the theory/ directory will be written
-	 * @return
-	 * abstract filename of the theory/ directory. the returned abstract
-	 * filename is guaranteed to exist and refer to a directory.
-	 */
-	private File copyTheory(File parent) throws IOException {
-		if (!parent.isDirectory())
-			throw new RuntimeException (parent+" does not name a directory!");
-		File dir = new File (parent, "theory");
-		if (dir.isFile())
-			throw new RuntimeException (dir+" already exists and is not a directory!");
-		if (dir.isDirectory())
-			System.err.println ("WARNING: "+dir+" already exists!");
-		else
-			if (!dir.mkdir())
-				throw new RuntimeException ("Could not create directory "+dir);
-			else
-				System.out.println ("Created Directory "+dir);
-		if (!dir.canWrite())
-			throw new RuntimeException ("Can not write directory "+dir);
-		
-		URL theoryURL = getClass().getResource("/res/theory");
-		if (theoryURL == null)
-			throw new RuntimeException ("Could not find theory resource!");
-		
-		File theory = new File (theoryURL.getPath());
-		if (!theory.isDirectory())
-			throw new RuntimeException ("Theory resource "+theory+" is not a directory!");
-		
-		System.out.println ("Copying theory files to "+dir);
-		
-		// copy file from theory to dir
-		String[] files = theory.list();
-		for (int i = 0; i < files.length; i++) {
-			File dest = new File (dir, files[i]);
-			if (dest.exists()) {
-				System.err.println ("WARNING: "+dest+" already exists. Skipped.");
-				continue;
-			}
-			File src = new File (theory, files[i]);
-			if (!src.isFile()) {
-				if (src.isDirectory())
-					System.out.println ("Skipping directory "+src);
-				continue;
-			}
-			InputStream in = new FileInputStream(src);
-            OutputStream out = new FileOutputStream(dest);
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0)
-                out.write(buf, 0, len);
-            in.close();
-            out.close();
-		}
-		
-		return dir;
-		
 	}
 
 }

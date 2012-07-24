@@ -4,8 +4,7 @@
 package edu.kit.asa.alloy2key.key;
 
 import java.io.OutputStream;
-import java.io.PrintStream;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -35,6 +34,7 @@ public class KeYFile {
 		concl  = new LinkedList<Term>();
 		asserts = new LinkedList<Term>();
 		lemmas = new LinkedList<Term>();
+		axioms = new LinkedList<Term>();
 	}
 	
 	/** referred modules */
@@ -161,9 +161,10 @@ public class KeYFile {
 	private Collection<Term> assump;
 	private Collection<Term> concl;
 	private Collection<Term> lemmas;
+	private Collection<Term> axioms;
 	
 	public void output(OutputStream os) {
-		PrintStream out = new PrintStream(os);
+		PrintWriter out = new PrintWriter(os);
 		//printTheory(out);
 //		out.println ("\\include \"theory/alloyHeader.key\";");
 //		for (String s : includes)
@@ -183,18 +184,27 @@ public class KeYFile {
 		out.println (";; functions");
 		out.println (Util.join(funcs, "\n"));
 		out.println (";; --end functions\n");
-		out.println (";; assertions");
+		out.println (";; axioms");
 		
 		int i = 0;
+		for (Term a : axioms) {
+			out.println (String.format("(assert \n (! \n  %s \n %s \n ) \n )", a.toString(), ":named ax" + i++));
+		}
+		
+		out.println (";; --end axioms\n");
+		out.println (";; assertions");
+		
+		int j = 0;
 		for (Term a : asserts) {
-			out.println (String.format("(assert \n (! \n  %s \n %s \n ) \n )", a.toString(), ":named a" + i++));
+			out.println (String.format("(assert \n (! \n  %s \n %s \n ) \n )", a.toString(), ":named a" + j++));
 		}
 		
 		out.println (";; --end assertions\n");
 		out.println (";; lemmas");
 		
+		int k = 0;
 		for (Term a : lemmas) {
-			out.println (String.format("(assert\n (! \n  %s \n %s \n ) \n )", a.toString(), ":named a" + i++));
+			out.println (String.format("(assert\n (! \n  %s \n %s \n ) \n )", a.toString(), ":named l" + k++));
 		}
 		
 		out.println (";; --end lemmas\n");
@@ -247,7 +257,7 @@ public class KeYFile {
 		Term aInA = Term.reverseIn(A, a);
 		Term exclusive = aInA.implies(notAInB);
 		Term axiom = Term.call("disjoint_" + ar, A, B).iff(exclusive.forall(a)).forall(A, B);
-		this.addAssertion(axiom); // add this axiom to the list of assertions
+		this.addAxiom(axiom); // add this axiom to the list of assertions
 	}
 
 	/** adds a declaration and theory for subset and subrel 
@@ -275,7 +285,7 @@ public class KeYFile {
 			Term inImpliesIn = Term.in(atomVars, x).implies(Term.in(atomVars, y));  // if an atom is in x, it is also in y 
 			// now quantify the two expressions for all x, y and atoms
 			Term axiom = subset.equal(inImpliesIn.forall(atomVars)).forall(x, y);
-			this.addAssertion(axiom);  // add this axiom to the list of assertions
+			this.addAxiom(axiom);  // add this axiom to the list of assertions
 		}
 	}
 
@@ -309,7 +319,7 @@ public class KeYFile {
 			inImpliesEqual = Term.reverseIn(Term.call(name, x), y).implies(TermBinOp.equals(x, y));
 			Term axiom = Term.forall("Atom", x, xInX.and(Term.forall("Atom", y, inImpliesEqual)));
 					
-			this.addAssertion(axiom);
+			this.addAxiom(axiom);
 		}	
 	}
 
@@ -377,7 +387,7 @@ public class KeYFile {
 			arglist.addAll(Arrays.asList(x));
 			arglist.addAll(Arrays.asList(y));
 			Term axiom = somethingIsInProduct.iff(xInAandYInB).forall(arglist);
-			this.addAssertion(axiom);
+			this.addAxiom(axiom);
 		}
 	}
 
@@ -430,7 +440,7 @@ public class KeYFile {
 			arglist.addAll(Arrays.asList(y));  // quantify over all atoms in the y-tuple 
 			Term axiom = somethingInTheJoin.iff((xInA.and(xyInB)).exists(x)).forall(arglist);
 			axiom.setComment("axiom for " + name);
-			this.addAssertion(axiom);
+			this.addAxiom(axiom);
 			// to work properly, we also add some neccessary lemmas
 			assertLemmasJoin(lar, rar);
 		}
@@ -488,7 +498,6 @@ public class KeYFile {
 		String name = "union_" + ar;
 		if(this.addFunction(relar, name, relar, relar))
 		{
-			// TODO: add axiom
 			// x in union A B = { x in A or x in B }
 			List<TermVar> arglist = new LinkedList<TermVar>();
 			TermVar[] x = makeTuple(ar, "x");
@@ -501,7 +510,7 @@ public class KeYFile {
 			arglist.addAll(Arrays.asList(x));
 			arglist.add(A);
 			arglist.add(B);
-			this.addAssertion(Term.reverseIn(call, x).iff(orTerm).forall(arglist));
+			this.addAxiom(Term.reverseIn(call, x).iff(orTerm).forall(arglist));
 		}
 	}
 
@@ -538,7 +547,7 @@ public class KeYFile {
 			Term existanceImpliesEqual = aAndBinX.implies(aEqualsBTerm).forall(argList);
 			
 			Term axiom = (one.iff(notEmpty.and(existanceImpliesEqual))).forall(X);
-			this.addAssertion(axiom);
+			this.addAxiom(axiom);
 		}
 	}
 
@@ -571,7 +580,7 @@ public class KeYFile {
 			Term existanceImpliesEqual = aAndBinX.implies(aEqualsBTerm).forall(argList);
 			
 			Term axiom = (lone.iff(existanceImpliesEqual)).forall(X);
-			this.addAssertion(axiom);
+			this.addAxiom(axiom);
 		}
 	}
 
@@ -594,7 +603,7 @@ public class KeYFile {
 			Term some = Term.call(name, A);
 			Term xInA = Term.reverseIn(A, aTuple);
 			Term axiom = some.iff(xInA.exists(aTuple)).forall(A);
-			this.addAssertion(axiom);
+			this.addAxiom(axiom);
 		}
 	}
 
@@ -620,15 +629,15 @@ public class KeYFile {
 			// this is split into 3 assertions
 			// 1. assert r in trans(r)
 			TermVar r = TermVar.var("Rel2", "r");
-			this.addAssertion(Term.call("subset_2", r, Term.call(name, r)).forall(r));
+			this.addAxiom(Term.call("subset_2", r, Term.call(name, r)).forall(r));
 			// 2. assert that the transitive closure is -in fact- transitive
-			this.addAssertion(Term.call("trans", Term.call(name, r)).forall(r));
+			this.addAxiom(Term.call("trans", Term.call(name, r)).forall(r));
 			// 3. assert that tcl is minimal
 			TermVar r1 = TermVar.var("Rel2", "r1");
 			TermVar r2 = TermVar.var("Rel2", "r2");
 			Term subsetAndTrans = Term.call("subset_2", r1, r2).and(Term.call("trans", r2));
 			Term minimalaxiom = subsetAndTrans.implies(Term.call("subset_2", Term.call(name, r1), r2)).forall(r1, r2);
-			this.addAssertion(minimalaxiom);
+			this.addAxiom(minimalaxiom);
 			// also, add some lemma about in_2 and the transCl
 			assertLemmasTCL("transClos");
 		}
@@ -677,7 +686,7 @@ public class KeYFile {
 			Term meaning = (a12reachR.and(a23reachR)).implies(a13reachR);
 			Term fun = Term.call("trans", r);
 			Term axiomtransitivity = fun.iff(meaning.forall(a1, a2, a3)).forall(r);
-			this.addAssertion(axiomtransitivity);
+			this.addAxiom(axiomtransitivity);
 		}
 	}
 
@@ -697,18 +706,18 @@ public class KeYFile {
 			// this is split into 3 assertions
 			// 1. assert r is in trans(r)
 			TermVar r = TermVar.var("Rel2", "r");
-			this.addAssertion(Term.call("subset_2", r, Term.call(name, r)).forall(r));
+			this.addAxiom(Term.call("subset_2", r, Term.call(name, r)).forall(r));
 			// 2. assert that the transitive closure is -in fact- transitive
-			this.addAssertion(Term.call("trans", Term.call(name, r)).forall(r));
+			this.addAxiom(Term.call("trans", Term.call(name, r)).forall(r));
 			// 3. assert that tcl is minimal
 			TermVar r1 = TermVar.var("Rel2", "r1");
 			TermVar r2 = TermVar.var("Rel2", "r2");
 			Term subsetAndTrans = Term.call("subset_2", r1, r2).and(Term.call("trans", r2));
 			Term minimalaxiom = subsetAndTrans.implies(Term.call("subset_2", Term.call(name, r1), r2)).forall(r1, r2);
-			this.addAssertion(minimalaxiom);
+			this.addAxiom(minimalaxiom);
 			// 4. assert iden in TCL
 			Term idenInTCL = Term.call("subset_2", Term.call("iden"), Term.call(name, r)).forall(r);
-			this.addAssertion(idenInTCL);
+			this.addAxiom(idenInTCL);
 			// don't forget our lemmas
 			assertLemmasTCL(name);
 		}
@@ -754,7 +763,7 @@ public class KeYFile {
 			Term somethingIsInTheCallToDiff = Term.in(Arrays.asList(aTuple), Term.call(name, A, B));
 			Term inAandNotB = Term.in(Arrays.asList(aTuple), A).and(Term.in(Arrays.asList(aTuple), B).not());
 			Term axiom = somethingIsInTheCallToDiff.iff(inAandNotB).forall(argList);
-			this.addAssertion(axiom);
+			this.addAxiom(axiom);
 		}
 	}
 
@@ -790,7 +799,14 @@ public class KeYFile {
 		{
 			TermVar	a0 = TermVar.var("Atom", "a0");
 			Term axiom = Term.reverseIn(Term.call("iden"), a0, a0);			
-			this.addAssertion(axiom.forall(a0));
+			this.addAxiom(axiom.forall(a0));
+		}
+	}
+
+	private void addAxiom(Term term) {
+		// we don't need to assert the expression "TRUE"
+		if (!term.equals(Term.TRUE)) {
+			axioms.add(term);
 		}
 	}
 
