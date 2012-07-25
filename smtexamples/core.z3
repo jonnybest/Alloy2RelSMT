@@ -98,9 +98,7 @@
  )
 (assert
  (! 
- (not 
   (forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (reflTransClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 (reflTransClos r)) (in_2 a3 a2 r)))))  
-	)
 	:named l7)
  )
 ;; --end lemmas
