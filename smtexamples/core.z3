@@ -98,30 +98,14 @@
  )
 (assert
  (! 
-  (forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (transClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 r) (in_2 a3 a2 (transClos r)))))) 
- :named l4 
- ) 
- )
-(assert
- (! 
-  (forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (transClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 (transClos r)) (in_2 a3 a2 r))))) 
- :named l5 
- ) 
- )
-(assert
- (! 
-  (forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (reflTransClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 r) (in_2 a3 a2 (reflTransClos r)))))) 
- :named l6 
- ) 
- )
-(assert
- (! 
-  (forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (reflTransClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 (reflTransClos r)) (in_2 a3 a2 r))))) 
- :named l7 
- ) 
+ (not 
+  (forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (reflTransClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 (reflTransClos r)) (in_2 a3 a2 r)))))  
+	)
+	:named l7)
  )
 ;; --end lemmas
 
 ;; -- END key stuff --
 (check-sat)
+(get-model)
 (get-unsat-core)
