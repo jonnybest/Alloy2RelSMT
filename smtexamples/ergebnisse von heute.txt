@@ -1,0 +1,968 @@
+Windows PowerShell
+Copyright (C) 2009 Microsoft Corporation. Alle Rechte vorbehalten.
+
+Willkommen in der Z3 Powershell. Tippen Sie 'z3' zum starten.
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 .\com_theorem1.als
+(error "line 1 column 1: invalid command, '(' expected")
+unsupported
+; COM
+(error "line 5 column 51: invalid command, '(' expected")
+(error "line 8 column 29: unexpected character")
+unsupported
+; n.^
+(error "line 22 column 1: invalid command, '(' expected")
+unsupported
+; addLocal
+(error "line 23 column 1: invalid command, '(' expected")
+(error "line 29 column 8: unexpected character")
+(error "line 29 column 9: unexpected character")
+(error "line 31 column 14: unexpected character")
+(error "line 32 column 28: unexpected character")
+(error "line 33 column 16: unexpected character")
+(error "line 34 column 38: invalid command, symbol expected")
+(error "line 34 column 49: invalid command, symbol expected")
+(error "line 35 column 17: unexpected character")
+(error "line 37 column 0: unexpected character")
+(error "line 39 column 5: unexpected character")
+(error "line 56 column 0: unexpected character")
+(error "line 58 column 19: unexpected character")
+(error "line 76 column 67: unexpected character")
+(error "line 77 column 14: unexpected character")
+(error "line 77 column 21: unexpected character")
+(error "line 78 column 94: unexpected character")
+(error "line 81 column 17: unexpected character")
+unsupported
+; x.iids
+(error "line 85 column 106: invalid command, '(' expected")
+unsupported
+; i.qi
+(error "line 85 column 114: invalid command, '(' expected")
+unsupported
+; x.iids
+(error "line 85 column 124: invalid command, '(' expected")
+unsupported
+; o.qi
+(error "line 85 column 131: invalid command, '(' expected")
+(error "line 86 column 4: unexpected character")
+(error "line 88 column 16: unexpected character")
+(error "line 90 column 5: unexpected character")
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 .\com_theorem1.als.z3
+WARNING: pulled nested quantifier to be able to find an useable pattern (quantifier id: k!165)
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+unknown
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 .\com_theorem1.als.z3
+WARNING: pulled nested quantifier to be able to find an useable pattern (quantifier id: k!165)
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+unknown
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 .\com_theorem1.als.z3
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+unknown
+(error "line 398 column 15: unsat core is not available")
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> $Host.UI.RawUI.WindowTitle = 'z3: com_theorem1'
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 .\com_theorem1.als.z3
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 -st -v:2 .\com_theorem1.als.z3
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+searching...
+restarting... propagations: 100843, decisions: 99024, conflicts: 102, restart: 150, agility: 0.000618539
+restarting... propagations: 487398, decisions: 332406, conflicts: 254, restart: 225, agility: 0.00124357
+restarting... propagations: 1556819, decisions: 830795, conflicts: 482, restart: 337, agility: 0.000730698
+restarting... propagations: 3799691, decisions: 2520613, conflicts: 820, restart: 505, agility: 0.000304679
+restarting... propagations: 7166094, decisions: 5121147, conflicts: 1328, restart: 757, agility: 0.000434678
+restarting... propagations: 13879164, decisions: 10617511, conflicts: 2086, restart: 1135, agility: 0.000827412
+unknown
+(error "line 401 column 15: unsat core is not available")
+(:added-eqs                   37864925
+ :binary-propagations         64
+ :conflicts                   2119
+ :decisions                   10899026
+ :del-clause                  51407727
+ :final-checks                5102
+ :lazy-quant-instantiations   151279928
+ :max-generation              20
+ :memory                      141.30
+ :missed-quant-instantiations 281235
+ :mk-clause                   51504353
+ :num-checks                  1
+ :propagations                14179430
+ :quant-instantiations        29397728
+ :restarts                    6
+ :time                        1571.95
+ :total-time                  1571.87)
+PS D:\Entwicklung\workspace\alloy2key\smtexamples>
+
+restarting... propagations: 4261594, decisions: 1724566, conflicts: 82061, restart: 337, agility: 0.0118446
+restarting... propagations: 4358723, decisions: 1751846, conflicts: 82672, restart: 150, agility: 0.029653
+restarting... propagations: 4360192, decisions: 1752972, conflicts: 82823, restart: 225, agility: 0.0714463
+restarting... propagations: 4362362, decisions: 1754070, conflicts: 83049, restart: 337, agility: 0.134022
+restarting... propagations: 4368370, decisions: 1770954, conflicts: 83988, restart: 150, agility: 0.029653
+restarting... propagations: 4369822, decisions: 1772024, conflicts: 84139, restart: 225, agility: 0.0760408
+restarting... propagations: 4374520, decisions: 1778955, conflicts: 84773, restart: 150, agility: 0.02975
+restarting... propagations: 4376023, decisions: 1780066, conflicts: 84924, restart: 225, agility: 0.0755841
+restarting... propagations: 4382273, decisions: 1784504, conflicts: 85191, restart: 337, agility: 0.0849155
+restarting... propagations: 4383179, decisions: 1784851, conflicts: 85317, restart: 150, agility: 0.029653
+restarting... propagations: 4384735, decisions: 1786097, conflicts: 85468, restart: 225, agility: 0.067025
+restarting... propagations: 4392019, decisions: 1789180, conflicts: 85725, restart: 337, agility: 0.067613
+restarting... propagations: 4415472, decisions: 1809101, conflicts: 86065, restart: 505, agility: 0.0245214
+restarting... propagations: 4432423, decisions: 1821456, conflicts: 86295, restart: 150, agility: 0.02975
+restarting... propagations: 4433770, decisions: 1822425, conflicts: 86446, restart: 225, agility: 0.0763998
+restarting... propagations: 4438153, decisions: 1824702, conflicts: 86683, restart: 337, agility: 0.102668
+restarting... propagations: 4470975, decisions: 1851392, conflicts: 87470, restart: 150, agility: 0.029653
+restarting... propagations: 4472516, decisions: 1852597, conflicts: 87621, restart: 225, agility: 0.0694275
+restarting... propagations: 4494055, decisions: 1859328, conflicts: 87847, restart: 337, agility: 0.0125672
+restarting... propagations: 4552673, decisions: 1903807, conflicts: 88185, restart: 505, agility: 0.0125208
+restarting... propagations: 4583381, decisions: 1924620, conflicts: 89469, restart: 150, agility: 0.0299406
+restarting... propagations: 4584892, decisions: 1925746, conflicts: 89620, restart: 225, agility: 0.0753592
+restarting... propagations: 4588175, decisions: 1927524, conflicts: 90021, restart: 150, agility: 0.029653
+restarting... propagations: 4589619, decisions: 1928591, conflicts: 90172, restart: 225, agility: 0.0759712
+restarting... propagations: 4614942, decisions: 1936636, conflicts: 90430, restart: 337, agility: 0.0128696
+restarting... propagations: 4657566, decisions: 1960491, conflicts: 90768, restart: 505, agility: 0.049069
+restarting... propagations: 4666451, decisions: 1961485, conflicts: 91008, restart: 150, agility: 0.0203903
+restarting... propagations: 4673884, decisions: 1969342, conflicts: 91159, restart: 225, agility: 0.0275377
+restarting... propagations: 4679867, decisions: 1975234, conflicts: 91385, restart: 337, agility: 0.0560377
+restarting... propagations: 4687273, decisions: 1979335, conflicts: 91773, restart: 150, agility: 0.02975
+restarting... propagations: 4688401, decisions: 1980115, conflicts: 91924, restart: 225, agility: 0.0780989
+restarting... propagations: 4691358, decisions: 1982978, conflicts: 92150, restart: 337, agility: 0.110116
+restarting... propagations: 4699653, decisions: 1992899, conflicts: 93119, restart: 150, agility: 0.029653
+restarting... propagations: 4701107, decisions: 1993972, conflicts: 93270, restart: 225, agility: 0.0760414
+restarting... propagations: 4703328, decisions: 1994332, conflicts: 93555, restart: 150, agility: 0.029653
+restarting... propagations: 4704783, decisions: 1995404, conflicts: 93706, restart: 225, agility: 0.0759523
+restarting... propagations: 16691, decisions: 5460, conflicts: 65, restart: 100, agility: 0.012023
+restarting... propagations: 4708746, decisions: 1999345, conflicts: 93991, restart: 150, agility: 0.0156044
+restarting... propagations: 4729630, decisions: 2020450, conflicts: 94142, restart: 225, agility: 0.0271052
+restarting... propagations: 4739185, decisions: 2026951, conflicts: 94368, restart: 337, agility: 0.0841615
+restarting... propagations: 4753060, decisions: 2030403, conflicts: 94706, restart: 505, agility: 0.10203
+restarting... propagations: 4775079, decisions: 2044045, conflicts: 95212, restart: 757, agility: 0.168933
+restarting... propagations: 4830478, decisions: 2055627, conflicts: 95970, restart: 1135, agility: 0.0772494
+restarting... propagations: 4879600, decisions: 2091946, conflicts: 97106, restart: 1702, agility: 0.028761
+restarting... propagations: 4954583, decisions: 2134476, conflicts: 97865, restart: 150, agility: 0.0219289
+restarting... propagations: 4958388, decisions: 2136042, conflicts: 98016, restart: 225, agility: 0.0653047
+restarting... propagations: 4971362, decisions: 2136440, conflicts: 98242, restart: 337, agility: 0.0461025
+restarting... propagations: 4978281, decisions: 2141853, conflicts: 98385, restart: 150, agility: 0.0423022
+restarting... propagations: 4986884, decisions: 2142757, conflicts: 98560, restart: 225, agility: 0.0719457
+restarting... propagations: 4998410, decisions: 2144742, conflicts: 98786, restart: 337, agility: 0.094244
+restarting... propagations: 5007765, decisions: 2153840, conflicts: 99069, restart: 150, agility: 0.0597063
+restarting... propagations: 5013138, decisions: 2155909, conflicts: 99235, restart: 150, agility: 0.0657572
+restarting... propagations: 5014261, decisions: 2156145, conflicts: 99386, restart: 225, agility: 0.138956
+restarting... propagations: 5036970, decisions: 2163414, conflicts: 100456, restart: 757, agility: 0.118419
+restarting... propagations: 5066238, decisions: 2173912, conflicts: 101214, restart: 1135, agility: 0.0934734
+restarting... propagations: 5172370, decisions: 2208894, conflicts: 102351, restart: 1702, agility: 0.0253057
+restarting... propagations: 5274425, decisions: 2242111, conflicts: 104073, restart: 2553, agility: 0.131096
+restarting... propagations: 5328599, decisions: 2258269, conflicts: 104671, restart: 150, agility: 0.0162108
+restarting... propagations: 5336052, decisions: 2265673, conflicts: 104822, restart: 225, agility: 0.0326572
+restarting... propagations: 5346747, decisions: 2275291, conflicts: 105048, restart: 337, agility: 0.0800657
+restarting... propagations: 5354090, decisions: 2281244, conflicts: 105386, restart: 505, agility: 0.0989663
+restarting... propagations: 5369770, decisions: 2290810, conflicts: 105892, restart: 757, agility: 0.168095
+restarting... propagations: 5413784, decisions: 2319031, conflicts: 106650, restart: 1135, agility: 0.0688373
+restarting... propagations: 5448137, decisions: 2333185, conflicts: 108405, restart: 150, agility: 0.0377115
+restarting... propagations: 5458900, decisions: 2343142, conflicts: 108556, restart: 225, agility: 0.0404382
+restarting... propagations: 5467606, decisions: 2346006, conflicts: 108790, restart: 337, agility: 0.0610752
+restarting... propagations: 5477877, decisions: 2356072, conflicts: 109128, restart: 505, agility: 0.109376
+restarting... propagations: 5526784, decisions: 2372450, conflicts: 112101, restart: 150, agility: 0.147564
+restarting... propagations: 5535433, decisions: 2386768, conflicts: 112252, restart: 225, agility: 0.0659204
+restarting... propagations: 5562476, decisions: 2407391, conflicts: 112478, restart: 337, agility: 0.0671279
+restarting... propagations: 5568827, decisions: 2409506, conflicts: 112816, restart: 505, agility: 0.174234
+restarting... propagations: 5587628, decisions: 2414677, conflicts: 113369, restart: 150, agility: 0.0580303
+restarting... propagations: 5591045, decisions: 2415173, conflicts: 113520, restart: 225, agility: 0.125561
+restarting... propagations: 5606149, decisions: 2423069, conflicts: 113746, restart: 337, agility: 0.0950406
+restarting... propagations: 5621153, decisions: 2426449, conflicts: 114084, restart: 505, agility: 0.0856914
+restarting... propagations: 5646189, decisions: 2429636, conflicts: 114590, restart: 757, agility: 0.123939
+restarting... propagations: 5676239, decisions: 2465658, conflicts: 114902, restart: 150, agility: 0.0173382
+restarting... propagations: 5683713, decisions: 2466367, conflicts: 115054, restart: 225, agility: 0.0792272
+restarting... propagations: 5744303, decisions: 2484312, conflicts: 115365, restart: 150, agility: 0.0377833
+restarting... propagations: 5750389, decisions: 2486559, conflicts: 115516, restart: 225, agility: 0.0988803
+restarting... propagations: 5776574, decisions: 2492132, conflicts: 115811, restart: 150, agility: 0.0149227
+restarting... propagations: 5790851, decisions: 2503764, conflicts: 115962, restart: 225, agility: 0.0284619
+restarting... propagations: 5809159, decisions: 2517963, conflicts: 116209, restart: 150, agility: 0.0398002
+restarting... propagations: 5823198, decisions: 2529768, conflicts: 116481, restart: 150, agility: 0.0261147
+restarting... propagations: 5838005, decisions: 2535174, conflicts: 116632, restart: 225, agility: 0.0296778
+restarting... propagations: 5853883, decisions: 2541808, conflicts: 116858, restart: 337, agility: 0.0527396
+restarting... propagations: 5879571, decisions: 2555866, conflicts: 117282, restart: 150, agility: 0.0413007
+restarting... propagations: 5882679, decisions: 2558747, conflicts: 117433, restart: 225, agility: 0.0979227
+restarting... propagations: 5886772, decisions: 2560230, conflicts: 117659, restart: 337, agility: 0.163652
+restarting... propagations: 5899270, decisions: 2567621, conflicts: 117872, restart: 150, agility: 0.0329799
+restarting... propagations: 5909200, decisions: 2571455, conflicts: 118045, restart: 150, agility: 0.0277148
+restarting... propagations: 5917831, decisions: 2577663, conflicts: 118196, restart: 225, agility: 0.0364471
+restarting... propagations: 5936436, decisions: 2584752, conflicts: 118422, restart: 337, agility: 0.0449835
+restarting... propagations: 5945789, decisions: 2590357, conflicts: 118760, restart: 505, agility: 0.140606
+restarting... propagations: 5977768, decisions: 2613942, conflicts: 119266, restart: 757, agility: 0.0342509
+restarting... propagations: 6008583, decisions: 2618964, conflicts: 120024, restart: 1135, agility: 0.129159
+restarting... propagations: 6074833, decisions: 2653929, conflicts: 121160, restart: 1702, agility: 0.0869544
+restarting... propagations: 6128060, decisions: 2685709, conflicts: 122597, restart: 150, agility: 0.0356475
+restarting... propagations: 6163920, decisions: 2706123, conflicts: 122797, restart: 225, agility: 0.0306534
+restarting... propagations: 6190424, decisions: 2711533, conflicts: 123023, restart: 337, agility: 0.0461367
+restarting... propagations: 6224646, decisions: 2715118, conflicts: 123361, restart: 505, agility: 0.0286263
+restarting... propagations: 6255390, decisions: 2727278, conflicts: 123867, restart: 757, agility: 0.102228
+restarting... propagations: 6331067, decisions: 2740599, conflicts: 124625, restart: 1135, agility: 0.0533889
+restarting... propagations: 6405965, decisions: 2768134, conflicts: 125761, restart: 1702, agility: 0.0288169
+restarting... propagations: 6524732, decisions: 2790511, conflicts: 127488, restart: 2553, agility: 0.0758969
+restarting... propagations: 6704879, decisions: 2841541, conflicts: 130042, restart: 3829, agility: 0.0521784
+restarting... propagations: 7067816, decisions: 2875245, conflicts: 133872, restart: 5743, agility: 0.0670446
+restarting... propagations: 7544471, decisions: 2909128, conflicts: 138551, restart: 150, agility: 0.105185
+restarting... propagations: 7578785, decisions: 2911730, conflicts: 138708, restart: 225, agility: 0.0459898
+restarting... propagations: 7614197, decisions: 2914803, conflicts: 138934, restart: 337, agility: 0.0734861
+restarting... propagations: 7673775, decisions: 2919053, conflicts: 139272, restart: 505, agility: 0.0729404
+restarting... propagations: 7704393, decisions: 2928545, conflicts: 139778, restart: 757, agility: 0.0904751
+restarting... propagations: 7821357, decisions: 2947830, conflicts: 140536, restart: 1135, agility: 0.0233134
+restarting... propagations: 7936521, decisions: 2963715, conflicts: 141631, restart: 150, agility: 0.0521354
+restarting... propagations: 7954876, decisions: 2967848, conflicts: 141782, restart: 225, agility: 0.0507392
+restarting... propagations: 7970984, decisions: 2969160, conflicts: 142008, restart: 337, agility: 0.0756534
+restarting... propagations: 8008621, decisions: 2973273, conflicts: 142346, restart: 505, agility: 0.112737
+restarting... propagations: 8078450, decisions: 2981204, conflicts: 143004, restart: 150, agility: 0.0263995
+restarting... propagations: 8082300, decisions: 2987241, conflicts: 143155, restart: 225, agility: 0.0417533
+restarting... propagations: 8107817, decisions: 3015145, conflicts: 143381, restart: 337, agility: 0.0400336
+restarting... propagations: 8132027, decisions: 3028694, conflicts: 143721, restart: 505, agility: 0.0981229
+restarting... propagations: 8157085, decisions: 3041460, conflicts: 144230, restart: 757, agility: 0.0084837
+restarting... propagations: 8167827, decisions: 3045964, conflicts: 144988, restart: 1135, agility: 0.151832
+restarting... propagations: 8188761, decisions: 3067916, conflicts: 146124, restart: 1702, agility: 0.0973829
+restarting... propagations: 8215077, decisions: 3077755, conflicts: 147827, restart: 2553, agility: 0.178312
+restarting... propagations: 8298527, decisions: 3121573, conflicts: 150381, restart: 3829, agility: 0.0514347
+restarting... propagations: 8465295, decisions: 3174781, conflicts: 154211, restart: 5743, agility: 0.0620701
+restarting... propagations: 8771529, decisions: 3290749, conflicts: 159955, restart: 8614, agility: 0.0596372
+restarting... propagations: 8816533, decisions: 3313958, conflicts: 160638, restart: 150, agility: 0.04675
+restarting... propagations: 8822090, decisions: 3314410, conflicts: 160792, restart: 225, agility: 0.10997
+restarting... propagations: 8835705, decisions: 3332245, conflicts: 161018, restart: 337, agility: 0.0361356
+restarting... propagations: 8853966, decisions: 3333511, conflicts: 161356, restart: 505, agility: 0.0874092
+restarting... propagations: 8876200, decisions: 3341926, conflicts: 161862, restart: 757, agility: 0.0776419
+restarting... propagations: 8913225, decisions: 3357904, conflicts: 162620, restart: 1135, agility: 0.058317
+restarting... propagations: 8989431, decisions: 3408737, conflicts: 163756, restart: 1702, agility: 0.0366158
+restarting... propagations: 9139156, decisions: 3475687, conflicts: 165459, restart: 2553, agility: 0.0281227
+restarting... propagations: 9174986, decisions: 3477415, conflicts: 165841, restart: 150, agility: 0.0321732
+restarting... propagations: 9221758, decisions: 3478926, conflicts: 166079, restart: 150, agility: 0.0253344
+restarting... propagations: 9241561, decisions: 3480567, conflicts: 166307, restart: 150, agility: 0.03661
+restarting... propagations: 9255345, decisions: 3487887, conflicts: 166458, restart: 225, agility: 0.0117373
+restarting... propagations: 9275603, decisions: 3499640, conflicts: 166684, restart: 337, agility: 0.0614022
+restarting... propagations: 9287636, decisions: 3503798, conflicts: 167022, restart: 505, agility: 0.0754554
+restarting... propagations: 9323416, decisions: 3510309, conflicts: 167528, restart: 757, agility: 0.0426197
+restarting... propagations: 9344988, decisions: 3513976, conflicts: 168286, restart: 1135, agility: 0.116551
+restarting... propagations: 9419024, decisions: 3530506, conflicts: 169422, restart: 1702, agility: 0.0264048
+restarting... propagations: 9472708, decisions: 3548621, conflicts: 171367, restart: 150, agility: 0.0512236
+restarting... propagations: 9477906, decisions: 3554152, conflicts: 171518, restart: 225, agility: 0.0592482
+restarting... propagations: 9488611, decisions: 3555776, conflicts: 171744, restart: 337, agility: 0.120022
+restarting... propagations: 9515685, decisions: 3559640, conflicts: 172082, restart: 505, agility: 0.020993
+restarting... propagations: 9605839, decisions: 3577518, conflicts: 174482, restart: 1702, agility: 0.111593
+restarting... propagations: 9637623, decisions: 3589353, conflicts: 175553, restart: 150, agility: 0.0620918
+restarting... propagations: 9646267, decisions: 3590836, conflicts: 175704, restart: 225, agility: 0.106719
+restarting... propagations: 9662369, decisions: 3592987, conflicts: 175891, restart: 150, agility: 0.0438945
+restarting... propagations: 9674443, decisions: 3600921, conflicts: 176042, restart: 225, agility: 0.0355412
+restarting... propagations: 9693602, decisions: 3619469, conflicts: 176268, restart: 337, agility: 0.0227636
+restarting... propagations: 9707209, decisions: 3627982, conflicts: 176606, restart: 505, agility: 0.0741638
+restarting... propagations: 9752477, decisions: 3640302, conflicts: 177112, restart: 757, agility: 0.0572397
+restarting... propagations: 9786156, decisions: 3650958, conflicts: 177870, restart: 1135, agility: 0.155105
+restarting... propagations: 9823102, decisions: 3670036, conflicts: 179006, restart: 1702, agility: 0.0419677
+restarting... propagations: 9867640, decisions: 3699926, conflicts: 180137, restart: 150, agility: 0.0649846
+restarting... propagations: 9869227, decisions: 3700316, conflicts: 180288, restart: 225, agility: 0.13685
+restarting... propagations: 9876184, decisions: 3704635, conflicts: 180514, restart: 337, agility: 0.0848827
+restarting... propagations: 9892405, decisions: 3707470, conflicts: 180852, restart: 505, agility: 0.0731885
+restarting... propagations: 9946255, decisions: 3719292, conflicts: 181358, restart: 757, agility: 0.0870599
+restarting... propagations: 9971324, decisions: 3724254, conflicts: 182116, restart: 1135, agility: 0.153516
+restarting... propagations: 10005413, decisions: 3747058, conflicts: 183252, restart: 1702, agility: 0.0915726
+restarting... propagations: 10045933, decisions: 3758423, conflicts: 184568, restart: 150, agility: 0.0360363
+restarting... propagations: 10057659, decisions: 3769325, conflicts: 184719, restart: 225, agility: 0.0254769
+restarting... propagations: 10068018, decisions: 3772023, conflicts: 184945, restart: 337, agility: 0.10884
+restarting... propagations: 10078243, decisions: 3777005, conflicts: 185283, restart: 505, agility: 0.116821
+restarting... propagations: 10099270, decisions: 3782425, conflicts: 185764, restart: 150, agility: 0.0378638
+restarting... propagations: 10117750, decisions: 3802510, conflicts: 185915, restart: 225, agility: 0.0258891
+restarting... propagations: 10123345, decisions: 3803991, conflicts: 186141, restart: 337, agility: 0.0970448
+restarting... propagations: 10141959, decisions: 3811199, conflicts: 186479, restart: 505, agility: 0.0828811
+restarting... propagations: 10221211, decisions: 3828714, conflicts: 189280, restart: 150, agility: 0.0329499
+restarting... propagations: 10232773, decisions: 3829793, conflicts: 189431, restart: 225, agility: 0.0769713
+restarting... propagations: 10274074, decisions: 3836856, conflicts: 189657, restart: 337, agility: 0.0513028
+restarting... propagations: 10306810, decisions: 3846592, conflicts: 189995, restart: 505, agility: 0.072376
+restarting... propagations: 10319200, decisions: 3850926, conflicts: 190501, restart: 757, agility: 0.170075
+restarting... propagations: 10335430, decisions: 3863396, conflicts: 190777, restart: 150, agility: 0.023221
+restarting... propagations: 10342519, decisions: 3864680, conflicts: 190928, restart: 225, agility: 0.0776528
+restarting... propagations: 10351690, decisions: 3868674, conflicts: 191154, restart: 337, agility: 0.0947089
+restarting... propagations: 10369421, decisions: 3882726, conflicts: 191588, restart: 150, agility: 0.0317946
+restarting... propagations: 10371229, decisions: 3884064, conflicts: 191739, restart: 225, agility: 0.0956854
+restarting... propagations: 10379826, decisions: 3889612, conflicts: 191965, restart: 337, agility: 0.0538497
+restarting... propagations: 10406066, decisions: 3893332, conflicts: 192306, restart: 505, agility: 0.0349275
+restarting... propagations: 10418898, decisions: 3900259, conflicts: 192812, restart: 757, agility: 0.138942
+restarting... propagations: 10446704, decisions: 3909930, conflicts: 193611, restart: 150, agility: 0.048838
+restarting... propagations: 10455272, decisions: 3911253, conflicts: 193762, restart: 225, agility: 0.0729023
+restarting... propagations: 10460687, decisions: 3914137, conflicts: 194029, restart: 337, agility: 0.157112
+restarting... propagations: 10488411, decisions: 3919226, conflicts: 194367, restart: 505, agility: 0.0694792
+restarting... propagations: 10505619, decisions: 3922291, conflicts: 194676, restart: 150, agility: 0.0559371
+restarting... propagations: 10510422, decisions: 3923589, conflicts: 194827, restart: 225, agility: 0.109606
+restarting... propagations: 10531566, decisions: 3930419, conflicts: 195173, restart: 150, agility: 0.0374315
+restarting... propagations: 10533968, decisions: 3931929, conflicts: 195324, restart: 225, agility: 0.0949231
+restarting... propagations: 10538726, decisions: 3934499, conflicts: 195550, restart: 337, agility: 0.109071
+restarting... propagations: 10552988, decisions: 3938163, conflicts: 195888, restart: 505, agility: 0.106442
+restarting... propagations: 10566551, decisions: 3951269, conflicts: 196395, restart: 150, agility: 0.0386506
+restarting... propagations: 10570368, decisions: 3953616, conflicts: 196546, restart: 225, agility: 0.097207
+restarting... propagations: 10579897, decisions: 3956673, conflicts: 196768, restart: 150, agility: 0.0474309
+restarting... propagations: 10585441, decisions: 3958887, conflicts: 196919, restart: 225, agility: 0.070589
+restarting... propagations: 10621056, decisions: 3965159, conflicts: 197164, restart: 337, agility: 0.0474795
+restarting... propagations: 10637257, decisions: 3970389, conflicts: 197502, restart: 505, agility: 0.123349
+restarting... propagations: 10658117, decisions: 3975188, conflicts: 197952, restart: 150, agility: 0.0354835
+restarting... propagations: 10666174, decisions: 3977858, conflicts: 198106, restart: 150, agility: 0.0612712
+restarting... propagations: 10682200, decisions: 3980798, conflicts: 198316, restart: 150, agility: 0.0138013
+restarting... propagations: 10706585, decisions: 3990277, conflicts: 198467, restart: 225, agility: 0.031011
+restarting... propagations: 10722492, decisions: 3993826, conflicts: 198693, restart: 337, agility: 0.119848
+restarting... propagations: 10756989, decisions: 4002457, conflicts: 199031, restart: 505, agility: 0.0832115
+restarting... propagations: 10807210, decisions: 4003629, conflicts: 199538, restart: 757, agility: 0.0325005
+restarting... propagations: 10890618, decisions: 4028571, conflicts: 200296, restart: 1135, agility: 0.112037
+restarting... propagations: 10998607, decisions: 4056755, conflicts: 201432, restart: 1702, agility: 0.0619276
+restarting... propagations: 11307681, decisions: 4120570, conflicts: 203135, restart: 2553, agility: 0.0408979
+restarting... propagations: 11732272, decisions: 4315242, conflicts: 205769, restart: 3829, agility: 0.0161477
+restarting... propagations: 12393953, decisions: 4395179, conflicts: 209599, restart: 5743, agility: 0.0813044
+restarting... propagations: 12847413, decisions: 4435726, conflicts: 212096, restart: 150, agility: 0.0478269
+restarting... propagations: 12874662, decisions: 4445095, conflicts: 212247, restart: 225, agility: 0.0175525
+restarting... propagations: 12885494, decisions: 4449420, conflicts: 212473, restart: 337, agility: 0.0948781
+restarting... propagations: 12930139, decisions: 4473776, conflicts: 212811, restart: 505, agility: 0.0194673
+restarting... propagations: 13038722, decisions: 4488512, conflicts: 214075, restart: 1135, agility: 0.0450115
+restarting... propagations: 13123910, decisions: 4515718, conflicts: 216914, restart: 2553, agility: 0.0304953
+restarting... propagations: 13680593, decisions: 4588046, conflicts: 219468, restart: 3829, agility: 0.0444477
+restarting... propagations: 14285656, decisions: 4727596, conflicts: 223298, restart: 5743, agility: 0.0568259
+restarting... propagations: 14914619, decisions: 4895080, conflicts: 229042, restart: 8614, agility: 0.0530832
+restarting... propagations: 15191733, decisions: 4966295, conflicts: 231295, restart: 150, agility: 0.0544318
+restarting... propagations: 15233131, decisions: 4967598, conflicts: 231446, restart: 225, agility: 0.0156741
+restarting... propagations: 15353921, decisions: 4992371, conflicts: 231711, restart: 337, agility: 0.00897642
+restarting... propagations: 15470440, decisions: 5023428, conflicts: 232049, restart: 505, agility: 0.0280671
+restarting... propagations: 15565790, decisions: 5053970, conflicts: 232555, restart: 757, agility: 0.0349653
+restarting... propagations: 15637127, decisions: 5067857, conflicts: 233313, restart: 1135, agility: 0.0479803
+restarting... propagations: 15801663, decisions: 5098202, conflicts: 234449, restart: 1702, agility: 0.0821535
+restarting... propagations: 16072023, decisions: 5170432, conflicts: 236181, restart: 2553, agility: 0.102834
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 -st -m .\del-undoes-add.als.z3
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+unknown
+(error "line 241 column 15: unsat core is not available")
+(:added-eqs                   23890
+ :binary-propagations         34
+ :conflicts                   96
+ :decisions                   13161
+ :del-clause                  67984
+ :final-checks                23
+ :lazy-quant-instantiations   21580
+ :max-generation              16
+ :max-missed-qa-cost          12.00
+ :memory                      11.44
+ :min-missed-qa-cost          11.00
+ :minimized-lits              3
+ :missed-quant-instantiations 1548
+ :mk-clause                   72806
+ :num-checks                  1
+ :propagations                31721
+ :quant-instantiations        29314
+ :restarts                    4
+ :time                        9.21
+ :total-time                  9.21)
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 -st -m .\del-undoes-add.als.z3
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+(:added-eqs                   13874
+ :binary-propagations         34
+ :conflicts                   65
+ :decisions                   5460
+ :del-clause                  32986
+ :final-checks                15
+ :lazy-quant-instantiations   4793
+ :max-generation              16
+ :memory                      6.69
+ :minimized-lits              2
+ :missed-quant-instantiations 2390
+ :mk-clause                   37412
+ :num-checks                  1
+ :propagations                16725
+ :quant-instantiations        14994
+ :restarts                    3
+ :total-time                  1.82)
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 -st -m .\del-undoes-add.als.z3
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+(:added-eqs                   2110325
+ :binary-propagations         34
+ :conflicts                   987
+ :decisions                   1661180
+ :del-clause                  5385509
+ :final-checks                1692
+ :lazy-quant-instantiations   8298519
+ :max-generation              21
+ :max-missed-qa-cost          21.00
+ :memory                      385.41
+ :min-missed-qa-cost          21.00
+ :minimized-lits              8
+ :missed-quant-instantiations 65190
+ :mk-clause                   5416841
+ :num-checks                  1
+ :propagations                1996544
+ :quant-instantiations        3181335
+ :restarts                    10
+ :total-time                  10545.45)
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> 
+
+Windows PowerShell
+Copyright (C) 2009 Microsoft Corporation. Alle Rechte vorbehalten.
+
+Willkommen in der Z3 Powershell. Tippen Sie 'z3' zum starten.
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 .\marksweepgc_soundness1.als.z3
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+unsat
+(a7 a8 a9 a10 a11 a12)
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 .\fileSystem.als
+(error "line 1 column 1: invalid command, '(' expected")
+(error "line 1 column 18: unexpected character")
+(error "line 3 column 0: unexpected character")
+(error "line 5 column 21: unexpected character")
+(error "line 5 column 22: unexpected character")
+(error "line 6 column 20: unexpected character")
+(error "line 8 column 0: unexpected character")
+(error "line 10 column 21: unexpected character")
+(error "line 10 column 22: unexpected character")
+(error "line 12 column 5: unexpected character")
+(error "line 19 column 11: unexpected character")
+(error "line 26 column 0: unexpected character")
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 .\fileSystem.als.z3
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> $Host.UI.RawUI.WindowTitle = 'z3: filesystem'
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 .\fileSystem.als.z3
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 -st -v:1 .\fileSystem.als.z3
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+(:added-eqs            47929
+ :binary-propagations  36
+ :max-generation       10
+ :memory               99.97
+ :mk-clause            75973
+ :num-checks           1
+ :propagations         32171
+ :quant-instantiations 86697
+ :total-time           154.54)
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 -st -v:2 .\fileSystem.als.z3
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+searching...
+(:added-eqs                   55737
+ :binary-propagations         36
+ :max-generation              10
+ :max-missed-qa-cost          11.00
+ :memory                      253.78
+ :min-missed-qa-cost          11.00
+ :missed-quant-instantiations 1266851
+ :mk-clause                   91196
+ :num-checks                  1
+ :propagations                48344
+ :quant-instantiations        109886
+ :total-time                  1414.45)
+PS D:\Entwicklung\workspace\alloy2key\smtexamples>
+
+
+Windows PowerShell
+Copyright (C) 2009 Microsoft Corporation. Alle Rechte vorbehalten.
+
+Willkommen in der Z3 Powershell. Tippen Sie 'z3' zum starten.
+Mit dem Befehl System.Management.Automation.Internal.Host.InternalHost.UI.RawUI.WindowTitle = 'neuer Titel' lässt sich
+der Titel des Fensters ändern
+
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> System.Management.Automation.Internal.Host.InternalHost.UI.RawUI.Wind
+owTitle = 'marksweep'
+Die Benennung "System.Management.Automation.Internal.Host.InternalHost.UI.RawUI.WindowTitle" wurde nicht als Name eines
+ Cmdlet, einer Funktion, einer Skriptdatei oder eines ausführbaren Programms erkannt. Überprüfen Sie die Schreibweise d
+es Namens, oder ob der Pfad korrekt ist (sofern enthalten), und wiederholen Sie den Vorgang.
+Bei Zeile:1 Zeichen:77
++ System.Management.Automation.Internal.Host.InternalHost.UI.RawUI.WindowTitle <<<<  = 'marksweep'
+    + CategoryInfo          : ObjectNotFound: (System.Manageme...wUI.WindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> System.Management.Automation.Internal.Host.InternalHost.UI.RawUI.Wind
+owTitle = 'z3: marksweep'
+Die Benennung "System.Management.Automation.Internal.Host.InternalHost.UI.RawUI.WindowTitle" wurde nicht als Name eines
+ Cmdlet, einer Funktion, einer Skriptdatei oder eines ausführbaren Programms erkannt. Überprüfen Sie die Schreibweise d
+es Namens, oder ob der Pfad korrekt ist (sofern enthalten), und wiederholen Sie den Vorgang.
+Bei Zeile:1 Zeichen:77
++ System.Management.Automation.Internal.Host.InternalHost.UI.RawUI.WindowTitle <<<<  = 'z3: marksweep'
+    + CategoryInfo          : ObjectNotFound: (System.Manageme...wUI.WindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> $Host.UI.RawUI.WindowTitle = 'z3: marksweep'
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 .\marksweepgc_soundness1.als
+(error "line 1 column 1: invalid command, '(' expected")
+(error "line 22 column 9: unexpected character")
+(error "line 22 column 10: unexpected character")
+(error "line 24 column 14: unexpected character")
+(error "line 25 column 6: unexpected character")
+(error "line 25 column 33: unexpected character")
+(error "line 26 column 19: unexpected character")
+(error "line 28 column 0: unexpected character")
+(error "line 30 column 15: unexpected character")
+(error "line 30 column 18: unexpected character")
+(error "line 30 column 35: unexpected character")
+(error "line 30 column 37: unexpected character")
+(error "line 36 column 0: unexpected character")
+(error "line 38 column 38: invalid command, symbol expected")
+(error "line 39 column 13: unexpected character")
+(error "line 39 column 27: unexpected character")
+(error "line 39 column 36: unexpected character")
+(error "line 39 column 49: unexpected character")
+unsupported
+; hs.left
+(error "line 41 column 0: unexpected character")
+(error "line 43 column 9: unexpected character")
+(error "line 43 column 23: unexpected character")
+(error "line 43 column 36: unexpected character")
+(error "line 43 column 52: unexpected character")
+(error "line 43 column 54: unexpected character")
+(error "line 44 column 27: unexpected character")
+(error "line 44 column 32: unexpected character")
+(error "line 47 column 0: unexpected character")
+(error "line 50 column 16: unexpected character")
+(error "line 50 column 19: unexpected character")
+(error "line 50 column 35: unexpected character")
+(error "line 50 column 37: unexpected character")
+unsupported
+; hs_.left
+(error "line 52 column 27: invalid command, '(' expected")
+unsupported
+; Node
+(error "line 53 column 2: invalid command, '(' expected")
+(error "line 67 column 17: unexpected character")
+(error "line 67 column 21: unexpected character")
+(error "line 67 column 34: unexpected character")
+(error "line 67 column 39: unexpected character")
+(error "line 67 column 44: unexpected character")
+(error "line 67 column 65: unexpected character")
+(error "line 67 column 69: unexpected character")
+(error "line 68 column 0: unexpected character")
+(error "line 70 column 18: unexpected character")
+(error "line 72 column 7: unexpected character")
+(error "line 72 column 23: unexpected character")
+(error "line 74 column 39: unexpected character")
+(error "line 75 column 15: unexpected character")
+(error "line 75 column 20: unexpected character")
+(error "line 75 column 30: unexpected character")
+(error "line 75 column 35: unexpected character")
+(error "line 76 column 16: unexpected character")
+(error "line 76 column 21: unexpected character")
+(error "line 76 column 32: unexpected character")
+(error "line 76 column 37: unexpected character")
+(error "line 77 column 6: unexpected character")
+(error "line 79 column 0: unexpected character")
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 .\marksweepgc_soundness1.als.z3
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+unsat
+(a7 a8 a9 a10 a11 a12)
+PS D:\Entwicklung\workspace\alloy2key\smtexamples>
+PS D:\Entwicklung\workspace\alloy2key\smtexamples>
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 .\marksweepgc_soundness1.als.z3
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+unsat
+(a7 a8 a9 a10 a11 c0)
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 .\marksweepgc_soundness1.als.z3
+(error "line 305 column 1: invalid command, '(' expected")
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+unsat
+(ax0 ax3 ax5 ax8 ax9 ax17 ax21 a4 a6 l3 l6 l7)
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -?
+Z3 [version 4.0]. (C) Copyright 2006 Microsoft Corp.
+Usage: z3 [options] [/file:]file
+
+Input format:
+  /s          use parser for Simplify input format.
+  /smt        use parser for SMT input format.
+  /smtc       use parser for SMT-like input format, it supports several SMT 2 features, and has many extensions.
+  /smt2       use parser for SMT 2 input format.
+  /z3         use parser for Z3 native input format.
+  /dl         use parser for Datalog input format.
+  /tptp       use parser for TPTP5 input format.
+  /dimacs     use parser for DIMACS input format.
+  /log        use parser for Z3 log input format.
+  /in         read formula from standard input.
+
+Miscellaneous:
+  /h, /?      prints this message.
+  /version    prints version number of Z3.
+  /v:level    be verbose, where <level> is the verbosity level.
+  /nw         disable warning messages.
+  /ini:file   configuration file.
+  /ini?       display all available INI file parameters.
+
+Resources:
+  /T:timeout  set the timeout (in seconds).
+  /t:timeout  set the soft timeout (in seconds). It only kills the current query.
+  /memory:Megabytes  set a limit for virtual memory consumption.
+
+Output:
+  /st         display statistics.
+  /m          display model.
+
+Simplify specific commands:
+  /cex:num    set the maximum number of counterexamples when using Simplify front end.
+  /@          only use labels that contain '@' when building multiple counterexamples.
+
+Search heuristics:
+  /rd:num     random case-split frequency (default: 2).
+  /rs:num     random seed.
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 -v:2 .\marksweepgc_soundness1.als.z3
+(error "line 305 column 1: invalid command, '(' expected")
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+searching...
+searching...
+searching...
+searching...
+simplifying clause set... num. deleted clauses: 0 (out of 1)
+searching...
+searching...
+simplifying clause set... num. deleted clauses: 0 (out of 2)
+searching...
+searching...
+simplifying clause set... num. deleted clauses: 0 (out of 1)
+searching...
+searching...
+searching...
+searching...
+searching...
+searching...
+searching...
+searching...
+searching...
+searching...
+searching...
+restarting... propagations: 17, decisions: 8, conflicts: 0, restart: 100, agility: 0
+unsat
+(ax0 ax3 ax5 ax8 ax9 ax17 ax21 a4 a6 l3 l6 l7)
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 -v:1 .\marksweepgc_soundness1.als.z3
+(error "line 305 column 1: invalid command, '(' expected")
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+restarting... propagations: 17, decisions: 8, conflicts: 0, restart: 100, agility: 0
+unsat
+(ax0 ax3 ax5 ax8 ax9 ax17 ax21 a4 a6 l3 l6 l7)
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 -st -v:1 .\marksweepgc_soundness1.als.z3
+(error "line 305 column 1: invalid command, '(' expected")
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+restarting... propagations: 17, decisions: 8, conflicts: 0, restart: 100, agility: 0
+unsat
+(ax0 ax3 ax5 ax8 ax9 ax17 ax21 a4 a6 l3 l6 l7)
+(:added-eqs            29
+ :binary-propagations  44
+ :conflicts            1
+ :decisions            8
+ :del-clause           711
+ :final-checks         1
+ :max-generation       8
+ :memory               1.45
+ :mk-clause            711
+ :num-checks           1
+ :propagations         180
+ :quant-instantiations 495
+ :restarts             1
+ :time                 0.03
+ :total-time           0.04)
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 -st -v:1 .\marksweepgc_soundness1.als.z3
+
+18:21 Mittwoch, 25. Juli 2012
+      Atom!val!495
+    (ite (and (= x!1 Atom!val!0) (= x!2 Rel2!val!5) (= x!3 Rel1!val!272))
+      Atom!val!495
+    (ite (and (= x!1 Atom!val!70) (= x!2 Rel2!val!2) (= x!3 Rel1!val!313))
+      Atom!val!505
+    (ite (and (= x!1 Atom!val!359) (= x!2 Rel2!val!2) (= x!3 Rel1!val!199))
+      Atom!val!361
+    (ite (and (= x!1 Atom!val!361) (= x!2 Rel2!val!5) (= x!3 Rel1!val!184))
+      Atom!val!360
+    (ite (and (= x!1 Atom!val!468) (= x!2 Rel2!val!2) (= x!3 Rel1!val!177))
+      Atom!val!146
+    (ite (and (= x!1 Atom!val!139) (= x!2 Rel2!val!2) (= x!3 Rel1!val!197))
+      Atom!val!140
+    (ite (and (= x!1 Atom!val!140) (= x!2 Rel2!val!1) (= x!3 Rel1!val!233))
+      Atom!val!141
+    (ite (and (= x!1 Atom!val!496) (= x!2 Rel2!val!0) (= x!3 Rel1!val!340))
+      Atom!val!537
+    (ite (and (= x!1 Atom!val!146) (= x!2 Rel2!val!2) (= x!3 Rel1!val!305))
+      Atom!val!497
+    (ite (and (= x!1 Atom!val!490) (= x!2 Rel2!val!2) (= x!3 Rel1!val!309))
+      Atom!val!499
+    (ite (and (= x!1 Atom!val!499) (= x!2 Rel2!val!1) (= x!3 Rel1!val!342))
+      Atom!val!538
+    (ite (and (= x!1 Atom!val!500) (= x!2 Rel2!val!0) (= x!3 Rel1!val!344))
+      Atom!val!539
+    (ite (and (= x!1 Atom!val!0) (= x!2 Rel2!val!0) (= x!3 Rel1!val!237))
+      Atom!val!471
+    (ite (and (= x!1 Atom!val!471) (= x!2 Rel2!val!4) (= x!3 Rel1!val!268))
+      Atom!val!492
+    (ite (and (= x!1 Atom!val!0) (= x!2 Rel2!val!1) (= x!3 Rel1!val!239))
+      Atom!val!472
+    (ite (and (= x!1 Atom!val!472) (= x!2 Rel2!val!6) (= x!3 Rel1!val!268))
+      Atom!val!492
+    (ite (and (= x!1 Atom!val!0) (= x!2 Rel2!val!6) (= x!3 Rel1!val!241))
+      Atom!val!473
+    (ite (and (= x!1 Atom!val!473) (= x!2 Rel2!val!7) (= x!3 Rel1!val!268))
+      Atom!val!492
+    (ite (and (= x!1 Atom!val!0) (= x!2 Rel2!val!2) (= x!3 Rel1!val!243))
+      Atom!val!474
+    (ite (and (= x!1 Atom!val!474) (= x!2 Rel2!val!5) (= x!3 Rel1!val!268))
+      Atom!val!492
+    (ite (and (= x!1 Atom!val!0) (= x!2 Rel2!val!0) (= x!3 Rel1!val!253))
+      Atom!val!483
+    (ite (and (= x!1 Atom!val!483) (= x!2 Rel2!val!4) (= x!3 Rel1!val!272))
+      Atom!val!495
+    (ite (and (= x!1 Atom!val!0) (= x!2 Rel2!val!1) (= x!3 Rel1!val!255))
+      Atom!val!484
+    (ite (and (= x!1 Atom!val!484) (= x!2 Rel2!val!6) (= x!3 Rel1!val!272))
+      Atom!val!495
+    (ite (and (= x!1 Atom!val!0) (= x!2 Rel2!val!6) (= x!3 Rel1!val!257))
+      Atom!val!485
+    (ite (and (= x!1 Atom!val!485) (= x!2 Rel2!val!7) (= x!3 Rel1!val!272))
+      Atom!val!495
+    (ite (and (= x!1 Atom!val!0) (= x!2 Rel2!val!2) (= x!3 Rel1!val!259))
+      Atom!val!486
+    (ite (and (= x!1 Atom!val!486) (= x!2 Rel2!val!5) (= x!3 Rel1!val!272))
+      Atom!val!495
+    (ite (and (= x!1 Atom!val!452) (= x!2 Rel2!val!2) (= x!3 Rel1!val!230))
+      Atom!val!470
+    (ite (and (= x!1 Atom!val!361) (= x!2 Rel2!val!2) (= x!3 Rel1!val!274))
+      Atom!val!362
+    (ite (and (= x!1 Atom!val!362) (= x!2 Rel2!val!5) (= x!3 Rel1!val!184))
+      Atom!val!360
+    (ite (and (= x!1 Atom!val!497) (= x!2 Rel2!val!1) (= x!3 Rel1!val!346))
+      Atom!val!540
+    (ite (and (= x!1 Atom!val!498) (= x!2 Rel2!val!0) (= x!3 Rel1!val!348))
+      Atom!val!541
+    (ite (and (= x!1 Atom!val!505) (= x!2 Rel2!val!2) (= x!3 Rel1!val!186))
+      Atom!val!456
+    (ite (and (= x!1 Atom!val!140) (= x!2 Rel2!val!2) (= x!3 Rel1!val!233))
+      Atom!val!141
+    (ite (and (= x!1 Atom!val!141) (= x!2 Rel2!val!1) (= x!3 Rel1!val!76))
+      Atom!val!542
+    (ite (and (= x!1 Atom!val!537) (= x!2 Rel2!val!0) (= x!3 Rel1!val!434))
+      Atom!val!543
+    (ite (and (= x!1 Atom!val!499) (= x!2 Rel2!val!2) (= x!3 Rel1!val!342))
+      Atom!val!538
+    (ite (and (= x!1 Atom!val!538) (= x!2 Rel2!val!1) (= x!3 Rel1!val!436))
+      Atom!val!544
+    (ite (and (= x!1 Atom!val!539) (= x!2 Rel2!val!0) (= x!3 Rel1!val!438))
+      Atom!val!545
+    (ite (and (= x!1 Atom!val!471) (= x!2 Rel2!val!0) (= x!3 Rel1!val!279))
+      Atom!val!506
+    (ite (and (= x!1 Atom!val!0) (= x!2 Rel2!val!2) (= x!3 Rel1!val!239))
+      Atom!val!472
+    (ite (and (= x!1 Atom!val!472) (= x!2 Rel2!val!1) (= x!3 Rel1!val!282))
+      Atom!val!507
+    (ite (and (= x!1 Atom!val!0) (= x!2 Rel2!val!1) (= x!3 Rel1!val!284))
+      Atom!val!508
+    (ite (and (= x!1 Atom!val!508) (= x!2 Rel2!val!6) (= x!3 Rel1!val!241))
+      Atom!val!473
+    (ite (and (= x!1 Atom!val!473) (= x!2 Rel2!val!6) (= x!3 Rel1!val!286))
+      Atom!val!509
+    (ite (and (= x!1 Atom!val!474) (= x!2 Rel2!val!2) (= x!3 Rel1!val!288))
+      Atom!val!510
+    (ite (and (= x!1 Atom!val!483) (= x!2 Rel2!val!0) (= x!3 Rel1!val!290))
+      Atom!val!516
+    (ite (and (= x!1 Atom!val!0) (= x!2 Rel2!val!2) (= x!3 Rel1!val!255))
+      Atom!val!484
+    (ite (and (= x!1 Atom!val!484) (= x!2 Rel2!val!1) (= x!3 Rel1!val!293))
+      Atom!val!517
+    (ite (and (= x!1 Atom!val!0) (= x!2 Rel2!val!1) (= x!3 Rel1!val!295))
+      Atom!val!518
+    (ite (and (= x!1 Atom!val!518) (= x!2 Rel2!val!6) (= x!3 Rel1!val!257))
+      Atom!val!485
+    (ite (and (= x!1 Atom!val!485) (= x!2 Rel2!val!6) (= x!3 Rel1!val!297))
+      Atom!val!519
+    (ite (and (= x!1 Atom!val!486) (= x!2 Rel2!val!2) (= x!3 Rel1!val!299))
+      Atom!val!520
+    (ite (and (= x!1 Atom!val!363) (= x!2 Rel2!val!5) (= x!3 Rel1!val!184))
+      Atom!val!546
+    (ite (and (= x!1 Atom!val!497) (= x!2 Rel2!val!2) (= x!3 Rel1!val!346))
+      Atom!val!540
+    (ite (and (= x!1 Atom!val!540) (= x!2 Rel2!val!1) (= x!3 Rel1!val!440))
+      Atom!val!547
+    (ite (and (= x!1 Atom!val!541) (= x!2 Rel2!val!0) (= x!3 Rel1!val!442))
+      Atom!val!548
+    (ite (and (= x!1 Atom!val!506) (= x!2 Rel2!val!4) (= x!3 Rel1!val!268))
+      Atom!val!492
+    (ite (and (= x!1 Atom!val!507) (= x!2 Rel2!val!6) (= x!3 Rel1!val!268))
+      Atom!val!492
+    (ite (and (= x!1 Atom!val!473) (= x!2 Rel2!val!4) (= x!3 Rel1!val!268))
+      Atom!val!492
+    (ite (and (= x!1 Atom!val!473) (= x!2 Rel2!val!6) (= x!3 Rel1!val!268))
+      Atom!val!492
+    (ite (and (= x!1 Atom!val!509) (= x!2 Rel2!val!7) (= x!3 Rel1!val!268))
+      Atom!val!492
+    (ite (and (= x!1 Atom!val!510) (= x!2 Rel2!val!5) (= x!3 Rel1!val!268))
+      Atom!val!492
+    (ite (and (= x!1 Atom!val!516) (= x!2 Rel2!val!4) (= x!3 Rel1!val!272))
+      Atom!val!495
+    (ite (and (= x!1 Atom!val!517) (= x!2 Rel2!val!6) (= x!3 Rel1!val!272))
+      Atom!val!495
+    (ite (and (= x!1 Atom!val!485) (= x!2 Rel2!val!4) (= x!3 Rel1!val!272))
+      Atom!val!495
+    (ite (and (= x!1 Atom!val!485) (= x!2 Rel2!val!6) (= x!3 Rel1!val!272))
+      Atom!val!495
+    (ite (and (= x!1 Atom!val!519) (= x!2 Rel2!val!7) (= x!3 Rel1!val!272))
+      Atom!val!495
+    (ite (and (= x!1 Atom!val!520) (= x!2 Rel2!val!5) (= x!3 Rel1!val!272))
+      Atom!val!495
+    (ite (and (= x!1 Atom!val!456) (= x!2 Rel2!val!2) (= x!3 Rel1!val!315))
+      Atom!val!84
+    (ite (and (= x!1 Atom!val!141) (= x!2 Rel2!val!2) (= x!3 Rel1!val!76))
+      Atom!val!599
+    (ite (and (= x!1 Atom!val!142) (= x!2 Rel2!val!1) (= x!3 Rel1!val!318))
+      Atom!val!145
+    (ite (and (= x!1 Atom!val!543) (= x!2 Rel2!val!0) (= x!3 Rel1!val!320))
+      Atom!val!600
+    (ite (and (= x!1 Atom!val!538) (= x!2 Rel2!val!2) (= x!3 Rel1!val!436))
+      Atom!val!544
+    (ite (and (= x!1 Atom!val!544) (= x!2 Rel2!val!1) (= x!3 Rel1!val!445))
+      Atom!val!601
+    (ite (and (= x!1 Atom!val!545) (= x!2 Rel2!val!0) (= x!3 Rel1!val!447))
+      Atom!val!602
+    (ite (and (= x!1 Atom!val!472) (= x!2 Rel2!val!2) (= x!3 Rel1!val!282))
+      Atom!val!603
+    (ite (and (= x!1 Atom!val!0) (= x!2 Rel2!val!2) (= x!3 Rel1!val!284))
+      Atom!val!604
+    (ite (and (= x!1 Atom!val!508) (= x!2 Rel2!val!1) (= x!3 Rel1!val!325))
+      Atom!val!605
+    (ite (and (= x!1 Atom!val!523) (= x!2 Rel2!val!6) (= x!3 Rel1!val!241))
+      Atom!val!606
+    (ite (and (= x!1 Atom!val!473) (= x!2 Rel2!val!1) (= x!3 Rel1!val!327))
+      Atom!val!607
+    (ite (and (= x!1 Atom!val!526) (= x!2 Rel2!val!6) (= x!3 Rel1!val!286))
+      Atom!val!608
+    (ite (and (= x!1 Atom!val!484) (= x!2 Rel2!val!2) (= x!3 Rel1!val!293))
+      Atom!val!609
+    (ite (and (= x!1 Atom!val!0) (= x!2 Rel2!val!2) (= x!3 Rel1!val!295))
+      Atom!val!610
+    (ite (and (= x!1 Atom!val!518) (= x!2 Rel2!val!1) (= x!3 Rel1!val!331))
+      Atom!val!611
+    (ite (and (= x!1 Atom!val!531) (= x!2 Rel2!val!6) (= x!3 Rel1!val!257))
+      Atom!val!612
+    (ite (and (= x!1 Atom!val!485) (= x!2 Rel2!val!1) (= x!3 Rel1!val!333))
+      Atom!val!613
+    (ite (and (= x!1 Atom!val!534) (= x!2 Rel2!val!6) (= x!3 Rel1!val!297))
+      Atom!val!614
+    (ite (and (= x!1 Atom!val!540) (= x!2 Rel2!val!2) (= x!3 Rel1!val!440))
+      Atom!val!615
+    (ite (and (= x!1 Atom!val!509) (= x!2 Rel2!val!4) (= x!3 Rel1!val!268))
+      Atom!val!616
+    (ite (and (= x!1 Atom!val!509) (= x!2 Rel2!val!6) (= x!3 Rel1!val!268))
+      Atom!val!617
+    (ite (and (= x!1 Atom!val!519) (= x!2 Rel2!val!4) (= x!3 Rel1!val!272))
+      Atom!val!618
+    (ite (and (= x!1 Atom!val!519) (= x!2 Rel2!val!6) (= x!3 Rel1!val!272))
+      Atom!val!619
+    (ite (and (= x!1 Atom!val!506) (= x!2 Rel2!val!0) (= x!3 Rel1!val!350))
+      Atom!val!620
+    (ite (and (= x!1 Atom!val!521) (= x!2 Rel2!val!4) (= x!3 Rel1!val!268))
+      Atom!val!621
+    (ite (and (= x!1 Atom!val!507) (= x!2 Rel2!val!1) (= x!3 Rel1!val!352))
+      Atom!val!622
+    (ite (and (= x!1 Atom!val!522) (= x!2 Rel2!val!6) (= x!3 Rel1!val!268))
+      Atom!val!623
+    (ite (and (= x!1 Atom!val!473) (= x!2 Rel2!val!0) (= x!3 Rel1!val!354))
+      Atom!val!624
+    (ite (and (= x!1 Atom!val!524) (= x!2 Rel2!val!4) (= x!3 Rel1!val!268))
+      Atom!val!625
+    (ite (and (= x!1 Atom!val!473) (= x!2 Rel2!val!1) (= x!3 Rel1!val!356))
+      Atom!val!626
+    (ite (and (= x!1 Atom!val!525) (= x!2 Rel2!val!6) (= x!3 Rel1!val!268))
+      Atom!val!627
+    (ite (and (= x!1 Atom!val!509) (= x!2 Rel2!val!6) (= x!3 Rel1!val!358))
+      Atom!val!628
+    (ite (and (= x!1 Atom!val!527) (= x!2 Rel2!val!7) (= x!3 Rel1!val!268))
+      Atom!val!629
+    (ite (and (= x!1 Atom!val!510) (= x!2 Rel2!val!2) (= x!3 Rel1!val!360))
+      Atom!val!630
+    (ite (and (= x!1 Atom!val!528) (= x!2 Rel2!val!5) (= x!3 Rel1!val!268))
+      Atom!val!631
+    (ite (and (= x!1 Atom!val!516) (= x!2 Rel2!val!0) (= x!3 Rel1!val!362))
+      Atom!val!632
+    (ite (and (= x!1 Atom!val!529) (= x!2 Rel2!val!4) (= x!3 Rel1!val!272))
+      Atom!val!633
+    (ite (and (= x!1 Atom!val!517) (= x!2 Rel2!val!1) (= x!3 Rel1!val!364))
+      Atom!val!634
+    (ite (and (= x!1 Atom!val!530) (= x!2 Rel2!val!6) (= x!3 Rel1!val!272))
+      Atom!val!635
+    (ite (and (= x!1 Atom!val!485) (= x!2 Rel2!val!0) (= x!3 Rel1!val!366))
+      Atom!val!636
+    (ite (and (= x!1 Atom!val!532) (= x!2 Rel2!val!4) (= x!3 Rel1!val!272))
+      Atom!val!637
+    (ite (and (= x!1 Atom!val!485) (= x!2 Rel2!val!1) (= x!3 Rel1!val!368))
+      Atom!val!638
+    (ite (and (= x!1 Atom!val!533) (= x!2 Rel2!val!6) (= x!3 Rel1!val!272))
+      Atom!val!639
+    (ite (and (= x!1 Atom!val!519) (= x!2 Rel2!val!6) (= x!3 Rel1!val!370))
+      Atom!val!640
+    (ite (and (= x!1 Atom!val!535) (= x!2 Rel2!val!7) (= x!3 Rel1!val!272))
+      Atom!val!641
+    (ite (and (= x!1 Atom!val!520) (= x!2 Rel2!val!2) (= x!3 Rel1!val!372))
+      Atom!val!642
+    (ite (and (= x!1 Atom!val!536) (= x!2 Rel2!val!5) (= x!3 Rel1!val!272))
+      Atom!val!643
+    (ite (and (= x!1 Atom!val!84) (= x!2 Rel2!val!2) (= x!3 Rel1!val!449))
+      Atom!val!644
+    (ite (and (= x!1 Atom!val!142) (= x!2 Rel2!val!2) (= x!3 Rel1!val!318))
+      Atom!val!145
+    (ite (and (= x!1 Atom!val!544) (= x!2 Rel2!val!2) (= x!3 Rel1!val!445))
+      Atom!val!601
+    (ite (and (= x!1 Atom!val!601) (= x!2 Rel2!val!1) (= x!3 Rel1!val!457))
+      Atom!val!645
+    (ite (and (= x!1 Atom!val!602) (= x!2 Rel2!val!0) (= x!3 Rel1!val!459))
+      Atom!val!646
+    (ite (and (= x!1 Atom!val!644) (= x!2 Rel2!val!2) (= x!3 Rel1!val!461))
+      Atom!val!647
+    (ite (and (= x!1 Atom!val!601) (= x!2 Rel2!val!2) (= x!3 Rel1!val!457))
+      Atom!val!645
+    (ite (and (= x!1 Atom!val!645) (= x!2 Rel2!val!1) (= x!3 Rel1!val!470))
+      Atom!val!653
+    (ite (and (= x!1 Atom!val!646) (= x!2 Rel2!val!0) (= x!3 Rel1!val!472))
+      Atom!val!654
+    (ite (and (= x!1 Atom!val!647) (= x!2 Rel2!val!2) (= x!3 Rel1!val!474))
+      Atom!val!655
+    (ite (and (= x!1 Atom!val!645) (= x!2 Rel2!val!2) (= x!3 Rel1!val!470))
+      Atom!val!656
+    (ite (and (= x!1 Atom!val!653) (= x!2 Rel2!val!1) (= x!3 Rel1!val!452))
+      Atom!val!657
+    (ite (and (= x!1 Atom!val!654) (= x!2 Rel2!val!0) (= x!3 Rel1!val!454))
+      Atom!val!658
+      Atom!val!2))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
+))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
+)))))))))))))))))))))))))))))))))))))))
+  (define-fun join_1x2 ((x!1 Rel1) (x!2 Rel2)) Rel1
+    (join_1x2!1567 (k!1562 x!1) (k!1560 x!2)))
+  (define-fun x!6 ((x!1 Atom) (x!2 Rel2) (x!3 Rel1)) Atom
+    (x!6!1569 (k!1561 x!1) (k!1560 x!2) (k!1562 x!3)))
+  (define-fun subset_2 ((x!1 Rel2) (x!2 Rel2)) Bool
+    (subset_2!1570 (k!1560 x!1) (k!1560 x!2)))
+  (define-fun a2r_1 ((x!1 Atom)) Rel1
+    (a2r_1!1571 (k!1561 x!1)))
+  (define-fun prod_1x1 ((x!1 Rel1) (x!2 Rel1)) Rel2
+    (ite (and (= x!1 Rel1!val!2) (= x!2 Rel1!val!3)) Rel2!val!2
+      Rel2!val!0))
+)
+(error "line 111 column 15: unsat core is not available")
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 -m .\core.z3 > core.log
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 -m .\core.z3 | tee-object -filepath corelog.log
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+PS D:\Entwicklung\workspace\alloy2key\smtexamples>
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 -m .\core.z3 | tee-object -filepath D:\Entwicklung\workspace
+\alloy2key\smtexamples\core.log
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 -m .\core.z3 | tee-object -filepath corelog.log
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+unsat
+(error "line 109 column 10: model is not available")
+(ax0 ax3 ax5 ax8 ax9 ax17 ax21 a4 a6 l3 l7)
+PS D:\Entwicklung\workspace\alloy2key\smtexamples> z3 -smt2 -m .\core.z3 | tee-object -filepath corelog.log
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the formula does not
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
+PS D:\Entwicklung\workspace\alloy2key\smtexamples>
