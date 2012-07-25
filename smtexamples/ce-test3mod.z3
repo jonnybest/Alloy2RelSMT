@@ -14,12 +14,12 @@
 (declare-fun in_2 (Atom Atom Rel2) Bool)
 (declare-fun prod_1x1 (Rel1 Rel1) Rel2)
 (declare-fun subset_2 (Rel2 Rel2) Bool)
-(declare-fun freeList () Rel2)
+; (declare-fun freeList () Rel2)
 (declare-fun disjoint_1 (Rel1 Rel1) Bool)
-(declare-fun trans (Rel2) Bool)
-(declare-fun transClos (Rel2) Rel2)
+; (declare-fun trans (Rel2) Bool)
+; (declare-fun transClos (Rel2) Rel2)
 (declare-fun iden () Rel2)
-(declare-fun reflTransClos (Rel2) Rel2)
+; (declare-fun reflTransClos (Rel2) Rel2)
 (declare-fun HeapState () Rel1)
 (declare-fun Node () Rel1)
 ;; --end functions
@@ -51,21 +51,21 @@
  :named ax17 
  ) 
  )
-(assert 
- (! 
-  (forall ((r Rel2)) (subset_2 iden (reflTransClos r))) 
- :named ax21 
- ) 
- )
+; (assert 
+ ; (! 
+  ; (forall ((r Rel2)) (subset_2 iden (reflTransClos r))) 
+ ; :named ax21 
+ ; ) 
+ ; )
 ;; --end axioms
 
 ;; assertions
-(assert 
- (! (not 
-  (subset_2 freeList (prod_1x1 HeapState Node)) )
- :named nota4 
- ) 
- )
+; (assert 
+ ; (! (not 
+  ; (subset_2 freeList (prod_1x1 HeapState Node)) )
+ ; :named nota4 
+ ; ) 
+ ; )
 (assert 
  (! 
   (disjoint_1 HeapState Node) 
@@ -74,11 +74,18 @@
  )
 
  ;; lemmas
-(assert
- (! 
-  (forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (reflTransClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 (reflTransClos r)) (in_2 a3 a2 r)))))  
-	:named l7)
+ ;iden lemma
+ (assert
+		(!
+			(forall ((a0 Atom)(a1 Atom))(= (in_2 a0 a1 iden) (= a0 a1)))
+		:named idenLemma) 
  )
+ 
+; (assert
+ ; (! 
+  ; (forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (reflTransClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 (reflTransClos r)) (in_2 a3 a2 r)))))  
+	; :named l7)
+ ; )
 ;; --end lemmas
 
 (check-sat)
