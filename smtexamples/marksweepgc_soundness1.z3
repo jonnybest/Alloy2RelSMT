@@ -47,7 +47,19 @@
 ;; axioms
 (assert 
  (! 
-  (forall ((A Rel1)(B Rel1)(x0 Atom)(y0 Atom)) (= (in_2 x0 y0 (prod_1x1 A B)) (and (in_1 x0 A) (in_1 y0 B)))) 
+  (and
+		; (or (in_2 x0 y0 (prod_1x1 A B)) (not (and (in_1 x0 A) (in_1 y0 B))))
+		; (or (not (in_2 x0 y0 (prod_1x1 A B)) (and (in_1 x0 A) (in_1 y0 B))))
+		(!
+		(forall ((A Rel1)(B Rel1)(x0 Atom)(y0 Atom)) 
+			(=> (in_2 x0 y0 (prod_1x1 A B)) (and (in_1 x0 A) (in_1 y0 B))))
+		:named ax01)
+		)
+		(!
+		(forall ((A Rel1)(B Rel1)(x0 Atom)(y0 Atom)) 
+			(=> (and (in_1 x0 A) (in_1 y0 B)) (in_2 x0 y0 (prod_1x1 A B))))
+		:named ax02)
+	)
  :named ax0 
  ) 
  )
@@ -302,7 +314,7 @@
  ; ) (=> (GC (a2r_1 h) (a2r_1 root) (a2r_1 h_)) (forall ((live Atom)) (=> (and (in_1 live Node) (in_1 live (reachable (a2r_1 h) (a2r_1 root)))) (and (= (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h_) left)) (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h) left))) (= (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h_) right)) (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h) right)))))))))) 
 ; :named c0 
 ; ) 
-)
+;)
 ;; --end command
 
 ;; lemmas
