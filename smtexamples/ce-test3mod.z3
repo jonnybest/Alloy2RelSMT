@@ -75,11 +75,11 @@
 
  ;; lemmas
  ;iden lemma
- (assert
-		(!
-			(forall ((a0 Atom)(a1 Atom))(= (in_2 a0 a1 iden) (= a0 a1)))
-		:named idenLemma) 
- )
+ ; (assert
+		; (!
+			; (forall ((a0 Atom)(a1 Atom))(= (in_2 a0 a1 iden) (= a0 a1)))
+		; :named idenLemma) 
+ ; )
  
 ; (assert
  ; (! 
