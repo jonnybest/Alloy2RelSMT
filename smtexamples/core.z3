@@ -103,7 +103,6 @@
  )
 ;; --end lemmas
 
-;; -- END key stuff --
 (check-sat)
 (get-model)
 (get-unsat-core)
