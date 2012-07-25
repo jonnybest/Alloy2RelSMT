@@ -19,7 +19,7 @@
 ; (declare-fun trans (Rel2) Bool)
 ; (declare-fun transClos (Rel2) Rel2)
 (declare-fun iden () Rel2)
-; (declare-fun reflTransClos (Rel2) Rel2)
+(declare-fun reflTransClos (Rel2) Rel2)
 (declare-fun HeapState () Rel1)
 (declare-fun Node () Rel1)
 ;; --end functions
@@ -51,12 +51,12 @@
  :named ax17 
  ) 
  )
-; (assert 
- ; (! 
-  ; (forall ((r Rel2)) (subset_2 iden (reflTransClos r))) 
- ; :named ax21 
- ; ) 
- ; )
+(assert 
+ (! 
+  (forall ((r Rel2)) (subset_2 iden (reflTransClos r))) 
+ :named ax21 
+ ) 
+ )
 ;; --end axioms
 
 ;; assertions
@@ -74,12 +74,12 @@
  )
 
  ;; lemmas
- ;iden lemma
- ; (assert
-		; (!
-			; (forall ((a0 Atom)(a1 Atom))(= (in_2 a0 a1 iden) (= a0 a1)))
-		; :named idenLemma) 
- ; )
+ ; iden lemma
+ (assert
+		(!
+			(forall ((a0 Atom)(a1 Atom))(= (in_2 a0 a1 iden) (= a0 a1)))
+		:named idenLemma) 
+ )
  
 ; (assert
  ; (! 
