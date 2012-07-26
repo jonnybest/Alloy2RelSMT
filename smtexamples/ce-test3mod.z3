@@ -52,7 +52,7 @@
 					(in_2 a3 a2 r)))))
 	:named l7 ))
 (assert  (!  
-  (forall ((r0 Rel1)(r1 Rel1))(= (= r0 r1) (forall ((a Atom))(= (in_1 a r0)(in_1 a r1)))))
+  (forall ((r0 Rel1)(r1 Rel1))(=> (= r0 r1) (forall ((a Atom))(= (in_1 a r0)(in_1 a r1)))))
  :named equality1 ))
 (assert  (!  
   (forall ((r0 Rel2)(r1 Rel2))(= (= r0 r1) (forall ((a Atom)(b Atom))(= (in_2 a b r0)(in_2 a b r1)))))
