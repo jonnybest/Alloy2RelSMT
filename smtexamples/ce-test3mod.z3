@@ -1,6 +1,6 @@
 ; likely core of the marksweepgc_soundness1 problem
-; [inlined subset axiom into ax21 for brevity]
-;(ax0 ax9 ax17 ax21 a6 l7)
+; [inlined subset and iden axiom for brevity]
+;(ax0 ax9 ax21 a6 l7)
 
 (set-logic AUFLIA)
 (set-option :produce-unsat-cores true)
@@ -15,11 +15,9 @@
 (declare-fun in_2 (Atom Atom Rel2) Bool)
 (declare-fun prod_1x1 (Rel1 Rel1) Rel2)
 (declare-fun disjoint_1 (Rel1 Rel1) Bool)
-(declare-fun iden () Rel2)
 (declare-fun reflTransClos (Rel2) Rel2)
 (declare-fun HeapState () Rel1)
 (declare-fun Node () Rel1)
-(declare-fun Helper () Rel1)
 
 ;; axioms
 (assert (! 
@@ -36,19 +34,12 @@
 					(in_1 a0 B))))))
  :named ax9 ))
 (assert (! 
-  (forall ((a0 Atom)) 
-		(in_2 a0 a0 iden))
- :named ax17  )  )
-(assert (! 
-  (forall ((r Rel2)(a0 Atom)(a1 Atom))
-		(= (in_2 a0 a1 iden) (in_2 a0 a1 (reflTransClos r))))
+  (forall ((r Rel2)(a0 Atom))
+		(in_2 a0 a0 (reflTransClos r)))
  :named ax21 ))
-(assert  (! (not 
-  (disjoint_1 HeapState Node) )
- :named a6 ))
 (assert  (! 
-  (disjoint_1 Node Helper)
- :named helper ))
+  (disjoint_1 HeapState Node)
+ :named a6 ))
 (assert (! 
   (forall ((a1 Atom)(a2 Atom)(r Rel2)) 
 		(=> 
@@ -66,3 +57,4 @@
  :named equality2 ))
 (check-sat)
 (get-model)
+(get-unsat-core)
