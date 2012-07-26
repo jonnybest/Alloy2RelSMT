@@ -709,15 +709,18 @@ public class KeYFile {
 			this.addAxiom(Term.call("subset_2", r, Term.call(name, r)).forall(r));
 			// 2. assert that the transitive closure is -in fact- transitive
 			this.addAxiom(Term.call("trans", Term.call(name, r)).forall(r));
-			// 3. assert that tcl is minimal
-			TermVar r1 = TermVar.var("Rel2", "r1");
-			TermVar r2 = TermVar.var("Rel2", "r2");
-			Term subsetAndTrans = Term.call("subset_2", r1, r2).and(Term.call("trans", r2));
-			Term minimalaxiom = subsetAndTrans.implies(Term.call("subset_2", Term.call(name, r1), r2)).forall(r1, r2);
-			this.addAxiom(minimalaxiom);
-			// 4. assert iden in TCL
+			// 3. assert iden in TCL
 			Term idenInTCL = Term.call("subset_2", Term.call("iden"), Term.call(name, r)).forall(r);
 			this.addAxiom(idenInTCL);
+			// 4. assert that tcl is minimal
+			TermVar r1 = TermVar.var("Rel2", "r1");
+			TermVar r2 = TermVar.var("Rel2", "r2");
+			
+//			Term subsetAndTrans = Term.call("subset_2", r1, r2).and(Term.call("trans", r2));
+			Term subsetAndTransAndRefl = Term.call("subset_2", r1, r2).and(Term.call("trans", r2)).and(Term.call("subset_2", Term.call("iden"), r2));
+			
+			Term minimalaxiom = subsetAndTransAndRefl.implies(Term.call("subset_2", Term.call(name, r1), r2)).forall(r1, r2);
+			this.addAxiom(minimalaxiom);
 			// don't forget our lemmas
 			assertLemmasTCL(name);
 		}
