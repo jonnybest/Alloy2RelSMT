@@ -187,7 +187,7 @@
  )
 (assert 
  (! 
-  (forall ((r Rel2)) (subset_2 iden (reflTransClos r))) 
+  (forall ((a0 Atom)(a1 Atom)(r Rel2))(=> (in_2 a0 a1 r)(and (in_2 a0 a0 (reflTransClos r) (in_2 a1 a1 (reflTransClos r)))))
  :named ax21 
  ) 
  )
