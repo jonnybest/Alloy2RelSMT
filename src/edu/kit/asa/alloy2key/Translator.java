@@ -807,7 +807,7 @@ public class Translator implements Identifiers {
 			case RCLOSURE:                                           // *e
 //				target.declareReflexiveTransitiveClosure();  // arity is always 2
 //				return Term.call("reflTransClos", e_);
-//				return translateExpr_p(ue.sub.closure().plus(ExprConstant.IDEN), letBindings, atomVars);
+				return translateExpr_p(ue.sub.closure().plus(ExprConstant.IDEN), letBindings, atomVars);
 			case NOT:                                                // !c
 				return e_.not();
 			case NO:                                                 // no e
