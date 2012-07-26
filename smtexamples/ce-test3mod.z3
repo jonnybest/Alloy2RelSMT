@@ -34,8 +34,10 @@
 					(in_1 a0 B))))))
  :named ax9 ))
 (assert (! 
-  (forall ((r Rel2)(a0 Atom))
-		(in_2 a0 a0 (reflTransClos r)))
+  (forall ((r Rel2)(a0 a1 Atom))
+		(=> 
+			(in_2 a0 a1 r)
+			(in_2 a0 a0 (reflTransClos r))))
  :named ax21 ))
 (assert  (! 
   (disjoint_1 HeapState Node)
