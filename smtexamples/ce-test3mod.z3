@@ -42,8 +42,8 @@
   (forall ((r Rel2)(a0 Atom)(a1 Atom))
 		(= (in_2 a0 a1 iden) (in_2 a0 a1 (reflTransClos r))))
  :named ax21 ))
-(assert  (! 
-  (disjoint_1 HeapState Node) 
+(assert  (! (not 
+  (disjoint_1 HeapState Node) )
  :named a6 ))
 (assert (! 
   (forall ((a1 Atom)(a2 Atom)(r Rel2)) 
@@ -55,4 +55,4 @@
 					(in_2 a3 a2 r)))))
 	:named l7 ))
 (check-sat)
-(get-unsat-core)
+(get-model)
