@@ -19,7 +19,7 @@
 (declare-fun reflTransClos (Rel2) Rel2)
 (declare-fun HeapState () Rel1)
 (declare-fun Node () Rel1)
-; (declare-fun Helper () Rel1)
+(declare-fun Helper () Rel1)
 
 ;; axioms
 (assert (! 
@@ -46,9 +46,9 @@
 (assert  (! (not 
   (disjoint_1 HeapState Node) )
  :named a6 ))
-; (assert  (! 
-  ; (disjoint_1 Node Helper)
- ; :named helper ))
+(assert  (! 
+  (disjoint_1 Node Helper)
+ :named helper ))
 (assert (! 
   (forall ((a1 Atom)(a2 Atom)(r Rel2)) 
 		(=> 
