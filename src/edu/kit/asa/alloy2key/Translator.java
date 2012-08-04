@@ -580,10 +580,12 @@ public class Translator implements Identifiers {
 	 */
 	private void translateFacts() throws Err, ModelException {
 		Term facts = Term.TRUE;
-		for (Module m : reachableModules)
-			for (Pair<String,Expr> f : m.getAllFacts())
-				facts = facts.and(translateExpr(f.b));
-		target.addAssertion(facts);
+		for (Module m : reachableModules){
+			for (Pair<String,Expr> f : m.getAllFacts()){
+				facts = translateExpr(f.b);
+				target.addAssertion(facts);
+			}
+		}
 	}
 	
 	/**
