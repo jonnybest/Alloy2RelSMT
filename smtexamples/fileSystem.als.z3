@@ -9,26 +9,27 @@
 
 ;; functions
 (declare-fun subset_1 (Rel1 Rel1) Bool)
+(declare-fun entries () Rel2)
 (declare-fun in_1 (Atom Rel1) Bool)
-(declare-fun disjoint_1 (Rel1 Rel1) Bool)
-(declare-fun parent () Rel2)
 (declare-fun in_2 (Atom Atom Rel2) Bool)
 (declare-fun prod_1x1 (Rel1 Rel1) Rel2)
 (declare-fun subset_2 (Rel2 Rel2) Bool)
 (declare-fun join_1x2 (Rel1 Rel2) Rel1)
 (declare-fun a2r_1 (Atom) Rel1)
+(declare-fun disjoint_1 (Rel1 Rel1) Bool)
+(declare-fun parent () Rel2)
 (declare-fun lone_1 (Rel1) Bool)
-(declare-fun entries () Rel2)
 (declare-fun one_1 (Rel1) Bool)
 (declare-fun some_1 (Rel1) Bool)
 (declare-fun trans (Rel2) Bool)
 (declare-fun transClos (Rel2) Rel2)
-(declare-fun union_1 (Rel1 Rel1) Rel1)
+(declare-fun iden () Rel2)
+(declare-fun union_2 (Rel2 Rel2) Rel2)
 (declare-fun diff_1 (Rel1 Rel1) Rel1)
-(declare-fun Root () Rel1)
+(declare-fun Dir () Rel1)
 (declare-fun File () Rel1)
 (declare-fun FSO () Rel1)
-(declare-fun Dir () Rel1)
+(declare-fun Root () Rel1)
 ;; --end functions
 
 ;; axioms
@@ -40,32 +41,32 @@
  )
 (assert 
  (! 
-  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))) 
+  (forall ((A Rel1)(B Rel1)(x0 Atom)(y0 Atom)) (= (in_2 x0 y0 (prod_1x1 A B)) (and (in_1 x0 A) (in_1 y0 B)))) 
  :named ax1 
  ) 
  )
 (assert 
  (! 
-  (forall ((A Rel1)(B Rel1)(x0 Atom)(y0 Atom)) (= (in_2 x0 y0 (prod_1x1 A B)) (and (in_1 x0 A) (in_1 y0 B)))) 
- :named ax2 
- ) 
- )
-(assert 
- (! 
   (forall ((x Rel2)(y Rel2)) (= (subset_2 x y) (forall ((a0 Atom)(a1 Atom)) (=> (in_2 a0 a1 x) (in_2 a0 a1 y))))) 
- :named ax3 
+ :named ax2 
  ) 
  )
 (assert 
  (! 
   ; axiom for join_1x2
 (forall ((A Rel1)(B Rel2)(y0 Atom)) (= (in_1 y0 (join_1x2 A B)) (exists ((x Atom)) (and (in_1 x A) (in_2 x y0 B))))) 
- :named ax4 
+ :named ax3 
  ) 
  )
 (assert 
  (! 
   (forall ((x0 Atom)) (and (in_1 x0 (a2r_1 x0)) (forall ((y0 Atom)) (=> (in_1 y0 (a2r_1 x0)) (= x0 y0))))) 
+ :named ax4 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))) 
  :named ax5 
  ) 
  )
@@ -113,14 +114,20 @@
  )
 (assert 
  (! 
-  (forall ((x0 Atom)(A Rel1)(B Rel1)) (= (in_1 x0 (union_1 A B)) (or (in_1 x0 A) (in_1 x0 B)))) 
+  (forall ((a0 Atom)) (in_2 a0 a0 iden)) 
  :named ax13 
  ) 
  )
 (assert 
  (! 
-  (forall ((A Rel1)(B Rel1)(a0 Atom)) (= (in_1 a0 (diff_1 A B)) (and (in_1 a0 A) (not (in_1 a0 B))))) 
+  (forall ((x0 Atom)(x1 Atom)(A Rel2)(B Rel2)) (= (in_2 x0 x1 (union_2 A B)) (or (in_2 x0 x1 A) (in_2 x0 x1 B)))) 
  :named ax14 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((A Rel1)(B Rel1)(a0 Atom)) (= (in_1 a0 (diff_1 A B)) (and (in_1 a0 A) (not (in_1 a0 B))))) 
+ :named ax15 
  ) 
  )
 ;; --end axioms
@@ -128,49 +135,49 @@
 ;; assertions
 (assert 
  (! 
-  (subset_1 Root Dir) 
+  (subset_1 Dir FSO) 
  :named a0 
  ) 
  )
 (assert 
  (! 
-  (subset_1 File FSO) 
+  (subset_2 entries (prod_1x1 Dir FSO)) 
  :named a1 
  ) 
  )
 (assert 
  (! 
-  (forall ((this Atom)) (=> (in_1 this FSO) (or (in_1 this File) (in_1 this Dir)))) 
+  (subset_1 File FSO) 
  :named a2 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 File Dir) 
+  (forall ((this Atom)) (=> (in_1 this FSO) (or (in_1 this File) (in_1 this Dir)))) 
  :named a3 
  ) 
  )
 (assert 
  (! 
-  (subset_2 parent (prod_1x1 FSO Dir)) 
+  (disjoint_1 File Dir) 
  :named a4 
  ) 
  )
 (assert 
  (! 
-  (forall ((this Atom)) (=> (in_1 this FSO) (lone_1 (join_1x2 (a2r_1 this) parent)))) 
+  (subset_2 parent (prod_1x1 FSO Dir)) 
  :named a5 
  ) 
  )
 (assert 
  (! 
-  (subset_1 Dir FSO) 
+  (forall ((this Atom)) (=> (in_1 this FSO) (lone_1 (join_1x2 (a2r_1 this) parent)))) 
  :named a6 
  ) 
  )
 (assert 
  (! 
-  (subset_2 entries (prod_1x1 Dir FSO)) 
+  (subset_1 Root Dir) 
  :named a7 
  ) 
  )
@@ -179,8 +186,7 @@
   (and 
     (one_1 Root)
     (not (some_1 (join_1x2 Root parent)))
-    (= FSO (union_1 Root (join_1x2 Root (transClos entries))))
-    (forall ((o Atom)(d Atom)) (=> (and (in_1 o FSO) (in_1 d Dir)) (=> (in_1 o (join_1x2 (a2r_1 d) entries)) (= (join_1x2 (a2r_1 o) parent) (a2r_1 d)))))
+    (= FSO (join_1x2 Root (union_2 (transClos entries) iden)))
   ) 
  :named a8 
  ) 
