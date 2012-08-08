@@ -372,7 +372,7 @@ public class KeYFile {
 	public void declareNone(int ar) throws ModelException {
 		this.addFunction("Bool", "none_" + ar, "Rel" + ar);
 		//TODO: add axiom
-		throw new ModelException("None has not yet been implemented.");
+		throw new ModelException("Domain restriction has not yet been implemented.");
 	}
 
 	public void declareProduct(int lar, int rar) throws ModelException {
@@ -627,10 +627,11 @@ public class KeYFile {
 	}
 
 	// arity is always 2
-	public void declareTranspose() {
+	public void declareTranspose() throws ModelException {
 		declareRel(2);
 		this.addFunction("Rel2", "transp", "Rel2");
 		//TODO: add axiom
+		throw new ModelException("Transpose has not yet been implemented.");
 	}
 
 	// arity is always 2
@@ -745,22 +746,25 @@ public class KeYFile {
 		}
 	}
 
-	public void declareCardinality(int ar) {
+	public void declareCardinality(int ar) throws ModelException {
 		declareRel(ar);
 		this.addFunction("Int", "card_" + ar, "Rel" + ar);
 		//TODO: add axiom
+		throw new ModelException("Cardinality has not yet been implemented.");
 	}
 
 	/** Declares the domain restriction operator
 	 * @param rar arity of the right-hand parameter
+	 * @throws ModelException 
 	 * @rem left-hand arity is required to be 1 (type:set)
 	 */
-	public void declareDomainRestriction(int rar) {
+	public void declareDomainRestriction(int rar) throws ModelException {
 		declareRel(1);
 		declareRel(rar);
 		String relar = "Rel"+rar;
 		this.addFunction(relar, "domRestr_" + rar, "Rel1", relar);
 		// TODO Auto-generated method stub
+		throw new ModelException("None has not yet been implemented.");
 	}
 
 	public void declareDifference(int ar) throws ModelException {
@@ -789,30 +793,34 @@ public class KeYFile {
 		}
 	}
 
-	public void declareOverride(int ar) {
+	public void declareOverride(int ar) throws ModelException {
 		declareRel(ar);
 		String relar = "Rel"+ar;
 		this.addFunction(relar, "overr_" + ar, relar, relar);
 		//TODO: add axiom
+		throw new ModelException("Domain Override has not yet been implemented.");
 	}
 
-	public void declareIntersection(int ar) {
+	public void declareIntersection(int ar) throws ModelException {
 		declareRel(ar);
 		String relar = "Rel"+ar;
 		this.addFunction(relar, "inter_" + ar, relar, relar);
 		//TODO: add axiom
+		throw new ModelException("Intersection has not yet been implemented.");
 	}
 
 	/** Declares the range restriction operator
 	 * @param lar arity of the left-hand parameter
+	 * @throws ModelException 
 	 * @rem right-hand arity is required to be 1 (type:set)
 	 */
-	public void declareRangeRestriction(int lar) {
+	public void declareRangeRestriction(int lar) throws ModelException {
 		declareRel(1);
 		declareRel(lar);
 		String relar = "Rel"+lar;
 		this.addFunction(relar, "rangeRestr_" + lar, relar, "Rel1");
 		//TODO: add axiom
+		throw new ModelException("Range restriction has not yet been implemented.");
 	}
 
 	public void declareIdentity() throws ModelException {
