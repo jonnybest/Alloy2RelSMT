@@ -464,7 +464,7 @@ public class Translator implements Identifiers {
 				// sig is abstract
 				if (ps.isAbstract != null) {
 					Term disjunction = Term.FALSE;
-					// membership theorem for subsigs. (FIXME isn't this already covered by union?)
+					// membership theorem for subsigs. (FIXME isn't membership theorem for subsigs already covered by union?)
 					for (PrimSig sub : ps.children()){
 						disjunction = disjunction.or(in("this", sub));
 					}
@@ -487,7 +487,7 @@ public class Translator implements Identifiers {
 					target.addAssertion (call("subset_1", ps, ps.parent));
 				}
 			
-			// we have a SUB SIGNATURE // TODO smt-fy
+			// we have a SUB SIGNATURE
 			} else {
 				if (s.isSubset == null || !(s instanceof SubsetSig)) throw new ModelException("The signature "+s+" was expected to be a subset, but isn't!");
 				SubsetSig ss = (SubsetSig)s;
@@ -502,20 +502,20 @@ public class Translator implements Identifiers {
 						term(ss), union));    // can be expressed with 2 subset_1 if you join them left and right
 			}
 			
-			// sig's multiplicity is one // TODO smt-fy
+			// sig's multiplicity is one
 			if (s.isOne != null)
 			{
 				target.declareOne();
 				target.addAssertion(Term.call("one_1", term(s)));
 			}
 			
-			// sig's multiplicity is lone // TODO smt-fy
+			// sig's multiplicity is lone
 			if (s.isLone != null)
 			{
 				target.declareLone();
 				target.addAssertion(Term.call("lone_1", term(s)));
 			}
-			// sig's multiplicity is some // TODO smt-fy
+			// sig's multiplicity is some
 			if (s.isSome != null)
 			{
 				target.declareSome();
@@ -534,7 +534,7 @@ public class Translator implements Identifiers {
 					// declare field as constant function symbol; respect arity
 					target.addFunction(String.format("Rel%d",arity), id(f));
 					
-					//explicit typing of first component (and also include bounding type) // TODO smt-fy
+					//explicit typing of first component (and also include bounding type)
 					Term t = translateExpr(s.type().product(decl.expr.type()).toExpr());
 //					System.out.println(";; "+f.label+": "+s.type().product(decl.expr.type()).toExpr());
 //					System.out.println(";; "+arity);
@@ -839,7 +839,7 @@ public class Translator implements Identifiers {
 				return e_;
 			// TODO exactly of...
 			default:
-				throw new RuntimeException ("Unsupported unary operator in '"+ue+"' at "+ue.pos);
+				throw new RuntimeException ("Unsupported (possibly unary) operator in '"+ue+"' at "+ue.pos);
 			}
 		}
 		if (e instanceof ExprBinary) {
@@ -936,9 +936,9 @@ public class Translator implements Identifiers {
 			case SHL:                                                // i << j
 			case SHR:                                                // i >>> j
 			case SHA:                                                // i >> j
-				throw new ErrorFatal ("Integer shifts not yet supported!");//TODO
+				throw new ErrorFatal ("Integer shifts not yet supported!");//TODO Integer shifts
 			case ISSEQ_ARROW_LONE:
-				throw new ErrorFatal ("Sequences not yet supported!");//TODO
+				throw new ErrorFatal ("Sequences not yet supported!");//TODO Sequences
 //			default:
 //				throw new RuntimeException ("Unexpected operator: "+be.op+" in expression "+e);
 			}
@@ -994,18 +994,20 @@ public class Translator implements Identifiers {
 			
 
 			// comprehension
-			if (qt.op == Op.COMPREHENSION) { // TODO: exception 
+			if (qt.op == Op.COMPREHENSION) { 
+				// TODO: implement comprehension				
 				String[] vars = new String[qt.count()];
 				for (int i = 0; i < qt.count(); ++i) {
 					final ExprVar v = qt.get(i);
 					vars[i] = id(v);
 					atomVars.remove(v);
 				}
-				return b.and(f).compr(vars);
+				//return b.and(f).compr(vars); // TODO: restore this line once you've done something about the implementation
+				throw new ModelException("Comprehensions are not yet implmeneted.");
 			}
 
 			// quantifier (hopefully)
-			// TODO: fix multiple binding support, 1) remove loop 2) ??? 
+			// multiple binding support is achieved by lazily optimizing the quantified expression. See TermQuant for more implementation
 			for (int i = qt.count()-1; i >= 0; --i) {
 				final ExprVar v = qt.get(i); // kommt von alloy (?)
 				String sort = "";
@@ -1024,10 +1026,10 @@ public class Translator implements Identifiers {
 						f = b.and(f).exists(sort, id(v)).not();
 					break;
 				case SOME:
-					f = b.and(f).exists(sort, id(v));	// TODO: fix multiple binding support
+					f = b.and(f).exists(sort, id(v));
 					break;
 				case ALL:
-					f = b.implies(f).forall(sort,id(v));	// TODO: fix multiple binding support
+					f = b.implies(f).forall(sort,id(v));
 					break;
 				case LONE:{
 					if (qt.count() > 1) throw new ModelException ("Multiple variable bindings are not supported for lone quantifier.");
@@ -1082,9 +1084,10 @@ public class Translator implements Identifiers {
 				return Term.number(ec.num());
 			case MIN:
 			case MAX:
-				throw new ErrorFatal ("Max/Min values of integers are not allowed!");
+				throw new ModelException ("Max/Min values of integers are not allowed!");
 			case NEXT:
-				return Term.call("nextInt"); // TODO: SMT-fy this
+				//return Term.call("nextInt"); // TODO: SMT-fy or implement "next integer"
+				throw new ModelException ("'Next integer' is not allowed!");
 			case STRING:
 			default:
 				throw new ErrorFatal ("Unknown constant symbol: "+ec.op);

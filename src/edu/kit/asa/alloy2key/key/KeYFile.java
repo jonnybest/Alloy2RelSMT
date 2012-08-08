@@ -763,7 +763,7 @@ public class KeYFile {
 		declareRel(rar);
 		String relar = "Rel"+rar;
 		this.addFunction(relar, "domRestr_" + rar, "Rel1", relar);
-		// TODO Auto-generated method stub
+		// TODO: add axiom for None
 		throw new ModelException("None has not yet been implemented.");
 	}
 
