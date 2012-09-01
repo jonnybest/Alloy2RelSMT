@@ -638,10 +638,10 @@ public class KeYFile {
 		if(this.addFunction("Rel2", name, "Rel2"))
 		{
 			// ∀r: Rel2 , a1 , a2 : Atom | in2 (a1 , a2 , transpose 2 (r)) ⇔ in2 (a2 , a1 , r)
-			TermVar R = TermVar.var("Rel", "R");
+			TermVar R = TermVar.var("Rel2", "R");
 			TermVar[] a = makeTuple(2, "a");
 			
-			Term axiom = Term.reverseIn(Term.call(name, R), a).equal(Term.reverseIn(R, Util.reverse(a)));
+			Term axiom = Term.reverseIn(Term.call(name, R), a).equal(Term.reverseIn(R, Util.reverse(a))).forall(Util.concat(a, R));
 			this.addAxiom(axiom);
 		}
 	}
