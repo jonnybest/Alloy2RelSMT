@@ -11,8 +11,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import edu.kit.asa.alloy2key.modules.KeYModule;
 import edu.kit.asa.alloy2key.util.Util;
+import edu.mit.csail.sdg.alloy4.ast.Sig;
 
 /**
  * capturing output to an .SMT file
@@ -107,7 +110,7 @@ public class KeYFile {
 	/**
 	 * Add a predicate declaration
 	 * @param pred
-	 * declaration in KeY syntax, e.g. p(Rel1);
+	 * declaration in smt syntax, e.g. (declare-fun p (Rel1) bool)
 	 */
 	public void addPredicate (String pred) {
 		preds.add(pred);
@@ -628,10 +631,19 @@ public class KeYFile {
 
 	// arity is always 2
 	public void declareTranspose() throws ModelException {
+		declareAtom();
+		declareIn(2);
 		declareRel(2);
-		this.addFunction("Rel2", "transp", "Rel2");
-		//TODO: add axiom
-		throw new ModelException("Transpose has not yet been implemented.");
+		String name = "transp";
+		if(this.addFunction("Rel2", name, "Rel2"))
+		{
+			// ∀r: Rel2 , a1 , a2 : Atom | in2 (a1 , a2 , transpose 2 (r)) ⇔ in2 (a2 , a1 , r)
+			TermVar R = TermVar.var("Rel", "R");
+			TermVar[] a = makeTuple(2, "a");
+			
+			Term axiom = Term.reverseIn(Term.call(name, R), a).equal(Term.reverseIn(R, Util.reverse(a)));
+			this.addAxiom(axiom);
+		}
 	}
 
 	// arity is always 2
@@ -748,9 +760,121 @@ public class KeYFile {
 
 	public void declareCardinality(int ar) throws ModelException {
 		declareRel(ar);
-		this.addFunction("Int", "card_" + ar, "Rel" + ar);
-		//TODO: add axiom
-		throw new ModelException("Cardinality has not yet been implemented.");
+		declareFinite();
+		declareOrd();	
+		
+		String name = "card_" + ar;
+		String relar = "Rel" + ar;
+		if (this.addFunction("Int", name, relar)) {
+			TermVar R = TermVar.var(relar, "R");
+			TermVar[] a = makeTuple(ar, "a");
+			Term one = Term.call("1");
+			Term cardR = Term.call(name, R);
+			Term finR = Term.call("finite", R);
+			Term ordA = Term.call("ord", Util.reverse(Util.concat(a, R)));
+			Term validCard = cardR.gte(ordA).gte(one);
+			// ∀r: Reln , a1:n : Atom | (finite n (r) ∧ inn (a1:n , r)) ⇒ 1 ≤ ordn (r, a1:n ) ≤ card n (r)
+			{
+				Term guard = finR.and(Term.reverseIn(R, a));
+				Term axiom = guard.implies(validCard).forall(Util.concat(a, R));
+				this.addAxiom(axiom);
+			}	
+			// ∀r: Reln , i: int | (finite n (r) ∧ 1 ≤ i ≤ card n (r)) 
+			//		⇒ ∃a1:n : Atom | inn (a1:n , r) ∧ ordn (r, a1:n ) = i
+			{
+				TermVar i = TermVar.var("Int", "i");
+				Term guard = finR.and(validCard);
+				Term axiom = guard.implies(Term.reverseIn(R, a).and(ordA.equal(i)).exists(i)).forall(R, i);
+				this.addAxiom(axiom);
+			}			
+		}
+	}
+	
+	/** Declares all the axioms needed for ordering a given signature.  
+	 * Will only produce either finite or infinite axioms.
+	 * 
+	 * @param suffix : the name of the signature on which the ordering is defined  
+	 * @param finite : if true, the signature is considered finite. 
+	 * 	If false, the signature is considered infinite. This affects special operations like "last element" and "cardinality" 
+	 * @throws ModelException
+	 */
+	public void declareOrdering(String suffix, boolean finite) throws ModelException {
+		/* We begin by declaring the common operators finite, and ord.
+		 * Orderings are only valid for signature, so arity is always assumed to be 1.
+		 * The iterator function "elem" is implicitly declared inside declareOrd().  
+		 */
+		declareFinite();
+		declareI2a();
+		declareOrd();
+		//declareNext(suffix);
+		throw new ModelException("Ordering not implemented");
+	}
+
+	private void declareInt() {
+		this.addFunction("Rel1", "N_Int");	
+	}
+
+	private void declareI2a() throws ModelException {
+		declareInt();
+
+		Term N = Term.call("N_Int");
+		String namei2a = "i2a";
+		String namea2i = "a2i";
+		if (this.addFunction("Atom", namei2a, "Int")) {
+			TermVar a = TermVar.var("Atom", "a");
+			Term guard = Term.reverseIn(N, a);
+			// i2a(a2i(a))
+			Term thereAndBack = Term.call(namei2a, Term.call(namea2i, a));
+			// ∀a: Atom | in1 (a, N [Int]) ⇒ i2a(a2i(a)) = a
+			Term axiom = guard.implies(thereAndBack.equal(a)).forall(a);
+			this.addAxiom(axiom);
+		}
+		if (this.addFunction("Int", namea2i, "Atom")) {
+			TermVar i = TermVar.var("Int", "i");
+			// in1 (i2a(i), N [Int])
+			Term inN = Term.call("in_1", Term.call(namei2a, i), N);
+			// a2i(i2a(i))
+			Term thereAndBack = Term.call(namea2i, Term.call(namei2a, i));
+			// ∀i: int | in1 (i2a(i), N [Int]) ∧ a2i(i2a(i)) = i
+			Term axiom = inN.implies(thereAndBack.equal(i)).forall(i);
+			this.addAxiom(axiom);
+		}
+	}
+
+	private void declareFinite() throws ModelException {
+		declareRel(1);
+		this.addFunction("bool", "finite", "Rel1");
+	}
+		
+	private void declareOrd() throws ModelException{
+		declareAtom();
+		declareRel(1);
+		declareFinite();
+		
+		if(this.addFunction("Int", "ord", "Rel1"))
+		{
+			// ∀r: Reln , a1:n , b1:n : Atom | (finite n (r) ∧ inn (a1:n , r) ∧ inn (b1:n , r) 
+			//	∧ ordn (r, a1:n ) = ordn (r, b1:n )) ⇒ (a1 = b1 ∧ … ∧ an = bn )
+			TermVar R = TermVar.var("Rel1", "R");
+			TermVar a = TermVar.var("Atom", "a");
+			TermVar b = TermVar.var("Atom", "b");
+			
+			Term guard = Term.call("finite", R).and(Term.reverseIn(R, a)).and(Term.reverseIn(R, b));
+			Term ordeq = Term.call("ord", R, a).and(Term.call("ord", R, b));
+			Term axiom = guard.and(ordeq).implies(a.equal(b)).forall(R,a,b);
+			this.addAxiom(axiom);
+		}
+
+		if(this.addFunction("Atom", "at", "Rel1", "Int"))
+		{
+			// ∀r: Rel1 , a: Atom | in 1 (a, r) ⇒ at 1 (r, ord1 (r, a)) = a
+			TermVar R = TermVar.var("Rel1", "R");
+			TermVar a = TermVar.var("Atom", "a");
+			Term guard = Term.reverseIn(R, a);
+			Term ord = Term.call("ord", R, a);
+			Term axiom = guard.implies(Term.call("at", R, ord).equal(a)).forall(R, a);
+			this.addAxiom(axiom);
+		}
 	}
 
 	/** Declares the domain restriction operator
