@@ -761,7 +761,7 @@ public class KeYFile {
 	public void declareCardinality(int ar) throws ModelException {
 		declareRel(ar);
 		declareFinite();
-		declareOrd();	
+		declareOrd();
 		
 		String name = "card_" + ar;
 		String relar = "Rel" + ar;
@@ -806,8 +806,55 @@ public class KeYFile {
 		declareFinite();
 		declareI2a();
 		declareOrd();
-		//declareNext(suffix);
-		throw new ModelException("Ordering not implemented");
+		declareNext(suffix);
+		declareFirst(suffix);
+		declareLast(suffix, finite);			
+	}
+
+	private void declareLast(String suffix, boolean finite) throws ModelException {
+		// TODO implement Last
+
+		// this branch is important because card_1 may not be defined (due to S being infite). SMT does not handle partial functions, so undefined values are not allowed 
+		if (!finite) {
+			// ¬finite 1 (N [S]) ⇒ lastS = none 1	
+		}
+		else {
+			declareCardinality(1);
+			// finite 1 (N [S]) ⇒ (lastS = sin 1 (ordInv 1 (N [S], card 1 (N [S]))))			
+		}
+	}
+
+	private void declareFirst(String suffix) {
+		// TODO Auto-generated method stub
+		// firstS = sin 1 (ordInv 1 (N [S], 1))
+		
+	}
+
+	/** Declares the constant relations Next, First and Last  
+	 *  (nextS : Rel2 , firstS : Rel1 , lastS : Rel1)
+	 * @param suffix
+	 * @throws ModelException
+	 */
+	private void declareNext(String suffix) throws ModelException {		
+		// declarations
+		declareAtom();
+		declareIn(1);
+		declareIn(2);
+		declareRel(1);
+		declareRel(2);
+		declareOrd();
+		declareI2a();
+		declareFinite();
+		
+		String nextSname = "next"+suffix;
+		if (this.addFunction("Rel2", nextSname)) {
+			// ∀a, b: Atom |(in 1 (a, N [S]) ∧ in 1 (b, N [S]))
+			//	⇒ (in 2 (a, b, nextS ) ⇔ ord 1 (N [S], b) = ord 1 (N [S], a) + 1)
+			
+			// ¬(N [S] = none 1 )			
+		}
+		
+		throw new ModelException("Next not implemented");
 	}
 
 	private void declareInt() {
