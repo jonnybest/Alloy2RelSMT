@@ -438,7 +438,7 @@ public class Translator implements Identifiers {
 			if (s.builtin)
 				continue;
 			// declare function symbol for sig
-			if (!external.contains(s))
+			// if (!external.contains(s)) // TODO: reinstate this if-clause once you figured out how to deal with external modules
 				// each signature gets its own function symbol of type Rel1
 				target.addFunction ("Rel1", id(s));
 		}
@@ -1002,8 +1002,8 @@ public class Translator implements Identifiers {
 					vars[i] = id(v);
 					atomVars.remove(v);
 				}
-				//return b.and(f).compr(vars); // TODO: restore this line once you've done something about the implementation
-				throw new ModelException("Comprehensions are not yet implmeneted.");
+				return b.and(f).compr(vars); // TODO: restore this line once you've done something about the implementation
+				//throw new ModelException("Comprehensions are not yet implmeneted.");
 			}
 
 			// quantifier (hopefully)

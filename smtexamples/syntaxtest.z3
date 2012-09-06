@@ -14,6 +14,7 @@
 (declare-fun marked () Rel2)
 (declare-fun HeapState () Rel1)
 (declare-fun Node () Rel1)
+(declare-fun N-Int () Rel1)
 
 ;; axioms
 (assert 
@@ -39,6 +40,12 @@
  :named a3 
  ) 
  )
- (get-model)
+ (assert 
+	(= 
+		Node
+		N-Int
+	)
+	)
  (check-sat)
+ (get-model)
  

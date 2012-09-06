@@ -14,11 +14,11 @@ fact {
 	no Root.parent
 
    // FSO = Root + Root.^entries
-	FSO = Root.*entries 
+	//FSO = Root.*entries 
 	//FSO = Root + Root.entries
-	//all o: FSO, d: Dir | o in d.entries => o.parent = d
+	all o: FSO, d: Dir | o in d.entries => o.parent = d
 
-	//	entries = ~parent
+	entries = ~parent
 }
 
 assert oneParent {
