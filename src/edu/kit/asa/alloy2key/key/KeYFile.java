@@ -811,20 +811,42 @@ public class KeYFile {
 		declareLast(suffix, finite);			
 	}
 
+	/** Implements "last" for a given relation. The name of the relation must be a proper suffix
+	 * for a SMT function.
+	 * 
+	 * @param suffix
+	 * @param finite
+	 * @throws ModelException
+	 */
 	private void declareLast(String suffix, boolean finite) throws ModelException {
-		// TODO implement Last
-
+		declareNone(1);
+		// implement Last
+		String name = "last"+suffix;
+		this.addFunction("Rel2", name);
+		
 		// this branch is important because card_1 may not be defined (due to S being infite). SMT does not handle partial functions, so undefined values are not allowed 
+		TermVar N = TermVar.var(suffix); // not actually a variable but a constant
+		Term finN = Term.call("finite", N);
+		Term lastS = Term.call(name);
 		if (!finite) {
-			// ¬finite 1 (N [S]) ⇒ lastS = none 1	
+			// ¬finite 1 (N [S]) ⇒ lastS = none 1
+			Term none = Term.call("none_1");
+			Term axiom = finN.not().implies(lastS.equal(none));
+			this.addAxiom(axiom);
 		}
 		else {
 			declareCardinality(1);
-			// finite 1 (N [S]) ⇒ (lastS = sin 1 (ordInv 1 (N [S], card 1 (N [S]))))			
+			declareOrd();
+			// finite 1 (N [S]) ⇒ (lastS = sin 1 (ordInv 1 (N [S], card 1 (N [S]))))
+			Term cardN = Term.call("card_1", N);
+			Term ordInv = Term.call("at", N, cardN);
+			Term a2r = Term.call("a2r", ordInv);
+			Term axiom = finN.implies(lastS.equal(a2r));
+			this.addAxiom(axiom);
 		}
 	}
 
-	private void declareFirst(String suffix) {
+	private void declareFirst(String suffix) throws ModelException {
 		// TODO Auto-generated method stub
 		// firstS = sin 1 (ordInv 1 (N [S], 1))
 		
