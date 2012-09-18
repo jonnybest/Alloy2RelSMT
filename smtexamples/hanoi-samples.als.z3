@@ -32,8 +32,11 @@
 (declare-fun Game1 () Bool)
 (declare-fun some_1 (Rel1) Bool)
 (declare-fun State () Rel1)
-(declare-fun Disc () Rel1)
 (declare-fun Stake () Rel1)
+(declare-fun Disc () Rel1)
+(declare-fun states () Rel1)
+(declare-fun stakes () Rel1)
+(declare-fun discs () Rel1)
 ;; --end functions
 
 ;; axioms
@@ -140,38 +143,59 @@
 ;; assertions
 (assert 
  (! 
-  (subset_3 on (prod_2x1 (prod_1x1 State Disc) Stake)) 
+  ; Alias constraint for State and states
+(= State states) 
  :named a0 
  ) 
  )
 (assert 
  (! 
-  (forall ((this Atom)) (=> (in_1 this State) (forall ((x0 Atom)) (=> (in_1 x0 Disc) (one_1 (join_1x2 (a2r_1 x0) (join_1x3 (a2r_1 this) on))))))) 
+  ; Alias constraint for Stake and stakes
+(= Stake stakes) 
  :named a1 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 State Disc) 
+  ; Alias constraint for Disc and discs
+(= Disc discs) 
  :named a2 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 State Stake) 
+  (subset_3 on (prod_2x1 (prod_1x1 State Disc) Stake)) 
  :named a3 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 Disc Stake) 
+  (forall ((this Atom)) (=> (in_1 this State) (forall ((x0 Atom)) (=> (in_1 x0 Disc) (one_1 (join_1x2 (a2r_1 x0) (join_1x3 (a2r_1 this) on))))))) 
  :named a4 
  ) 
  )
 (assert 
  (! 
-  (forall ((st Rel1)(stake Rel1)) (= (discsOnStake st stake) (join_1x2 stake (transp (join_1x3 st on))))) 
+  (disjoint_1 State Stake) 
  :named a5 
+ ) 
+ )
+(assert 
+ (! 
+  (disjoint_1 State Disc) 
+ :named a6 
+ ) 
+ )
+(assert 
+ (! 
+  (disjoint_1 Stake Disc) 
+ :named a7 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((st Rel1)(stake Rel1)) (= (discsOnStake st stake) (join_1x2 stake (transp (join_1x3 st on))))) 
+ :named a8 
  ) 
  )
 (assert 
@@ -181,7 +205,7 @@
     (in_1 d (discsOnStake st stake))
     (subset_1 (discsOnStake st stake) (union_1 (nextsDisc (a2r_1 d)) (a2r_1 d)))
   ))))) 
- :named a6 
+ :named a9 
  ) 
  )
 (assert 
@@ -192,7 +216,7 @@
     (= (discsOnStake s_ toStake) (union_1 (discsOnStake st1 toStake) (topDisc st1 fromStake)))
     (= (discsOnStake s_ (diff_1 (diff_1 Stake fromStake) toStake)) (discsOnStake st1 (diff_1 (diff_1 Stake fromStake) toStake)))
   ))) 
- :named a7 
+ :named a10 
  ) 
  )
 (assert 
@@ -202,7 +226,7 @@
     (exists ((finalState Atom)) (and (in_1 finalState State) (subset_1 Disc (discsOnStake (a2r_1 finalState) lastStake))))
     (forall ((preState Atom)) (=> (and (in_1 preState State) (in_1 preState (diff_1 State lastState))) (exists ((fromStake Atom)) (and (in_1 fromStake Stake) (and (some_1 (discsOnStake (a2r_1 preState) (a2r_1 fromStake))) (exists ((toStake Atom)) (and (in_1 toStake Stake) (Move (a2r_1 preState) (a2r_1 fromStake) (a2r_1 toStake) (join_1x2 (a2r_1 preState) nextState)))))))))
   ))) 
- :named a8 
+ :named a11 
  ) 
  )
 ;; --end assertions

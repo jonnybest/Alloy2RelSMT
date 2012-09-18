@@ -96,6 +96,8 @@ public class Translator implements Identifiers {
 		Translator.target = new KeYFile();
 		// all referenced external modules
 		this.external = new HashSet<Sig>();
+		// all instantiated ordering modules
+		this.orderings = new HashSet<Sig>();
 		// all modules that can be reached by our alloy model and are not built-in
 		this.reachableModules = new LinkedList<Module>();
 		// referenced modules
@@ -167,6 +169,10 @@ public class Translator implements Identifiers {
 		translation of the first of these modules **/
 	private HashSet<Sig> external;
 	
+	/** the subset of signatures which are used to 
+	 	instantiate ordering modules **/
+	private HashSet<Sig> orderings;
+	
 	/*
 	 * Handling identifiers
 	 * --------------------
@@ -202,6 +208,7 @@ public class Translator implements Identifiers {
 	
 	/** stack of temporary identifiers **/
 	private Stack<ExprHasName> tmpIds;
+
 	
 	/**
 	 * @return
@@ -374,7 +381,12 @@ public class Translator implements Identifiers {
 				Set<Object> def = module.defined();
 				for (Object ob : def) {
 					if (ob instanceof Sig)
+					{
 						external.add((Sig)ob);
+						if (module.isOrdering()) {
+							orderings.add((Sig)ob);
+						}
+					}
 				}
 			}
 		}
@@ -443,12 +455,16 @@ public class Translator implements Identifiers {
 			if (!external.contains(s))
 				// each signature gets its own function symbol of type Rel1
 				target.addFunction ("Rel1", id(s));
+			if (orderings.contains(s))
+			{
+				target.addFunction ("Rel1", id(s));
+			}
 		}
 		for (KeYModule s : builtinModules) {
 			if (s.isOrdering()) {
 				Ordering o = (Ordering)s;
 				target.addFunction("Rel1", o.getId());
-				target.addFunction("Rel1", o.getAlias());
+				target.addFunction("Rel2", o.getOrdering());
 				
 			} 
 		}
@@ -460,17 +476,7 @@ public class Translator implements Identifiers {
 	 * @ 
 	 */
 	private void translateSigDecls() throws Err, ModelException {
-		for (KeYModule s : builtinModules)
-		{
-			if(s.isOrdering())
-			{
-				Ordering o = (Ordering)s;
-				Term aliasconstraint = Term.call(o.getId()).equal(Term.call(o.getAlias()));
-				aliasconstraint.setComment("Alias constraint for " + o.getId() + " and " + o.getAlias());
-				target.addAssertion(aliasconstraint);
-			}
-		}
-		
+				
 		for (Sig s : reachableSigs) {
 			// ignore built-in sigs
 			if (s.builtin)

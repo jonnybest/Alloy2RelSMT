@@ -43,7 +43,7 @@ public class Ordering extends KeYModule {
 	 * Gets the alias expression of the ordering instance
 	 * @return
 	 */
-	public String getAlias(){
+	public String getOrdering(){
 		return mod.path();
 	}
 	
