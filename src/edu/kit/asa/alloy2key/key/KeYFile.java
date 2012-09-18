@@ -377,7 +377,7 @@ public class KeYFile {
 		declareIn(ar);
 		if(this.addFunction("Bool", "none_" + ar, "Rel" + ar))
 		{
-			// forall atoms of this arity, atom is not member of none
+			// forall tuples of this arity, tuple is not member of none
 			TermVar[] a = makeTuple(ar, "a");
 			Term none = Term.call("none_"+ar);
 			Term memb = Term.reverseIn(none, a);
