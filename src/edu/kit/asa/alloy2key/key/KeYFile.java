@@ -368,14 +368,22 @@ public class KeYFile {
 		// axiom omitted: "in" does not have an axiom (uninterpreted)
 	}
 
-	/** adds a declaration and theory for "none" 
+	/** adds a declaration and theory for "none" (the empty set)
 	 * @param arity arity of none
 	 * @throws ModelException 
 	 */
 	public void declareNone(int ar) throws ModelException {
-		this.addFunction("Bool", "none_" + ar, "Rel" + ar);
-		//TODO: add axiom
-		throw new ModelException("Domain restriction has not yet been implemented.");
+		declareAtom();
+		declareIn(ar);
+		if(this.addFunction("Bool", "none_" + ar, "Rel" + ar))
+		{
+			// forall atoms of this arity, atom is not member of none
+			TermVar[] a = makeTuple(ar, "a");
+			Term none = Term.call("none_"+ar);
+			Term memb = Term.reverseIn(none, a);
+			Term axiom = memb.not().forall(a);
+			this.addAxiom(axiom);
+		}
 	}
 
 	public void declareProduct(int lar, int rar) throws ModelException {
@@ -829,6 +837,7 @@ public class KeYFile {
 		Term finN = Term.call("finite", N);
 		Term lastS = Term.call(name);
 		if (!finite) {
+			declareNone(1);
 			// ¬finite 1 (N [S]) ⇒ lastS = none 1
 			Term none = Term.call("none_1");
 			Term axiom = finN.not().implies(lastS.equal(none));
@@ -848,8 +857,9 @@ public class KeYFile {
 	}
 
 	private void declareFirst(String suffix) throws ModelException {
-		// TODO Auto-generated method stub
+		// implementing "first"
 		declareA2r(1);
+		declareOrd();
 		String name = "first"+suffix;
 		// firstS = sin 1 (ordInv 1 (N [S], 1))
 		if (this.addFunction("Rel1",name)) {
