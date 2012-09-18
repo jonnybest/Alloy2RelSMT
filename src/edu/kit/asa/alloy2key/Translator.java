@@ -21,6 +21,7 @@ import edu.kit.asa.alloy2key.key.Term;
 import edu.kit.asa.alloy2key.key.TermCall;
 import edu.kit.asa.alloy2key.key.TermVar;
 import edu.kit.asa.alloy2key.modules.KeYModule;
+import edu.kit.asa.alloy2key.modules.Ordering;
 import edu.kit.asa.alloy2key.util.Util;
 import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4.ErrorFatal;
@@ -431,16 +432,25 @@ public class Translator implements Identifiers {
 	
 	/**
 	 * declare all signature symbols
+	 * @throws ModelException 
 	 * @ 
 	 */
-	private void generateSigDecls()  {
+	private void generateSigDecls() throws ModelException  {
 		for (Sig s : reachableSigs) {
 			if (s.builtin)
 				continue;
 			// declare function symbol for sig
-			// if (!external.contains(s)) // TODO: reinstate this if-clause once you figured out how to deal with external modules
+			if (!external.contains(s))
 				// each signature gets its own function symbol of type Rel1
 				target.addFunction ("Rel1", id(s));
+		}
+		for (KeYModule s : builtinModules) {
+			if (s.isOrdering()) {
+				Ordering o = (Ordering)s;
+				target.addFunction("Rel1", o.getId());
+				target.addFunction("Rel1", o.getAlias());
+				
+			} 
 		}
 	}
 	
@@ -450,6 +460,16 @@ public class Translator implements Identifiers {
 	 * @ 
 	 */
 	private void translateSigDecls() throws Err, ModelException {
+		for (KeYModule s : builtinModules)
+		{
+			if(s.isOrdering())
+			{
+				Ordering o = (Ordering)s;
+				Term aliasconstraint = Term.call(o.getId()).equal(Term.call(o.getAlias()));
+				aliasconstraint.setComment("Alias constraint for " + o.getId() + " and " + o.getAlias());
+				target.addAssertion(aliasconstraint);
+			}
+		}
 		
 		for (Sig s : reachableSigs) {
 			// ignore built-in sigs

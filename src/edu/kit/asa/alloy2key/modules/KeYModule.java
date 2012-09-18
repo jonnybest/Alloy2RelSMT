@@ -26,7 +26,16 @@ public abstract class KeYModule {
 	
 	/** determine the order in which the modules have to be included */
 	protected int order = 0;
+	protected boolean isOrdering = false;
 	
+	/**
+	 * Indicates whether this module is an instance of util/ordering (or not).
+	 * @return True if util/ordering. Else false.
+	 */
+	public boolean isOrdering() {
+		return isOrdering;
+	}
+
 	/**
 	 * create an instance
 	 * @param mod
@@ -43,6 +52,7 @@ public abstract class KeYModule {
 				throw new RuntimeException ("No instantiation for ordering module");
 			}
 			KeYModule m = new Ordering(mod, insts.get(0), ids);
+			m.isOrdering = true;
 			return m;
 		}
 		return null;

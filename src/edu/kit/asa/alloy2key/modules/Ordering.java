@@ -31,6 +31,22 @@ public class Ordering extends KeYModule {
 	private Module mod;
 	private Identifiers ids;
 	
+	/** Gets the identifier for this ordering module
+	 * 
+	 * @return
+	 */
+	public String getId(){
+		return ids.id(inst);
+	}
+	
+	/**
+	 * Gets the alias expression of the ordering instance
+	 * @return
+	 */
+	public String getAlias(){
+		return mod.path();
+	}
+	
 	public Ordering(Module m, Sig inst, Identifiers ids) {
 		this.order = 2;
 		this.inst = inst;
