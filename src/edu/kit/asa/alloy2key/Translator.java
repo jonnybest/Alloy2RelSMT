@@ -464,7 +464,7 @@ public class Translator implements Identifiers {
 			if (s.isOrdering()) {
 				Ordering o = (Ordering)s;
 				target.addFunction("Rel1", o.getId());
-				target.addFunction("Rel2", o.getOrdering());
+				//target.addFunction("Rel2", o.getOrdering());
 				
 			} 
 		}
