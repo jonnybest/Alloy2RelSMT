@@ -841,6 +841,7 @@ public class KeYFile {
 			// ¬finite 1 (N [S]) ⇒ lastS = none 1
 			Term none = Term.call("none_1");
 			Term axiom = finN.not().implies(lastS.equal(none));
+			axiom.setComment("infinite axiom for " + name);
 			this.addAxiom(axiom);
 		}
 		else {
@@ -852,6 +853,7 @@ public class KeYFile {
 			Term ordInv = Term.call("at", N, cardN);
 			Term a2r = Term.call("a2r_1", ordInv);
 			Term axiom = finN.implies(lastS.equal(a2r));
+			axiom.setComment("finite axiom for " + name);
 			this.addAxiom(axiom);
 		}
 	}
@@ -869,13 +871,14 @@ public class KeYFile {
 			Term ordInv = Term.call("at", N, one);
 			Term a2r = Term.call("a2r_1", ordInv);
 			Term axiom = first.equal(a2r);
+			axiom.setComment("axiom for " + name);
 			this.addAxiom(axiom);
 		}
 	}
 
-	/** Declares the constant relations Next, First and Last  
-	 *  (nextS : Rel2 , firstS : Rel1 , lastS : Rel1)
-	 * @param suffix
+	/** Declares the constant relations Next for a given relation S
+	 *  (nextS : Rel2)
+	 * @param suffix the name of the relation S
 	 * @throws ModelException
 	 */
 	private void declareNext(String suffix) throws ModelException {		
@@ -888,16 +891,32 @@ public class KeYFile {
 		declareOrd();
 		declareI2a();
 		declareFinite();
+		declareNone(1);
 		
 		String nextSname = "next"+suffix;
 		if (this.addFunction("Rel2", nextSname)) {
+			TermVar a = TermVar.var("Atom", "a");
+			TermVar b = TermVar.var("Atom", "b");
+			TermVar N = TermVar.var(suffix); // actually constant
+			TermVar one = TermVar.var("1"); // actually constant
+			
 			// ∀a, b: Atom |(in 1 (a, N [S]) ∧ in 1 (b, N [S]))
 			//	⇒ (in 2 (a, b, nextS ) ⇔ ord 1 (N [S], b) = ord 1 (N [S], a) + 1)
-			
-			// ¬(N [S] = none 1 )			
+			{
+				Term guard = Term.reverseIn(N, a).and(Term.reverseIn(N, b));
+				Term inS = Term.reverseIn(Term.call(nextSname), a, b);
+				Term follows = Term.call("ord", N, b).equal(Term.call("ord", a).plus(one));
+				Term axiom = guard.implies(inS.equal(follows));
+				axiom.setComment("axiom for " + nextSname);
+				this.addAxiom(axiom);
+			}
+			// ¬(N [S] = none 1 )
+			{
+				Term axiom = N.not().equal(Term.call("none_1"));
+				axiom.setComment("another axiom for " + nextSname);
+				this.addAxiom(axiom);
+			}
 		}
-		
-		throw new ModelException("Next not implemented");
 	}
 
 	private void declareInt() {
@@ -927,6 +946,7 @@ public class KeYFile {
 			Term thereAndBack = Term.call(namea2i, Term.call(namei2a, i));
 			// ∀i: int | in1 (i2a(i), N [Int]) ∧ a2i(i2a(i)) = i
 			Term axiom = inN.implies(thereAndBack.equal(i)).forall(i);
+			axiom.setComment("axiom for i2a and a2i");
 			this.addAxiom(axiom);
 		}
 	}
@@ -952,6 +972,7 @@ public class KeYFile {
 			Term guard = Term.call("finite", R).and(Term.reverseIn(R, a)).and(Term.reverseIn(R, b));
 			Term ordeq = Term.call("ord", R, a).and(Term.call("ord", R, b));
 			Term axiom = guard.and(ordeq).implies(a.equal(b)).forall(R,a,b);
+			axiom.setComment("axiom for ord");
 			this.addAxiom(axiom);
 		}
 
@@ -963,6 +984,7 @@ public class KeYFile {
 			Term guard = Term.reverseIn(R, a);
 			Term ord = Term.call("ord", R, a);
 			Term axiom = guard.implies(Term.call("at", R, ord).equal(a)).forall(R, a);
+			axiom.setComment("axiom for at (the reverse of ord)");
 			this.addAxiom(axiom);
 		}
 	}
@@ -977,7 +999,7 @@ public class KeYFile {
 		declareRel(rar);
 		String relar = "Rel"+rar;
 		this.addFunction(relar, "domRestr_" + rar, "Rel1", relar);
-		// TODO: add axiom for None
+		// TODO: add axiom for domain Restriction
 		throw new ModelException("None has not yet been implemented.");
 	}
 
