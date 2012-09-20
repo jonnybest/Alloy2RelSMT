@@ -117,7 +117,10 @@ public class Translator implements Identifiers {
 		// we need to uniquely identify all entities, so 
 		// gather all entities and make them unique if need be 
 		try {
+			// finds all identifiers in the alloy model and assigns a translation
 			createGlobalIds();
+			// introduces axioms for ordered signatures
+			prepareOrderings();
 			// translation of signature declarations ("types")
 			translateSigDecls();
 			// translating fact declarations
@@ -141,6 +144,26 @@ public class Translator implements Identifiers {
 		return target;
 	}
 	
+	/**
+	 * Introduces all the ordering axioms needed
+	 *  
+	 * @throws ModelException
+	 */
+	private void prepareOrderings() throws ModelException {
+		for (Sig s : orderings) {
+			prepareOrdering(s);
+		}
+	}
+
+	/** 
+	 * Creates and adds axioms for a given Signature s
+	 * @param s
+	 * @throws ModelException
+	 */
+	private void prepareOrdering(Sig s) throws ModelException {
+		target.declareOrdering(id(s), finitizedSigs.contains(s));
+	}
+
 	/**
 	 * explicitely finite a signature
 	 * @param s
@@ -972,6 +995,7 @@ public class Translator implements Identifiers {
 		if (e instanceof ExprCall) {
 			ExprCall ec = (ExprCall)e;
 			if (ec.args.isEmpty())                                   // f
+				// remember: this is the place where function calls are stripped of their prefixes and converted into SMT
 				return Term.call(id(ec.fun));
 			Term[] params = new Term[ec.args.size()];        // f [e1,...]
 			for (int i = 0; i < ec.args.size(); i++) {
