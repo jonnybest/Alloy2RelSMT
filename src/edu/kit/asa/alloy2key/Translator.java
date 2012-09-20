@@ -1028,8 +1028,8 @@ public class Translator implements Identifiers {
 					vars[i] = id(v);
 					atomVars.remove(v);
 				}
-				return b.and(f).compr(vars); // TODO: restore this line once you've done something about the implementation
-				//throw new ModelException("Comprehensions are not yet implmeneted.");
+				//return b.and(f).compr(vars); // TODO: restore this line once you've done something about the implementation
+				throw new ModelException("Comprehensions are not yet implmeneted.");
 			}
 
 			// quantifier (hopefully)
