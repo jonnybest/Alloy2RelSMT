@@ -368,20 +368,36 @@ public class KeYFile {
 		// axiom omitted: "in" does not have an axiom (uninterpreted)
 	}
 
-	/** adds a declaration and theory for "none" (the empty set)
+	/** adds a declaration and theory for "no" (the empty function)
 	 * @param arity arity of none
-	 * @throws ModelException 
+	 * @throws ModelException
 	 */
-	public void declareNone(int ar) throws ModelException {
+	public void declareNo(int ar) throws ModelException {
 		declareAtom();
 		declareIn(ar);
-		if(this.addFunction("Bool", "none_" + ar, "Rel" + ar))
+		String relar = "Rel" + ar;
+		if(this.addFunction("Bool", "no_" + ar, relar))
 		{
 			// forall tuples of this arity, tuple is not member of none
 			TermVar[] a = makeTuple(ar, "a");
-			Term none = Term.call("none_"+ar);
-			Term memb = Term.reverseIn(none, a);
-			Term axiom = memb.not().forall(a);
+			TermVar R = TermVar.var(relar, "R");
+			Term no = Term.call("no_"+ar, R);
+			Term memb = Term.reverseIn(no, a);
+			Term axiom = memb.not().forall(Util.concat(a, R));
+			axiom.setComment("axiom for 'the expression is empty'");
+			this.addAxiom(axiom);
+		}
+	}
+	
+	public void declareNone() throws ModelException {
+		declareAtom();
+		declareIn(1);
+		
+		if(this.addFunction("Rel1", "none")){
+			// forall tuples, there exists no in None
+			TermVar a = TermVar.var("Atom", "a");
+			Term axiom = Term.reverseIn(Term.call("none"), a).not().forall(a);
+			axiom.setComment("axiom for empty set");
 			this.addAxiom(axiom);
 		}
 	}
@@ -827,7 +843,7 @@ public class KeYFile {
 	 * @throws ModelException
 	 */
 	private void declareLast(String suffix, boolean finite) throws ModelException {
-		declareNone(1);
+		declareNone();
 		// implement Last
 		String name = "last"+suffix;
 		this.addFunction("Rel1", name);
@@ -837,7 +853,7 @@ public class KeYFile {
 		Term finN = Term.call("finite", N);
 		Term lastS = Term.call(name);
 		if (!finite) {
-			declareNone(1);
+			declareNone();
 			// ¬finite 1 (N [S]) ⇒ lastS = none 1
 			Term none = Term.call("none_1");
 			Term axiom = finN.not().implies(lastS.equal(none));
@@ -891,7 +907,7 @@ public class KeYFile {
 		declareOrd();
 		declareI2a();
 		declareFinite();
-		declareNone(1);
+		declareNone();
 		
 		String nextSname = "next"+suffix;
 		if (this.addFunction("Rel2", nextSname)) {
@@ -912,8 +928,8 @@ public class KeYFile {
 			}
 			// ¬(N [S] = none 1 )
 			{
-				Term axiom = N.not().equal(Term.call("none_1"));
-				axiom.setComment("another axiom for " + nextSname);
+				Term axiom = Term.call("none").equal(N).not();
+				axiom.setComment("'there is no empty ordered relation' axiom for " + nextSname);
 				this.addAxiom(axiom);
 			}
 		}

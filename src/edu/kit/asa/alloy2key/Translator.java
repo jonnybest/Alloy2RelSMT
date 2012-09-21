@@ -862,8 +862,8 @@ public class Translator implements Identifiers {
 			case NOT:                                                // !c
 				return e_.not();
 			case NO:                                                 // no e
-				target.declareSome();
-				return Term.call("some_" + arity, e_).not();
+				target.declareNo(arity);
+				return Term.call("no_" + arity, e_);
 			case SOME:                                               // some e
 				target.declareSome();
 				return Term.call("some_" + arity, e_);
@@ -1129,7 +1129,7 @@ public class Translator implements Identifiers {
 				target.declareIdentity();
 				return Term.call("iden");
 			case EMPTYNESS:
-				return none(1);
+				return none();
 			case NUMBER:
 				return Term.number(ec.num());
 			case MIN:
@@ -1569,9 +1569,9 @@ public class Translator implements Identifiers {
 		return Term.call(name, term(a), term(b));
 	}
 	
-	private Term none(int ar) throws ModelException {
-		target.declareNone(ar);
-		return Term.call("none_"+ar);
+	private Term none() throws ModelException {
+		target.declareNone();
+		return Term.call("none");
 	}
 
 	private Term univ(int ar) throws ModelException {
