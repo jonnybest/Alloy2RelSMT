@@ -857,7 +857,7 @@ public class KeYFile {
 		if (!finite) {
 			declareNone();
 			// ¬finite 1 (N [S]) ⇒ lastS = none 1
-			Term none = Term.call("none_1");
+			Term none = Term.call("none");
 			Term axiom = finN.not().implies(lastS.equal(none));
 			axiom.setComment("infinite axiom for " + name);
 			this.addAxiom(axiom);
