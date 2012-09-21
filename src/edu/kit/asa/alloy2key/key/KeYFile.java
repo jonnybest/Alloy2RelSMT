@@ -833,6 +833,7 @@ public class KeYFile {
 		declareI2a();
 		declareOrd();
 		declareNext(suffix);
+		declareNexts(suffix);
 		declareFirst(suffix);
 		declareLast(suffix, finite);			
 	}
@@ -909,7 +910,7 @@ public class KeYFile {
 		declareOrd();
 		declareI2a();
 		declareFinite();
-		declareNone();
+		declareNone();		
 		
 		String nextSname = "next"+suffix;
 		if (this.addFunction("Rel2", nextSname)) {
@@ -934,6 +935,19 @@ public class KeYFile {
 				axiom.setComment("'there is no empty ordered relation' axiom for " + nextSname);
 				this.addAxiom(axiom);
 			}
+		}
+	}
+
+	private void declareNexts(String suffix) throws ModelException {
+		declareNext(suffix); // "next"+suffix
+		declareTransitiveClosure(); // transClos
+		declareDomainRestriction(2); // domRestr_2
+		
+		if (this.addFunction("Rel1", "nexts"+suffix, "Rel1")) {
+			// so/nexts = e . ^ so/Ord . (so/Ord <: Next)
+			//Term nexts = Term.call("nexts", params)
+			// TODO: build this
+			throw new ModelException("function 'nexts' not implemented!");
 		}
 	}
 
@@ -1007,7 +1021,8 @@ public class KeYFile {
 		}
 	}
 
-	/** Declares the domain restriction operator
+	/** Declares the binary domain restriction operator <:. The resulting relation (S <: R) contains 
+	 * all tuples of R that start with an element in S 
 	 * @param rar arity of the right-hand parameter
 	 * @throws ModelException 
 	 * @rem left-hand arity is required to be 1 (type:set)
@@ -1016,9 +1031,18 @@ public class KeYFile {
 		declareRel(1);
 		declareRel(rar);
 		String relar = "Rel"+rar;
-		this.addFunction(relar, "domRestr_" + rar, "Rel1", relar);
-		// TODO: add axiom for domain Restriction
-		throw new ModelException("None has not yet been implemented.");
+		if(this.addFunction(relar, "domRestr_" + rar, "Rel1", relar))
+		{
+			// for all (a1 a2) in R and b in S, ((a1 a2) in (S <: R)) => b = a1
+			TermVar[] a = makeTuple(rar, "a");
+			TermVar b = TermVar.var("Atom", "b");
+			TermVar R = TermVar.var(relar, "R");
+			TermVar S = TermVar.var("Rel1", "S");
+			Term guard = Term.reverseIn(R, a).and(Term.reverseIn(S, b)).and(Term.reverseIn(Term.call("domRestr_" + rar, S, R), a));
+			Term axiom = guard.implies(a[0].equal(b));
+			axiom.setComment("Axiom for domain restriction of arity " + rar);
+			this.addAxiom(axiom);
+		}
 	}
 
 	public void declareDifference(int ar) throws ModelException {
@@ -1072,9 +1096,18 @@ public class KeYFile {
 		declareRel(1);
 		declareRel(lar);
 		String relar = "Rel"+lar;
-		this.addFunction(relar, "rangeRestr_" + lar, relar, "Rel1");
-		//TODO: add axiom
-		throw new ModelException("Range restriction has not yet been implemented.");
+		if(this.addFunction(relar, "rangeRestr_" + lar, relar, "Rel1"))
+		{
+			// for all (b1 b2) in R and a in S, ((b1 b2) in (R :> S)) => b2 = a
+			TermVar[] b = makeTuple(lar, "b");
+			TermVar a = TermVar.var("Atom", "a");
+			TermVar R = TermVar.var(relar, "R");
+			TermVar S = TermVar.var("Rel1", "S");
+			Term guard = Term.reverseIn(R, b).and(Term.reverseIn(S, a)).and(Term.reverseIn(Term.call("rangeRestr_" + lar, R, S), b));
+			Term axiom = guard.implies(b[0].equal(a));
+			axiom.setComment("Axiom for range restriction of arity " + lar);
+			this.addAxiom(axiom);
+		}
 	}
 
 	public void declareIdentity() throws ModelException {
