@@ -40,7 +40,7 @@ public class TermUnary extends Term {
 	public String toString() {
 		switch (operator) {
 		case NOT:
-			return "; " + this.comment + "\n" +
+			return comment == null ? "" : "; " + this.comment + "\n" +
 					"(not "+sub.toString()+")";    // smt ok
 		default:
 			return "";

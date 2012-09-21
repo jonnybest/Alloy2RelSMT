@@ -95,8 +95,7 @@
 (assert 
  (! 
   ; axiom for empty set
-(forall ((a Atom)) ; null
-(not (in_1 a none))) 
+(forall ((a Atom)) ) 
  :named ax4 
  ) 
  )
@@ -172,8 +171,7 @@
 (assert 
  (! 
   ; infinite axiom for lastMutex
-(=> ; null
-(not (finite Mutex)) (= lastMutex none_1)) 
+(=>  (= lastMutex none_1)) 
  :named ax15 
  ) 
  )
@@ -210,22 +208,19 @@
  )
 (assert 
  (! 
-  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) ; null
-(not (in_1 a0 B)))))) 
+  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) )))) 
  :named ax21 
  ) 
  )
 (assert 
  (! 
-  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) ; null
-(not (in_1 a0 B)))))) 
+  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) )))) 
  :named ax22 
  ) 
  )
 (assert 
  (! 
-  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) ; null
-(not (in_1 a0 B)))))) 
+  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) )))) 
  :named ax23 
  ) 
  )
@@ -238,8 +233,7 @@
 (assert 
  (! 
   ; axiom for 'the expression is empty'
-(forall ((a0 Atom)(a1 Atom)(R Rel2)) ; null
-(not (in_2 a0 a1 (no_2 R)))) 
+(forall ((a0 Atom)(a1 Atom)(R Rel2)) ) 
  :named ax25 
  ) 
  )
@@ -259,8 +253,7 @@
 (assert 
  (! 
   ; axiom for 'the expression is empty'
-(forall ((a0 Atom)(R Rel1)) ; null
-(not (in_1 a0 (no_1 R)))) 
+(forall ((a0 Atom)(R Rel1)) ) 
  :named ax28 
  ) 
  )
@@ -284,8 +277,7 @@
  )
 (assert 
  (! 
-  (forall ((A Rel1)(B Rel1)(a0 Atom)) (= (in_1 a0 (diff_1 A B)) (and (in_1 a0 A) ; null
-(not (in_1 a0 B))))) 
+  (forall ((A Rel1)(B Rel1)(a0 Atom)) (= (in_1 a0 (diff_1 A B)) (and (in_1 a0 A) ))) 
  :named ax32 
  ) 
  )
@@ -349,10 +341,6 @@
 (assert 
  (! 
   (forall ((s Rel1)(p Rel1)(m Rel1)(s_ Rel1)) (= (GrabMutex s p m s_) (and 
-    ; null
-(not (IsStalled s p))
-    ; null
-(not (subset_1 m (join_1x2 p (join_1x3 s holds))))
     (ite (IsFree s m) (and (= (join_1x2 p (join_1x3 s_ holds)) (union_1 (join_1x2 p (join_1x3 s holds)) m)) (no_1 (join_1x2 p (join_1x3 s_ waits)))) (and (= (join_1x2 p (join_1x3 s_ holds)) (join_1x2 p (join_1x3 s holds))) (= (join_1x2 p (join_1x3 s_ waits)) m)))
     (forall ((otherProc Atom)) (=> (and (in_1 otherProc Process) (in_1 otherProc (diff_1 Process p))) (and (= (join_1x2 (a2r_1 otherProc) (join_1x3 s_ holds)) (join_1x2 (a2r_1 otherProc) (join_1x3 s holds))) (= (join_1x2 (a2r_1 otherProc) (join_1x3 s_ waits)) (join_1x2 (a2r_1 otherProc) (join_1x3 s waits))))))
   ))) 
@@ -362,8 +350,6 @@
 (assert 
  (! 
   (forall ((s Rel1)(p Rel1)(m Rel1)(s_ Rel1)) (= (ReleaseMutex s p m s_) (and 
-    ; null
-(not (IsStalled s p))
     (subset_1 m (join_1x2 p (join_1x3 s holds)))
     (= (join_1x2 p (join_1x3 s_ holds)) (diff_1 (join_1x2 p (join_1x3 s holds)) m))
     (no_1 (join_1x2 p (join_1x3 s_ waits)))
@@ -422,13 +408,7 @@
 ;; command
 (assert 
  (! 
-  ; null
-(not (=> (and 
-    (some_1 Process)
-    GrabOrRelease
-    GrabbedInOrder
-  ) ; null
-(not Deadlock))) 
+   
  :named c0 
  ) 
  )
