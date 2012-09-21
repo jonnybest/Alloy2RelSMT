@@ -13,7 +13,7 @@
 (declare-fun N_Int () Rel1)
 (declare-fun i2a (Int) Atom)
 (declare-fun a2i (Atom) Int)
-(declare-fun ord (Rel1) Int)
+(declare-fun ord (Rel1 Atom) Int)
 (declare-fun at (Rel1 Int) Atom)
 (declare-fun in_1 (Atom Rel1) Bool)
 (declare-fun in_2 (Atom Atom Rel2) Bool)
@@ -53,8 +53,8 @@
 (declare-fun GrabbedInOrder () Bool)
 (declare-fun ShowDijkstra () Bool)
 (declare-fun Process () Rel1)
-(declare-fun Mutex () Rel1)
 (declare-fun State () Rel1)
+(declare-fun Mutex () Rel1)
 ;; --end functions
 
 ;; axioms
@@ -78,7 +78,7 @@
     (finite R)
     (in_1 a R)
     (in_1 b R)
-    (and (ord R a) (ord R b))
+    (= (ord R a) (ord R b))
   ) (= a b))) 
  :named ax2 
  ) 
@@ -285,19 +285,19 @@
  )
 (assert 
  (! 
-  (disjoint_1 Process Mutex) 
+  (disjoint_1 Process State) 
  :named a2 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 Process State) 
+  (disjoint_1 Process Mutex) 
  :named a3 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 Mutex State) 
+  (disjoint_1 State Mutex) 
  :named a4 
  ) 
  )

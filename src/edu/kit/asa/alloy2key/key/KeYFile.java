@@ -961,7 +961,7 @@ public class KeYFile {
 		declareRel(1);
 		declareFinite();
 		
-		if(this.addFunction("Int", "ord", "Rel1"))
+		if(this.addFunction("Int", "ord", "Rel1", "Atom"))
 		{
 			// ∀r: Reln , a1:n , b1:n : Atom | (finite n (r) ∧ inn (a1:n , r) ∧ inn (b1:n , r) 
 			//	∧ ordn (r, a1:n ) = ordn (r, b1:n )) ⇒ (a1 = b1 ∧ … ∧ an = bn )
@@ -970,7 +970,7 @@ public class KeYFile {
 			TermVar b = TermVar.var("Atom", "b");
 			
 			Term guard = Term.call("finite", R).and(Term.reverseIn(R, a)).and(Term.reverseIn(R, b));
-			Term ordeq = Term.call("ord", R, a).and(Term.call("ord", R, b));
+			Term ordeq = Term.call("ord", R, a).equal(Term.call("ord", R, b));
 			Term axiom = guard.and(ordeq).implies(a.equal(b)).forall(R,a,b);
 			axiom.setComment("axiom for ord");
 			this.addAxiom(axiom);
