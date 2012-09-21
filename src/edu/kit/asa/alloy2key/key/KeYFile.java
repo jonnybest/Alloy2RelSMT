@@ -382,8 +382,8 @@ public class KeYFile {
 			TermVar[] a = makeTuple(ar, "a");
 			TermVar R = TermVar.var(relar, "R");
 			Term no = Term.call("no_"+ar, R);
-			Term memb = Term.reverseIn(no, a);
-			Term axiom = memb.not().forall(Util.concat(a, R));
+			Term memb = Term.reverseIn(R, a);
+			Term axiom = no.implies(memb.not()).forall(R).forall(a);
 			axiom.setComment("axiom for 'the expression is empty'");
 			this.addAxiom(axiom);
 		}

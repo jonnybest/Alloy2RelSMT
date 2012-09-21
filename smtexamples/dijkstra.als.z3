@@ -233,7 +233,7 @@
 (assert 
  (! 
   ; axiom for 'the expression is empty'
-(forall ((a0 Atom)(a1 Atom)(R Rel2)) (not (in_2 a0 a1 (no_2 R)))) 
+(forall ((a0 Atom)(a1 Atom)(R Rel2)) (=> (no_2 R) (not (in_2 a0 a1 R)))) 
  :named ax25 
  ) 
  )
@@ -253,7 +253,7 @@
 (assert 
  (! 
   ; axiom for 'the expression is empty'
-(forall ((a0 Atom)(R Rel1)) (not (in_1 a0 (no_1 R)))) 
+(forall ((a0 Atom)(R Rel1)) (=> (no_1 R) (not (in_1 a0 R)))) 
  :named ax28 
  ) 
  )
