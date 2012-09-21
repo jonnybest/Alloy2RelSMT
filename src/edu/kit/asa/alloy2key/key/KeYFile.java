@@ -809,7 +809,7 @@ public class KeYFile {
 			{
 				TermVar i = TermVar.var("Int", "i");
 				Term guard = finR.and(validCard);
-				Term axiom = guard.implies(Term.reverseIn(R, a).and(ordA.equal(i)).exists(i)).forall(R, i);
+				Term axiom = guard.implies(Term.reverseIn(R, a).and(ordA.equal(i)).exists(i)).forall(R, i).forall(a);
 				axiom.setComment("axiom about finite Relations having atoms for certain numbers in ord");
 				this.addAxiom(axiom);
 			}			
