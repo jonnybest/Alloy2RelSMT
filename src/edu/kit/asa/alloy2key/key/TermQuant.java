@@ -152,6 +152,8 @@ public class TermQuant extends Term {
 	public static Term createSortedTerm(Quant quantifier, List<TermVar> vars, Term sub) {
 		if(sub == TRUE)
 			return sub;
+		else if(vars.size() == 0)
+			return sub;
 		else {
 			List<Pair<String, String>> typedVars = new LinkedList<Pair<String,String>>();
 			for(TermVar var : vars){
