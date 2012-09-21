@@ -18,14 +18,14 @@
 (declare-fun in_1 (Atom Rel1) Bool)
 (declare-fun in_2 (Atom Atom Rel2) Bool)
 (declare-fun none () Rel1)
-(declare-fun nextMutex () Rel2)
-(declare-fun a2r_1 (Atom) Rel1)
-(declare-fun firstMutex () Rel1)
-(declare-fun lastMutex () Rel1)
 (declare-fun nextState () Rel2)
+(declare-fun a2r_1 (Atom) Rel1)
 (declare-fun firstState () Rel1)
 (declare-fun lastState () Rel1)
 (declare-fun card_1 (Rel1) Int)
+(declare-fun nextMutex () Rel2)
+(declare-fun firstMutex () Rel1)
+(declare-fun lastMutex () Rel1)
 (declare-fun holds () Rel3)
 (declare-fun prod_1x1 (Rel1 Rel1) Rel2)
 (declare-fun in_3 (Atom Atom Atom Rel3) Bool)
@@ -102,15 +102,15 @@
  )
 (assert 
  (! 
-  ; axiom for nextMutex
-(forall ((a Atom)(b Atom)) (=> (and (in_1 a Mutex) (in_1 b Mutex)) (= (in_2 a b nextMutex) (= (ord Mutex b) (+ (ord Mutex a) 1))))) 
+  ; axiom for nextState
+(forall ((a Atom)(b Atom)) (=> (and (in_1 a State) (in_1 b State)) (= (in_2 a b nextState) (= (ord State b) (+ (ord State a) 1))))) 
  :named ax5 
  ) 
  )
 (assert 
  (! 
-  ; 'there is no empty ordered relation' axiom for nextMutex
-(not (= none Mutex)) 
+  ; 'there is no empty ordered relation' axiom for nextState
+(not (= none State)) 
  :named ax6 
  ) 
  )
@@ -122,9 +122,49 @@
  )
 (assert 
  (! 
-  ; axiom for firstMutex
-(= name (a2r_1 (at Mutex 1))) 
+  ; axiom for firstState
+(= firstState (a2r_1 (at State 1))) 
  :named ax8 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((a0 Atom)(R Rel1)) (=> (and (finite R) (in_1 a0 R)) (>= (>= (card_1 R) (ord R a0)) 1))) 
+ :named ax9 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((R Rel1)(i Int)) (=> (and (finite R) (>= (>= (card_1 R) (ord R a0)) 1)) (exists ((i Int)) (and (in_1 a0 R) (= (ord R a0) i))))) 
+ :named ax10 
+ ) 
+ )
+(assert 
+ (! 
+  ; finite axiom for lastState
+(=> (finite State) (= lastState (a2r_1 (at State (card_1 State))))) 
+ :named ax11 
+ ) 
+ )
+(assert 
+ (! 
+  ; axiom for nextMutex
+(forall ((a Atom)(b Atom)) (=> (and (in_1 a Mutex) (in_1 b Mutex)) (= (in_2 a b nextMutex) (= (ord Mutex b) (+ (ord Mutex a) 1))))) 
+ :named ax12 
+ ) 
+ )
+(assert 
+ (! 
+  ; 'there is no empty ordered relation' axiom for nextMutex
+(not (= none Mutex)) 
+ :named ax13 
+ ) 
+ )
+(assert 
+ (! 
+  ; axiom for firstMutex
+(= firstMutex (a2r_1 (at Mutex 1))) 
+ :named ax14 
  ) 
  )
 (assert 
@@ -132,46 +172,6 @@
   ; infinite axiom for lastMutex
 (=> ; null
 (not (finite Mutex)) (= lastMutex none_1)) 
- :named ax9 
- ) 
- )
-(assert 
- (! 
-  ; axiom for nextState
-(forall ((a Atom)(b Atom)) (=> (and (in_1 a State) (in_1 b State)) (= (in_2 a b nextState) (= (ord State b) (+ (ord State a) 1))))) 
- :named ax10 
- ) 
- )
-(assert 
- (! 
-  ; 'there is no empty ordered relation' axiom for nextState
-(not (= none State)) 
- :named ax11 
- ) 
- )
-(assert 
- (! 
-  ; axiom for firstState
-(= name (a2r_1 (at State 1))) 
- :named ax12 
- ) 
- )
-(assert 
- (! 
-  (forall ((a0 Atom)(R Rel1)) (=> (and (finite R) (in_1 a0 R)) (>= (>= (card_1 R) (ord R a0)) 1))) 
- :named ax13 
- ) 
- )
-(assert 
- (! 
-  (forall ((R Rel1)(i Int)) (=> (and (finite R) (>= (>= (card_1 R) (ord R a0)) 1)) (exists ((i Int)) (and (in_1 a0 R) (= (ord R a0) i))))) 
- :named ax14 
- ) 
- )
-(assert 
- (! 
-  ; finite axiom for lastState
-(=> (finite State) (= lastState (a2r_1 (at State (card_1 State))))) 
  :named ax15 
  ) 
  )

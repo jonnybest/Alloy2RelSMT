@@ -881,7 +881,7 @@ public class KeYFile {
 		String name = "first"+suffix;
 		// firstS = sin 1 (ordInv 1 (N [S], 1))
 		if (this.addFunction("Rel1",name)) {
-			Term first = Term.call("name");
+			Term first = Term.call(name);
 			TermVar N = TermVar.var(suffix); // not actually a variable but a constant
 			TermVar one = TermVar.var("Int", "1"); // not a variable but a constant
 			Term ordInv = Term.call("at", N, one);
