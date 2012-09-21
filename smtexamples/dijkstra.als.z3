@@ -9,7 +9,7 @@
 ;; --end sorts
 
 ;; functions
-(declare-fun finite (Rel1) bool)
+(declare-fun finite (Rel1) Bool)
 (declare-fun N_Int () Rel1)
 (declare-fun i2a (Int) Atom)
 (declare-fun a2i (Atom) Int)

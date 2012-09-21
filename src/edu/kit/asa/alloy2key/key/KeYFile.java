@@ -953,7 +953,7 @@ public class KeYFile {
 
 	private void declareFinite() throws ModelException {
 		declareRel(1);
-		this.addFunction("bool", "finite", "Rel1");
+		this.addFunction("Bool", "finite", "Rel1");
 	}
 		
 	private void declareOrd() throws ModelException{
