@@ -796,11 +796,12 @@ public class KeYFile {
 			Term cardR = Term.call(name, R);
 			Term finR = Term.call("finite", R);
 			Term ordA = Term.call("ord", Util.reverse(Util.concat(a, R)));
-			Term validCard = cardR.gte(ordA).gte(one);
+			Term validCard = cardR.gte(ordA).and(ordA.gte(one));
 			// ∀r: Reln , a1:n : Atom | (finite n (r) ∧ inn (a1:n , r)) ⇒ 1 ≤ ordn (r, a1:n ) ≤ card n (r)
 			{
 				Term guard = finR.and(Term.reverseIn(R, a));
 				Term axiom = guard.implies(validCard).forall(Util.concat(a, R));
+				axiom.setComment("axiom about finite Relations having a card > ord > 1");
 				this.addAxiom(axiom);
 			}	
 			// ∀r: Reln , i: int | (finite n (r) ∧ 1 ≤ i ≤ card n (r)) 
@@ -809,6 +810,7 @@ public class KeYFile {
 				TermVar i = TermVar.var("Int", "i");
 				Term guard = finR.and(validCard);
 				Term axiom = guard.implies(Term.reverseIn(R, a).and(ordA.equal(i)).exists(i)).forall(R, i);
+				axiom.setComment("axiom about finite Relations having atoms for certain numbers in ord");
 				this.addAxiom(axiom);
 			}			
 		}

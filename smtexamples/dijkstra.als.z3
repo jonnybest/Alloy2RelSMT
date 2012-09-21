@@ -129,13 +129,15 @@
  )
 (assert 
  (! 
-  (forall ((a0 Atom)(R Rel1)) (=> (and (finite R) (in_1 a0 R)) (>= (>= (card_1 R) (ord R a0)) 1))) 
+  ; axiom about finite Relations having a card > ord > 1
+(forall ((a0 Atom)(R Rel1)) (=> (and (finite R) (in_1 a0 R)) (and (>= (card_1 R) (ord R a0)) (>= (ord R a0) 1)))) 
  :named ax9 
  ) 
  )
 (assert 
  (! 
-  (forall ((R Rel1)(i Int)) (=> (and (finite R) (>= (>= (card_1 R) (ord R a0)) 1)) (exists ((i Int)) (and (in_1 a0 R) (= (ord R a0) i))))) 
+  ; axiom about finite Relations having atoms for certain numbers in ord
+(forall ((R Rel1)(i Int)) (=> (and (finite R) (and (>= (card_1 R) (ord R a0)) (>= (ord R a0) 1))) (exists ((i Int)) (and (in_1 a0 R) (= (ord R a0) i))))) 
  :named ax10 
  ) 
  )
