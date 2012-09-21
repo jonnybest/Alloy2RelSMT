@@ -54,9 +54,9 @@
 (declare-fun Deadlock () Bool)
 (declare-fun GrabbedInOrder () Bool)
 (declare-fun ShowDijkstra () Bool)
-(declare-fun Process () Rel1)
 (declare-fun State () Rel1)
 (declare-fun Mutex () Rel1)
+(declare-fun Process () Rel1)
 ;; --end functions
 
 ;; axioms
@@ -103,7 +103,7 @@
 (assert 
  (! 
   ; axiom for nextMutex
-(=> (and (in_1 a Mutex) (in_1 b Mutex)) (= (in_2 a b nextMutex) (= (ord Mutex b) (+ (ord a) 1)))) 
+(forall ((a Atom)(b Atom)) (=> (and (in_1 a Mutex) (in_1 b Mutex)) (= (in_2 a b nextMutex) (= (ord Mutex b) (+ (ord Mutex a) 1))))) 
  :named ax5 
  ) 
  )
@@ -138,7 +138,7 @@
 (assert 
  (! 
   ; axiom for nextState
-(=> (and (in_1 a State) (in_1 b State)) (= (in_2 a b nextState) (= (ord State b) (+ (ord a) 1)))) 
+(forall ((a Atom)(b Atom)) (=> (and (in_1 a State) (in_1 b State)) (= (in_2 a b nextState) (= (ord State b) (+ (ord State a) 1))))) 
  :named ax10 
  ) 
  )
@@ -310,19 +310,19 @@
  )
 (assert 
  (! 
-  (disjoint_1 Process State) 
+  (disjoint_1 State Mutex) 
  :named a2 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 Process Mutex) 
+  (disjoint_1 State Process) 
  :named a3 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 State Mutex) 
+  (disjoint_1 Mutex Process) 
  :named a4 
  ) 
  )

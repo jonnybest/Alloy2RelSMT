@@ -921,8 +921,8 @@ public class KeYFile {
 			{
 				Term guard = Term.reverseIn(N, a).and(Term.reverseIn(N, b));
 				Term inS = Term.reverseIn(Term.call(nextSname), a, b);
-				Term follows = Term.call("ord", N, b).equal(Term.call("ord", a).plus(one));
-				Term axiom = guard.implies(inS.equal(follows));
+				Term follows = Term.call("ord", N, b).equal(Term.call("ord", N, a).plus(one));
+				Term axiom = guard.implies(inS.equal(follows)).forall(a, b);
 				axiom.setComment("axiom for " + nextSname);
 				this.addAxiom(axiom);
 			}
