@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import edu.kit.asa.alloy2key.key.SMTFile;
-import edu.kit.asa.alloy2key.key.ModelException;
+import edu.kit.asa.alloy2key.smt.ModelException;
+import edu.kit.asa.alloy2key.smt.SMTFile;
 import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4.parser.ParseUtil;
 import edu.mit.csail.sdg.alloy4.parser.ParsedModule;

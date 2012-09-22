@@ -14,14 +14,14 @@ import java.util.Vector;
 
 import sun.security.util.Debug;
 
-import edu.kit.asa.alloy2key.key.SMTFile;
-import edu.kit.asa.alloy2key.key.ModelException;
-import edu.kit.asa.alloy2key.key.Taclet;
-import edu.kit.asa.alloy2key.key.Term;
-import edu.kit.asa.alloy2key.key.TermCall;
-import edu.kit.asa.alloy2key.key.TermVar;
 import edu.kit.asa.alloy2key.modules.KeYModule;
 import edu.kit.asa.alloy2key.modules.Ordering;
+import edu.kit.asa.alloy2key.smt.ModelException;
+import edu.kit.asa.alloy2key.smt.SMTFile;
+import edu.kit.asa.alloy2key.smt.Taclet;
+import edu.kit.asa.alloy2key.smt.Term;
+import edu.kit.asa.alloy2key.smt.TermCall;
+import edu.kit.asa.alloy2key.smt.TermVar;
 import edu.kit.asa.alloy2key.util.Util;
 import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4.ErrorFatal;

@@ -1,7 +1,7 @@
 /**
  * Created on 28.04.2011
  */
-package edu.kit.asa.alloy2key.key;
+package edu.kit.asa.alloy2key.smt;
 
 /**
  * integer constant

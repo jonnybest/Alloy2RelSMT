@@ -17,7 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.jar.JarEntry;
 
-import edu.kit.asa.alloy2key.key.TermVar;
+import edu.kit.asa.alloy2key.smt.TermVar;
 
 /**
  * @author Ulrich Geilmann
