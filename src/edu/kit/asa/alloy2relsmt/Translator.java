@@ -161,7 +161,7 @@ public class Translator implements Identifiers {
 	 * @throws ModelException
 	 */
 	private void prepareOrdering(Sig s) throws ModelException {
-		target.declareOrdering(id(s), finitizedSigs.contains(s));
+		target.getTheory().declareOrdering(id(s), finitizedSigs.contains(s));
 	}
 
 	/**
@@ -517,7 +517,7 @@ public class Translator implements Identifiers {
 					for (PrimSig sub : ps.children()){
 						disjunction = disjunction.or(in("this", sub));
 					}
-					target.declareAtom();
+					target.getTheory().declareAtom();
 					target.addAssertion(
 							in("this", ps).implies(disjunction).forall("Atom", "this"));
 				}
@@ -525,14 +525,14 @@ public class Translator implements Identifiers {
 				// all subsignatures are disjoint
 				for (int i = 0; i < ps.children().size(); ++i)
 					for (int j = i+1; j < ps.children().size(); ++j){
-						target.declareDisjoint(1);
+						target.getTheory().declareDisjoint(1);
 						target.addAssertion(call("disjoint_1",ps.children().get(i),
 														 ps.children().get(j)));
 						// TODO: I'd rather have the "intersection(i, j) == emptyset" formula here
 					}
 				// sig extends parent
 				if (ps.parent != null && ps.parent != Sig.UNIV) {
-					target.declareSubset(1);
+					target.getTheory().declareSubset(1);
 					target.addAssertion (call("subset_1", ps, ps.parent));
 				}
 			
@@ -542,11 +542,11 @@ public class Translator implements Identifiers {
 				SubsetSig ss = (SubsetSig)s;
 				if (ss.parents.size() < 1) throw new ModelException ("The signature was expected to have a single parent, but had more!");
 				Term union = term(ss.parents.get(0));
-				target.declareUnion(1);
+				target.getTheory().declareUnion(1);
 				for (int i = 1; i < ss.parents.size(); i++) {
 					union = Term.call("union_1", term(ss.parents.get(i)), union);
 				}
-				target.declareSubset(2);
+				target.getTheory().declareSubset(2);
 				target.addAssertion(Term.call("subset_2",    // subrel = subset, only for higher-arity relations
 						term(ss), union));    // can be expressed with 2 subset_1 if you join them left and right
 			}
@@ -554,20 +554,20 @@ public class Translator implements Identifiers {
 			// sig's multiplicity is one
 			if (s.isOne != null)
 			{
-				target.declareOne();
+				target.getTheory().declareOne();
 				target.addAssertion(Term.call("one_1", term(s)));
 			}
 			
 			// sig's multiplicity is lone
 			if (s.isLone != null)
 			{
-				target.declareLone();
+				target.getTheory().declareLone();
 				target.addAssertion(Term.call("lone_1", term(s)));
 			}
 			// sig's multiplicity is some
 			if (s.isSome != null)
 			{
-				target.declareSome(1);
+				target.getTheory().declareSome(1);
 				target.addAssertion(Term.call("some_1", term(s)));
 			}
 			
@@ -587,7 +587,7 @@ public class Translator implements Identifiers {
 					Term t = translateExpr(s.type().product(decl.expr.type()).toExpr());
 //					System.out.println(";; "+f.label+": "+s.type().product(decl.expr.type()).toExpr());
 //					System.out.println(";; "+arity);
-					target.declareSubset(arity);
+					target.getTheory().declareSubset(arity);
 					target.addAssertion (Term.call ("subset_" + arity, term(f), t));					
 				}
 				
@@ -611,7 +611,7 @@ public class Translator implements Identifiers {
 			if (sigs.get(i).isTopLevel()) {
 				for (int j = i+1; j < sigs.size(); ++j) {
 					if (sigs.get(j).isTopLevel()){
-						target.declareDisjoint(1);
+						target.getTheory().declareDisjoint(1);
 						target.addAssertion(call("disjoint_1", sigs.get(i), sigs.get(j)));
 					}
 				}
@@ -745,19 +745,19 @@ public class Translator implements Identifiers {
 				if (boundingType)
 				{
 					arity = arity(bound2);
-					target.declareIn(arity);
+					target.getTheory().declareIn(arity);
 					f = f.and(Term.call("in_" + arity, Term.var(id(n)), translateExpr_p(bound2, letBindings, atomVars)));
 				}
 				if (!bound2.isSame(deMult(d.expr)))
 				{
 					arity = arity(d.expr);
-					target.declareIn(arity);
+					target.getTheory().declareIn(arity);
 					f = f.and(Term.call("in_" + arity, Term.var(id(n)), bound));
 				}
 			} else {
 				Expr bound2 = d.expr.type().toExpr();
 				arity = arity(bound2);
-				target.declareSubset(arity);
+				target.getTheory().declareSubset(arity);
 				if (boundingType)
 					f = f.and(Term.call("subset_" + arity, alt.alter(term(n, atomVars)), translateExpr_p(bound2, letBindings, atomVars)));
 				if (!bound2.isSame(deMult(d.expr))) {
@@ -781,7 +781,7 @@ public class Translator implements Identifiers {
 					Term t1 = alt.alter(term(d.names.get(i), atomVars));
 					Term t2 = alt.alter(term(d.names.get(j), atomVars));					
 					arity = d.expr.type().arity();
-					target.declareDisjoint(arity);
+					target.getTheory().declareDisjoint(arity);
 					f = f.and(Term.call("disjoint_" + arity,t1,t2));
 				}
 		}
@@ -850,31 +850,31 @@ public class Translator implements Identifiers {
 			int arity = ue.sub.type().arity();  // TODO: find out why arity was not used here before
 			switch (ue.op) {
 			case TRANSPOSE:                                          // ~e
-				target.declareTranspose();  // arity is always 2
+				target.getTheory().declareTranspose();  // arity is always 2
 				return Term.call("transp", e_);
 			case CLOSURE:                                            // ^e
-				target.declareTransitiveClosure();  // arity is always 2
+				target.getTheory().declareTransitiveClosure();  // arity is always 2
 				return Term.call("transClos", e_);
 			case RCLOSURE:                                           // *e
-//				target.declareReflexiveTransitiveClosure();  // arity is always 2
+//				target.getTheory().declareReflexiveTransitiveClosure();  // arity is always 2
 //				return Term.call("reflTransClos", e_);
 				return translateExpr_p(ue.sub.closure().plus(ExprConstant.IDEN), letBindings, atomVars);
 			case NOT:                                                // !c
 				return e_.not();
 			case NO:                                                 // no e
-				target.declareNo(arity);
+				target.getTheory().declareNo(arity);
 				return Term.call("no_" + arity, e_);
 			case SOME:                                               // some e
-				target.declareSome(arity);
+				target.getTheory().declareSome(arity);
 				return Term.call("some_" + arity, e_);
 			case LONE:                                               // lone e
-				target.declareLone();
+				target.getTheory().declareLone();
 				return Term.call("lone_" + arity, e_);
 			case ONE:                                                // one e
-				target.declareOne();
+				target.getTheory().declareOne();
 				return Term.call("one_" + arity, e_);
 			case CARDINALITY:                                        // # e
-				target.declareCardinality(arity);
+				target.getTheory().declareCardinality(arity);
 				return Term.call ("card_" + arity, e_);
 			case CAST2INT:
 				return Term.call("sum", e_); // TODO: verify built-in
@@ -899,29 +899,29 @@ public class Translator implements Identifiers {
 			int ar2 = arity(be.right);
 			switch (be.op) {
 			case JOIN:                                               // e1.e2
-				target.declareJoin(ar1, ar2);
+				target.getTheory().declareJoin(ar1, ar2);
 				return Term.call("join_"+ar1+"x"+ar2, e1, e2);
 			case DOMAIN:                                             // e1 <: e2
-				target.declareDomainRestriction(ar2);
+				target.getTheory().declareDomainRestriction(ar2);
 				return Term.call("domRestr_"+ar2, e1, e2);
 			case RANGE:                                              // e1 :> e2
-				target.declareRangeRestriction(ar1);
+				target.getTheory().declareRangeRestriction(ar1);
 				return Term.call("rangeRestr_"+ar1, e1, e2);
 			case INTERSECT:                                          // e1 & e2
-				target.declareIntersection(ar1);
+				target.getTheory().declareIntersection(ar1);
 				return Term.call("inter_"+ar1, e1, e2);
 			case PLUSPLUS:                                           // e1 ++ e2
-				target.declareOverride(ar1);
+				target.getTheory().declareOverride(ar1);
 				return Term.call("overr_"+ar1, e1, e2);
 			case PLUS:                                               // e1 + e2
 				if (e1.isInt() && e2.isInt())
 					return e1.plus(e2);
-				target.declareUnion(ar1);
+				target.getTheory().declareUnion(ar1);
 				return Term.call("union_"+ar1, e1, e2);
 			case MINUS:                                              // e1 - e2
 				if (e1.isInt() && e2.isInt())
 					return e1.minus(e2);
-				target.declareDifference(ar1);
+				target.getTheory().declareDifference(ar1);
 				return Term.call("diff_"+ar1, e1, e2);
 			case ARROW:                                              // e1 -> e2
 			case ANY_ARROW_SOME:
@@ -939,7 +939,7 @@ public class Translator implements Identifiers {
 			case LONE_ARROW_SOME:
 			case LONE_ARROW_ONE:
 			case LONE_ARROW_LONE:
-				target.declareProduct(ar1, ar2);
+				target.getTheory().declareProduct(ar1, ar2);
 				return Term.call("prod_"+ar1+"x"+ar2, e1, e2);
 			case EQUALS:                                             // e1 = e2
 				return e1.equal(e2);
@@ -1126,7 +1126,7 @@ public class Translator implements Identifiers {
 			case FALSE:
 				return Term.FALSE;
 			case IDEN:
-				target.declareIdentity();
+				target.getTheory().declareIdentity();
 				return Term.call("iden");
 			case EMPTYNESS:
 				return none();
@@ -1148,13 +1148,13 @@ public class Translator implements Identifiers {
 
 	private Term expressMembership(int ar1, Term e1, Term e2) throws ModelException {
 		Term membershipCall;
-		if(e1 instanceof TermCall && ((TermCall)e1).equals( target.a2r(ar1, ((TermCall)e1).params())))
+		if(e1 instanceof TermCall && ((TermCall)e1).equals( target.getTheory().a2r(ar1, ((TermCall)e1).params())))
 		{					
-			target.declareIn(ar1);
+			target.getTheory().declareIn(ar1);
 			membershipCall = Term.call("in_"+ar1, ((TermCall)e1).params()[0], e2);	
 		}
 		else {
-			target.declareSubset(ar1);
+			target.getTheory().declareSubset(ar1);
 			membershipCall = Term.call("subset_" + ar1, e1, e2);
 		}
 		return membershipCall;
@@ -1180,15 +1180,15 @@ public class Translator implements Identifiers {
 		// we have a multiplicity annotation
 		switch (mults.get(0)) {
 		case ONE:
-			target.declareOne();
+			target.getTheory().declareOne();
 			conj = conj.and (Term.call("one_1", t));
 			break;
 		case SOME:
-			target.declareSome(t.arity);
+			target.getTheory().declareSome(t.arity);
 			conj = conj.and (Term.call("some_" + t.arity, t));
 			break;
 		case LONE:
-			target.declareLone();
+			target.getTheory().declareLone();
 			conj = conj.and (Term.call("lone_1", t));
 			break;
 		case SET:
@@ -1228,15 +1228,15 @@ public class Translator implements Identifiers {
 		// we have a multiplicity annotation
 		switch (mults.get(mults.size()-1)) {
 		case ONE:
-			target.declareOne();
+			target.getTheory().declareOne();
 			conj = conj.and (Term.call("one_1", t));
 			break;
 		case SOME:
-			target.declareSome(t.arity);
+			target.getTheory().declareSome(t.arity);
 			conj = conj.and (Term.call("some_" + t.arity, t));
 			break;
 		case LONE:
-			target.declareLone();
+			target.getTheory().declareLone();
 			conj = conj.and (Term.call("lone_1", t));
 			break;
 		case SET:
@@ -1281,20 +1281,20 @@ public class Translator implements Identifiers {
 		if (declExpr.mult == 1) {
 			switch (declExpr.mult()) {
 			case SOMEOF:
-				target.declareSome(1);
+				target.getTheory().declareSome(1);
 				return Term.call("some_1", t);
 			case LONEOF:
-				target.declareLone();
+				target.getTheory().declareLone();
 				return Term.call("lone_1", t);
 			case ONEOF:
-				target.declareOne();
+				target.getTheory().declareOne();
 				return Term.call("one_1", t);
 			case SETOF:
 				return Term.TRUE;
 			}
 		} else if (arity(declExpr) == 1 && defaultsToOne) {
 			// no explicit multiplicity defaults to one
-			target.declareOne();
+			target.getTheory().declareOne();
 			return Term.call("one_1", t);
 
 			
@@ -1344,7 +1344,7 @@ public class Translator implements Identifiers {
 			atoms[i].setSort("Atom");
 		}
 				
-		Term f = Term.reverseIn(bound, atoms).implies(body.fill(target.a2r(arity, atoms)));		
+		Term f = Term.reverseIn(bound, atoms).implies(body.fill(target.getTheory().a2r(arity, atoms)));		
 		f = f.forall(atoms);
 		return f;
 	}
@@ -1530,7 +1530,7 @@ public class Translator implements Identifiers {
 	private Term term(ExprHasName e, HashSet<ExprHasName> atomVars) throws ModelException {
 		if (e instanceof ExprVar) {
 			if (atomVars.contains(e))
-				return target.a2r(arity(e), Term.var(id(e)));
+				return target.getTheory().a2r(arity(e), Term.var(id(e)));
 			else if (e.label.equals("this"))
 				return THISTerm();
 			else
@@ -1554,7 +1554,7 @@ public class Translator implements Identifiers {
 	 * @ 
 	 **/
 	private Term in(String v, Sig s) throws ModelException{
-		target.declareIn(1);
+		target.getTheory().declareIn(1);
 		return Term.call("in_1", Term.var(v), term(s));
 	}
 	
@@ -1570,7 +1570,7 @@ public class Translator implements Identifiers {
 	}
 	
 	private Term none() throws ModelException {
-		target.declareNone();
+		target.getTheory().declareNone();
 		return Term.call("none");
 	}
 
@@ -1578,7 +1578,7 @@ public class Translator implements Identifiers {
 		if (ar == 1)
 			return term(Sig.UNIV);
 		else {
-			target.declareProduct(1, ar-1);
+			target.getTheory().declareProduct(1, ar-1);
 			return Term.call("prod1x"+(ar-1), term(Sig.UNIV), univ(ar-1));
 		}			
 	}
@@ -1630,7 +1630,7 @@ public class Translator implements Identifiers {
 	 * @throws ModelException 
 	 */
 	private static Term THISTerm() throws ModelException {
-		target.declareA2r(1);
+		target.getTheory().declareA2r(1);
 		return Term.call("a2r_1",Term.var("this"));
 	}
 	
@@ -1647,7 +1647,7 @@ public class Translator implements Identifiers {
 		
 		@Override
 		public Term alter(Term t) throws ModelException {
-			target.declareJoin(1, ar);			
+			target.getTheory().declareJoin(1, ar);			
 			return Term.call("join_1x"+ar, THISTerm(), t);
 		}
 	}
@@ -1741,11 +1741,11 @@ public class Translator implements Identifiers {
 			int ar = arity;
 			if (right) {
 				for (int i = terms.length-1; i >= 0; --i) {
-					ret = Term.call("join_"+(ar--)+"x1", ret, target.a2r(1,terms[i]));
+					ret = Term.call("join_"+(ar--)+"x1", ret, target.getTheory().a2r(1,terms[i]));
 				}
 			} else {
 				for (int i = 0; i < terms.length; ++i) {
-					ret = Term.call("join_1x"+(ar--), target.a2r(1,terms[i]), ret);
+					ret = Term.call("join_1x"+(ar--), target.getTheory().a2r(1,terms[i]), ret);
 				}
 			}
 			return ret;
