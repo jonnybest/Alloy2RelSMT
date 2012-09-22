@@ -49,6 +49,8 @@ public class SMTFile {
 	
 	private Collection<String> sorts;
 	
+	RelTheory theory;
+	
 	public SMTFile () {
 		includes = new LinkedList<String>();
 		sorts = new LinkedList<String>();
@@ -61,6 +63,7 @@ public class SMTFile {
 		lemmas = new LinkedList<Term>();
 		axioms = new LinkedList<Term>();
 		cmdasserts = new LinkedList<Term>();
+		theory = new RelTheory();
 	}
 	
 	public Term a2r(int ar, Term ... sub) throws ModelException {
