@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import edu.kit.asa.alloy2key.key.KeYFile;
+import edu.kit.asa.alloy2key.key.SMTFile;
 import edu.kit.asa.alloy2key.key.ModelException;
 import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4.parser.ParseUtil;
@@ -89,7 +89,7 @@ public class Main {
 		// notify user about successful parse
 		System.out.println ("Successfully parsed "+input+" as "+mod.getModelName());
 		// translate the parsed file into key model
-		KeYFile key = translate (mod);
+		SMTFile key = translate (mod);
 		// unsuccessful translation will result in null
 		if (key == null)
 			return false;
@@ -105,7 +105,7 @@ public class Main {
 	 * @return
 	 * null if translation fails
 	 */
-	private KeYFile translate (ParsedModule module) {
+	private SMTFile translate (ParsedModule module) {
 		// create and set up a new translator
 		Translator translator = new Translator(module);
 		// assume all signatures to be finite 
@@ -182,7 +182,7 @@ public class Main {
 	 * @return
 	 * true on success, false otherwise
 	 */
-	private boolean write (KeYFile key, String dest, String src) {
+	private boolean write (SMTFile key, String dest, String src) {
 		// use the source file's parent directory or create a new destination file
 		File destFile = (dest == null) ? (new File(src).getAbsoluteFile().getParentFile()) : (new File (dest));
 		// write to this directory

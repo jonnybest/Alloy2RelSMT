@@ -22,9 +22,9 @@ import edu.kit.asa.alloy2key.util.Util;
  * @author Aboubakr Achraf El Ghazi
  *
  */
-public class KeYFile {
+public class SMTFile {
 
-	public KeYFile () {
+	public SMTFile () {
 		includes = new LinkedList<String>();
 		sorts = new LinkedList<String>();
 		funcs  =  new LinkedList<String>();

@@ -14,7 +14,7 @@ import java.util.Vector;
 
 import sun.security.util.Debug;
 
-import edu.kit.asa.alloy2key.key.KeYFile;
+import edu.kit.asa.alloy2key.key.SMTFile;
 import edu.kit.asa.alloy2key.key.ModelException;
 import edu.kit.asa.alloy2key.key.Taclet;
 import edu.kit.asa.alloy2key.key.Term;
@@ -84,7 +84,7 @@ public class Translator implements Identifiers {
 	private Collection<Sig> finitizedSigs;
 	
 	/** the result */
-	private static KeYFile target;
+	private static SMTFile target;
 	
 	public Translator (ParsedModule m) {
 		// the idMap saves the unique ids for all alloy entities
@@ -93,7 +93,7 @@ public class Translator implements Identifiers {
 		// alloy model. we get this from the alloy parser
 		this.mod = m;
 		// the target model (a keyfile or maybe a smtfile)
-		Translator.target = new KeYFile();
+		Translator.target = new SMTFile();
 		// all referenced external modules
 		this.external = new HashSet<Sig>();
 		// all instantiated ordering modules
@@ -113,7 +113,7 @@ public class Translator implements Identifiers {
 	 * @throws ModelException 
 	 * @ 
 	 */
-	public KeYFile translate() throws ModelException  {
+	public SMTFile translate() throws ModelException  {
 		// we need to uniquely identify all entities, so 
 		// gather all entities and make them unique if need be 
 		try {
