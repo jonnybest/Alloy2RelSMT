@@ -571,12 +571,36 @@ public final class RelTheory {
 		declareLast(suffix, finite);			
 	}
 
+	/**
+	 * Declares the relational override
+	 * @param ar
+	 * @throws ModelException
+	 * @rem The relational override works like a union of p and q, 
+	 * except that the tuples of q can replaces tuples in p
+	 */
 	public void declareOverride(int ar) throws ModelException {
+		if (ar < 2) {
+			throw new ModelException("Arity of an override expression 'P ++ Q' must be 2 or higher.");
+		}
 		declareRel(ar);
 		String relar = "Rel"+ar;
-		file.addFunction(relar, "overr_" + ar, relar, relar);
-		//TODO: add axiom
-		throw new ModelException("Domain Override has not yet been implemented.");
+		if(file.addFunction(relar, "overr_" + ar, relar, relar))
+		{
+			// forall a=(a0 a1), b=(b0 b1), P and Q, the tuple a is in P++Q if 
+			// 		a is in Q or a is in P and there is no b in Q with b0 = a0
+			TermVar[] a = makeTuple(ar, "a");
+			TermVar[] b = makeTuple(ar, "b");
+			TermVar P = TermVar.var(relar, "P");
+			TermVar Q = TermVar.var(relar, "Q");
+			Term guard = Term.reverseIn(Term.call("overr_"+ar, P, Q), a);
+			Term inQ = Term.reverseIn(Q, a);
+			Term inP = Term.reverseIn(P, a);
+			Term bEqA = a[0].equal(b[0]);
+			Term noB = Term.reverseIn(Q, b).and(bEqA).not();
+			Term axiom = guard.implies(inQ.or(inP.and(noB.exists(b)))).forall(P, Q).forall(a);
+			axiom.setComment("axiom for override, arity " + ar);
+			file.addAxiom(axiom);
+		}
 	}
 
 	public void declareProduct(int lar, int rar) throws ModelException {
