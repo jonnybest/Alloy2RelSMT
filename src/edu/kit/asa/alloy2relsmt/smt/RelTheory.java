@@ -239,9 +239,17 @@ public final class RelTheory {
 	public void declareIntersection(int ar) throws ModelException {
 		declareRel(ar);
 		String relar = "Rel"+ar;
-		file.addFunction(relar, "inter_" + ar, relar, relar);
-		//TODO: add axiom
-		throw new ModelException("Intersection has not yet been implemented.");
+		if(file.addFunction(relar, "inter_" + ar, relar, relar))
+		{
+			TermVar[] a = makeTuple(ar, "a");
+			TermVar R = TermVar.var(relar, "R");
+			TermVar S = TermVar.var(relar, "S");
+			Term tInIntersec = Term.reverseIn(Term.call("inter_" + ar, R, S), a);
+			Term meaning = Term.reverseIn(R, a).or(Term.reverseIn(S, a));
+			Term axiom = tInIntersec.implies(meaning).forall(R, S).forall(a);
+			axiom.setComment("axiom for intersection " + ar);
+			file.addAxiom(axiom);
+		}
 	}
 
 	public void declareJoin(int lar, int rar) throws ModelException {
