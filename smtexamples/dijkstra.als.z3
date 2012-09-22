@@ -22,8 +22,10 @@
 (declare-fun trans (Rel2) Bool)
 (declare-fun transClos (Rel2) Rel2)
 (declare-fun domRestr_2 (Rel1 Rel2) Rel2)
-(declare-fun nextsState (Rel1) Rel1)
+(declare-fun subset_2 (Rel2 Rel2) Bool)
+(declare-fun join_1x2 (Rel1 Rel2) Rel1)
 (declare-fun a2r_1 (Atom) Rel1)
+(declare-fun nextsState (Rel1) Rel1)
 (declare-fun firstState () Rel1)
 (declare-fun lastState () Rel1)
 (declare-fun card_1 (Rel1) Int)
@@ -37,7 +39,6 @@
 (declare-fun prod_2x1 (Rel2 Rel1) Rel3)
 (declare-fun subset_3 (Rel3 Rel3) Bool)
 (declare-fun waits () Rel3)
-(declare-fun subset_2 (Rel2 Rel2) Bool)
 (declare-fun join_1x3 (Rel1 Rel3) Rel2)
 (declare-fun disjoint_1 (Rel1 Rel1) Bool)
 (declare-fun Initial (Rel1) Bool)
@@ -45,7 +46,6 @@
 (declare-fun no_2 (Rel2) Bool)
 (declare-fun IsFree (Rel1 Rel1) Bool)
 (declare-fun transp (Rel2) Rel2)
-(declare-fun join_1x2 (Rel1 Rel2) Rel1)
 (declare-fun no_1 (Rel1) Bool)
 (declare-fun IsStalled (Rel1 Rel1) Bool)
 (declare-fun some_1 (Rel1) Bool)
@@ -155,176 +155,190 @@
  )
 (assert 
  (! 
-  (forall ((x0 Atom)) (and (in_1 x0 (a2r_1 x0)) (forall ((y0 Atom)) (=> (in_1 y0 (a2r_1 x0)) (= x0 y0))))) 
- :named ax12 
- ) 
- )
-(assert 
- (! 
-  ; axiom for firstState
-(= firstState (a2r_1 (at State 1))) 
- :named ax13 
- ) 
- )
-(assert 
- (! 
-  ; axiom about finite Relations having a card > ord > 1
-(forall ((a0 Atom)(R Rel1)) (=> (and (finite R) (in_1 a0 R)) (and (>= (card_1 R) (ord R a0)) (>= (ord R a0) 1)))) 
- :named ax14 
- ) 
- )
-(assert 
- (! 
-  ; axiom about finite Relations having atoms for certain numbers in ord
-(forall ((a0 Atom)(R Rel1)(i Int)) (=> (and (finite R) (and (>= (card_1 R) (ord R a0)) (>= (ord R a0) 1))) (exists ((i Int)) (and (in_1 a0 R) (= (ord R a0) i))))) 
- :named ax15 
- ) 
- )
-(assert 
- (! 
-  ; finite axiom for lastState
-(=> (finite State) (= lastState (a2r_1 (at State (card_1 State))))) 
- :named ax16 
- ) 
- )
-(assert 
- (! 
-  ; axiom for nextMutex
-(forall ((a Atom)(b Atom)) (=> (and (in_1 a Mutex) (in_1 b Mutex)) (= (in_2 a b nextMutex) (= (ord Mutex b) (+ (ord Mutex a) 1))))) 
- :named ax17 
- ) 
- )
-(assert 
- (! 
-  ; 'there is no empty ordered relation' axiom for nextMutex
-(not (= none Mutex)) 
- :named ax18 
- ) 
- )
-(assert 
- (! 
-  ; axiom for firstMutex
-(= firstMutex (a2r_1 (at Mutex 1))) 
- :named ax19 
- ) 
- )
-(assert 
- (! 
-  ; infinite axiom for lastMutex
-(=> (not (finite Mutex)) (= lastMutex none)) 
- :named ax20 
- ) 
- )
-(assert 
- (! 
-  (forall ((A Rel1)(B Rel1)(x0 Atom)(y0 Atom)) (= (in_2 x0 y0 (prod_1x1 A B)) (and (in_1 x0 A) (in_1 y0 B)))) 
- :named ax21 
- ) 
- )
-(assert 
- (! 
-  (forall ((A Rel2)(B Rel1)(x0 Atom)(x1 Atom)(y0 Atom)) (= (in_3 x0 x1 y0 (prod_2x1 A B)) (and (in_2 x0 x1 A) (in_1 y0 B)))) 
- :named ax22 
- ) 
- )
-(assert 
- (! 
-  (forall ((x Rel3)(y Rel3)) (= (subset_3 x y) (forall ((a0 Atom)(a1 Atom)(a2 Atom)) (=> (in_3 a0 a1 a2 x) (in_3 a0 a1 a2 y))))) 
- :named ax23 
- ) 
- )
-(assert 
- (! 
   (forall ((x Rel2)(y Rel2)) (= (subset_2 x y) (forall ((a0 Atom)(a1 Atom)) (=> (in_2 a0 a1 x) (in_2 a0 a1 y))))) 
- :named ax24 
- ) 
- )
-(assert 
- (! 
-  ; axiom for join_1x3
-(forall ((A Rel1)(B Rel3)(y0 Atom)(y1 Atom)) (= (in_2 y0 y1 (join_1x3 A B)) (exists ((x Atom)) (and (in_1 x A) (in_3 x y0 y1 B))))) 
- :named ax25 
- ) 
- )
-(assert 
- (! 
-  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))) 
- :named ax26 
- ) 
- )
-(assert 
- (! 
-  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))) 
- :named ax27 
- ) 
- )
-(assert 
- (! 
-  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))) 
- :named ax28 
- ) 
- )
-(assert 
- (! 
-  (forall ((x0 Atom)(x1 Atom)(A Rel2)(B Rel2)) (= (in_2 x0 x1 (union_2 A B)) (or (in_2 x0 x1 A) (in_2 x0 x1 B)))) 
- :named ax29 
- ) 
- )
-(assert 
- (! 
-  ; axiom for 'the expression is empty'
-(forall ((a0 Atom)(a1 Atom)(R Rel2)) (=> (no_2 R) (not (in_2 a0 a1 R)))) 
- :named ax30 
- ) 
- )
-(assert 
- (! 
-  (forall ((a0 Atom)(a1 Atom)(R Rel2)) (= (in_2 a0 a1 (transp R)) (in_2 a1 a0 R))) 
- :named ax31 
+ :named ax12 
  ) 
  )
 (assert 
  (! 
   ; axiom for join_1x2
 (forall ((A Rel1)(B Rel2)(y0 Atom)) (= (in_1 y0 (join_1x2 A B)) (exists ((x Atom)) (and (in_1 x A) (in_2 x y0 B))))) 
+ :named ax13 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((x0 Atom)) (and (in_1 x0 (a2r_1 x0)) (forall ((y0 Atom)) (=> (in_1 y0 (a2r_1 x0)) (= x0 y0))))) 
+ :named ax14 
+ ) 
+ )
+(assert 
+ (! 
+  ; axiom for the function 'nexts' of State
+(forall ((e Rel1)) (=> (subset_1 e State) (= (nextsState e) (join_1x2 e (transClos nextState))))) 
+ :named ax15 
+ ) 
+ )
+(assert 
+ (! 
+  ; axiom for firstState
+(= firstState (a2r_1 (at State 1))) 
+ :named ax16 
+ ) 
+ )
+(assert 
+ (! 
+  ; axiom about finite Relations having a card > ord > 1
+(forall ((a0 Atom)(R Rel1)) (=> (and (finite R) (in_1 a0 R)) (and (>= (card_1 R) (ord R a0)) (>= (ord R a0) 1)))) 
+ :named ax17 
+ ) 
+ )
+(assert 
+ (! 
+  ; axiom about finite Relations having atoms for certain numbers in ord
+(forall ((a0 Atom)(R Rel1)(i Int)) (=> (and (finite R) (and (>= (card_1 R) (ord R a0)) (>= (ord R a0) 1))) (exists ((i Int)) (and (in_1 a0 R) (= (ord R a0) i))))) 
+ :named ax18 
+ ) 
+ )
+(assert 
+ (! 
+  ; finite axiom for lastState
+(=> (finite State) (= lastState (a2r_1 (at State (card_1 State))))) 
+ :named ax19 
+ ) 
+ )
+(assert 
+ (! 
+  ; axiom for nextMutex
+(forall ((a Atom)(b Atom)) (=> (and (in_1 a Mutex) (in_1 b Mutex)) (= (in_2 a b nextMutex) (= (ord Mutex b) (+ (ord Mutex a) 1))))) 
+ :named ax20 
+ ) 
+ )
+(assert 
+ (! 
+  ; 'there is no empty ordered relation' axiom for nextMutex
+(not (= none Mutex)) 
+ :named ax21 
+ ) 
+ )
+(assert 
+ (! 
+  ; axiom for the function 'nexts' of Mutex
+(forall ((e Rel1)) (=> (subset_1 e Mutex) (= (nextsMutex e) (join_1x2 e (transClos nextMutex))))) 
+ :named ax22 
+ ) 
+ )
+(assert 
+ (! 
+  ; axiom for firstMutex
+(= firstMutex (a2r_1 (at Mutex 1))) 
+ :named ax23 
+ ) 
+ )
+(assert 
+ (! 
+  ; infinite axiom for lastMutex
+(=> (not (finite Mutex)) (= lastMutex none)) 
+ :named ax24 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((A Rel1)(B Rel1)(x0 Atom)(y0 Atom)) (= (in_2 x0 y0 (prod_1x1 A B)) (and (in_1 x0 A) (in_1 y0 B)))) 
+ :named ax25 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((A Rel2)(B Rel1)(x0 Atom)(x1 Atom)(y0 Atom)) (= (in_3 x0 x1 y0 (prod_2x1 A B)) (and (in_2 x0 x1 A) (in_1 y0 B)))) 
+ :named ax26 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((x Rel3)(y Rel3)) (= (subset_3 x y) (forall ((a0 Atom)(a1 Atom)(a2 Atom)) (=> (in_3 a0 a1 a2 x) (in_3 a0 a1 a2 y))))) 
+ :named ax27 
+ ) 
+ )
+(assert 
+ (! 
+  ; axiom for join_1x3
+(forall ((A Rel1)(B Rel3)(y0 Atom)(y1 Atom)) (= (in_2 y0 y1 (join_1x3 A B)) (exists ((x Atom)) (and (in_1 x A) (in_3 x y0 y1 B))))) 
+ :named ax28 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))) 
+ :named ax29 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))) 
+ :named ax30 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))) 
+ :named ax31 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((x0 Atom)(x1 Atom)(A Rel2)(B Rel2)) (= (in_2 x0 x1 (union_2 A B)) (or (in_2 x0 x1 A) (in_2 x0 x1 B)))) 
  :named ax32 
  ) 
  )
 (assert 
  (! 
   ; axiom for 'the expression is empty'
-(forall ((a0 Atom)(R Rel1)) (=> (no_1 R) (not (in_1 a0 R)))) 
+(forall ((a0 Atom)(a1 Atom)(R Rel2)) (=> (no_2 R) (not (in_2 a0 a1 R)))) 
  :named ax33 
  ) 
  )
 (assert 
  (! 
-  (forall ((A Rel1)) (= (some_1 A) (exists ((a0 Atom)) (in_1 a0 A)))) 
+  (forall ((a0 Atom)(a1 Atom)(R Rel2)) (= (in_2 a0 a1 (transp R)) (in_2 a1 a0 R))) 
  :named ax34 
  ) 
  )
 (assert 
  (! 
-  (forall ((x Rel1)(y Rel1)) (= (subset_1 x y) (forall ((a0 Atom)) (=> (in_1 a0 x) (in_1 a0 y))))) 
+  ; axiom for 'the expression is empty'
+(forall ((a0 Atom)(R Rel1)) (=> (no_1 R) (not (in_1 a0 R)))) 
  :named ax35 
  ) 
  )
 (assert 
  (! 
-  (forall ((x0 Atom)(A Rel1)(B Rel1)) (= (in_1 x0 (union_1 A B)) (or (in_1 x0 A) (in_1 x0 B)))) 
+  (forall ((A Rel1)) (= (some_1 A) (exists ((a0 Atom)) (in_1 a0 A)))) 
  :named ax36 
  ) 
  )
 (assert 
  (! 
-  (forall ((A Rel1)(B Rel1)(a0 Atom)) (= (in_1 a0 (diff_1 A B)) (and (in_1 a0 A) (not (in_1 a0 B))))) 
+  (forall ((x Rel1)(y Rel1)) (= (subset_1 x y) (forall ((a0 Atom)) (=> (in_1 a0 x) (in_1 a0 y))))) 
  :named ax37 
  ) 
  )
 (assert 
  (! 
-  (forall ((X Rel1)) (= (one_1 X) (and (exists ((a0 Atom)) (in_1 a0 X)) (forall ((a0 Atom)(b0 Atom)) (=> (and (in_1 a0 X) (in_1 b0 X)) (= a0 b0)))))) 
+  (forall ((x0 Atom)(A Rel1)(B Rel1)) (= (in_1 x0 (union_1 A B)) (or (in_1 x0 A) (in_1 x0 B)))) 
  :named ax38 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((A Rel1)(B Rel1)(a0 Atom)) (= (in_1 a0 (diff_1 A B)) (and (in_1 a0 A) (not (in_1 a0 B))))) 
+ :named ax39 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((X Rel1)) (= (one_1 X) (and (exists ((a0 Atom)) (in_1 a0 X)) (forall ((a0 Atom)(b0 Atom)) (=> (and (in_1 a0 X) (in_1 b0 X)) (= a0 b0)))))) 
+ :named ax40 
  ) 
  )
 ;; --end axioms
@@ -476,26 +490,10 @@
  )
 (assert
  (! 
-  ; 1. lemma for join_1x3. direction: join to in
-(forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_2 a1 a0 (join_1x3 ; (swapped)
-(a2r_1 a2) r)) (in_3 a2 a1 a0 r))) 
- :named l2 
- ) 
- )
-(assert
- (! 
-  ; 2. lemma for join_1x3. direction: in to join
-(forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_3 a2 a1 a0 r) (in_2 a1 a0 (join_1x3 ; (swapped)
-(a2r_1 a2) r)))) 
- :named l3 
- ) 
- )
-(assert
- (! 
   ; 1. lemma for join_1x2. direction: join to in
 (forall ((a1 Atom)(a0 Atom)(r Rel2)) (=> (in_1 a0 (join_1x2 ; (swapped)
 (a2r_1 a1) r)) (in_2 a1 a0 r))) 
- :named l4 
+ :named l2 
  ) 
  )
 (assert
@@ -503,6 +501,22 @@
   ; 2. lemma for join_1x2. direction: in to join
 (forall ((a1 Atom)(a0 Atom)(r Rel2)) (=> (in_2 a1 a0 r) (in_1 a0 (join_1x2 ; (swapped)
 (a2r_1 a1) r)))) 
+ :named l3 
+ ) 
+ )
+(assert
+ (! 
+  ; 1. lemma for join_1x3. direction: join to in
+(forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_2 a1 a0 (join_1x3 ; (swapped)
+(a2r_1 a2) r)) (in_3 a2 a1 a0 r))) 
+ :named l4 
+ ) 
+ )
+(assert
+ (! 
+  ; 2. lemma for join_1x3. direction: in to join
+(forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_3 a2 a1 a0 r) (in_2 a1 a0 (join_1x3 ; (swapped)
+(a2r_1 a2) r)))) 
  :named l5 
  ) 
  )

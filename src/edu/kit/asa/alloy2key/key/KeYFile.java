@@ -11,11 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import edu.kit.asa.alloy2key.modules.KeYModule;
 import edu.kit.asa.alloy2key.util.Util;
-import edu.mit.csail.sdg.alloy4.ast.Sig;
 
 /**
  * capturing output to an .SMT file
@@ -942,12 +939,22 @@ public class KeYFile {
 		declareNext(suffix); // "next"+suffix
 		declareTransitiveClosure(); // transClos
 		declareDomainRestriction(2); // domRestr_2
+		declareJoin(1, 2);
 		
 		if (this.addFunction("Rel1", "nexts"+suffix, "Rel1")) {
 			// so/nexts = e . ^ so/Ord . (so/Ord <: Next)
+			// I didn't implement so/Ord, so I'll try it like this: e.^next
 			//Term nexts = Term.call("nexts", params)
 			// TODO: build this
-			throw new ModelException("function 'nexts' not implemented!");
+			TermVar e = TermVar.var("Rel1", "e"); // parameter to the function
+			TermVar sig = TermVar.var("Rel1", suffix); // constant
+			Term nextX = Term.call("next" + suffix);
+			Term nexts = Term.call("nexts" + suffix, e);
+			Term tcl = Term.call("transClos", nextX);
+			Term guard = Term.call("subset_1", e, sig);
+			Term axiom = guard.implies(nexts.equal(Term.call("join_1x2", e, tcl))).forall(e);
+			axiom.setComment("axiom for the function 'nexts' of " + suffix);
+			this.addAxiom(axiom);
 		}
 	}
 
