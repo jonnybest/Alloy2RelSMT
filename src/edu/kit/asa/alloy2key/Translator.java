@@ -567,7 +567,7 @@ public class Translator implements Identifiers {
 			// sig's multiplicity is some
 			if (s.isSome != null)
 			{
-				target.declareSome();
+				target.declareSome(1);
 				target.addAssertion(Term.call("some_1", term(s)));
 			}
 			
@@ -865,7 +865,7 @@ public class Translator implements Identifiers {
 				target.declareNo(arity);
 				return Term.call("no_" + arity, e_);
 			case SOME:                                               // some e
-				target.declareSome();
+				target.declareSome(arity);
 				return Term.call("some_" + arity, e_);
 			case LONE:                                               // lone e
 				target.declareLone();
@@ -1184,8 +1184,8 @@ public class Translator implements Identifiers {
 			conj = conj.and (Term.call("one_1", t));
 			break;
 		case SOME:
-			target.declareSome();
-			conj = conj.and (Term.call("some_1", t));
+			target.declareSome(t.arity);
+			conj = conj.and (Term.call("some_" + t.arity, t));
 			break;
 		case LONE:
 			target.declareLone();
@@ -1232,8 +1232,8 @@ public class Translator implements Identifiers {
 			conj = conj.and (Term.call("one_1", t));
 			break;
 		case SOME:
-			target.declareSome();
-			conj = conj.and (Term.call("some_1", t));
+			target.declareSome(t.arity);
+			conj = conj.and (Term.call("some_" + t.arity, t));
 			break;
 		case LONE:
 			target.declareLone();
@@ -1281,7 +1281,7 @@ public class Translator implements Identifiers {
 		if (declExpr.mult == 1) {
 			switch (declExpr.mult()) {
 			case SOMEOF:
-				target.declareSome();
+				target.declareSome(1);
 				return Term.call("some_1", t);
 			case LONEOF:
 				target.declareLone();

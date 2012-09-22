@@ -632,16 +632,16 @@ public class KeYFile {
 	 * 
 	 * @throws ModelException
 	 */
-	public void declareSome() throws ModelException {
+	public void declareSome(int ar) throws ModelException {
 		declareRel(1);
-		String name = "some_1";
-		String relar = "Rel1";
+		String name = "some_" + ar;
+		String relar = "Rel" + ar;
 		if(this.addFunction("Bool", name, relar))
 		{
 			// axiom: some means that there is any Atom/Tuple inside the argument expression
 			TermVar A = TermVar.var(relar, "A");
 			
-			TermVar[] aTuple = makeTuple(1, "a");
+			TermVar[] aTuple = makeTuple(ar, "a");
 			
 			Term some = Term.call(name, A);
 			Term xInA = Term.reverseIn(A, aTuple);
@@ -1046,7 +1046,7 @@ public class KeYFile {
 			TermVar R = TermVar.var(relar, "R");
 			TermVar S = TermVar.var("Rel1", "S");
 			Term guard = Term.reverseIn(R, a).and(Term.reverseIn(S, b)).and(Term.reverseIn(Term.call("domRestr_" + rar, S, R), a));
-			Term axiom = guard.implies(a[0].equal(b));
+			Term axiom = guard.implies(a[0].equal(b)).forall(R, S, b).forall(a);
 			axiom.setComment("Axiom for domain restriction of arity " + rar);
 			this.addAxiom(axiom);
 		}

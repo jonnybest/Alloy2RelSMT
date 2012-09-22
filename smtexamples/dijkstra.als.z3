@@ -59,6 +59,7 @@
 (declare-fun Deadlock () Bool)
 (declare-fun GrabbedInOrder () Bool)
 (declare-fun ShowDijkstra () Bool)
+(declare-fun some_3 (Rel3) Bool)
 (declare-fun State () Rel1)
 (declare-fun Mutex () Rel1)
 (declare-fun Process () Rel1)
@@ -145,11 +146,11 @@
 (assert 
  (! 
   ; Axiom for domain restriction of arity 2
-(=> (and 
+(forall ((a0 Atom)(a1 Atom)(R Rel2)(S Rel1)(b Atom)) (=> (and 
     (in_2 a0 a1 R)
     (in_1 b S)
     (in_2 a0 a1 (domRestr_2 S R))
-  ) (= a0 b)) 
+  ) (= a0 b))) 
  :named ax11 
  ) 
  )
@@ -339,6 +340,12 @@
  (! 
   (forall ((X Rel1)) (= (one_1 X) (and (exists ((a0 Atom)) (in_1 a0 X)) (forall ((a0 Atom)(b0 Atom)) (=> (and (in_1 a0 X) (in_1 b0 X)) (= a0 b0)))))) 
  :named ax40 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((A Rel3)) (= (some_3 A) (exists ((a0 Atom)(a1 Atom)(a2 Atom)) (in_3 a0 a1 a2 A)))) 
+ :named ax41 
  ) 
  )
 ;; --end axioms
