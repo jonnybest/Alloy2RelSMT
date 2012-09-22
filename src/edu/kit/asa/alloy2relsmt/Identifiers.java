@@ -1,7 +1,7 @@
 /**
  * Created on 07.04.2011
  */
-package edu.kit.asa.alloy2key;
+package edu.kit.asa.alloy2relsmt;
 
 
 /**

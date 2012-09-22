@@ -1,12 +1,12 @@
 /**
  * Created on 13.02.2011
  */
-package edu.kit.asa.alloy2key.smt;
+package edu.kit.asa.alloy2relsmt.smt;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.kit.asa.alloy2key.util.Util;
+import edu.kit.asa.alloy2relsmt.util.Util;
 import edu.mit.csail.sdg.alloy4.Pair;
 
 /**

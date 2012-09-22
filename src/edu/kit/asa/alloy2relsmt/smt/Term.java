@@ -1,10 +1,10 @@
-package edu.kit.asa.alloy2key.smt;
+package edu.kit.asa.alloy2relsmt.smt;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.kit.asa.alloy2key.smt.TermQuant.Quant;
+import edu.kit.asa.alloy2relsmt.smt.TermQuant.Quant;
 import edu.mit.csail.sdg.alloy4.Pair;
 
 /** represents a SMT expression **/

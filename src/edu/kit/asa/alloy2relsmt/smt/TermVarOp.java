@@ -1,13 +1,13 @@
 /**
  * 
  */
-package edu.kit.asa.alloy2key.smt;
+package edu.kit.asa.alloy2relsmt.smt;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.kit.asa.alloy2key.util.Util;
+import edu.kit.asa.alloy2relsmt.util.Util;
 
 import sun.security.util.Debug;
 

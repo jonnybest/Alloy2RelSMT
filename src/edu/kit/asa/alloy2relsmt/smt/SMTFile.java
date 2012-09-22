@@ -1,7 +1,7 @@
 /**
  * Created on 07.02.2011
  */
-package edu.kit.asa.alloy2key.smt;
+package edu.kit.asa.alloy2relsmt.smt;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -11,8 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import edu.kit.asa.alloy2key.modules.KeYModule;
-import edu.kit.asa.alloy2key.util.Util;
+import edu.kit.asa.alloy2relsmt.modules.KeYModule;
+import edu.kit.asa.alloy2relsmt.util.Util;
 
 /**
  * capturing output to an .SMT file

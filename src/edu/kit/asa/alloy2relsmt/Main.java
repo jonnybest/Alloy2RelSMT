@@ -1,7 +1,7 @@
 /**
  * Created on 30.09.2010
  */
-package edu.kit.asa.alloy2key;
+package edu.kit.asa.alloy2relsmt;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import edu.kit.asa.alloy2key.smt.ModelException;
-import edu.kit.asa.alloy2key.smt.SMTFile;
+import edu.kit.asa.alloy2relsmt.smt.ModelException;
+import edu.kit.asa.alloy2relsmt.smt.SMTFile;
 import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4.parser.ParseUtil;
 import edu.mit.csail.sdg.alloy4.parser.ParsedModule;

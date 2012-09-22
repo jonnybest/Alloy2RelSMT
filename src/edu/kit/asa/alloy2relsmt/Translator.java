@@ -1,7 +1,7 @@
 /**
  * Created on 31.03.2011
  */
-package edu.kit.asa.alloy2key;
+package edu.kit.asa.alloy2relsmt;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,15 +14,15 @@ import java.util.Vector;
 
 import sun.security.util.Debug;
 
-import edu.kit.asa.alloy2key.modules.KeYModule;
-import edu.kit.asa.alloy2key.modules.Ordering;
-import edu.kit.asa.alloy2key.smt.ModelException;
-import edu.kit.asa.alloy2key.smt.SMTFile;
-import edu.kit.asa.alloy2key.smt.Taclet;
-import edu.kit.asa.alloy2key.smt.Term;
-import edu.kit.asa.alloy2key.smt.TermCall;
-import edu.kit.asa.alloy2key.smt.TermVar;
-import edu.kit.asa.alloy2key.util.Util;
+import edu.kit.asa.alloy2relsmt.modules.KeYModule;
+import edu.kit.asa.alloy2relsmt.modules.Ordering;
+import edu.kit.asa.alloy2relsmt.smt.ModelException;
+import edu.kit.asa.alloy2relsmt.smt.SMTFile;
+import edu.kit.asa.alloy2relsmt.smt.Taclet;
+import edu.kit.asa.alloy2relsmt.smt.Term;
+import edu.kit.asa.alloy2relsmt.smt.TermCall;
+import edu.kit.asa.alloy2relsmt.smt.TermVar;
+import edu.kit.asa.alloy2relsmt.util.Util;
 import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4.ErrorFatal;
 import edu.mit.csail.sdg.alloy4.Pair;

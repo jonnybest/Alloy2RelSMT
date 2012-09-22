@@ -1,7 +1,7 @@
 /**
  * Created on 26.03.2011
  */
-package edu.kit.asa.alloy2key.modules;
+package edu.kit.asa.alloy2relsmt.modules;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,8 +13,8 @@ import java.io.PrintStream;
 import java.util.HashSet;
 import java.util.Set;
 
-import edu.kit.asa.alloy2key.Identifiers;
-import edu.kit.asa.alloy2key.util.Util;
+import edu.kit.asa.alloy2relsmt.Identifiers;
+import edu.kit.asa.alloy2relsmt.util.Util;
 import edu.mit.csail.sdg.alloy4.ast.Func;
 import edu.mit.csail.sdg.alloy4.ast.Module;
 import edu.mit.csail.sdg.alloy4.ast.Sig;

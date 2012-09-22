@@ -49,7 +49,7 @@ public final class ParseUtil {
 	 */
 	private static String getModelPath (String s) {
 		try {
-			return Class.forName("edu.kit.asa.alloy2key.Main").getResource("/res/alloy/"+s).getPath();
+			return Class.forName("edu.kit.asa.alloy2relsmt.Main").getResource("/res/alloy/"+s).getPath();
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException (e.getException());
 		}

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package edu.kit.asa.alloy2key.smt;
+package edu.kit.asa.alloy2relsmt.smt;
 
 /** This exception indicates a problem with the construction of the SMT model.
  *  Its purpose is to alert the developer of possible bugs and to allow sanity 

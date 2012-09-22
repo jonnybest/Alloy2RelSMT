@@ -1,7 +1,7 @@
 /**
  * Created on 26.03.2011
  */
-package edu.kit.asa.alloy2key.modules;
+package edu.kit.asa.alloy2relsmt.modules;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 
-import edu.kit.asa.alloy2key.Identifiers;
+import edu.kit.asa.alloy2relsmt.Identifiers;
 import edu.mit.csail.sdg.alloy4.Err;
 import edu.mit.csail.sdg.alloy4.ast.Sig;
 import edu.mit.csail.sdg.alloy4.parser.ParsedModule;

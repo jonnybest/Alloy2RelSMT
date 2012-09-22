@@ -1,7 +1,7 @@
 /**
  * Created on 07.02.2011
  */
-package edu.kit.asa.alloy2key.util;
+package edu.kit.asa.alloy2relsmt.util;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.jar.JarEntry;
 
-import edu.kit.asa.alloy2key.smt.TermVar;
+import edu.kit.asa.alloy2relsmt.smt.TermVar;
 
 /**
  * @author Ulrich Geilmann
