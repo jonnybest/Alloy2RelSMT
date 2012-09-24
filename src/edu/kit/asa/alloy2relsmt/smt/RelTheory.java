@@ -392,7 +392,6 @@ public final class RelTheory {
 		declareRel(1);
 		declareRel(2);
 		declareOrd();
-		declareI2a();
 		declareFinite();
 		declareNone();		
 		
@@ -563,7 +562,7 @@ public final class RelTheory {
 		 * The iterator function "elem" is implicitly declared inside declareOrd().  
 		 */
 		declareFinite();
-		declareI2a();
+		//declareI2a();
 		declareOrd();
 		declareNext(suffix);
 		declareNexts(suffix);

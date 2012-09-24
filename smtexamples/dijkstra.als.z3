@@ -10,9 +10,6 @@
 
 ;; functions
 (declare-fun finite (Rel1) Bool)
-(declare-fun N_Int () Rel1)
-(declare-fun i2a (Int) Atom)
-(declare-fun a2i (Atom) Int)
 (declare-fun ord (Rel1 Atom) Int)
 (declare-fun at (Rel1 Int) Atom)
 (declare-fun in_1 (Atom Rel1) Bool)
@@ -68,19 +65,6 @@
 ;; axioms
 (assert 
  (! 
-  (forall ((a Atom)) (=> (in_1 a N_Int) (= (i2a (a2i a)) a))) 
- :named ax0 
- ) 
- )
-(assert 
- (! 
-  ; axiom for i2a and a2i
-(forall ((i Int)) (=> (in_1 (i2a i) N_Int) (= (a2i (i2a i)) i))) 
- :named ax1 
- ) 
- )
-(assert 
- (! 
   ; axiom for ord
 (forall ((R Rel1)(a Atom)(b Atom)) (=> (and 
     (finite R)
@@ -88,59 +72,59 @@
     (in_1 b R)
     (= (ord R a) (ord R b))
   ) (= a b))) 
- :named ax2 
+ :named ax0 
  ) 
  )
 (assert 
  (! 
   ; axiom for at (the reverse of ord)
 (forall ((R Rel1)(a Atom)) (=> (in_1 a R) (= (at R (ord R a)) a))) 
- :named ax3 
+ :named ax1 
  ) 
  )
 (assert 
  (! 
   ; axiom for empty set
 (forall ((a Atom)) (not (in_1 a none))) 
- :named ax4 
+ :named ax2 
  ) 
  )
 (assert 
  (! 
   ; axiom for nextState
 (forall ((a Atom)(b Atom)) (=> (and (in_1 a State) (in_1 b State)) (= (in_2 a b nextState) (= (ord State b) (+ (ord State a) 1))))) 
- :named ax5 
+ :named ax3 
  ) 
  )
 (assert 
  (! 
   ; 'there is no empty ordered relation' axiom for nextState
 (not (= none State)) 
- :named ax6 
+ :named ax4 
  ) 
  )
 (assert 
  (! 
   (forall ((r Rel2)) (= (trans r) (forall ((a1 Atom)(a2 Atom)(a3 Atom)) (=> (and (in_2 a1 a2 r) (in_2 a2 a3 r)) (in_2 a1 a3 r))))) 
- :named ax7 
+ :named ax5 
  ) 
  )
 (assert 
  (! 
   (forall ((r Rel2)) (subset_2 r (transClos r))) 
- :named ax8 
+ :named ax6 
  ) 
  )
 (assert 
  (! 
   (forall ((r Rel2)) (trans (transClos r))) 
- :named ax9 
+ :named ax7 
  ) 
  )
 (assert 
  (! 
   (forall ((r1 Rel2)(r2 Rel2)) (=> (and (subset_2 r1 r2) (trans r2)) (subset_2 (transClos r1) r2))) 
- :named ax10 
+ :named ax8 
  ) 
  )
 (assert 
@@ -151,120 +135,132 @@
     (in_1 b S)
     (in_2 a0 a1 (domRestr_2 S R))
   ) (= a0 b))) 
- :named ax11 
+ :named ax9 
  ) 
  )
 (assert 
  (! 
   (forall ((x Rel2)(y Rel2)) (= (subset_2 x y) (forall ((a0 Atom)(a1 Atom)) (=> (in_2 a0 a1 x) (in_2 a0 a1 y))))) 
- :named ax12 
+ :named ax10 
  ) 
  )
 (assert 
  (! 
   ; axiom for join_1x2
 (forall ((A Rel1)(B Rel2)(y0 Atom)) (= (in_1 y0 (join_1x2 A B)) (exists ((x Atom)) (and (in_1 x A) (in_2 x y0 B))))) 
- :named ax13 
+ :named ax11 
  ) 
  )
 (assert 
  (! 
   (forall ((x0 Atom)) (and (in_1 x0 (a2r_1 x0)) (forall ((y0 Atom)) (=> (in_1 y0 (a2r_1 x0)) (= x0 y0))))) 
- :named ax14 
+ :named ax12 
  ) 
  )
 (assert 
  (! 
   ; axiom for the function 'nexts' of State
 (forall ((e Rel1)) (=> (subset_1 e State) (= (nextsState e) (join_1x2 e (transClos nextState))))) 
- :named ax15 
+ :named ax13 
  ) 
  )
 (assert 
  (! 
   ; axiom for firstState
 (= firstState (a2r_1 (at State 1))) 
- :named ax16 
+ :named ax14 
  ) 
  )
 (assert 
  (! 
   ; axiom about finite Relations having a card > ord > 1
 (forall ((a0 Atom)(R Rel1)) (=> (and (finite R) (in_1 a0 R)) (and (>= (card_1 R) (ord R a0)) (>= (ord R a0) 1)))) 
- :named ax17 
+ :named ax15 
  ) 
  )
 (assert 
  (! 
   ; axiom about finite Relations having atoms for certain numbers in ord
 (forall ((a0 Atom)(R Rel1)(i Int)) (=> (and (finite R) (and (>= (card_1 R) (ord R a0)) (>= (ord R a0) 1))) (exists ((i Int)) (and (in_1 a0 R) (= (ord R a0) i))))) 
- :named ax18 
+ :named ax16 
  ) 
  )
 (assert 
  (! 
   ; finite axiom for lastState
 (=> (finite State) (= lastState (a2r_1 (at State (card_1 State))))) 
- :named ax19 
+ :named ax17 
  ) 
  )
 (assert 
  (! 
   ; axiom for nextMutex
 (forall ((a Atom)(b Atom)) (=> (and (in_1 a Mutex) (in_1 b Mutex)) (= (in_2 a b nextMutex) (= (ord Mutex b) (+ (ord Mutex a) 1))))) 
- :named ax20 
+ :named ax18 
  ) 
  )
 (assert 
  (! 
   ; 'there is no empty ordered relation' axiom for nextMutex
 (not (= none Mutex)) 
- :named ax21 
+ :named ax19 
  ) 
  )
 (assert 
  (! 
   ; axiom for the function 'nexts' of Mutex
 (forall ((e Rel1)) (=> (subset_1 e Mutex) (= (nextsMutex e) (join_1x2 e (transClos nextMutex))))) 
- :named ax22 
+ :named ax20 
  ) 
  )
 (assert 
  (! 
   ; axiom for firstMutex
 (= firstMutex (a2r_1 (at Mutex 1))) 
- :named ax23 
+ :named ax21 
  ) 
  )
 (assert 
  (! 
   ; infinite axiom for lastMutex
 (=> (not (finite Mutex)) (= lastMutex none)) 
- :named ax24 
+ :named ax22 
  ) 
  )
 (assert 
  (! 
   (forall ((A Rel1)(B Rel1)(x0 Atom)(y0 Atom)) (= (in_2 x0 y0 (prod_1x1 A B)) (and (in_1 x0 A) (in_1 y0 B)))) 
- :named ax25 
+ :named ax23 
  ) 
  )
 (assert 
  (! 
   (forall ((A Rel2)(B Rel1)(x0 Atom)(x1 Atom)(y0 Atom)) (= (in_3 x0 x1 y0 (prod_2x1 A B)) (and (in_2 x0 x1 A) (in_1 y0 B)))) 
- :named ax26 
+ :named ax24 
  ) 
  )
 (assert 
  (! 
   (forall ((x Rel3)(y Rel3)) (= (subset_3 x y) (forall ((a0 Atom)(a1 Atom)(a2 Atom)) (=> (in_3 a0 a1 a2 x) (in_3 a0 a1 a2 y))))) 
- :named ax27 
+ :named ax25 
  ) 
  )
 (assert 
  (! 
   ; axiom for join_1x3
 (forall ((A Rel1)(B Rel3)(y0 Atom)(y1 Atom)) (= (in_2 y0 y1 (join_1x3 A B)) (exists ((x Atom)) (and (in_1 x A) (in_3 x y0 y1 B))))) 
+ :named ax26 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))) 
+ :named ax27 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))) 
  :named ax28 
  ) 
  )
@@ -276,76 +272,64 @@
  )
 (assert 
  (! 
-  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))) 
- :named ax30 
- ) 
- )
-(assert 
- (! 
-  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))) 
- :named ax31 
- ) 
- )
-(assert 
- (! 
   (forall ((x0 Atom)(x1 Atom)(A Rel2)(B Rel2)) (= (in_2 x0 x1 (union_2 A B)) (or (in_2 x0 x1 A) (in_2 x0 x1 B)))) 
- :named ax32 
+ :named ax30 
  ) 
  )
 (assert 
  (! 
   ; axiom for 'the expression is empty'
 (forall ((a0 Atom)(a1 Atom)(R Rel2)) (=> (no_2 R) (not (in_2 a0 a1 R)))) 
- :named ax33 
+ :named ax31 
  ) 
  )
 (assert 
  (! 
   (forall ((a0 Atom)(a1 Atom)(R Rel2)) (= (in_2 a0 a1 (transp R)) (in_2 a1 a0 R))) 
- :named ax34 
+ :named ax32 
  ) 
  )
 (assert 
  (! 
   ; axiom for 'the expression is empty'
 (forall ((a0 Atom)(R Rel1)) (=> (no_1 R) (not (in_1 a0 R)))) 
- :named ax35 
+ :named ax33 
  ) 
  )
 (assert 
  (! 
   (forall ((A Rel1)) (= (some_1 A) (exists ((a0 Atom)) (in_1 a0 A)))) 
- :named ax36 
+ :named ax34 
  ) 
  )
 (assert 
  (! 
   (forall ((x Rel1)(y Rel1)) (= (subset_1 x y) (forall ((a0 Atom)) (=> (in_1 a0 x) (in_1 a0 y))))) 
- :named ax37 
+ :named ax35 
  ) 
  )
 (assert 
  (! 
   (forall ((x0 Atom)(A Rel1)(B Rel1)) (= (in_1 x0 (union_1 A B)) (or (in_1 x0 A) (in_1 x0 B)))) 
- :named ax38 
+ :named ax36 
  ) 
  )
 (assert 
  (! 
   (forall ((A Rel1)(B Rel1)(a0 Atom)) (= (in_1 a0 (diff_1 A B)) (and (in_1 a0 A) (not (in_1 a0 B))))) 
- :named ax39 
+ :named ax37 
  ) 
  )
 (assert 
  (! 
   (forall ((X Rel1)) (= (one_1 X) (and (exists ((a0 Atom)) (in_1 a0 X)) (forall ((a0 Atom)(b0 Atom)) (=> (and (in_1 a0 X) (in_1 b0 X)) (= a0 b0)))))) 
- :named ax40 
+ :named ax38 
  ) 
  )
 (assert 
  (! 
   (forall ((A Rel3)) (= (some_3 A) (exists ((a0 Atom)(a1 Atom)(a2 Atom)) (in_3 a0 a1 a2 A)))) 
- :named ax41 
+ :named ax39 
  ) 
  )
 ;; --end axioms
