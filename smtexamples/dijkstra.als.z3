@@ -222,8 +222,8 @@
  )
 (assert 
  (! 
-  ; infinite axiom for lastMutex
-(=> (not (finite Mutex)) (= lastMutex none)) 
+  ; finite axiom for lastMutex
+(=> (finite Mutex) (= lastMutex (a2r_1 (at Mutex (card_1 Mutex))))) 
  :named ax22 
  ) 
  )
@@ -451,6 +451,18 @@
  :named a13 
  ) 
  )
+(assert 
+ (! 
+  (finite State) 
+ :named a14 
+ ) 
+ )
+(assert 
+ (! 
+  (finite Mutex) 
+ :named a15 
+ ) 
+ )
 ;; --end assertions
 
 ;; command
@@ -515,7 +527,7 @@
 
 ;; -- key stuff for debugging --
 ;\problem {(
-;(finite State)
+;
 ;)-> (
 ;
 ;;\predicates {

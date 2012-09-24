@@ -461,7 +461,7 @@ public class Translator implements Identifiers {
 	 */
 	private void finitize() throws ModelException {
 		for (Sig s : finitizedSigs) {
-			target.addAssumption(Term.call("finite", term(s)));
+			target.addAssertion(Term.call("finite", term(s)));
 		}
 	}
 	
