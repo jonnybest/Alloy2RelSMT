@@ -6,6 +6,11 @@ import java.util.List;
 
 import edu.kit.asa.alloy2relsmt.util.Util;
 
+/**
+ * Implements the relational theory for SMT. Includes axioms, declarations and lemmas
+ * @author Jonny
+ *
+ */
 public final class RelTheory {
 	
 	private SMTFile file;
