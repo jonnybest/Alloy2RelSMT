@@ -1,6 +1,5 @@
 (set-logic AUFLIA)
 (set-option :macro-finder true)
-(set-option :produce-unsat-cores true)
 ;; sorts
 (declare-sort Atom)
 (declare-sort Rel1)
@@ -20,12 +19,16 @@
 (declare-fun lone_1 (Rel1) Bool)
 (declare-fun entries () Rel2)
 (declare-fun one_1 (Rel1) Bool)
-(declare-fun some_1 (Rel1) Bool)
+(declare-fun no_1 (Rel1) Bool)
+(declare-fun trans (Rel2) Bool)
+(declare-fun transClos (Rel2) Rel2)
+(declare-fun union_1 (Rel1 Rel1) Rel1)
+(declare-fun transp (Rel2) Rel2)
 (declare-fun diff_1 (Rel1 Rel1) Rel1)
 (declare-fun Root () Rel1)
-(declare-fun File () Rel1)
 (declare-fun FSO () Rel1)
 (declare-fun Dir () Rel1)
+(declare-fun File () Rel1)
 ;; --end functions
 
 ;; axioms
@@ -80,14 +83,51 @@
  )
 (assert 
  (! 
-  (forall ((A Rel1)) (= (some_1 A) (exists ((a0 Atom)) (in_1 a0 A)))) 
+  ; axiom for 'the expression is empty'
+(forall ((a0 Atom)(R Rel1)) (=> (no_1 R) (not (in_1 a0 R)))) 
  :named ax8 
  ) 
  )
 (assert 
  (! 
-  (forall ((A Rel1)(B Rel1)(a0 Atom)) (= (in_1 a0 (diff_1 A B)) (and (in_1 a0 A) (not (in_1 a0 B))))) 
+  (forall ((r Rel2)) (= (trans r) (forall ((a1 Atom)(a2 Atom)(a3 Atom)) (=> (and (in_2 a1 a2 r) (in_2 a2 a3 r)) (in_2 a1 a3 r))))) 
  :named ax9 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((r Rel2)) (subset_2 r (transClos r))) 
+ :named ax10 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((r Rel2)) (trans (transClos r))) 
+ :named ax11 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((r1 Rel2)(r2 Rel2)) (=> (and (subset_2 r1 r2) (trans r2)) (subset_2 (transClos r1) r2))) 
+ :named ax12 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((x0 Atom)(A Rel1)(B Rel1)) (= (in_1 x0 (union_1 A B)) (or (in_1 x0 A) (in_1 x0 B)))) 
+ :named ax13 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((a0 Atom)(a1 Atom)(R Rel2)) (= (in_2 a0 a1 (transp R)) (in_2 a1 a0 R))) 
+ :named ax14 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((A Rel1)(B Rel1)(a0 Atom)) (= (in_1 a0 (diff_1 A B)) (and (in_1 a0 A) (not (in_1 a0 B))))) 
+ :named ax15 
  ) 
  )
 ;; --end axioms
@@ -101,43 +141,43 @@
  )
 (assert 
  (! 
-  (subset_1 File FSO) 
+  (forall ((this Atom)) (=> (in_1 this FSO) (or (in_1 this File) (in_1 this Dir)))) 
  :named a1 
  ) 
  )
 (assert 
  (! 
-  (forall ((this Atom)) (=> (in_1 this FSO) (or (in_1 this File) (in_1 this Dir)))) 
+  (disjoint_1 File Dir) 
  :named a2 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 File Dir) 
+  (subset_2 parent (prod_1x1 FSO Dir)) 
  :named a3 
  ) 
  )
 (assert 
  (! 
-  (subset_2 parent (prod_1x1 FSO Dir)) 
+  (forall ((this Atom)) (=> (in_1 this FSO) (lone_1 (join_1x2 (a2r_1 this) parent)))) 
  :named a4 
  ) 
  )
 (assert 
  (! 
-  (forall ((this Atom)) (=> (in_1 this FSO) (lone_1 (join_1x2 (a2r_1 this) parent)))) 
+  (subset_1 Dir FSO) 
  :named a5 
  ) 
  )
 (assert 
  (! 
-  (subset_1 Dir FSO) 
+  (subset_2 entries (prod_1x1 Dir FSO)) 
  :named a6 
  ) 
  )
 (assert 
  (! 
-  (subset_2 entries (prod_1x1 Dir FSO)) 
+  (subset_1 File FSO) 
  :named a7 
  ) 
  )
@@ -145,8 +185,10 @@
  (! 
   (and 
     (one_1 Root)
-    (not (some_1 (join_1x2 Root parent)))
+    (no_1 (join_1x2 Root parent))
+    (= FSO (union_1 Root (join_1x2 Root (transClos entries))))
     (forall ((o Atom)(d Atom)) (=> (and (in_1 o FSO) (in_1 d Dir)) (=> (in_1 o (join_1x2 (a2r_1 d) entries)) (= (join_1x2 (a2r_1 o) parent) (a2r_1 d)))))
+    (= entries (transp parent))
   ) 
  :named a8 
  ) 
@@ -177,6 +219,18 @@
 (forall ((a1 Atom)(a0 Atom)(r Rel2)) (=> (in_2 a1 a0 r) (in_1 a0 (join_1x2 ; (swapped)
 (a2r_1 a1) r)))) 
  :named l1 
+ ) 
+ )
+(assert
+ (! 
+  (forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (transClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 r) (in_2 a3 a2 (transClos r)))))) 
+ :named l2 
+ ) 
+ )
+(assert
+ (! 
+  (forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (transClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 (transClos r)) (in_2 a3 a2 r))))) 
+ :named l3 
  ) 
  )
 ;; --end lemmas
