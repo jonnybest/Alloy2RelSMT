@@ -186,7 +186,7 @@
 (assert 
  (! 
   ; finite axiom for lastState
-(=> (finite State) (= lastState (a2r_1 (at State (card_1 State))))) 
+(= lastState (a2r_1 (at State (card_1 State)))) 
  :named ax17 
  ) 
  )
@@ -221,7 +221,7 @@
 (assert 
  (! 
   ; finite axiom for lastMutex
-(=> (finite Mutex) (= lastMutex (a2r_1 (at Mutex (card_1 Mutex))))) 
+(= lastMutex (a2r_1 (at Mutex (card_1 Mutex)))) 
  :named ax22 
  ) 
  )

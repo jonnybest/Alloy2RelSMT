@@ -328,13 +328,12 @@ public final class RelTheory {
 		
 		// this branch is important because card_1 may not be defined (due to S being infite). SMT does not handle partial functions, so undefined values are not allowed 
 		TermVar N = TermVar.var(suffix); // not actually a variable but a constant
-		Term finN = Term.call("finite", N);
 		Term lastS = Term.call(name);
 		if (!finite) {
 			declareNone();
 			// ¬finite 1 (N [S]) ⇒ lastS = none 1
 			Term none = Term.call("none");
-			Term axiom = finN.not().implies(lastS.equal(none));
+			Term axiom = Term.call("finite", N).not().implies(lastS.equal(none));
 			axiom.setComment("infinite axiom for " + name);
 			file.addAxiom(axiom);
 		}
@@ -346,7 +345,7 @@ public final class RelTheory {
 			Term cardN = Term.call("card_1", N);
 			Term ordInv = Term.call("at", N, cardN);
 			Term a2r = Term.call("a2r_1", ordInv);
-			Term axiom = finN.implies(lastS.equal(a2r));
+			Term axiom = lastS.equal(a2r);
 			axiom.setComment("finite axiom for " + name);
 			file.addAxiom(axiom);
 		}
