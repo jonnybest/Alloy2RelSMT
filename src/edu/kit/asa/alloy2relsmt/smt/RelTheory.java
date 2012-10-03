@@ -130,10 +130,11 @@ public final class RelTheory {
 		TermVar[] a = makeTuple(ar, "a");
 		A = TermVar.var(relAr, "A");
 		B = TermVar.var(relAr, "B");
-		Term notAInB = Term.reverseIn(B, a).not();
+		Term aInB = Term.reverseIn(B, a);
 		Term aInA = Term.reverseIn(A, a);
-		Term exclusive = aInA.implies(notAInB);
+		Term exclusive = aInA.and(aInB).not(); // aInA.implies(aInB.not());
 		Term axiom = Term.call("disjoint_" + ar, A, B).iff(exclusive.forall(a)).forall(A, B);
+		axiom.comment = Term.call("disjoint_" + ar, A, B).iff(aInA.implies(aInB.not()).forall(a)).forall(A, B).toString() + "; alternative";
 		file.addAxiom(axiom); // add this axiom to the list of assertions
 	}
 
