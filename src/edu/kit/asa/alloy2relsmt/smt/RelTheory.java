@@ -524,7 +524,6 @@ public final class RelTheory {
 	private void declareOrd() throws ModelException{
 		declareAtom();
 		declareRel(1);
-		declareFinite();
 		
 		if(file.addFunction("Int", "ord", "Rel1", "Atom"))
 		{
@@ -534,7 +533,7 @@ public final class RelTheory {
 			TermVar a = TermVar.var("Atom", "a");
 			TermVar b = TermVar.var("Atom", "b");
 			
-			Term guard = Term.call("finite", R).and(Term.reverseIn(R, a)).and(Term.reverseIn(R, b));
+			Term guard = Term.reverseIn(R, a).and(Term.reverseIn(R, b));
 			Term ordeq = Term.call("ord", R, a).equal(Term.call("ord", R, b));
 			Term axiom = guard.and(ordeq).implies(a.equal(b)).forall(R,a,b);
 			axiom.setComment("axiom for ord");
@@ -573,7 +572,7 @@ public final class RelTheory {
 		declareNext(suffix);
 		declareNexts(suffix);
 		declareFirst(suffix);
-		declareLast(suffix, finite);			
+		declareLast(suffix, finite);
 	}
 
 	/**
