@@ -436,7 +436,6 @@ public final class RelTheory {
 			// so/nexts = e . ^ so/Ord . (so/Ord <: Next)
 			// I didn't implement so/Ord, so I'll try it like this: e.^next
 			//Term nexts = Term.call("nexts", params)
-			// TODO: build this
 			TermVar e = TermVar.var("Rel1", "e"); // parameter to the function
 			TermVar sig = TermVar.var("Rel1", suffix); // constant
 			Term nextX = Term.call("next" + suffix);
