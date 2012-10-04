@@ -537,4 +537,3 @@
 
 ;; -- END key stuff --
 (check-sat)
-(get-unsat-core)

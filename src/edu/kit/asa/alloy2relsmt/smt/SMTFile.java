@@ -264,7 +264,7 @@ public class SMTFile {
 		out.println ("(check-sat)");
 		
 		// Only for sanity checks
-		out.println ("(get-unsat-core)");
+		//out.println ("(get-unsat-core)");
 		
 		out.close();
 	}
