@@ -220,8 +220,8 @@
  )
 (assert 
  (! 
-  ; infinite axiom for lastMutex
-(=> (not (finite Mutex)) (= lastMutex none)) 
+  ; finite axiom for lastMutex
+(= lastMutex (a2r_1 (at Mutex (card_1 Mutex)))) 
  :named ax22 
  ) 
  )
@@ -456,6 +456,12 @@
  (! 
   (finite State) 
  :named a14 
+ ) 
+ )
+(assert 
+ (! 
+  (finite Mutex) 
+ :named a15 
  ) 
  )
 ;; --end assertions
