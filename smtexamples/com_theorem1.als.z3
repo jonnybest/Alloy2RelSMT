@@ -1,6 +1,5 @@
 (set-logic AUFLIA)
 (set-option :macro-finder true)
-(set-option :produce-unsat-cores true)
 ;; sorts
 (declare-sort Atom)
 (declare-sort Rel1)
@@ -9,6 +8,7 @@
 ;; --end sorts
 
 ;; functions
+(declare-fun subset_1 (Rel1 Rel1) Bool)
 (declare-fun qi () Rel3)
 (declare-fun in_1 (Atom Rel1) Bool)
 (declare-fun in_2 (Atom Atom Rel2) Bool)
@@ -21,7 +21,6 @@
 (declare-fun a2r_1 (Atom) Rel1)
 (declare-fun lone_1 (Rel1) Bool)
 (declare-fun iids () Rel2)
-(declare-fun subset_1 (Rel1 Rel1) Bool)
 (declare-fun join_1x2 (Rel1 Rel2) Rel1)
 (declare-fun iidsKnown () Rel2)
 (declare-fun one_1 (Rel1) Bool)
@@ -40,60 +39,60 @@
 (declare-fun inter_1 (Rel1 Rel1) Rel1)
 (declare-fun some_1 (Rel1) Bool)
 (declare-fun diff_1 (Rel1 Rel1) Rel1)
-(declare-fun Interface () Rel1)
 (declare-fun LegalInterface () Rel1)
-(declare-fun IID () Rel1)
+(declare-fun Interface () Rel1)
 (declare-fun LegalComponent () Rel1)
 (declare-fun Component () Rel1)
+(declare-fun IID () Rel1)
 ;; --end functions
 
 ;; axioms
 (assert 
  (! 
-  (forall ((A Rel1)(B Rel1)(x0 Atom)(y0 Atom)) (= (in_2 x0 y0 (prod_1x1 A B)) (and (in_1 x0 A) (in_1 y0 B)))) 
+  (forall ((x Rel1)(y Rel1)) (= (subset_1 x y) (forall ((a0 Atom)) (=> (in_1 a0 x) (in_1 a0 y))))) 
  :named ax0 
  ) 
  )
 (assert 
  (! 
-  (forall ((A Rel2)(B Rel1)(x0 Atom)(x1 Atom)(y0 Atom)) (= (in_3 x0 x1 y0 (prod_2x1 A B)) (and (in_2 x0 x1 A) (in_1 y0 B)))) 
+  (forall ((A Rel1)(B Rel1)(x0 Atom)(y0 Atom)) (= (in_2 x0 y0 (prod_1x1 A B)) (and (in_1 x0 A) (in_1 y0 B)))) 
  :named ax1 
  ) 
  )
 (assert 
  (! 
-  (forall ((x Rel3)(y Rel3)) (= (subset_3 x y) (forall ((a0 Atom)(a1 Atom)(a2 Atom)) (=> (in_3 a0 a1 a2 x) (in_3 a0 a1 a2 y))))) 
+  (forall ((A Rel2)(B Rel1)(x0 Atom)(x1 Atom)(y0 Atom)) (= (in_3 x0 x1 y0 (prod_2x1 A B)) (and (in_2 x0 x1 A) (in_1 y0 B)))) 
  :named ax2 
  ) 
  )
 (assert 
  (! 
-  (forall ((x Rel2)(y Rel2)) (= (subset_2 x y) (forall ((a0 Atom)(a1 Atom)) (=> (in_2 a0 a1 x) (in_2 a0 a1 y))))) 
+  (forall ((x Rel3)(y Rel3)) (= (subset_3 x y) (forall ((a0 Atom)(a1 Atom)(a2 Atom)) (=> (in_3 a0 a1 a2 x) (in_3 a0 a1 a2 y))))) 
  :named ax3 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((x Rel2)(y Rel2)) (= (subset_2 x y) (forall ((a0 Atom)(a1 Atom)) (=> (in_2 a0 a1 x) (in_2 a0 a1 y))))) 
+ :named ax4 
  ) 
  )
 (assert 
  (! 
   ; axiom for join_1x3
 (forall ((A Rel1)(B Rel3)(y0 Atom)(y1 Atom)) (= (in_2 y0 y1 (join_1x3 A B)) (exists ((x Atom)) (and (in_1 x A) (in_3 x y0 y1 B))))) 
- :named ax4 
- ) 
- )
-(assert 
- (! 
-  (forall ((x0 Atom)) (and (in_1 x0 (a2r_1 x0)) (forall ((y0 Atom)) (=> (in_1 y0 (a2r_1 x0)) (= x0 y0))))) 
  :named ax5 
  ) 
  )
 (assert 
  (! 
-  (forall ((X Rel1)) (= (lone_1 X) (forall ((a0 Atom)(b0 Atom)) (=> (and (in_1 a0 X) (in_1 b0 X)) (= a0 b0))))) 
+  (forall ((x0 Atom)) (and (in_1 x0 (a2r_1 x0)) (forall ((y0 Atom)) (=> (in_1 y0 (a2r_1 x0)) (= x0 y0))))) 
  :named ax6 
  ) 
  )
 (assert 
  (! 
-  (forall ((x Rel1)(y Rel1)) (= (subset_1 x y) (forall ((a0 Atom)) (=> (in_1 a0 x) (in_1 a0 y))))) 
+  (forall ((X Rel1)) (= (lone_1 X) (forall ((a0 Atom)(b0 Atom)) (=> (and (in_1 a0 X) (in_1 b0 X)) (= a0 b0))))) 
  :named ax7 
  ) 
  )
@@ -112,19 +111,22 @@
  )
 (assert 
  (! 
-  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))) 
+  ; (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))); alternative
+(forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (not (and (in_1 a0 A) (in_1 a0 B)))))) 
  :named ax10 
  ) 
  )
 (assert 
  (! 
-  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))) 
+  ; (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))); alternative
+(forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (not (and (in_1 a0 A) (in_1 a0 B)))))) 
  :named ax11 
  ) 
  )
 (assert 
  (! 
-  (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))) 
+  ; (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))); alternative
+(forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (not (and (in_1 a0 A) (in_1 a0 B)))))) 
  :named ax12 
  ) 
  )
@@ -189,49 +191,49 @@
 ;; assertions
 (assert 
  (! 
-  (subset_3 qi (prod_2x1 (prod_1x1 Interface IID) Interface)) 
+  (subset_1 LegalInterface Interface) 
  :named a0 
  ) 
  )
 (assert 
  (! 
-  (forall ((this Atom)) (=> (in_1 this Interface) (forall ((x0 Atom)) (=> (in_1 x0 IID) (lone_1 (join_1x2 (a2r_1 x0) (join_1x3 (a2r_1 this) qi))))))) 
+  (subset_3 qi (prod_2x1 (prod_1x1 Interface IID) Interface)) 
  :named a1 
  ) 
  )
 (assert 
  (! 
-  (subset_2 iids (prod_1x1 Interface IID)) 
+  (forall ((this Atom)) (=> (in_1 this Interface) (forall ((x0 Atom)) (=> (in_1 x0 IID) (lone_1 (join_1x2 (a2r_1 x0) (join_1x3 (a2r_1 this) qi))))))) 
  :named a2 
  ) 
  )
 (assert 
  (! 
-  (subset_2 iidsKnown (prod_1x1 Interface IID)) 
+  (subset_2 iids (prod_1x1 Interface IID)) 
  :named a3 
  ) 
  )
 (assert 
  (! 
-  (forall ((this Atom)) (=> (in_1 this Interface) (one_1 (join_1x2 (a2r_1 this) iidsKnown)))) 
+  (subset_2 iidsKnown (prod_1x1 Interface IID)) 
  :named a4 
  ) 
  )
 (assert 
  (! 
-  (subset_2 reaches (prod_1x1 Interface Interface)) 
+  (forall ((this Atom)) (=> (in_1 this Interface) (one_1 (join_1x2 (a2r_1 this) iidsKnown)))) 
  :named a5 
  ) 
  )
 (assert 
  (! 
-  (forall ((this Atom)) (=> (in_1 this Interface) (one_1 (join_1x2 (a2r_1 this) reaches)))) 
+  (subset_2 reaches (prod_1x1 Interface Interface)) 
  :named a6 
  ) 
  )
 (assert 
  (! 
-  (subset_1 LegalInterface Interface) 
+  (forall ((this Atom)) (=> (in_1 this Interface) (one_1 (join_1x2 (a2r_1 this) reaches)))) 
  :named a7 
  ) 
  )
@@ -285,19 +287,19 @@
  )
 (assert 
  (! 
-  (disjoint_1 Interface IID) 
+  (disjoint_1 Interface Component) 
  :named a16 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 Interface Component) 
+  (disjoint_1 Interface IID) 
  :named a17 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 IID Component) 
+  (disjoint_1 Component IID) 
  :named a18 
  ) 
  )
@@ -448,4 +450,3 @@
 
 ;; -- END key stuff --
 (check-sat)
-(get-unsat-core)
