@@ -86,7 +86,7 @@ fact Aggregation {
     }
 
 assert Theorem1 {
-     all c: LegalComponent | all i: c.interfaces | i.iidsKnown = c.iids
+     all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids
      }
 check Theorem1 for 16
 
