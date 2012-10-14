@@ -1,3 +1,18 @@
+ /*
+ * This space was intentionally left blank to preserve  
+ * references to line numbers in accompanying texts.
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+ 
 module examples/case_studies/com
 
 
@@ -10,21 +25,6 @@ module examples/case_studies/com
  *
  * author: Daniel Jackson
  */
-
-
-/** This is a model of an address book as described on Page 23 of the software abstractions book.
- * The model has the following interesting constructs:
- *  -- an multi-level type hierarchy
- *  -- abstract types
- *  -- relation multiplicity keywords
- *  -- relations with arities higher than 2
- *  -- transitive closure over a join expression with a ternary relation (n.^(b.addr))
- *  -- transitive closure in both sides of an equality (addLocal)
- *  -- quantifiers
- *
- * This model contains 2 unsatisfiable and 2 satisfiable assertions.
- */
-
 
 sig IID {}
 
@@ -86,7 +86,7 @@ fact Aggregation {
     }
 
 assert Theorem1 {
-     all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids
+     all c: LegalComponent | all i: c.interfaces | i.iidsKnown = c.iids
      }
 check Theorem1 for 16
 
