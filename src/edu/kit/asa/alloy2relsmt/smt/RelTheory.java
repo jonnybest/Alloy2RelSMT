@@ -44,7 +44,8 @@ public final class RelTheory {
 			xInX = Term.reverseIn(Term.call(name, x), x);
 			inImpliesEqual = Term.reverseIn(Term.call(name, x), y).implies(TermBinOp.equals(x, y));
 			Term axiom = Term.forall("Atom", x, xInX.and(Term.forall("Atom", y, inImpliesEqual)));
-					
+			
+			axiom.setComment("axiom for the conversion function Atom -> Relation");
 			file.addAxiom(axiom);
 		}	
 	}
@@ -777,6 +778,7 @@ public final class RelTheory {
 			Term inImpliesIn = Term.in(atomVars, x).implies(Term.in(atomVars, y));  // if an atom is in x, it is also in y 
 			// now quantify the two expressions for all x, y and atoms
 			Term axiom = subset.equal(inImpliesIn.forall(atomVars)).forall(x, y);
+			axiom.setComment("subset axiom for " + relSort);
 			file.addAxiom(axiom);  // add this axiom to the list of assertions
 		}
 	}
@@ -798,6 +800,7 @@ public final class RelTheory {
 			Term meaning = (a12reachR.and(a23reachR)).implies(a13reachR);
 			Term fun = Term.call("trans", r);
 			Term axiomtransitivity = fun.iff(meaning.forall(a1, a2, a3)).forall(r);
+			axiomtransitivity.setComment("this axiom defines transitivity");
 			file.addAxiom(axiomtransitivity);
 		}
 	}
@@ -817,14 +820,19 @@ public final class RelTheory {
 			// this is split into 3 assertions
 			// 1. assert r in trans(r)
 			TermVar r = TermVar.var("Rel2", "r");
-			file.addAxiom(Term.call("subset_2", r, Term.call(name, r)).forall(r));
+			Term ax1 = Term.call("subset_2", r, Term.call(name, r)).forall(r);
+			ax1.setComment("this axioms satisfies that r should be in transclos of r");
+			file.addAxiom(ax1);
 			// 2. assert that the transitive closure is -in fact- transitive
-			file.addAxiom(Term.call("trans", Term.call(name, r)).forall(r));
+			Term ax2 = Term.call("trans", Term.call(name, r)).forall(r);
+			ax2.setComment("this axiom satisfies transitivity for transclos");
+			file.addAxiom(ax2);
 			// 3. assert that tcl is minimal
 			TermVar r1 = TermVar.var("Rel2", "r1");
 			TermVar r2 = TermVar.var("Rel2", "r2");
 			Term subsetAndTrans = Term.call("subset_2", r1, r2).and(Term.call("trans", r2));
 			Term minimalaxiom = subsetAndTrans.implies(Term.call("subset_2", Term.call(name, r1), r2)).forall(r1, r2);
+			minimalaxiom.setComment("this axiom satisfies minimality of transclos");
 			file.addAxiom(minimalaxiom);
 			// also, add some lemma about in_2 and the transCl
 			assertLemmasTCL("transClos");
@@ -844,6 +852,7 @@ public final class RelTheory {
 			TermVar[] a = makeTuple(2, "a");
 			
 			Term axiom = Term.reverseIn(Term.call(name, R), a).equal(Term.reverseIn(R, Util.reverse(a))).forall(Util.concat(a, R));
+			axiom.setComment("axiom for transposition");
 			file.addAxiom(axiom);
 		}
 	}
@@ -866,7 +875,9 @@ public final class RelTheory {
 			arglist.addAll(Arrays.asList(x));
 			arglist.add(A);
 			arglist.add(B);
-			file.addAxiom(Term.reverseIn(call, x).iff(orTerm).forall(arglist));
+			Term axiom = Term.reverseIn(call, x).iff(orTerm).forall(arglist);
+			axiom.setComment("axiom for union of " + relar);
+			file.addAxiom(axiom);
 		}
 	}
 
