@@ -204,7 +204,9 @@ public class SMTFile {
 		out.println ("(set-logic AUFLIA)\n(set-option :macro-finder true)");
 		
 		// Only for sanity checks
-		//out.println ("(set-option :produce-unsat-cores true)");
+		Boolean core = true;
+		if(core)
+			out.println ("(set-option :produce-unsat-cores true)");
 		
 		//
 		out.println (";; sorts");
@@ -264,7 +266,8 @@ public class SMTFile {
 		out.println ("(check-sat)");
 		
 		// Only for sanity checks
-		//out.println ("(get-unsat-core)");
+		if(core)
+			out.println ("(get-unsat-core)");
 		
 		out.close();
 	}
