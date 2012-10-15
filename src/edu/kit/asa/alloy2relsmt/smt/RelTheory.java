@@ -61,10 +61,10 @@ public final class RelTheory {
 		
 		String name = "card_" + ar;
 		String relar = "Rel" + ar;
+		Term one = Term.call("1");
+		TermVar[] a = makeTuple(ar, "a");
 		if (file.addFunction("Int", name, relar)) {
 			TermVar R = TermVar.var(relar, "R");
-			TermVar[] a = makeTuple(ar, "a");
-			Term one = Term.call("1");
 			Term cardR = Term.call(name, R);
 			Term finR = Term.call("finite", R);
 			Term ordA = Term.call("ord", Util.reverse(Util.concat(a, R)));
@@ -84,7 +84,14 @@ public final class RelTheory {
 				Term axiom = guard.implies(Term.reverseIn(R, a).and(ordA.equal(i)).exists(i)).forall(R, i).forall(a);
 				axiom.setComment("axiom about finite Relations having atoms for certain numbers in ord");
 				file.addAxiom(axiom);
-			}			
+			}
+			{
+				// lemma about a2r_1 having card_1				
+				Term call = Term.call("a2r_" + ar, a);
+				Term lemma = Term.call(name, call).equal(one).forall(a);
+				lemma.setComment("lemma about a2r_x having card_x");
+				file.addLemma(lemma);
+			}
 		}
 	}
 
