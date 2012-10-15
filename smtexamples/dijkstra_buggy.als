@@ -75,23 +75,6 @@ pred ReleaseMutex [s: State, p: Process, m: Mutex, s': State] {
   }
 }
 
-// for every adjacent (pre,post) pair of States,
-// one action happens: either some process grabs a mutex,
-// or some process releases a mutex,
-// or nothing happens (have to allow this to show deadlocks)
-pred GrabOrRelease  {
-    Initial[so/first] &&
-    (
-    all pre: State - so/last  | let post = so/next [pre] |
-       (post.holds = pre.holds && post.waits = pre.waits)
-        ||
-       (some p: Process, m: Mutex | pre.GrabMutex [p, m, post])
-        ||
-       (some p: Process, m: Mutex | pre.ReleaseMutex [p, m, post])
-
-    )
-}
-
 pred Deadlock  {
          some Process
          some s: State | all p: Process | some p.(s.waits)
@@ -110,11 +93,6 @@ assert DijkstraPreventsDeadlocks {
    GrabbedInOrder => ! Deadlock
 }
 
-
-pred ShowDijkstra  {
-    GrabOrRelease && Deadlock
-    some waits
-}
 
 //run Deadlock for 3 expect 1
 //run ShowDijkstra for 5 State, 2 Process, 2 Mutex expect 1
