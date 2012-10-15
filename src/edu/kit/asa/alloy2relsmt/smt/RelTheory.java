@@ -122,20 +122,21 @@ public final class RelTheory {
 		declareAtom();
 		declareRel(ar);
 		String relAr = "Rel" + ar;
-		file.addFunction("Bool", "disjoint_"  +ar, relAr, relAr);
-		
-		// forall a in A, b in B | not a in B.
-		// or maybe: forall a in A, b in B | not a in B and not b in A...?
-		TermVar A, B;
-		TermVar[] a = makeTuple(ar, "a");
-		A = TermVar.var(relAr, "A");
-		B = TermVar.var(relAr, "B");
-		Term aInB = Term.reverseIn(B, a);
-		Term aInA = Term.reverseIn(A, a);
-		Term exclusive = aInA.and(aInB).not(); // aInA.implies(aInB.not());
-		Term axiom = Term.call("disjoint_" + ar, A, B).iff(exclusive.forall(a)).forall(A, B);
-		axiom.comment = Term.call("disjoint_" + ar, A, B).iff(aInA.implies(aInB.not()).forall(a)).forall(A, B).toString() + "; alternative";
-		file.addAxiom(axiom); // add this axiom to the list of assertions
+		if( file.addFunction("Bool", "disjoint_"  +ar, relAr, relAr) )
+		{
+			// forall a in A, b in B | not a in B.
+			// or maybe: forall a in A, b in B | not a in B and not b in A...?
+			TermVar A, B;
+			TermVar[] a = makeTuple(ar, "a");
+			A = TermVar.var(relAr, "A");
+			B = TermVar.var(relAr, "B");
+			Term aInB = Term.reverseIn(B, a);
+			Term aInA = Term.reverseIn(A, a);
+			Term exclusive = aInA.and(aInB).not(); // aInA.implies(aInB.not());
+			Term axiom = Term.call("disjoint_" + ar, A, B).iff(exclusive.forall(a)).forall(A, B);
+			axiom.comment = Term.call("disjoint_" + ar, A, B).iff(aInA.implies(aInB.not()).forall(a)).forall(A, B).toString() + "; alternative";
+			file.addAxiom(axiom); // add this axiom to the list of assertions
+		}
 	}
 
 	/** Declares the binary domain restriction operator <:. The resulting relation (S <: R) contains 
