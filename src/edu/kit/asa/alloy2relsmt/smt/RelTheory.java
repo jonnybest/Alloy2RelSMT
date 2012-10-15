@@ -62,6 +62,7 @@ public final class RelTheory {
 		String name = "card_" + ar;
 		String relar = "Rel" + ar;
 		Term one = Term.call("1");
+		Term zero = Term.call("0");
 		TermVar[] a = makeTuple(ar, "a");
 		if (file.addFunction("Int", name, relar)) {
 			TermVar R = TermVar.var(relar, "R");
@@ -90,6 +91,13 @@ public final class RelTheory {
 				Term call = Term.call("a2r_" + ar, a);
 				Term lemma = Term.call(name, call).equal(one).forall(a);
 				lemma.setComment("lemma about a2r_x having card_x");
+				file.addLemma(lemma);
+			}
+			{
+				// lemma about some having card_1 > 0				
+				Term call = Term.call("some_" + ar, R);
+				Term lemma = call.implies(Term.call(name, R).gt(zero)).forall(R);
+				lemma.setComment("lemma about some_x having card_x > 0");
 				file.addLemma(lemma);
 			}
 		}
