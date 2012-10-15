@@ -364,6 +364,16 @@ public final class RelTheory {
 			Term axiom = lastS.equal(a2r);
 			axiom.setComment("finite axiom for " + name);
 			file.addAxiom(axiom);
+			
+			{
+				// lemma about cardinality being the ord of lastX
+				TermVar x = TermVar.var("Atom", "x");
+				Term xInLastS = Term.reverseIn(lastS, x);
+				Term ordX = Term.call("ord", N, x);
+				Term lemma = xInLastS.implies(cardN.equal(ordX)).forall(x);
+				lemma.setComment("lemma about cardinality being the ord of " + lastS);
+				file.addLemma(lemma);
+			}
 		}
 	}
 
