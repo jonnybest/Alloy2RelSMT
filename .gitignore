@@ -2,7 +2,6 @@ build
 bin
 lib
 *.class
-/smtexamples/generated.z3
 *.ucls
 /smtexamples/notes.txt
 Kopie von*
