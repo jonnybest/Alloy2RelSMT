@@ -455,10 +455,9 @@
 	(forall ((R Rel3)(A Rel2)(B Rel1))
 	(=>
 		(subset_3 R (prod_2x1 A B))
-		(forall ((a0 Atom)(a1 Atom)(a2 Atom))
+		(forall ((a0 Atom)(a1 Atom))
 		(=
-			(and (in_2 a0 a1 A) (no_3 R))
+			(and (in_2 a0 a1 A) (no_2 (join_1x3 A R)))
 			(not (in_2 a0 a1 (join_3x1 R B))))))))
-			
 
 (check-sat)
