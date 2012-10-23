@@ -692,7 +692,7 @@ public final class RelTheory {
 				Term nojoinA = Term.call("no_" + (lar + resultArity - 2), joinA);
 				Term exclusionA = ainA.and(nojoinA);
 				Term exclusionB = Term.reverseIn(joinB, a).not();
-				Term body = exclusionA.equal(exclusionB).forall(a);
+				Term body = (exclusionA.implies(exclusionB)).and(exclusionB.implies(exclusionA)).forall(a);
 				Term lemma = guard.implies(body).forall(R, A, B);
 				lemma.setComment("lemma about subset " + resultArity + " and product "+ lar + "x" + rar + " , using join");
 				file.addLemma(lemma);
