@@ -1,7 +1,15 @@
-sig State { 
-  holds, waits: Process -> Mutex ,
-  valid : holds ++ waits
+sig A {}
+
+sig B {
+	fn : A -> lone B
 }
 
-sig Process {}
-sig Mutex {}
+fact {
+	no (A ->fn->A)
+}
+
+assert notempty {
+	some B
+}
+
+check notempty for 10
