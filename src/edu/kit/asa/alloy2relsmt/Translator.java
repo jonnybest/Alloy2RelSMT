@@ -1739,10 +1739,12 @@ public class Translator implements Identifiers {
 			int ar = arity;
 			if (right) {
 				for (int i = terms.length-1; i >= 0; --i) {
+					target.getTheory().declareJoin(ar, 1);
 					ret = Term.call("join_"+(ar--)+"x1", ret, target.getTheory().a2r(1,terms[i]));
 				}
 			} else {
 				for (int i = 0; i < terms.length; ++i) {
+					target.getTheory().declareJoin(1, ar);
 					ret = Term.call("join_1x"+(ar--), target.getTheory().a2r(1,terms[i]), ret);
 				}
 			}
