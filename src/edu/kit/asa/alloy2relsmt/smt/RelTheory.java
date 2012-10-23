@@ -646,7 +646,9 @@ public final class RelTheory {
 		String name = String.format("prod_%dx%d", lar, rar);
 		String leftRelar = "Rel"+lar;
 		String rightRelar = "Rel"+rar;
-		if(file.addFunction("Rel" + /*concatenation*/ (lar + /*sum*/ rar), name, leftRelar, rightRelar))
+		int resultArity = lar + /*sum*/ rar;
+		String resultRelar = "Rel" + /*concatenation*/ resultArity;
+		if(file.addFunction(resultRelar, name, leftRelar, rightRelar))
 		{
 			// add axiom
 			// these are the two parameters for the product function
@@ -655,15 +657,46 @@ public final class RelTheory {
 			TermVar[] x = makeTuple(lar, "x"), 
 					y = makeTuple(rar, "y"); // these are two elements, one of A and one of B
 	
-			Term somethingIsInProduct = Term.reverseIn(Term.call(name, A, B), Util.concat(x, y));
+			Term fn = Term.call(name, A, B);
+			Term somethingIsInProduct = Term.reverseIn(fn, Util.concat(x, y));
 			Term xInAandYInB = Term.reverseIn(A, x).and(Term.reverseIn(B, y));
-			List<TermVar> arglist = new LinkedList<TermVar>();
-			arglist.add(A);
-			arglist.add(B);
-			arglist.addAll(Arrays.asList(x));
-			arglist.addAll(Arrays.asList(y));
-			Term axiom = somethingIsInProduct.iff(xInAandYInB).forall(arglist);
+			Term axiom = somethingIsInProduct.iff(xInAandYInB).forall(A, B).forall(x).forall(y);
 			file.addAxiom(axiom);
+			
+			{
+				/* something like:
+				 *  (assert
+					(forall ((R Rel3)(A Rel2)(B Rel1))
+						(=>
+							(subset_3 R (prod_2x1 A B)) 	; guard
+							(forall ((a0 Atom)(a1 Atom))	; body
+							(=
+								(and (in_2 a0 a1 A) (no_2 (join_2x3 A R)))	; exclusionA
+								(not (in_2 a0 a1 (join_3x1 R B))))))))		; exclusionB
+				 */
+				// lemma for subset and product
+				
+				declareJoin(lar, resultArity);
+				declareJoin(resultArity, rar);
+				declareSubset(resultArity);
+				// declareIn?
+				declareNo((lar + resultArity - 2));
+				
+				TermVar R = TermVar.var(resultRelar, "R");
+				TermVar[] a = makeTuple(lar, "a");
+				
+				Term guard = Term.call("subset_" + resultArity , R, fn);
+				Term ainA = Term.reverseIn(A, a);
+				Term joinA = Term.call("join_" + lar + "x" + resultArity, A, R);
+				Term joinB = Term.call("join_" + resultArity + "x" + rar, R, B);
+				Term nojoinA = Term.call("no_" + (lar + resultArity - 2), joinA);
+				Term exclusionA = ainA.and(nojoinA);
+				Term exclusionB = Term.reverseIn(joinB, a).not();
+				Term body = exclusionA.equal(exclusionB).forall(a);
+				Term lemma = guard.implies(body).forall(R, A, B);
+				lemma.setComment("lemma about subset " + resultArity + " and product "+ lar + "x" + rar + " , using join");
+				file.addLemma(lemma);
+			}
 		}
 	}
 
