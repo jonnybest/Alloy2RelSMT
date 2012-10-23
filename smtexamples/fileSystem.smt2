@@ -7,13 +7,13 @@
 ;; --end sorts
 
 ;; functions
+(declare-fun subset_1 (Rel1 Rel1) Bool)
 (declare-fun in_1 (Atom Rel1) Bool)
 (declare-fun disjoint_1 (Rel1 Rel1) Bool)
 (declare-fun parent () Rel2)
 (declare-fun in_2 (Atom Atom Rel2) Bool)
 (declare-fun prod_1x1 (Rel1 Rel1) Rel2)
 (declare-fun subset_2 (Rel2 Rel2) Bool)
-(declare-fun subset_1 (Rel1 Rel1) Bool)
 (declare-fun join_1x2 (Rel1 Rel2) Rel1)
 (declare-fun a2r_1 (Atom) Rel1)
 (declare-fun lone_1 (Rel1) Bool)
@@ -25,35 +25,37 @@
 (declare-fun union_1 (Rel1 Rel1) Rel1)
 (declare-fun transp (Rel2) Rel2)
 (declare-fun diff_1 (Rel1 Rel1) Rel1)
-(declare-fun FSO () Rel1)
-(declare-fun Dir () Rel1)
 (declare-fun File () Rel1)
 (declare-fun Root () Rel1)
+(declare-fun FSO () Rel1)
+(declare-fun Dir () Rel1)
 ;; --end functions
 
 ;; axioms
 (assert 
  (! 
-  ; (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))); alternative
-(forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (not (and (in_1 a0 A) (in_1 a0 B)))))) 
+  ; subset axiom for Rel1
+(forall ((x Rel1)(y Rel1)) (= (subset_1 x y) (forall ((a0 Atom)) (=> (in_1 a0 x) (in_1 a0 y))))) 
  :named ax0 
  ) 
  )
 (assert 
  (! 
-  (forall ((A Rel1)(B Rel1)(x0 Atom)(y0 Atom)) (= (in_2 x0 y0 (prod_1x1 A B)) (and (in_1 x0 A) (in_1 y0 B)))) 
+  ; (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))); alternative
+(forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (not (and (in_1 a0 A) (in_1 a0 B)))))) 
  :named ax1 
  ) 
  )
 (assert 
  (! 
-  (forall ((x Rel2)(y Rel2)) (= (subset_2 x y) (forall ((a0 Atom)(a1 Atom)) (=> (in_2 a0 a1 x) (in_2 a0 a1 y))))) 
+  (forall ((A Rel1)(B Rel1)(x0 Atom)(y0 Atom)) (= (in_2 x0 y0 (prod_1x1 A B)) (and (in_1 x0 A) (in_1 y0 B)))) 
  :named ax2 
  ) 
  )
 (assert 
  (! 
-  (forall ((x Rel1)(y Rel1)) (= (subset_1 x y) (forall ((a0 Atom)) (=> (in_1 a0 x) (in_1 a0 y))))) 
+  ; subset axiom for Rel2
+(forall ((x Rel2)(y Rel2)) (= (subset_2 x y) (forall ((a0 Atom)(a1 Atom)) (=> (in_2 a0 a1 x) (in_2 a0 a1 y))))) 
  :named ax3 
  ) 
  )
@@ -66,7 +68,8 @@
  )
 (assert 
  (! 
-  (forall ((x0 Atom)) (and (in_1 x0 (a2r_1 x0)) (forall ((y0 Atom)) (=> (in_1 y0 (a2r_1 x0)) (= x0 y0))))) 
+  ; axiom for the conversion function Atom -> Relation
+(forall ((x0 Atom)) (and (in_1 x0 (a2r_1 x0)) (forall ((y0 Atom)) (=> (in_1 y0 (a2r_1 x0)) (= x0 y0))))) 
  :named ax5 
  ) 
  )
@@ -91,37 +94,43 @@
  )
 (assert 
  (! 
-  (forall ((r Rel2)) (= (trans r) (forall ((a1 Atom)(a2 Atom)(a3 Atom)) (=> (and (in_2 a1 a2 r) (in_2 a2 a3 r)) (in_2 a1 a3 r))))) 
+  ; this axiom defines transitivity
+(forall ((r Rel2)) (= (trans r) (forall ((a1 Atom)(a2 Atom)(a3 Atom)) (=> (and (in_2 a1 a2 r) (in_2 a2 a3 r)) (in_2 a1 a3 r))))) 
  :named ax9 
  ) 
  )
 (assert 
  (! 
-  (forall ((r Rel2)) (subset_2 r (transClos r))) 
+  ; this axioms satisfies that r should be in transclos of r
+(forall ((r Rel2)) (subset_2 r (transClos r))) 
  :named ax10 
  ) 
  )
 (assert 
  (! 
-  (forall ((r Rel2)) (trans (transClos r))) 
+  ; this axiom satisfies transitivity for transclos
+(forall ((r Rel2)) (trans (transClos r))) 
  :named ax11 
  ) 
  )
 (assert 
  (! 
-  (forall ((r1 Rel2)(r2 Rel2)) (=> (and (subset_2 r1 r2) (trans r2)) (subset_2 (transClos r1) r2))) 
+  ; this axiom satisfies minimality of transclos
+(forall ((r1 Rel2)(r2 Rel2)) (=> (and (subset_2 r1 r2) (trans r2)) (subset_2 (transClos r1) r2))) 
  :named ax12 
  ) 
  )
 (assert 
  (! 
-  (forall ((x0 Atom)(A Rel1)(B Rel1)) (= (in_1 x0 (union_1 A B)) (or (in_1 x0 A) (in_1 x0 B)))) 
+  ; axiom for union of Rel1
+(forall ((x0 Atom)(A Rel1)(B Rel1)) (= (in_1 x0 (union_1 A B)) (or (in_1 x0 A) (in_1 x0 B)))) 
  :named ax13 
  ) 
  )
 (assert 
  (! 
-  (forall ((a0 Atom)(a1 Atom)(R Rel2)) (= (in_2 a0 a1 (transp R)) (in_2 a1 a0 R))) 
+  ; axiom for transposition
+(forall ((a0 Atom)(a1 Atom)(R Rel2)) (= (in_2 a0 a1 (transp R)) (in_2 a1 a0 R))) 
  :named ax14 
  ) 
  )
@@ -136,49 +145,49 @@
 ;; assertions
 (assert 
  (! 
-  (forall ((this Atom)) (=> (in_1 this FSO) (or (in_1 this File) (in_1 this Dir)))) 
+  (subset_1 File FSO) 
  :named a0 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 File Dir) 
+  (subset_1 Root Dir) 
  :named a1 
  ) 
  )
 (assert 
  (! 
-  (subset_2 parent (prod_1x1 FSO Dir)) 
+  (forall ((this Atom)) (=> (in_1 this FSO) (or (in_1 this File) (in_1 this Dir)))) 
  :named a2 
  ) 
  )
 (assert 
  (! 
-  (forall ((this Atom)) (=> (in_1 this FSO) (lone_1 (join_1x2 (a2r_1 this) parent)))) 
+  (disjoint_1 File Dir) 
  :named a3 
  ) 
  )
 (assert 
  (! 
-  (subset_1 Dir FSO) 
+  (subset_2 parent (prod_1x1 FSO Dir)) 
  :named a4 
  ) 
  )
 (assert 
  (! 
-  (subset_2 entries (prod_1x1 Dir FSO)) 
+  (forall ((this Atom)) (=> (in_1 this FSO) (lone_1 (join_1x2 (a2r_1 this) parent)))) 
  :named a5 
  ) 
  )
 (assert 
  (! 
-  (subset_1 File FSO) 
+  (subset_1 Dir FSO) 
  :named a6 
  ) 
  )
 (assert 
  (! 
-  (subset_1 Root Dir) 
+  (subset_2 entries (prod_1x1 Dir FSO)) 
  :named a7 
  ) 
  )
