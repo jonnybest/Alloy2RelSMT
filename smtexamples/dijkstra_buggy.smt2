@@ -58,8 +58,8 @@
 (declare-fun ReleaseMutex (Rel1 Rel1 Rel1 Rel1) Bool)
 (declare-fun Deadlock () Bool)
 (declare-fun GrabbedInOrder () Bool)
-(declare-fun Mutex () Rel1)
 (declare-fun Process () Rel1)
+(declare-fun Mutex () Rel1)
 (declare-fun State () Rel1)
 ;; --end functions
 
@@ -385,19 +385,19 @@
  )
 (assert 
  (! 
-  (disjoint_1 Mutex Process) 
+  (disjoint_1 Process Mutex) 
  :named a2 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 Mutex State) 
+  (disjoint_1 Process State) 
  :named a3 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 Process State) 
+  (disjoint_1 Mutex State) 
  :named a4 
  ) 
  )
@@ -484,11 +484,26 @@
 
 ;; lemmas
 (assert
+(! 
+; lemma 1 for transClos about the 'middle element'
+(forall ((a1 Atom)(a3 Atom)(R Rel2)) 
+(=> 
+(in_2 a1 a3 
+(transClos R)
+)
+(forall ((a2 Atom)) 
+(or 
+(not (in_2 a1 a2 R)) 
+(and (in_2 a1 a2 R) (in_2 a2 a3 (transClos R))))))) 
+:named l0 
+) 
+)
+(assert
  (! 
   ; 1. lemma for join_1x2. direction: join to in
 (forall ((a1 Atom)(a0 Atom)(r Rel2)) (=> (in_1 a0 (join_1x2 ; (swapped)
 (a2r_1 a1) r)) (in_2 a1 a0 r))) 
- :named l0 
+ :named l1 
  ) 
  )
 (assert
@@ -496,56 +511,56 @@
   ; 2. lemma for join_1x2. direction: in to join
 (forall ((a1 Atom)(a0 Atom)(r Rel2)) (=> (in_2 a1 a0 r) (in_1 a0 (join_1x2 ; (swapped)
 (a2r_1 a1) r)))) 
- :named l1 
+ :named l2 
  ) 
  )
 (assert
  (! 
   ; lemma about a2r_x having card_x
 (forall ((a0 Atom)) (= (card_1 (a2r_1 a0)) 1)) 
- :named l2 
+ :named l3 
  ) 
  )
 (assert
  (! 
   ; lemma about some_x having card_x > 0
 (forall ((R Rel1)) (=> (some_1 R) (> (card_1 R) 0))) 
- :named l3 
+ :named l4 
  ) 
  )
 (assert
  (! 
   ; lemma about cardinality being the ord of lastMutex
 (forall ((x Atom)) (=> (in_1 x lastMutex) (= (card_1 Mutex) (ord Mutex x)))) 
- :named l4 
+ :named l5 
  ) 
  )
 (assert
  (! 
   ; lemma about cardinality being the ord of lastState
 (forall ((x Atom)) (=> (in_1 x lastState) (= (card_1 State) (ord State x)))) 
- :named l5 
+ :named l6 
  ) 
  )
 (assert
  (! 
   ; 1. lemma for join_2x1. direction: join to in
 (forall ((a0 Atom)(a1 Atom)(r Rel2)) (=> (in_1 a0 (join_2x1 r (a2r_1 a1))) (in_2 a0 a1 r))) 
- :named l6 
+ :named l7 
  ) 
  )
 (assert
  (! 
   ; 2. lemma for join_2x1. direction: in to join
 (forall ((a0 Atom)(a1 Atom)(r Rel2)) (=> (in_2 a0 a1 r) (in_1 a0 (join_2x1 r (a2r_1 a1))))) 
- :named l7 
+ :named l8 
  ) 
  )
 (assert
  (! 
   ; lemma about subset 2 and product 1x1 , using join
 (forall ((R Rel2)(A Rel1)(B Rel1)) (=> (subset_2 R (prod_1x1 A B)) (forall ((a0 Atom)) (=> (in_1 a0 A) (and (=> (no_1 (join_1x2 (a2r_1 a0) R)) (not (in_1 a0 (join_2x1 R B)))) (=> (not (in_1 a0 (join_2x1 R B))) (no_1 (join_1x2 (a2r_1 a0) R)))))))) 
- :named l8 
+ :named l9 
  ) 
  )
 (assert
@@ -553,7 +568,7 @@
   ; 1. lemma for join_2x3. direction: join to in
 (forall ((a3 Atom)(a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_3 a3 a1 a0 (join_2x3 ; (swapped)
 (a2r_2 a3 a2) r)) (in_3 a2 a1 a0 r))) 
- :named l9 
+ :named l10 
  ) 
  )
 (assert
@@ -561,28 +576,28 @@
   ; 2. lemma for join_2x3. direction: in to join
 (forall ((a3 Atom)(a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_3 a2 a1 a0 r) (in_3 a3 a1 a0 (join_2x3 ; (swapped)
 (a2r_2 a3 a2) r)))) 
- :named l10 
+ :named l11 
  ) 
  )
 (assert
  (! 
   ; 1. lemma for join_3x1. direction: join to in
 (forall ((a0 Atom)(a1 Atom)(a2 Atom)(r Rel3)) (=> (in_2 a0 a1 (join_3x1 r (a2r_1 a2))) (in_3 a0 a1 a2 r))) 
- :named l11 
+ :named l12 
  ) 
  )
 (assert
  (! 
   ; 2. lemma for join_3x1. direction: in to join
 (forall ((a0 Atom)(a1 Atom)(a2 Atom)(r Rel3)) (=> (in_3 a0 a1 a2 r) (in_2 a0 a1 (join_3x1 r (a2r_1 a2))))) 
- :named l12 
+ :named l13 
  ) 
  )
 (assert
  (! 
   ; lemma about subset 3 and product 2x1 , using join
 (forall ((R Rel3)(A Rel2)(B Rel1)) (=> (subset_3 R (prod_2x1 A B)) (forall ((a0 Atom)(a1 Atom)) (=> (in_2 a0 a1 A) (and (=> (no_3 (join_2x3 (a2r_2 a0 a1) R)) (not (in_2 a0 a1 (join_3x1 R B)))) (=> (not (in_2 a0 a1 (join_3x1 R B))) (no_3 (join_2x3 (a2r_2 a0 a1) R)))))))) 
- :named l13 
+ :named l14 
  ) 
  )
 (assert
@@ -590,7 +605,7 @@
   ; 1. lemma for join_1x3. direction: join to in
 (forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_2 a1 a0 (join_1x3 ; (swapped)
 (a2r_1 a2) r)) (in_3 a2 a1 a0 r))) 
- :named l14 
+ :named l15 
  ) 
  )
 (assert
@@ -598,7 +613,7 @@
   ; 2. lemma for join_1x3. direction: in to join
 (forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_3 a2 a1 a0 r) (in_2 a1 a0 (join_1x3 ; (swapped)
 (a2r_1 a2) r)))) 
- :named l15 
+ :named l16 
  ) 
  )
 ;; --end lemmas

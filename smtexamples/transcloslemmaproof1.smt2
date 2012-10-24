@@ -57,7 +57,7 @@
 (assert
 (! 
 (not
-(forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (transClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 r) (in_2 a3 a2 (transClos r)))))) 
+(forall ((a1 Atom)(a3 Atom)(r Rel2)) (=> (in_2 a1 a3 (transClos r)) (exists ((a2 Atom)) (or (not (in_2 a1 a2 r)) (and (in_2 a1 a2 r) (in_2 a2 a3 (transClos r)))))))
 )
 :named l12 
 ) 

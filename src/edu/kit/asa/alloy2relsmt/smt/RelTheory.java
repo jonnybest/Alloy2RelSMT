@@ -1000,27 +1000,29 @@ public final class RelTheory {
 	 * @param name
 	 * @throws ModelException
 	 */
-	private void assertLemmasTCL(String name) throws ModelException {
-		return; /*
-		
+	private void assertLemmasTCL(String name) throws ModelException {		
+		/* lemma 1: (forall ((a1 Atom)(a3 Atom)(r Rel2)) 
+		 * 	(=> 
+		 * 		(in_2 a1 a3 (transClos r))	; guard
+		 * 	(exists ((a2 Atom)) 
+		 * 	(or 							; body
+		 * 		(not (in_2 a1 a2 r)) 		; not inR
+		 * 		(and (in_2 a1 a2 r) (in_2 a2 a3 (transClos r))))))) ; inR && middleInTCL 
+		 */
 		TermVar a1 = TermVar.var("Atom", "a1");
-		TermVar a2 = TermVar.var("Atom", "a2");		
-		TermVar r = TermVar.var("Rel2", "r");
-		Term tCl = Term.call(name, r);
-		
-		Term a12inTCL = Term.reverseIn(tCl, a1, a2);
-		
+		TermVar a2 = TermVar.var("Atom", "a2"); // "middle element"
 		TermVar a3 = TermVar.var("Atom", "a3");
-		Term a13inR = Term.reverseIn(r, a1, a3);		
-		Term a32inTCL = Term.reverseIn(tCl, a3, a2);
 		
-		file.addLemma(a12inTCL.implies(a13inR.and(a32inTCL).exists(a3)).forall(a1, a2, r));
-		
-		Term a13inTCL = Term.reverseIn(tCl, a1, a3);
-		Term a32inR = Term.reverseIn(r, a3, a2);
-		
-		file.addLemma(a12inTCL.implies(a13inTCL.and(a32inR).exists(a3)).forall(a1, a2, r));
-		*/
+		TermVar R = TermVar.var("Rel2", "R");
+		Term tCl = Term.call(name, R);
+				
+		Term guard = Term.reverseIn(tCl, a1, a3);
+		Term inR = Term.reverseIn(R, a1, a2);
+		Term middleInTCL = Term.reverseIn(tCl, a2, a3);
+		Term body = inR.not().or(inR.and(middleInTCL)).forall(a2);
+		Term lemma1 = guard.implies(body).forall(a1, a3, R);
+		lemma1.setComment("lemma 1 for " + name + " about the 'middle element'");
+		file.addLemma(lemma1);
 	}
 
 }
