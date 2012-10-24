@@ -1,4 +1,5 @@
 (set-option :macro-finder true)
+(set-option :ematching false)
 ;; sorts
 (declare-sort Atom)
 (declare-sort Rel1)
@@ -9,7 +10,7 @@
 ;; --end sorts
 
 ;; functions
-(declare-fun fn () Rel3)
+(declare-const fn Rel3)
 (declare-fun in_1 (Atom Rel1) Bool)
 (declare-fun in_2 (Atom Atom Rel2) Bool)
 (declare-fun prod_1x1 (Rel1 Rel1) Rel2)
@@ -28,8 +29,8 @@
 (declare-fun prod_1x4 (Rel1 Rel4) Rel5)
 (declare-fun no_5 (Rel5) Bool)
 (declare-fun some_1 (Rel1) Bool)
-(declare-fun B () Rel1)
-(declare-fun A () Rel1)
+(declare-const A Rel1)
+(declare-const B Rel1)
 ;; --end functions
 
 ;; axioms
@@ -156,49 +157,7 @@
  )
 ;; --end command
 
-;; lemmas
-(assert
- (! 
-  ; 1. lemma for join_1x3. direction: join to in
-(forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_2 a1 a0 (join_1x3 ; (swapped)
-(a2r_1 a2) r)) (in_3 a2 a1 a0 r))) 
- :named l0 
- ) 
- )
-(assert
- (! 
-  ; 2. lemma for join_1x3. direction: in to join
-(forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_3 a2 a1 a0 r) (in_2 a1 a0 (join_1x3 ; (swapped)
-(a2r_1 a2) r)))) 
- :named l1 
- ) 
- )
-(assert
- (! 
-  ; 1. lemma for join_1x2. direction: join to in
-(forall ((a1 Atom)(a0 Atom)(r Rel2)) (=> (in_1 a0 (join_1x2 ; (swapped)
-(a2r_1 a1) r)) (in_2 a1 a0 r))) 
- :named l2 
- ) 
- )
-(assert
- (! 
-  ; 2. lemma for join_1x2. direction: in to join
-(forall ((a1 Atom)(a0 Atom)(r Rel2)) (=> (in_2 a1 a0 r) (in_1 a0 (join_1x2 ; (swapped)
-(a2r_1 a1) r)))) 
- :named l3 
- ) 
- )
-;; --end lemmas
-
-;; -- key stuff for debugging --
-;\problem {(
-;
-;)-> (
-;
-;;\predicates {
-
-;;}
 
 ;; -- END key stuff --
 (check-sat)
+(get-model)
