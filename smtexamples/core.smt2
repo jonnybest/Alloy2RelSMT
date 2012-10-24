@@ -25,24 +25,25 @@
 (declare-fun some_1 (Rel1) Bool)
 (declare-fun Deadlock () Bool)
 (declare-fun GrabbedInOrder () Bool)
-(declare-fun State () Rel1)
 (declare-fun Mutex () Rel1)
 (declare-fun Process () Rel1)
+(declare-fun State () Rel1)
 ;; --end functions
 
 ;; axioms
+
 (assert 
  (! 
   ; this axioms satisfies that tcl is extensive
-(forall ((r1 Rel2)) (subset_2 r1 (transClos r1))) 
- :named ax7 
+(forall ((r Rel2)) (subset_2 r (transClos r))) 
+ :named ax6 
  ) 
  )
 (assert 
  (! 
   ; subset axiom for Rel2
 (forall ((x Rel2)(y Rel2)) (= (subset_2 x y) (forall ((a0 Atom)(a1 Atom)) (=> (in_2 a0 a1 x) (in_2 a0 a1 y))))) 
- :named ax11 
+ :named ax10 
  ) 
  )
 (assert 
@@ -61,19 +62,20 @@
  (! 
   ; subset axiom for Rel3
 (forall ((x Rel3)(y Rel3)) (= (subset_3 x y) (forall ((a0 Atom)(a1 Atom)(a2 Atom)) (=> (in_3 a0 a1 a2 x) (in_3 a0 a1 a2 y))))) 
- :named ax29 
+ :named ax25 
  ) 
  )
-(assert 
+ (assert 
  (! 
 (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (not (and (in_1 a0 A) (in_1 a0 B)))))) 
- :named ax35 
+ :named ax27 
  ) 
  )
+
 (assert 
  (! 
   (forall ((A Rel1)) (= (some_1 A) (exists ((a0 Atom)) (in_1 a0 A)))) 
- :named ax39 
+ :named ax32 
  ) 
  )
 ;; --end axioms
@@ -88,7 +90,7 @@
 (assert 
  (! 
   (disjoint_1 Mutex Process) 
- :named a4 
+ :named a2 
  ) 
  )
 (assert 
@@ -108,7 +110,7 @@
  )
 ;; --end command
 
-;; lemmas
+;; lemmas 
 (assert
  (! 
   ; lemma 1 for transClos about the second-last 'middle element'
@@ -129,7 +131,7 @@
   ; 1. lemma for join_1x3. direction: join to in
 (forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_2 a1 a0 (join_1x3 ; (swapped)
 (a2r_1 a2) r)) (in_3 a2 a1 a0 r))) 
- :named l16 
+ :named l8 
  ) 
  )
 (assert
@@ -137,11 +139,10 @@
   ; 2. lemma for join_1x3. direction: in to join
 (forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_3 a2 a1 a0 r) (in_2 a1 a0 (join_1x3 ; (swapped)
 (a2r_1 a2) r)))) 
- :named l17 
+ :named l9 
  ) 
  )
 ;; --end lemmas
 
 (check-sat)
 (get-unsat-core)
-
