@@ -1,6 +1,10 @@
+; your bad assertions are: (ax6 ax10 ax23 ax24 ax25 ax27 ax32 a1 a2 a10 c0 l0 l2 l8)
 (set-logic AUFLIA)
 (set-option :macro-finder true)
 (set-option :produce-unsat-cores true)
+(set-option :ematching true)
+(set-option :mbqi false)
+
 ;; sorts
 (declare-sort Rel1)
 (declare-sort Atom)
@@ -34,7 +38,7 @@
 
 (assert 
  (! 
-  ; this axioms satisfies that tcl is extensive
+  ; this axioms satisfies that r should be in transclos of r
 (forall ((r Rel2)) (subset_2 r (transClos r))) 
  :named ax6 
  ) 
@@ -113,8 +117,7 @@
 ;; lemmas 
 (assert
  (! 
-  ; lemma 1 for transClos about the second-last 'middle element'
-(forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (forall ((a2 Atom)) (or (not (in_2 a1 a2 R)) (and (in_2 a1 a2 R) (in_2 a2 a3 (transClos R))))))) 
+  (forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (transClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 r) (in_2 a3 a2 (transClos r)))))) 
  :named l0 
  ) 
  )
