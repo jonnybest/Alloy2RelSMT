@@ -1,0 +1,108 @@
+// kaputtes 3x3 lemma
+(assert
+	(forall ((a0 Atom)(a1 Atom)(a2 Atom)(r Rel3)) (=> 
+		(in_3 a0 a1 a2 r) 
+		(in_0 (join_3x3 (a2r_3 a0 a1 a2) r))
+	))
+)
+(assert
+	(forall ((a0 Atom)(a1 Atom)(a2 Atom)(r Rel3)) (=> 
+		(in_0 (join_3x3 (a2r_3 a0 a1 a2) r)) 
+		(in_3 a0 a1 a2 r)
+	))
+)
+
+// wahrscheinlich korrektes lemma für 3x3
+(assert
+	(forall ((a0 Atom)(a1 Atom)(a2 Atom)(a3 Atom)(a4 Atom)(r Rel3)) (=> 
+		(in_3 a2 a3 a4 r) 
+		(in_4 a0 a1 a3 a4 (join_3x3 (a2r_3 a0 a1 a2) r))
+	))
+)
+(assert
+	(forall ((a0 Atom)(a1 Atom)(a2 Atom)(a3 Atom)(a4 Atom)(a5 Atom)(r Rel3)) (=> 
+		(in_4 a0 a1 a4 a5 (join_3x3 (a2r_3 a0 a1 a2) r)) 
+		(in_3 a3 a4 a5 r)
+	))
+)
+```
+// wahrscheinlich korrektes lemma für 3x1
+(assert
+	(forall ((a0 Atom)(a1 Atom)(a2 Atom)(r Rel3)) (=> 
+	(in_3 a0 a1 a2 r) 
+	(in_2 a0 a1 (join_3x1 
+		r
+		(a2r_1 a2) 
+		))))
+)
+(assert
+	(forall ((a0 Atom)(a1 Atom)(a2 Atom)(r Rel3)) (=> 
+	(in_2 a0 a1 (join_3x1
+		r 
+		(a2r_1 a2))) 
+	(in_3 a0 a1 a2 r)))
+)
+```
+
+// a model output for these two:
+(assert 
+ (! 
+  (forall ((x0 Atom)) (and (in_1 x0 (a2r_1 x0)) (forall ((y0 Atom)) (=> (in_1 y0 (a2r_1 x0)) (= x0 y0))))) 
+ :named ax5 
+ ) 
+ )
+
+(assert 
+ (! 
+  ; axiom for join_1x2
+(forall ((A Rel1)(B Rel2)(y0 Atom)) (= (in_1 y0 (join_1x2 A B)) (exists ((x Atom)) (and (in_1 x A) (in_2 x y0 B))))) 
+ :named ax8 
+ ) 
+ )
+
+sat
+(model
+  ;; universe for Rel1:
+  ;;   Rel1!val!1 Rel1!val!0
+  ;; -----------
+  ;; definitions for universe elements:
+  (declare-fun Rel1!val!1 () Rel1)
+  (declare-fun Rel1!val!0 () Rel1)
+  ;; cardinality constraint:
+  (forall ((x Rel1)) (or (= x Rel1!val!1) (= x Rel1!val!0)))
+  ;; -----------
+  ;; universe for Rel2:
+  ;;   Rel2!val!0
+  ;; -----------
+  ;; definitions for universe elements:
+  (declare-fun Rel2!val!0 () Rel2)
+  ;; cardinality constraint:
+  (forall ((x Rel2)) (= x Rel2!val!0))
+  ;; -----------
+  ;; universe for Atom:
+  ;;   Atom!val!0
+  ;; -----------
+  ;; definitions for universe elements:
+  (declare-fun Atom!val!0 () Atom)
+  ;; cardinality constraint:
+  (forall ((x Atom)) (= x Atom!val!0))
+  ;; -----------
+  (define-fun elem!13 () Rel2
+    Rel2!val!0)
+  (define-fun ax5 () Bool
+    true)
+  (define-fun ax8 () Bool
+    true)
+  (define-fun elem!1 () Atom
+    Atom!val!0)
+  (define-fun in_1 ((x!1 Atom) (x!2 Rel1)) Bool
+    true)
+  (define-fun join_1x2 ((x!1 Rel1) (x!2 Rel2)) Rel1
+    Rel1!val!1)
+  (define-fun x!0 ((x!1 Atom) (x!2 Rel2) (x!3 Rel1)) Atom
+    Atom!val!0)
+  (define-fun in_2 ((x!1 Atom) (x!2 Atom) (x!3 Rel2)) Bool
+    true)
+  (define-fun a2r_1 ((x!1 Atom)) Rel1
+    Rel1!val!0)
+)

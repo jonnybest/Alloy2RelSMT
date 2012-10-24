@@ -113,7 +113,9 @@
 ;; lemmas 
 (assert
  (! 
+ (not
   (forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (transClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 r) (in_2 a3 a2 (transClos r)))))) 
+	)
  :named l0 
  ) 
  )
