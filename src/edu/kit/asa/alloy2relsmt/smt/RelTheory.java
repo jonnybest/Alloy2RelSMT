@@ -670,9 +670,10 @@ public final class RelTheory {
 						(=>
 							(subset_3 R (prod_2x1 A B)) 	; guard
 							(forall ((a0 Atom)(a1 Atom))	; body
-							(=
-								(and (in_2 a0 a1 A) (no_2 (join_2x3 A R)))	; exclusionA
-								(not (in_2 a0 a1 (join_3x1 R B))))))))		; exclusionB
+							(=>
+								(in_2 a0 a1 A)				; a in A
+								(=> (no_2 (join_2x3 a2r(a0 a1) R))	; exclusionA
+									(not (in_2 a0 a1 (join_3x1 R B)))))))))		; exclusionB
 				 */
 				// lemma for subset and product
 				
@@ -687,12 +688,12 @@ public final class RelTheory {
 				
 				Term guard = Term.call("subset_" + resultArity , R, fn);
 				Term ainA = Term.reverseIn(A, a);
-				Term joinA = Term.call("join_" + lar + "x" + resultArity, A, R);
+				Term joinA = Term.call("join_" + lar + "x" + resultArity, Term.call("a2r_" + lar, a), R);
 				Term joinB = Term.call("join_" + resultArity + "x" + rar, R, B);
 				Term nojoinA = Term.call("no_" + (lar + resultArity - 2), joinA);
-				Term exclusionA = ainA.and(nojoinA);
+				Term exclusionA = nojoinA;
 				Term exclusionB = Term.reverseIn(joinB, a).not();
-				Term body = (exclusionA.implies(exclusionB)).and(exclusionB.implies(exclusionA)).forall(a);
+				Term body = ainA.implies((exclusionA.implies(exclusionB)).and(exclusionB.implies(exclusionA))).forall(a);
 				Term lemma = guard.implies(body).forall(R, A, B);
 				lemma.setComment("lemma about subset " + resultArity + " and product "+ lar + "x" + rar + " , using join");
 				file.addLemma(lemma);
