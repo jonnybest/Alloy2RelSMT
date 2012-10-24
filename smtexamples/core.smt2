@@ -123,29 +123,12 @@
  )
 (assert
  (! 
-  ; 1. lemma for join_1x2. direction: join to in
-(forall ((a1 Atom)(a0 Atom)(r Rel2)) (=> (in_1 a0 (join_1x2 ; (swapped)
-(a2r_1 a1) r)) (in_2 a1 a0 r))) 
- :named l2 
- ) 
- ) 
-(assert
- (! 
   ; 1. lemma for join_1x3. direction: join to in
 (forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_2 a1 a0 (join_1x3 ; (swapped)
 (a2r_1 a2) r)) (in_3 a2 a1 a0 r))) 
  :named l8 
  ) 
  )
-(assert
- (! 
-  ; 2. lemma for join_1x3. direction: in to join
-(forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_3 a2 a1 a0 r) (in_2 a1 a0 (join_1x3 ; (swapped)
-(a2r_1 a2) r)))) 
- :named l9 
- ) 
- )
-;; --end lemmas
 
 (check-sat)
 (get-unsat-core)
