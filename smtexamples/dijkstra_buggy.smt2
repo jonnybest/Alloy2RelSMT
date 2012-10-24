@@ -1,6 +1,9 @@
 (set-logic AUFLIA)
 (set-option :macro-finder true)
 (set-option :produce-unsat-cores true)
+(set-option :ematching true)
+(set-option :mbqi false)
+(set-option :PULL_NESTED_QUANTIFIERS true)
 ;; sorts
 (declare-sort Rel1)
 (declare-sort Atom)
@@ -15,21 +18,21 @@
 (declare-fun in_1 (Atom Rel1) Bool)
 (declare-fun in_2 (Atom Atom Rel2) Bool)
 (declare-fun none () Rel1)
-(declare-fun nextState () Rel2)
+(declare-fun nextMutex () Rel2)
 (declare-fun trans (Rel2) Bool)
 (declare-fun transClos (Rel2) Rel2)
 (declare-fun domRestr_2 (Rel1 Rel2) Rel2)
 (declare-fun subset_2 (Rel2 Rel2) Bool)
 (declare-fun join_1x2 (Rel1 Rel2) Rel1)
 (declare-fun a2r_1 (Atom) Rel1)
-(declare-fun nextsState (Rel1) Rel1)
-(declare-fun firstState () Rel1)
-(declare-fun lastState () Rel1)
-(declare-fun card_1 (Rel1) Int)
-(declare-fun nextMutex () Rel2)
 (declare-fun nextsMutex (Rel1) Rel1)
 (declare-fun firstMutex () Rel1)
 (declare-fun lastMutex () Rel1)
+(declare-fun card_1 (Rel1) Int)
+(declare-fun nextState () Rel2)
+(declare-fun nextsState (Rel1) Rel1)
+(declare-fun firstState () Rel1)
+(declare-fun lastState () Rel1)
 (declare-fun holds () Rel3)
 (declare-fun prod_1x1 (Rel1 Rel1) Rel2)
 (declare-fun subset_1 (Rel1 Rel1) Bool)
@@ -59,9 +62,9 @@
 (declare-fun ReleaseMutex (Rel1 Rel1 Rel1 Rel1) Bool)
 (declare-fun Deadlock () Bool)
 (declare-fun GrabbedInOrder () Bool)
-(declare-fun State () Rel1)
 (declare-fun Mutex () Rel1)
 (declare-fun Process () Rel1)
+(declare-fun State () Rel1)
 ;; --end functions
 
 ;; axioms
@@ -92,15 +95,15 @@
  )
 (assert 
  (! 
-  ; axiom for nextState
-(forall ((a Atom)(b Atom)) (=> (and (in_1 a State) (in_1 b State)) (= (in_2 a b nextState) (= (ord State b) (+ (ord State a) 1))))) 
+  ; axiom for nextMutex
+(forall ((a Atom)(b Atom)) (=> (and (in_1 a Mutex) (in_1 b Mutex)) (= (in_2 a b nextMutex) (= (ord Mutex b) (+ (ord Mutex a) 1))))) 
  :named ax3 
  ) 
  )
 (assert 
  (! 
-  ; 'there is no empty ordered relation' axiom for nextState
-(not (= none State)) 
+  ; 'there is no empty ordered relation' axiom for nextMutex
+(not (= none Mutex)) 
  :named ax4 
  ) 
  )
@@ -173,15 +176,15 @@
  )
 (assert 
  (! 
-  ; axiom for the function 'nexts' of State
-(forall ((e Rel1)) (=> (subset_1 e State) (= (nextsState e) (join_1x2 e (transClos nextState))))) 
+  ; axiom for the function 'nexts' of Mutex
+(forall ((e Rel1)) (=> (subset_1 e Mutex) (= (nextsMutex e) (join_1x2 e (transClos nextMutex))))) 
  :named ax14 
  ) 
  )
 (assert 
  (! 
-  ; axiom for firstState
-(= firstState (a2r_1 (at State 1))) 
+  ; axiom for firstMutex
+(= firstMutex (a2r_1 (at Mutex 1))) 
  :named ax15 
  ) 
  )
@@ -201,43 +204,43 @@
  )
 (assert 
  (! 
-  ; finite axiom for lastState
-(= lastState (a2r_1 (at State (card_1 State)))) 
+  ; finite axiom for lastMutex
+(= lastMutex (a2r_1 (at Mutex (card_1 Mutex)))) 
  :named ax18 
  ) 
  )
 (assert 
  (! 
-  ; axiom for nextMutex
-(forall ((a Atom)(b Atom)) (=> (and (in_1 a Mutex) (in_1 b Mutex)) (= (in_2 a b nextMutex) (= (ord Mutex b) (+ (ord Mutex a) 1))))) 
+  ; axiom for nextState
+(forall ((a Atom)(b Atom)) (=> (and (in_1 a State) (in_1 b State)) (= (in_2 a b nextState) (= (ord State b) (+ (ord State a) 1))))) 
  :named ax19 
  ) 
  )
 (assert 
  (! 
-  ; 'there is no empty ordered relation' axiom for nextMutex
-(not (= none Mutex)) 
+  ; 'there is no empty ordered relation' axiom for nextState
+(not (= none State)) 
  :named ax20 
  ) 
  )
 (assert 
  (! 
-  ; axiom for the function 'nexts' of Mutex
-(forall ((e Rel1)) (=> (subset_1 e Mutex) (= (nextsMutex e) (join_1x2 e (transClos nextMutex))))) 
+  ; axiom for the function 'nexts' of State
+(forall ((e Rel1)) (=> (subset_1 e State) (= (nextsState e) (join_1x2 e (transClos nextState))))) 
  :named ax21 
  ) 
  )
 (assert 
  (! 
-  ; axiom for firstMutex
-(= firstMutex (a2r_1 (at Mutex 1))) 
+  ; axiom for firstState
+(= firstState (a2r_1 (at State 1))) 
  :named ax22 
  ) 
  )
 (assert 
  (! 
-  ; finite axiom for lastMutex
-(= lastMutex (a2r_1 (at Mutex (card_1 Mutex)))) 
+  ; finite axiom for lastState
+(= lastState (a2r_1 (at State (card_1 State)))) 
  :named ax23 
  ) 
  )
@@ -386,19 +389,19 @@
  )
 (assert 
  (! 
-  (disjoint_1 State Mutex) 
+  (disjoint_1 Mutex Process) 
  :named a2 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 State Process) 
+  (disjoint_1 Mutex State) 
  :named a3 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 Mutex Process) 
+  (disjoint_1 Process State) 
  :named a4 
  ) 
  )
@@ -462,13 +465,13 @@
  )
 (assert 
  (! 
-  (finite State) 
+  (finite Mutex) 
  :named a12 
  ) 
  )
 (assert 
  (! 
-  (finite Mutex) 
+  (finite State) 
  :named a13 
  ) 
  )
@@ -530,15 +533,15 @@
  )
 (assert
  (! 
-  ; lemma about cardinality being the ord of lastState
-(forall ((x Atom)) (=> (in_1 x lastState) (= (card_1 State) (ord State x)))) 
+  ; lemma about cardinality being the ord of lastMutex
+(forall ((x Atom)) (=> (in_1 x lastMutex) (= (card_1 Mutex) (ord Mutex x)))) 
  :named l6 
  ) 
  )
 (assert
  (! 
-  ; lemma about cardinality being the ord of lastMutex
-(forall ((x Atom)) (=> (in_1 x lastMutex) (= (card_1 Mutex) (ord Mutex x)))) 
+  ; lemma about cardinality being the ord of lastState
+(forall ((x Atom)) (=> (in_1 x lastState) (= (card_1 State) (ord State x)))) 
  :named l7 
  ) 
  )

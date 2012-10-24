@@ -1,9 +1,10 @@
 ; your bad assertions are: (ax6 ax10 ax23 ax24 ax25 ax27 ax32 a1 a2 a10 c0 l0 l2 l8)
 (set-logic AUFLIA)
 (set-option :macro-finder true)
-(set-option :produce-unsat-cores true)
+(set-option :produce-unsat-cores false)
 (set-option :ematching true)
-(set-option :mbqi false)
+(set-option :mbqi true)
+(set-option :PULL_NESTED_QUANTIFIERS true)
 
 ;; sorts
 (declare-sort Rel1)
@@ -52,32 +53,33 @@
  )
 (assert 
  (! 
+ ; this axiom states the properties of prod_1x1
   (forall ((y0 Atom)(x0 Atom)(A Rel1)(B Rel1)) (= (in_2 x0 y0 (prod_1x1 A B)) (and (in_1 x0 A) (in_1 y0 B)))) 
  :named ax24 
  ) 
  )
 (assert 
- (! 
+ (! ; this axiom states the properties of prod_2x1
   (forall ((y0 Atom)(x0 Atom)(x1 Atom)(A Rel2)(B Rel1)) (= (in_3 x0 x1 y0 (prod_2x1 A B)) (and (in_2 x0 x1 A) (in_1 y0 B)))) 
  :named ax28 
  ) 
  )
 (assert 
  (! 
-  ; subset axiom for Rel3
+  ; subset axiom for Rel3, subset_3
 (forall ((x Rel3)(y Rel3)) (= (subset_3 x y) (forall ((a0 Atom)(a1 Atom)(a2 Atom)) (=> (in_3 a0 a1 a2 x) (in_3 a0 a1 a2 y))))) 
  :named ax25 
  ) 
  )
  (assert 
- (! 
+ (! ; it's the disjoint_1 axiom
 (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (not (and (in_1 a0 A) (in_1 a0 B)))))) 
  :named ax27 
  ) 
  )
 
 (assert 
- (! 
+ (! ; the some_1 axiom
   (forall ((A Rel1)) (= (some_1 A) (exists ((a0 Atom)) (in_1 a0 A)))) 
  :named ax32 
  ) 
@@ -86,19 +88,19 @@
 
 ;; assertions
 (assert 
- (! 
+ (! ; the definition of waits. waits: (State -> Process) -> Mutex
   (subset_3 waits (prod_2x1 (prod_1x1 State Process) Mutex)) 
  :named a1 
  ) 
  )
 (assert 
- (! 
+ (! ; sig Mutex {} sig Process {}
   (disjoint_1 Mutex Process) 
  :named a2 
  ) 
  )
 (assert 
- (! 
+ (! ; the definition of the deadlock predicate
   (= Deadlock (and (some_1 Process) (exists ((s Atom)) (and (in_1 s State) (forall ((p Atom)) (=> (in_1 p Process) (some_1 (join_1x2 (a2r_1 p) (join_1x3 (a2r_1 s) waits))))))))) 
  :named a10 
  ) 
@@ -107,7 +109,7 @@
 
 ;; command
 (assert 
- (! 
+ (! ; no process shall be deadlocked
   (not (=> (and (some_1 Process) GrabbedInOrder) (not Deadlock))) 
  :named c0 
  ) 
@@ -117,11 +119,19 @@
 ;; lemmas 
 (assert
  (! 
-  (forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (transClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 r) (in_2 a3 a2 (transClos r)))))) 
+  (forall ((a1 Atom)(a3 Atom)(r Rel2)) (=> (in_2 a1 a3 (transClos r)) (exists ((a2 Atom)) (or (not (in_2 a1 a2 r)) (and (in_2 a1 a2 r) (in_2 a2 a3 (transClos r)))))))
  :named l0 
  ) 
  )
 (assert
+ (! 
+  ; good lemma
+(forall ((a1 Atom)(a0 Atom)(r Rel2)) (=> (in_1 a0 (join_1x2 ; (swapped)
+(a2r_1 a1) r)) (in_2 a1 a0 r))) 
+ :named l2 
+ ) 
+ ) 
+ (assert
  (! 
   ; 1. lemma for join_1x3. direction: join to in
 (forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_2 a1 a0 (join_1x3 ; (swapped)
@@ -129,6 +139,14 @@
  :named l8 
  ) 
  )
-
+(assert
+ (! 
+  ; good lemma
+(forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_3 a2 a1 a0 r) (in_2 a1 a0 (join_1x3 ; (swapped)
+(a2r_1 a2) r)))) 
+ :named l9 
+ ) 
+ )
+;; --end lemmas
 (check-sat)
-(get-unsat-core)
+;(get-unsat-core)

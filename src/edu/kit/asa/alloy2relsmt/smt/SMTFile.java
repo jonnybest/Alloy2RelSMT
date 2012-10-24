@@ -204,7 +204,7 @@ public class SMTFile {
 		out.println ("(set-logic AUFLIA)\n(set-option :macro-finder true)");
 		
 		// Only for sanity checks
-		Boolean core = false;
+		Boolean core = true;
 		if(core)
 			out.println ("(set-option :produce-unsat-cores true)");
 		
