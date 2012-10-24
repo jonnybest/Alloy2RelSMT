@@ -12,12 +12,12 @@
 (declare-fun transClos (Rel2) Rel2)
 
 (assert 
- (! 
-  ; subset axiom for Rel2
+(! 
+; subset axiom for Rel2
 (forall ((x Rel2)(y Rel2)) (= (subset_2 x y) (forall ((a0 Atom)(a1 Atom)) (=> (in_2 a0 a1 x) (in_2 a0 a1 y))))) 
- :named ax2 
- ) 
- )
+:named ax2 
+) 
+)
  (assert 
  (! 
   ; this axiom defines transitivity
@@ -26,35 +26,42 @@
  ) 
  )
 (assert 
- (! 
-  ; this axioms satisfies that r should be in transclos of r.				extensive
-(forall ((r Rel2)) (subset_2 r (transClos r))) 
- :named ax18 
- ) 
- )
+(! 
+; this axiom satisfies transitivity for transclos
+(forall ((r1 Rel2)) (trans (transClos r1))) 
+:named ax6 
+) 
+)
 (assert 
- (! 
-  ; this axiom satisfies transitivity for transclos. 								transitive
-(forall ((r Rel2)) (trans (transClos r))) 
- :named ax19 
- ) 
- )
+(! 
+; this axioms satisfies that tcl is extensive
+(forall ((r1 Rel2)) (subset_2 r1 (transClos r1))) 
+:named ax7 
+) 
+)
 (assert 
- (! 
-  ; this axiom satisfies minimality of transclos. 									?
-(forall ((r1 Rel2)(r2 Rel2)) (=> (and (subset_2 r1 r2) (trans r2)) (subset_2 (transClos r1) r2))) 
- :named ax20 
- ) 
- )
- 
- (assert
- (! 
- (not
-  (forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (transClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 r) (in_2 a3 a2 (transClos r)))))) 
-	)
- :named l12 
- ) 
- )
- 
- (check-sat)
-  (get-model)
+(! 
+; this axiom satisfies that transclos is increasing
+(forall ((r1 Rel2)(r2 Rel2)) (=> (subset_2 r1 r2) (subset_2 (transClos r1) r2))) 
+:named ax8 
+) 
+)
+(assert 
+(! 
+; this axiom satisfies that tcl should be idempotent
+(forall ((r1 Rel2)) (= (transClos (transClos r1)) (transClos r1))) 
+:named ax9 
+) 
+)
+
+(assert
+(! 
+(not
+(forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (transClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 r) (in_2 a3 a2 (transClos r)))))) 
+)
+:named l12 
+) 
+)
+
+(check-sat)
+(get-model)

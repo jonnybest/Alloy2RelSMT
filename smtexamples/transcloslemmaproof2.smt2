@@ -26,26 +26,33 @@
  ) 
  )
 (assert 
- (! 
-  ; this axioms satisfies that r should be in transclos of r.				extensive
-(forall ((r Rel2)) (subset_2 r (transClos r))) 
- :named ax18 
- ) 
- )
+(! 
+; this axiom satisfies transitivity for transclos
+(forall ((r1 Rel2)) (trans (transClos r1))) 
+:named ax6 
+) 
+)
 (assert 
- (! 
-  ; this axiom satisfies transitivity for transclos. 								transitive
-(forall ((r Rel2)) (trans (transClos r))) 
- :named ax19 
- ) 
- )
+(! 
+; this axioms satisfies that tcl is extensive
+(forall ((r1 Rel2)) (subset_2 r1 (transClos r1))) 
+:named ax7 
+) 
+)
 (assert 
- (! 
-  ; this axiom satisfies minimality of transclos. 									?
- (forall ((r1 Rel2)(r2 Rel2)) (=> (and (subset_2 r1 r2) (trans r2)) (subset_2 (transClos r1) r2))) 
- :named ax20 
- ) 
- )
+(! 
+; this axiom satisfies that transclos is increasing
+(forall ((r1 Rel2)(r2 Rel2)) (=> (subset_2 r1 r2) (subset_2 (transClos r1) r2))) 
+:named ax8 
+) 
+)
+(assert 
+(! 
+; this axiom satisfies that tcl should be idempotent
+(forall ((r1 Rel2)) (= (transClos (transClos r1)) (transClos r1))) 
+:named ax9 
+) 
+)
  
  (assert
  (! 
