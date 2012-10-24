@@ -1,156 +1,156 @@
 PS D:\Entwicklung\workspace\alloy2relsmt\smtexamples> z3 .\transcloslemmaproof2.smt2
-WARNING: pulled nested quantifier to be able to find an useable pattern (quantifier id: k!45)
+WARNING: pulled nested quantifier to be able to find an useable pattern (quantifier id: k_45)
 sat
 (model
   ;; universe for Atom:
-  ;;   Atom!val!0 Atom!val!1 Atom!val!2 Atom!val!4 Atom!val!3
+  ;;   Atom_val_0 Atom_val_1 Atom_val_2 Atom_val_4 Atom_val_3
   ;; -----------
   ;; definitions for universe elements:
-  (declare-fun Atom!val!0 () Atom)
-  (declare-fun Atom!val!1 () Atom)
-  (declare-fun Atom!val!2 () Atom)
-  (declare-fun Atom!val!4 () Atom)
-  (declare-fun Atom!val!3 () Atom)
+  (declare-fun Atom_val_0 () Atom)
+  (declare-fun Atom_val_1 () Atom)
+  (declare-fun Atom_val_2 () Atom)
+  (declare-fun Atom_val_4 () Atom)
+  (declare-fun Atom_val_3 () Atom)
   ;; cardinality constraint:
   (forall ((x Atom))
-          (or (= x Atom!val!0)
-              (= x Atom!val!1)
-              (= x Atom!val!2)
-              (= x Atom!val!4)
-              (= x Atom!val!3)))
+          (or (= x Atom_val_0)
+              (= x Atom_val_1)
+              (= x Atom_val_2)
+              (= x Atom_val_4)
+              (= x Atom_val_3)))
   ;; -----------
   ;; universe for Rel2:
-  ;;   Rel2!val!0 Rel2!val!1 Rel2!val!2
+  ;;   Rel2_val_0 Rel2_val_1 Rel2_val_2
   ;; -----------
   ;; definitions for universe elements:
-  (declare-fun Rel2!val!0 () Rel2)
-  (declare-fun Rel2!val!1 () Rel2)
-  (declare-fun Rel2!val!2 () Rel2)
+  (declare-fun Rel2_val_0 () Rel2)
+  (declare-fun Rel2_val_1 () Rel2)
+  (declare-fun Rel2_val_2 () Rel2)
   ;; cardinality constraint:
-  (forall ((x Rel2)) (or (= x Rel2!val!0) (= x Rel2!val!1) (= x Rel2!val!2)))
+  (forall ((x Rel2)) (or (= x Rel2_val_0) (= x Rel2_val_1) (= x Rel2_val_2)))
   ;; -----------
-  (define-fun r!5 () Rel2
-    Rel2!val!0)
-  (define-fun a2!6 () Atom
-    Atom!val!1)
-  (define-fun a1!7 () Atom
-    Atom!val!0)
-  (define-fun a1!4 ((x!1 Rel2)) Atom
-    Atom!val!2)
-  (define-fun a3!2 ((x!1 Rel2)) Atom
-    Atom!val!4)
-  (define-fun k!84 ((x!1 Atom)) Atom
-    (ite (= x!1 Atom!val!4) Atom!val!4
-    (ite (= x!1 Atom!val!1) Atom!val!1
-    (ite (= x!1 Atom!val!3) Atom!val!3
-    (ite (= x!1 Atom!val!0) Atom!val!0
-      Atom!val!2)))))
-  (define-fun a2!3 ((x!1 Rel2)) Atom
-    Atom!val!3)
-  (define-fun a0!1 ((x!1 Rel2) (x!2 Rel2)) Atom
-    Atom!val!0)
-  (define-fun in_2!87 ((x!1 Atom) (x!2 Atom) (x!3 Rel2)) Bool
-    (ite (and (= x!1 Atom!val!0) (= x!2 Atom!val!1) (= x!3 Rel2!val!1)) true
-    (ite (and (= x!1 Atom!val!2) (= x!2 Atom!val!3) (= x!3 Rel2!val!0)) true
-    (ite (and (= x!1 Atom!val!3) (= x!2 Atom!val!4) (= x!3 Rel2!val!0)) true
-    (ite (and (= x!1 Atom!val!3) (= x!2 Atom!val!4) (= x!3 Rel2!val!1)) true
-    (ite (and (= x!1 Atom!val!2) (= x!2 Atom!val!3) (= x!3 Rel2!val!1)) true
-    (ite (and (= x!1 Atom!val!0) (= x!2 Atom!val!1) (= x!3 Rel2!val!2)) true
-    (ite (and (= x!1 Atom!val!2) (= x!2 Atom!val!3) (= x!3 Rel2!val!2)) true
-    (ite (and (= x!1 Atom!val!3) (= x!2 Atom!val!4) (= x!3 Rel2!val!2)) true
-    (ite (and (= x!1 Atom!val!2) (= x!2 Atom!val!4) (= x!3 Rel2!val!1)) true
-    (ite (and (= x!1 Atom!val!2) (= x!2 Atom!val!4) (= x!3 Rel2!val!2)) true
+  (define-fun r_5 () Rel2
+    Rel2_val_0)
+  (define-fun a2_6 () Atom
+    Atom_val_1)
+  (define-fun a1_7 () Atom
+    Atom_val_0)
+  (define-fun a1_4 ((x_1 Rel2)) Atom
+    Atom_val_2)
+  (define-fun a3_2 ((x_1 Rel2)) Atom
+    Atom_val_4)
+  (define-fun k_84 ((x_1 Atom)) Atom
+    (ite (= x_1 Atom_val_4) Atom_val_4
+    (ite (= x_1 Atom_val_1) Atom_val_1
+    (ite (= x_1 Atom_val_3) Atom_val_3
+    (ite (= x_1 Atom_val_0) Atom_val_0
+      Atom_val_2)))))
+  (define-fun a2_3 ((x_1 Rel2)) Atom
+    Atom_val_3)
+  (define-fun a0_1 ((x_1 Rel2) (x_2 Rel2)) Atom
+    Atom_val_0)
+  (define-fun in_2_87 ((x_1 Atom) (x_2 Atom) (x_3 Rel2)) Bool
+    (ite (and (= x_1 Atom_val_0) (= x_2 Atom_val_1) (= x_3 Rel2_val_1)) true
+    (ite (and (= x_1 Atom_val_2) (= x_2 Atom_val_3) (= x_3 Rel2_val_0)) true
+    (ite (and (= x_1 Atom_val_3) (= x_2 Atom_val_4) (= x_3 Rel2_val_0)) true
+    (ite (and (= x_1 Atom_val_3) (= x_2 Atom_val_4) (= x_3 Rel2_val_1)) true
+    (ite (and (= x_1 Atom_val_2) (= x_2 Atom_val_3) (= x_3 Rel2_val_1)) true
+    (ite (and (= x_1 Atom_val_0) (= x_2 Atom_val_1) (= x_3 Rel2_val_2)) true
+    (ite (and (= x_1 Atom_val_2) (= x_2 Atom_val_3) (= x_3 Rel2_val_2)) true
+    (ite (and (= x_1 Atom_val_3) (= x_2 Atom_val_4) (= x_3 Rel2_val_2)) true
+    (ite (and (= x_1 Atom_val_2) (= x_2 Atom_val_4) (= x_3 Rel2_val_1)) true
+    (ite (and (= x_1 Atom_val_2) (= x_2 Atom_val_4) (= x_3 Rel2_val_2)) true
       false)))))))))))
-  (define-fun k!85 ((x!1 Rel2)) Rel2
-    (ite (= x!1 Rel2!val!2) Rel2!val!2
-    (ite (= x!1 Rel2!val!1) Rel2!val!1
-      Rel2!val!0)))
-  (define-fun in_2 ((x!1 Atom) (x!2 Atom) (x!3 Rel2)) Bool
-    (in_2!87 (k!84 x!1) (k!84 x!2) (k!85 x!3)))
-  (define-fun subset_2 ((x!1 Rel2) (x!2 Rel2)) Bool
-    (forall ((a0 Atom) (a1 Atom)) (or (not (in_2 a0 a1 x!1)) (in_2 a0 a1 x!2))))
-  (define-fun trans ((x!1 Rel2)) Bool
+  (define-fun k_85 ((x_1 Rel2)) Rel2
+    (ite (= x_1 Rel2_val_2) Rel2_val_2
+    (ite (= x_1 Rel2_val_1) Rel2_val_1
+      Rel2_val_0)))
+  (define-fun in_2 ((x_1 Atom) (x_2 Atom) (x_3 Rel2)) Bool
+    (in_2_87 (k_84 x_1) (k_84 x_2) (k_85 x_3)))
+  (define-fun subset_2 ((x_1 Rel2) (x_2 Rel2)) Bool
+    (forall ((a0 Atom) (a1 Atom)) (or (not (in_2 a0 a1 x_1)) (in_2 a0 a1 x_2))))
+  (define-fun trans ((x_1 Rel2)) Bool
     (forall ((a1 Atom) (a2 Atom) (a3 Atom))
-      (or (not (and (in_2 a1 a2 x!1) (in_2 a2 a3 x!1))) (in_2 a1 a3 x!1))))
-  (define-fun transClos!86 ((x!1 Rel2)) Rel2
-    (ite (= x!1 Rel2!val!1) Rel2!val!2
-      Rel2!val!1))
-  (define-fun transClos ((x!1 Rel2)) Rel2
-    (transClos!86 (k!85 x!1)))
-  (define-fun a1!0 ((x!1 Rel2) (x!2 Rel2)) Atom
-    Atom!val!0)
+      (or (not (and (in_2 a1 a2 x_1) (in_2 a2 a3 x_1))) (in_2 a1 a3 x_1))))
+  (define-fun transClos_86 ((x_1 Rel2)) Rel2
+    (ite (= x_1 Rel2_val_1) Rel2_val_2
+      Rel2_val_1))
+  (define-fun transClos ((x_1 Rel2)) Rel2
+    (transClos_86 (k_85 x_1)))
+  (define-fun a1_0 ((x_1 Rel2) (x_2 Rel2)) Atom
+    Atom_val_0)
 )
 PS D:\Entwicklung\workspace\alloy2relsmt\smtexamples> z3 .\transcloslemmaproof1.smt2
-WARNING: pulled nested quantifier to be able to find an useable pattern (quantifier id: k!45)
+WARNING: pulled nested quantifier to be able to find an useable pattern (quantifier id: k_45)
 sat
 (model
   ;; universe for Atom:
-  ;;   Atom!val!0 Atom!val!1 Atom!val!2 Atom!val!4 Atom!val!3
+  ;;   Atom_val_0 Atom_val_1 Atom_val_2 Atom_val_4 Atom_val_3
   ;; -----------
   ;; definitions for universe elements:
-  (declare-fun Atom!val!0 () Atom)
-  (declare-fun Atom!val!1 () Atom)
-  (declare-fun Atom!val!2 () Atom)
-  (declare-fun Atom!val!4 () Atom)
-  (declare-fun Atom!val!3 () Atom)
+  (declare-fun Atom_val_0 () Atom)
+  (declare-fun Atom_val_1 () Atom)
+  (declare-fun Atom_val_2 () Atom)
+  (declare-fun Atom_val_4 () Atom)
+  (declare-fun Atom_val_3 () Atom)
   ;; cardinality constraint:
   (forall ((x Atom))
-          (or (= x Atom!val!0)
-              (= x Atom!val!1)
-              (= x Atom!val!2)
-              (= x Atom!val!4)
-              (= x Atom!val!3)))
+          (or (= x Atom_val_0)
+              (= x Atom_val_1)
+              (= x Atom_val_2)
+              (= x Atom_val_4)
+              (= x Atom_val_3)))
   ;; -----------
   ;; universe for Rel2:
-  ;;   Rel2!val!0 Rel2!val!1
+  ;;   Rel2_val_0 Rel2_val_1
   ;; -----------
   ;; definitions for universe elements:
-  (declare-fun Rel2!val!0 () Rel2)
-  (declare-fun Rel2!val!1 () Rel2)
+  (declare-fun Rel2_val_0 () Rel2)
+  (declare-fun Rel2_val_1 () Rel2)
   ;; cardinality constraint:
-  (forall ((x Rel2)) (or (= x Rel2!val!0) (= x Rel2!val!1)))
+  (forall ((x Rel2)) (or (= x Rel2_val_0) (= x Rel2_val_1)))
   ;; -----------
-  (define-fun r!5 () Rel2
-    Rel2!val!0)
-  (define-fun a2!6 () Atom
-    Atom!val!1)
-  (define-fun a1!7 () Atom
-    Atom!val!0)
-  (define-fun a1!4 ((x!1 Rel2)) Atom
-    Atom!val!2)
-  (define-fun a3!2 ((x!1 Rel2)) Atom
-    Atom!val!4)
-  (define-fun k!69 ((x!1 Rel2)) Rel2
-    (ite (= x!1 Rel2!val!1) Rel2!val!1
-      Rel2!val!0))
-  (define-fun in_2!70 ((x!1 Atom) (x!2 Atom) (x!3 Rel2)) Bool
-    (ite (and (= x!1 Atom!val!0) (= x!2 Atom!val!1) (= x!3 Rel2!val!1)) true
-    (ite (and (= x!1 Atom!val!2) (= x!2 Atom!val!3) (= x!3 Rel2!val!0)) true
-    (ite (and (= x!1 Atom!val!3) (= x!2 Atom!val!4) (= x!3 Rel2!val!0)) true
-    (ite (and (= x!1 Atom!val!3) (= x!2 Atom!val!4) (= x!3 Rel2!val!1)) true
-    (ite (and (= x!1 Atom!val!2) (= x!2 Atom!val!3) (= x!3 Rel2!val!1)) true
-    (ite (and (= x!1 Atom!val!2) (= x!2 Atom!val!4) (= x!3 Rel2!val!1)) true
+  (define-fun r_5 () Rel2
+    Rel2_val_0)
+  (define-fun a2_6 () Atom
+    Atom_val_1)
+  (define-fun a1_7 () Atom
+    Atom_val_0)
+  (define-fun a1_4 ((x_1 Rel2)) Atom
+    Atom_val_2)
+  (define-fun a3_2 ((x_1 Rel2)) Atom
+    Atom_val_4)
+  (define-fun k_69 ((x_1 Rel2)) Rel2
+    (ite (= x_1 Rel2_val_1) Rel2_val_1
+      Rel2_val_0))
+  (define-fun in_2_70 ((x_1 Atom) (x_2 Atom) (x_3 Rel2)) Bool
+    (ite (and (= x_1 Atom_val_2) (= x_2 Atom_val_3) (= x_3 Rel2_val_0)) true
+    (ite (and (= x_1 Atom_val_3) (= x_2 Atom_val_4) (= x_3 Rel2_val_0)) true
+    (ite (and (= x_1 Atom_val_0) (= x_2 Atom_val_1) (= x_3 Rel2_val_1)) true
+    (ite (and (= x_1 Atom_val_3) (= x_2 Atom_val_4) (= x_3 Rel2_val_1)) true
+    (ite (and (= x_1 Atom_val_2) (= x_2 Atom_val_3) (= x_3 Rel2_val_1)) true
+    (ite (and (= x_1 Atom_val_2) (= x_2 Atom_val_4) (= x_3 Rel2_val_1)) true
       false)))))))
-  (define-fun k!68 ((x!1 Atom)) Atom
-    (ite (= x!1 Atom!val!4) Atom!val!4
-    (ite (= x!1 Atom!val!1) Atom!val!1
-    (ite (= x!1 Atom!val!3) Atom!val!3
-    (ite (= x!1 Atom!val!0) Atom!val!0
-      Atom!val!2)))))
-  (define-fun in_2 ((x!1 Atom) (x!2 Atom) (x!3 Rel2)) Bool
-    (in_2!70 (k!68 x!1) (k!68 x!2) (k!69 x!3)))
-  (define-fun subset_2 ((x!1 Rel2) (x!2 Rel2)) Bool
-    (forall ((a0 Atom) (a1 Atom)) (or (not (in_2 a0 a1 x!1)) (in_2 a0 a1 x!2))))
-  (define-fun trans ((x!1 Rel2)) Bool
+  (define-fun k_68 ((x_1 Atom)) Atom
+    (ite (= x_1 Atom_val_4) Atom_val_4
+    (ite (= x_1 Atom_val_1) Atom_val_1
+    (ite (= x_1 Atom_val_3) Atom_val_3
+    (ite (= x_1 Atom_val_0) Atom_val_0
+      Atom_val_2)))))
+  (define-fun in_2 ((x_1 Atom) (x_2 Atom) (x_3 Rel2)) Bool
+    (in_2_70 (k_68 x_1) (k_68 x_2) (k_69 x_3)))
+  (define-fun subset_2 ((x_1 Rel2) (x_2 Rel2)) Bool
+    (forall ((a0 Atom) (a1 Atom)) (or (not (in_2 a0 a1 x_1)) (in_2 a0 a1 x_2))))
+  (define-fun trans ((x_1 Rel2)) Bool
     (forall ((a1 Atom) (a2 Atom) (a3 Atom))
-      (or (not (and (in_2 a1 a2 x!1) (in_2 a2 a3 x!1))) (in_2 a1 a3 x!1))))
-  (define-fun transClos ((x!1 Rel2)) Rel2
-    Rel2!val!1)
-  (define-fun a1!0 ((x!1 Rel2) (x!2 Rel2)) Atom
-    Atom!val!0)
-  (define-fun a2!3 ((x!1 Rel2)) Atom
-    Atom!val!3)
-  (define-fun a0!1 ((x!1 Rel2) (x!2 Rel2)) Atom
-    Atom!val!0)
+      (or (not (and (in_2 a1 a2 x_1) (in_2 a2 a3 x_1))) (in_2 a1 a3 x_1))))
+  (define-fun transClos ((x_1 Rel2)) Rel2
+    Rel2_val_1)
+  (define-fun a1_0 ((x_1 Rel2) (x_2 Rel2)) Atom
+    Atom_val_0)
+  (define-fun a2_3 ((x_1 Rel2)) Atom
+    Atom_val_3)
+  (define-fun a0_1 ((x_1 Rel2) (x_2 Rel2)) Atom
+    Atom_val_0)
 )
 PS D:\Entwicklung\workspace\alloy2relsmt\smtexamples>

@@ -42,7 +42,7 @@
 (assert 
  (! 
   ; this axiom satisfies minimality of transclos. 									?
-(forall ((r1 Rel2)(r2 Rel2)) (=> (and (subset_2 r1 r2) (trans r2)) (subset_2 (transClos r1) r2))) 
+ (forall ((r1 Rel2)(r2 Rel2)) (=> (and (subset_2 r1 r2) (trans r2)) (subset_2 (transClos r1) r2))) 
  :named ax20 
  ) 
  )
