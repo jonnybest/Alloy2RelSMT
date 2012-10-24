@@ -981,6 +981,8 @@ public final class RelTheory {
 	 * @throws ModelException
 	 */
 	private void assertLemmasTCL(String name) throws ModelException {
+		return; /*
+		
 		TermVar a1 = TermVar.var("Atom", "a1");
 		TermVar a2 = TermVar.var("Atom", "a2");		
 		TermVar r = TermVar.var("Rel2", "r");
@@ -998,6 +1000,7 @@ public final class RelTheory {
 		Term a32inR = Term.reverseIn(r, a3, a2);
 		
 		file.addLemma(a12inTCL.implies(a13inTCL.and(a32inR).exists(a3)).forall(a1, a2, r));
+		*/
 	}
 
 }
