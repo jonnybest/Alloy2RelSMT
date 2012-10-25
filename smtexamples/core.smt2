@@ -13,7 +13,7 @@
 ;; functions
 (declare-fun in_1 (Atom Rel1) Bool)							 
 (declare-fun in_2 (Atom Atom Rel2) Bool)				 
-;(declare-fun transClos (Rel2) Rel2)							; good. ax7, ax8, l0
+(declare-fun transClos (Rel2) Rel2)							; good. ax7, ax8, l0
 (declare-fun subset_2 (Rel2 Rel2) Bool)					; ax7, ax8, ax11, 
 (declare-fun join_1x2 (Rel1 Rel2) Rel1)					; ax12, a10
 (declare-fun a2r_1 (Atom) Rel1)									; ax13, a10
@@ -83,6 +83,13 @@
 ; good assertion  ; subset axiom for Rel1
 (forall ((x Rel1)(y Rel1)) (= (subset_1 x y) (forall ((a0 Atom)) (=> (in_1 a0 x) (in_1 a0 y))))) 
  :named ax25 
+ ) 
+ )
+ (assert 
+ (! 
+ ; core
+  (forall ((y0 Atom)(x0 Atom)(x1 Atom)(A Rel2)(B Rel1)) (= (in_3 x0 x1 y0 (prod_2x1 A B)) (and (in_2 x0 x1 A) (in_1 y0 B)))) 
+ :named ax28 
  ) 
  )
 (assert 
