@@ -89,12 +89,11 @@ pred GrabbedInOrder  {
 }
 
 assert DijkstraPreventsDeadlocks {
-   some Process && //GrabOrRelease && 
-   GrabbedInOrder => ! Deadlock
+   some Process && GrabbedInOrder => ! Deadlock
 }
 
 
 //run Deadlock for 3 expect 1
 //run ShowDijkstra for 5 State, 2 Process, 2 Mutex expect 1
-check DijkstraPreventsDeadlocks for 5 State, 5 Process, 4 Mutex expect 0
+check DijkstraPreventsDeadlocks for 1 State, 1 Process, 1 Mutex expect 0
 
