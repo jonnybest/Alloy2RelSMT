@@ -11,13 +11,14 @@
 ;; --end sorts
 
 ;; functions
-(declare-fun in_1 (Atom Rel1) Bool)							 
-(declare-fun in_2 (Atom Atom Rel2) Bool)				 
 (declare-fun transClos (Rel2) Rel2)							; good. ax7, ax8, l0
+(declare-fun in_1 (Atom Rel1) Bool)
+(declare-fun in_2 (Atom Atom Rel2) Bool)
+(declare-fun prod_1x1 (Rel1 Rel1) Rel2)					; ax24, a1
 (declare-fun subset_2 (Rel2 Rel2) Bool)					; ax7, ax8, ax11, 
 (declare-fun join_1x2 (Rel1 Rel2) Rel1)					; ax12, a10
 (declare-fun a2r_1 (Atom) Rel1)									; ax13, a10
-(declare-fun prod_1x1 (Rel1 Rel1) Rel2)					; ax24, a1
+
 (declare-fun subset_1 (Rel1 Rel1) Bool) 				; (ax25 good)
 (declare-fun join_2x1 (Rel2 Rel1) Rel1)					; ax28
 (declare-fun in_3 (Atom Atom Atom Rel3) Bool)		
@@ -160,7 +161,7 @@
 (assert
  (! ; core
   ; lemma 1 for transClos about the second-last 'middle element'
-(forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (forall ((a2 Atom)) (or (not (in_2 a1 a2 R)) (and (in_2 a1 a2 R) (in_2 a2 a3 (transClos R))))))) 
+(forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (forall ((a2 Atom)) (and (not (= a2 a3)) (or (not (in_2 a1 a2 R)) (and (in_2 a1 a2 R) (in_2 a2 a3 (transClos R))))))))
  :named l0 
  ) 
  )
