@@ -13,7 +13,7 @@
 ;; functions
 (declare-fun in_1 (Atom Rel1) Bool)							 
 (declare-fun in_2 (Atom Atom Rel2) Bool)				 
-(declare-fun transClos (Rel2) Rel2)							; ax7, ax8, l0
+;(declare-fun transClos (Rel2) Rel2)							; good. ax7, ax8, l0
 (declare-fun subset_2 (Rel2 Rel2) Bool)					; ax7, ax8, ax11, 
 (declare-fun join_1x2 (Rel1 Rel2) Rel1)					; ax12, a10
 (declare-fun a2r_1 (Atom) Rel1)									; ax13, a10
@@ -23,15 +23,15 @@
 (declare-fun in_3 (Atom Atom Atom Rel3) Bool)		
 (declare-fun prod_2x1 (Rel2 Rel1) Rel3)					; a1, uninterpreted
 (declare-fun subset_3 (Rel3 Rel3) Bool)					; ax29, a1
-(declare-fun waits () Rel3)											; a1
+(declare-const waits Rel3)											; a1
 (declare-fun join_1x3 (Rel1 Rel3) Rel2)					; ax34, a10
 (declare-fun disjoint_1 (Rel1 Rel1) Bool)				; ax35, a4
 (declare-fun some_1 (Rel1) Bool)								; ax39, a10, c0
 (declare-fun Deadlock () Bool)									; a10, c0
 (declare-fun GrabbedInOrder () Bool)						; c0, uninterpreted
-(declare-fun Mutex () Rel1)											; a1
-(declare-fun Process () Rel1)										; a1, a4, a10, c0
-(declare-fun State () Rel1)											; a1, a4, a10
+(declare-const Mutex Rel1)											; a1
+(declare-const Process Rel1)										; a1, a4, a10, c0
+(declare-const State Rel1)											; a1, a4, a10
 
 ;; --end functions
 
@@ -41,6 +41,12 @@
   ; core
 (forall ((r1 Rel2)) (subset_2 r1 (transClos r1))) 
  :named ax7 
+ ) 
+ )
+(assert 
+ (! ; core
+  (forall ((y0 Atom)(x0 Atom)(A Rel1)(B Rel1)) (= (in_2 x0 y0 (prod_1x1 A B)) (and (in_1 x0 A) (in_1 y0 B)))) 
+ :named ax24 
  ) 
  )
 (assert 
@@ -71,12 +77,7 @@
  :named ax13 
  ) 
  )
-(assert 
- (! ; core
-  (forall ((y0 Atom)(x0 Atom)(A Rel1)(B Rel1)) (= (in_2 x0 y0 (prod_1x1 A B)) (and (in_1 x0 A) (in_1 y0 B)))) 
- :named ax24 
- ) 
- )
+
 (assert 
  (! 
 ; good assertion  ; subset axiom for Rel1
@@ -148,7 +149,6 @@
  ) 
  )
 ;; --end command
-
 ;; lemmas
 (assert
  (! ; core
@@ -158,6 +158,5 @@
  ) 
  )
 
- 
 (check-sat)
 (get-unsat-core)
