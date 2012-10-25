@@ -1,5 +1,5 @@
 ; found core! unsat
-; (ax7 ax8 ax11 ax12 ax13 ax24 ax25 ax26 ax28 ax29 ax34 ax35 ax39 a1 a4 a10 c0 l0)
+; (ax7 ax8 ax11 ax12 ax13 ax24 ax28 ax29 ax34 ax35 ax39 a1 a4 a10 c0 l0)
 (set-option :macro-finder true)
 (set-option :mbqi false)
 (set-option :produce-unsat-cores false)
@@ -11,27 +11,28 @@
 ;; --end sorts
 
 ;; functions
-(declare-fun in_1 (Atom Rel1) Bool)
-(declare-fun in_2 (Atom Atom Rel2) Bool)
-(declare-fun transClos (Rel2) Rel2)
-(declare-fun subset_2 (Rel2 Rel2) Bool)
-(declare-fun join_1x2 (Rel1 Rel2) Rel1)
-(declare-fun a2r_1 (Atom) Rel1)
-(declare-fun prod_1x1 (Rel1 Rel1) Rel2)
-(declare-fun subset_1 (Rel1 Rel1) Bool)
-(declare-fun join_2x1 (Rel2 Rel1) Rel1)
-(declare-fun in_3 (Atom Atom Atom Rel3) Bool)
-(declare-fun prod_2x1 (Rel2 Rel1) Rel3)
-(declare-fun subset_3 (Rel3 Rel3) Bool)
-(declare-fun waits () Rel3)
-(declare-fun join_1x3 (Rel1 Rel3) Rel2)
-(declare-fun disjoint_1 (Rel1 Rel1) Bool)
-(declare-fun some_1 (Rel1) Bool)
-(declare-fun Deadlock () Bool)
-(declare-fun GrabbedInOrder () Bool)
-(declare-fun Mutex () Rel1)
-(declare-fun Process () Rel1)
-(declare-fun State () Rel1)
+(declare-fun in_1 (Atom Rel1) Bool)							 
+(declare-fun in_2 (Atom Atom Rel2) Bool)				 
+(declare-fun transClos (Rel2) Rel2)							; ax7, ax8, l0
+(declare-fun subset_2 (Rel2 Rel2) Bool)					; ax7, ax8, ax11, 
+(declare-fun join_1x2 (Rel1 Rel2) Rel1)					; ax12, a10
+(declare-fun a2r_1 (Atom) Rel1)									; ax13, a10
+(declare-fun prod_1x1 (Rel1 Rel1) Rel2)					; ax24, a1
+(declare-fun subset_1 (Rel1 Rel1) Bool) 				; (ax25 good)
+(declare-fun join_2x1 (Rel2 Rel1) Rel1)					; ax28
+(declare-fun in_3 (Atom Atom Atom Rel3) Bool)		
+(declare-fun prod_2x1 (Rel2 Rel1) Rel3)					; a1, uninterpreted
+(declare-fun subset_3 (Rel3 Rel3) Bool)					; ax29, a1
+(declare-fun waits () Rel3)											; a1
+(declare-fun join_1x3 (Rel1 Rel3) Rel2)					; ax34, a10
+(declare-fun disjoint_1 (Rel1 Rel1) Bool)				; ax35, a4
+(declare-fun some_1 (Rel1) Bool)								; ax39, a10, c0
+(declare-fun Deadlock () Bool)									; a10, c0
+(declare-fun GrabbedInOrder () Bool)						; c0, uninterpreted
+(declare-fun Mutex () Rel1)											; a1
+(declare-fun Process () Rel1)										; a1, a4, a10, c0
+(declare-fun State () Rel1)											; a1, a4, a10
+
 ;; --end functions
 
 ;; axioms
@@ -78,23 +79,9 @@
  )
 (assert 
  (! 
-; core  ; subset axiom for Rel1
+; good assertion  ; subset axiom for Rel1
 (forall ((x Rel1)(y Rel1)) (= (subset_1 x y) (forall ((a0 Atom)) (=> (in_1 a0 x) (in_1 a0 y))))) 
  :named ax25 
- ) 
- )
-(assert 
- (! 
-; core  ; axiom for join_2x1
-(forall ((A Rel2)(B Rel1)(y0 Atom)) (= (in_1 y0 (join_2x1 A B)) (exists ((x Atom)) (and (in_2 y0 x A) (in_1 x B))))) 
- :named ax26 
- )) 
-
-(assert 
- (! 
- ; core
-  (forall ((y0 Atom)(x0 Atom)(x1 Atom)(A Rel2)(B Rel1)) (= (in_3 x0 x1 y0 (prod_2x1 A B)) (and (in_2 x0 x1 A) (in_1 y0 B)))) 
- :named ax28 
  ) 
  )
 (assert 
@@ -173,3 +160,4 @@
 
  
 (check-sat)
+(get-unsat-core)
