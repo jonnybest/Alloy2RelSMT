@@ -278,46 +278,22 @@
  :named ax35 
  ) 
  )
+
 (assert 
- (! 
-  ; axiom for union of Rel2
-(forall ((x0 Atom)(x1 Atom)(A Rel2)(B Rel2)) (= (in_2 x0 x1 (union_2 A B)) (or (in_2 x0 x1 A) (in_2 x0 x1 B)))) 
- :named ax36 
- ) 
- )
-(assert 
- (! 
+ (!  ; blocker?
   ; axiom for 'the expression is empty'
 (forall ((a0 Atom)(a1 Atom)(R Rel2)) (=> (no_2 R) (not (in_2 a0 a1 R)))) 
  :named ax37 
  ) 
  )
-(assert 
- (! 
-  ; axiom for transposition
-(forall ((a0 Atom)(a1 Atom)(R Rel2)) (= (in_2 a0 a1 (transp R)) (in_2 a1 a0 R))) 
- :named ax38 
- ) 
- )
+
 (assert 
  (! ; core
   (forall ((A Rel1)) (= (some_1 A) (exists ((a0 Atom)) (in_1 a0 A)))) 
  :named ax39 
  ) 
  )
-(assert 
- (! 
-  ; axiom for union of Rel1
-(forall ((x0 Atom)(A Rel1)(B Rel1)) (= (in_1 x0 (union_1 A B)) (or (in_1 x0 A) (in_1 x0 B)))) 
- :named ax40 
- ) 
- )
-(assert 
- (! 
-  (forall ((A Rel1)(B Rel1)(a0 Atom)) (= (in_1 a0 (diff_1 A B)) (and (in_1 a0 A) (not (in_1 a0 B))))) 
- :named ax41 
- ) 
- )
+
 
 ;; --end axioms
 
