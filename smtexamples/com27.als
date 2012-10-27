@@ -77,14 +77,6 @@ fact Reflexivity { all i : LegalInterface | i.iids in i.iidsKnown }
 fact Symmetry { all i, j : LegalInterface | j in i.reaches => i.iids in j.iidsKnown }
 fact Transitivity { all i, j : LegalInterface | j in i.reaches => j.iidsKnown in i.iidsKnown }
 
-
-fact Aggregation {
-    no c : Component | c in c.^aggregates
-    all outer : Component | all inner : outer.aggregates |
-      (some inner.interfaces & outer.interfaces)
-      && (some o: outer.interfaces | all i: inner.interfaces - inner.first | all x: Component  | (x.iids).(i.qi) = (x.iids).(o.qi))
-    }
-		
 fact lemmas {
 	//all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids	 // proven
 	//all c: LegalComponent | all i: c.interfaces | all o: i.iidsKnown | o in c.iids // 16
@@ -95,11 +87,11 @@ fact lemmas {
 	//22 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in o.(i.qi).iids}
 	//24 {some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in o.(i.qi).iids}
 	//26 {some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in i.iidsKnown}
-	//26 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown}
+	//27 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown}
 }
 
 assert Theorem1 {
-	c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in o.(i.qi).iids // 22
+not some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown // 27
     //some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface // 19
 		
 		/* original check 

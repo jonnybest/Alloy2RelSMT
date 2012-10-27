@@ -99,7 +99,7 @@ fact lemmas {
 }
 
 assert Theorem1 {
-	c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in o.(i.qi).iids // 22
+not	some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in o.(i.qi).iids // 24
     //some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface // 19
 		
 		/* original check 
