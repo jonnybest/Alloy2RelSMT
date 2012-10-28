@@ -663,17 +663,18 @@ public final class RelTheory {
 			Term axiom = somethingIsInProduct.iff(xInAandYInB).forall(A, B).forall(x).forall(y);
 			file.addAxiom(axiom);
 			
+			if(lar == 1 && rar == 1)
 			{
 				/* something like:
 				 *  (assert
-					(forall ((R Rel3)(A Rel2)(B Rel1))
+					(forall ((R Rel2)(A Rel1)(B Rel1)) 
 						(=>
-							(subset_3 R (prod_2x1 A B)) 	; guard
-							(forall ((a0 Atom)(a1 Atom))	; body
+							(subset_2 R (prod_1x1 A B))  ; R=(i.qi) A=IID B=Interface	; guard
+							(forall ((a0 Atom)) 										; body
 							(=>
-								(in_2 a0 a1 A)				; a in A
-								(=> (no_2 (join_2x3 a2r(a0 a1) R))	; exclusionA
-									(not (in_2 a0 a1 (join_3x1 R B)))))))))		; exclusionB
+								(in_1 a0 A)												; a in A
+								(= 	(not (in_1 a0 (join_2x1 R B)))						; exclusionB
+									(no_2 (join_1x2 (a2r_1 a0) R))))))))				; exclusionA
 				 */
 				// lemma for subset and product
 				
@@ -693,7 +694,7 @@ public final class RelTheory {
 				Term nojoinA = Term.call("no_" + (lar + resultArity - 2), joinA);
 				Term exclusionA = nojoinA;
 				Term exclusionB = Term.reverseIn(joinB, a).not();
-				Term body = ainA.implies((exclusionA.implies(exclusionB)).and(exclusionB.implies(exclusionA))).forall(a);
+				Term body = ainA.implies((exclusionB.equal(exclusionA))).forall(a);
 				Term lemma = guard.implies(body).forall(R, A, B);
 				lemma.setComment("lemma about subset " + resultArity + " and product "+ lar + "x" + rar + " , using join");
 				file.addLemma(lemma);
@@ -992,6 +993,29 @@ public final class RelTheory {
 		lemma = aInR.implies(resultInJoin).forall(Util.concat(atoms, r));
 		lemma.setComment("2. lemma for "+name+". direction: in to join");
 		file.addLemma(lemma);
+		
+		if(lar == 1 && rar == 3){
+			/* lemma for the com-theorem1
+			 * ; R=qi S=iids
+					(assert (! (forall ((R Rel3)(S Rel2)(x Atom))
+						(=>
+							(no_2 (join_1x3 (a2r_1 x) R)) 
+							(no_2 (join_1x3 (a2r_1 x) (join_3x2 R S))))))
+			*/
+			declareJoin(3, 2);
+			declareA2r(1);
+			declareNo(2);
+			TermVar R = TermVar.var("Rel3", "R");
+			TermVar S = TermVar.var("Rel2", "S");
+			TermVar x = TermVar.var("Atom", "x");
+			Term Xrel = Term.call("a2r_1", x);
+			Term joinRS = Term.call("join_3x2", R, S);
+			Term guard = Term.call("no_2", Term.call(name, Xrel, R));
+			Term body = Term.call("no_2", Term.call(name, Xrel, joinRS));
+			lemma = guard.implies(body).forall(R, S, x);
+			lemma.setComment("lemma for step 21 of the com-theorem1 for join_1x3");
+			file.addLemma(lemma);
+		}
 	}
 
 	/**
