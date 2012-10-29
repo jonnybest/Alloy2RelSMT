@@ -994,26 +994,28 @@ public final class RelTheory {
 		lemma.setComment("2. lemma for "+name+". direction: in to join");
 		file.addLemma(lemma);
 		
-		if(lar == 1 && rar == 3){
+		if(lar == 1 && rar == 2){
 			/* lemma for the com-theorem1
-			 * ; R=qi S=iids
-					(assert (! (forall ((R Rel3)(S Rel2)(x Atom))
-						(=>
-							(no_2 (join_1x3 (a2r_1 x) R)) 
-							(no_2 (join_1x3 (a2r_1 x) (join_3x2 R S))))))
+			 * ; R=(i.qi) S=iids
+				(assert (! (forall ((R Rel2)(S Rel2)(x Atom))
+					(=>
+						(no_2 (join_1x2 (a2r_1 x) R)) 
+						(no_2 (join_1x2 (a2r_1 x) (join_2x2 R S))))))
+						:named step21
+				)
 			*/
-			declareJoin(3, 2);
+			declareJoin(2, 2);
 			declareA2r(1);
-			declareNo(2);
-			TermVar R = TermVar.var("Rel3", "R");
+			declareNo(1);
+			TermVar R = TermVar.var("Rel2", "R");
 			TermVar S = TermVar.var("Rel2", "S");
 			TermVar x = TermVar.var("Atom", "x");
 			Term Xrel = Term.call("a2r_1", x);
-			Term joinRS = Term.call("join_3x2", R, S);
-			Term guard = Term.call("no_2", Term.call(name, Xrel, R));
-			Term body = Term.call("no_2", Term.call(name, Xrel, joinRS));
+			Term joinRS = Term.call("join_2x2", R, S);
+			Term guard = Term.call("no_1", Term.call(name, Xrel, R));
+			Term body = Term.call("no_1", Term.call(name, Xrel, joinRS));
 			lemma = guard.implies(body).forall(R, S, x);
-			lemma.setComment("lemma for step 21 of the com-theorem1 for join_1x3");
+			lemma.setComment("lemma for step 21 of the com-theorem1 for join_1x2: R=(i.qi) S=iids");
 			file.addLemma(lemma);
 		}
 	}
