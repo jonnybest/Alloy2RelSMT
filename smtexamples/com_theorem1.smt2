@@ -394,9 +394,17 @@
  :named c0 
  ) 
  )
+ 
 ;; --end command
 
 ;; lemmas
+(assert (! (forall ((a Atom)(b Atom)(A Rel2)(B Rel2)) 
+  (=> 
+		(subset_1 (join_1x2 (a2r_1 a) A) (join_1x2 (a2r_1 b) B))
+		(forall ((x Atom))(=>
+			(in_1 x (join_1x2 (a2r_1 a) A))
+			(in_1 x (join_1x2 (a2r_1 b) B)))))) :named step16))
+			
 (assert
  (! 
   ; 1. lemma for join_1x2. direction: join to in
