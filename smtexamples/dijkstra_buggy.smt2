@@ -1,5 +1,6 @@
+(set-logic AUFLIA)
 (set-option :macro-finder true)
-(set-option :produce-unsat-cores false)
+(set-option :produce-unsat-cores true)
 ;; sorts
 (declare-sort Rel1)
 (declare-sort Atom)
@@ -58,9 +59,9 @@
 (declare-fun ReleaseMutex (Rel1 Rel1 Rel1 Rel1) Bool)
 (declare-fun Deadlock () Bool)
 (declare-fun GrabbedInOrder () Bool)
-(declare-fun Process () Rel1)
 (declare-fun State () Rel1)
 (declare-fun Mutex () Rel1)
+(declare-fun Process () Rel1)
 ;; --end functions
 
 ;; axioms
@@ -385,19 +386,19 @@
  )
 (assert 
  (! 
-  (disjoint_1 Process State) 
+  (disjoint_1 State Mutex) 
  :named a2 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 Process Mutex) 
+  (disjoint_1 State Process) 
  :named a3 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 State Mutex) 
+  (disjoint_1 Mutex Process) 
  :named a4 
  ) 
  )

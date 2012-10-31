@@ -99,6 +99,7 @@ fact lemmas {
 }
 
 assert Theorem1 {
+<<<<<<< HEAD
 	c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in o.(i.qi).iids // 22
     //some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface // 19
 		
@@ -106,6 +107,10 @@ assert Theorem1 {
 		// inprovable: all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // inprovable
 		// proven // all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids		 // proven 
 		*/
+=======
+     // all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids
+		 all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown
+>>>>>>> 9955f75617c09f537d7a3b238631ed45394ca683
      }
 check Theorem1 for 9
 
