@@ -384,9 +384,12 @@
  )
 (assert
  (! 
-  ; lemma for step 21 of the com-theorem1 for join_1x2: R=(i.qi) S=iids
-(forall ((R Rel2)(S Rel2)(x Atom)) (=> (no_1 (join_1x2 (a2r_1 x) R)) (no_1 (join_1x2 (a2r_1 x) (join_2x2 R S))))) 
- :named l4 
+  ; lemma for step 21 of the com-theorem1 for join_1x3
+(forall ((R Rel1)(S Rel2)(x Atom)) 
+(=> 
+	(not (in_1 x (join_2x1 S R)))
+	(no_1 (join_1x2 (a2r_1 x) S))))
+ :named l4
  ) 
  )
 (assert
