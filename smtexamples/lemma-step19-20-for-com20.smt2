@@ -56,11 +56,12 @@
 	(=>
 		(not (in_1 x (join_2x1 R B)))
 		(no_1 (join_1x2 (a2r_1 x) R))))
-(subset_2 R (prod_1x1 A B)))
+false ;(subset_2 R (prod_1x1 A B))
+)
 )
  :named l9 
  ) 
  )
 ;; --end lemmas
 
-; does it work? yes it does!
+; lemma is not general

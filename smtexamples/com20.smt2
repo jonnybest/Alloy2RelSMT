@@ -434,10 +434,11 @@
 (forall ((A Rel1)(B Rel1)(R Rel2)(x Atom)) 
 (=>
 	(=> (in_1 x A)
-	(=>
-		(not (in_1 x (join_2x1 R B)))
-		(no_1 (join_1x2 (a2r_1 x) R))))
-(subset_2 R (prod_1x1 A B)))
+		(=>
+			(not (in_1 x (join_2x1 R B)))
+			(no_1 (join_1x2 (a2r_1 x) R))))
+	false ;(subset_2 R (prod_1x1 A B))
+)
 )
  :named l9 
  ) 
