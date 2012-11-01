@@ -431,10 +431,14 @@
   ; some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface // 19
   ; to
   ; some c: LegalComponent | some i: c.interfaces | some o : c.iids | no o.(i.qi) // 20
-(forall ((R Rel1)(S Rel2)(x Atom)) 
-(=
-	(not (in_1 x (join_2x1 S R)))
-	(no_1 (join_1x2 (a2r_1 x) S))))
+(forall ((A Rel1)(B Rel1)(R Rel2)(x Atom)) 
+(=>
+	(=> (in_1 x A)
+	(=>
+		(not (in_1 x (join_2x1 R B)))
+		(no_1 (join_1x2 (a2r_1 x) R))))
+(subset_2 R (prod_1x1 A B)))
+)
  :named l9 
  ) 
  )
