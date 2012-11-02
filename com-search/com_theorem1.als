@@ -86,7 +86,7 @@ fact Aggregation {
     }
 		
 fact lemmas {
-	//all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids	 // proven
+	all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids	 // proven
 	//all c: LegalComponent | all i: c.interfaces | all o: i.iidsKnown | o in c.iids // 16
 	//some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown // 17
 	//some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface //19 
@@ -99,18 +99,15 @@ fact lemmas {
 }
 
 assert Theorem1 {
-<<<<<<< HEAD
-	c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in o.(i.qi).iids // 22
+	//c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in o.(i.qi).iids // 22
     //some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface // 19
 		
 		/* original check 
 		// inprovable: all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // inprovable
 		// proven // all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids		 // proven 
 		*/
-=======
-     // all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids
-		 all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown
->>>>>>> 9955f75617c09f537d7a3b238631ed45394ca683
+    //all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids
+	all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown
      }
 check Theorem1 for 9
 
