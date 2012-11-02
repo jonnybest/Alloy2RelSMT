@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Alloy2KeY" default="compile">
+<project name="Alloy2RelSMT" default="compile">
 	<target name="clean" description="remove compiled files">
 		<delete dir="./build"/>
 	</target>
@@ -12,9 +12,9 @@
 		</copy>
 	</target>
 	<target name="jar" depends="compile" description="compile and built jar archive">
-		<jar destfile="./alloy2key.jar" basedir="./build/">
+		<jar destfile="./alloy2resmt.jar" basedir="./build/">
 			<manifest>
-				<attribute name="Main-Class" value="edu.kit.asa.alloy2key.Main" />
+				<attribute name="Main-Class" value="edu.kit.asa.alloy2relsmt.Main" />
 			</manifest>
 		</jar>
 	</target>
