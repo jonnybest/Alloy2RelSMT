@@ -81,12 +81,12 @@ fact Transitivity { all i, j : LegalInterface | j in i.reaches => j.iidsKnown in
 		
 fact lemmas {
 	//all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids	 // proven
-	//all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // unprovable
+	not all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // unprovable
 	//all c: LegalComponent | all i: c.interfaces | all o: i.iidsKnown | o in c.iids // 16
 	//some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown // 17
 	
 	//all i : Interface | (i.qi) in IID->Interface
-	some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface // 19
+	//some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface // 19
 	//20 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | no o.(i.qi)}
 	//21 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | no o.(i.qi).iids}
 	//22 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in o.(i.qi).iids}
