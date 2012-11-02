@@ -674,7 +674,7 @@ public final class RelTheory {
 							(=>
 								(in_1 a0 A)												; a in A
 								(= 	(not (in_1 a0 (join_2x1 R B)))						; exclusionB
-									(no_2 (join_1x2 (a2r_1 a0) R))))))))				; exclusionA
+									(no_1 (join_1x2 (a2r_1 a0) R))))))))				; exclusionA
 				 */
 				// lemma for subset and product
 				
