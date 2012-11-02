@@ -319,7 +319,11 @@
 (assert 
  (! 
   (and 
-	(forall ((i Atom)(R Rel3)(A Rel1)(B Rel1)(C Rel1)) (=> (in_1 i A) (subset_2 (join_1x3 (a2r_1 i) R) (prod_1x1 B C))))
+	(forall ((i Atom)(R Rel3)(A Rel1)(B Rel1)(C Rel1))
+	(=>
+		(subset_3 R (prod_2x1 (prod_1x1 A B) C))
+		(=> (in_1 i A) (subset_2 (join_1x3 (a2r_1 i) R) (prod_1x1 B C)))
+	))
 	(exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
     (in_1 i Interface)
     (in_1 i (join_1x2 (a2r_1 c) interfaces))
