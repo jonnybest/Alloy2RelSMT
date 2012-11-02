@@ -78,32 +78,32 @@ fact Symmetry { all i, j : LegalInterface | j in i.reaches => i.iids in j.iidsKn
 fact Transitivity { all i, j : LegalInterface | j in i.reaches => j.iidsKnown in i.iidsKnown }
 
 
-fact Aggregation {
-    no c : Component | c in c.^aggregates
-    all outer : Component | all inner : outer.aggregates |
-      (some inner.interfaces & outer.interfaces)
-      && (some o: outer.interfaces | all i: inner.interfaces - inner.first | all x: Component  | (x.iids).(i.qi) = (x.iids).(o.qi))
-    }
 		
 fact lemmas {
 	//all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids	 // proven
+	not all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // unprovable
 	//all c: LegalComponent | all i: c.interfaces | all o: i.iidsKnown | o in c.iids // 16
 	//some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown // 17
-	//some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface //19 
+	
+	//all i : Interface | (i.qi) in IID->Interface
+	//some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface // 19
 	//20 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | no o.(i.qi)}
-	{some c: LegalComponent | some i: c.interfaces | some o : c.iids | no o.(i.qi).iids} //21 
+	//21 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | no o.(i.qi).iids}
 	//22 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in o.(i.qi).iids}
 	//24 {some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in o.(i.qi).iids}
-	//26 {some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in i.iidsKnown}
-	//26 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown}
+	//26 {some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in i.iidsKnown} 
 }
 
 assert Theorem1 {
-	some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in o.(i.qi).iids // 22
-    //some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface // 19
+	//{some c: LegalComponent | some i: c.interfaces | some o : c.iids | no o.(i.qi)} //20 
+	//{some c: LegalComponent | some i: c.interfaces | some o : c.iids | no o.(i.qi).iids} //21 
+	//{some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in o.(i.qi).iids} //22 
+	//{some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in o.(i.qi).iids} //24
+	//{some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in i.iidsKnown}  //26 
+    some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown //27
 		
 		/* original check 
-		// inprovable: all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // inprovable
+		// inprovable: all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // unprovable
 		// proven // all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids		 // proven 
 		*/
      }

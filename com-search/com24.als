@@ -92,14 +92,14 @@ fact lemmas {
 	//some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface //19 
 	//20 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | no o.(i.qi)}
 	//21 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | no o.(i.qi).iids}
-	//22 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in o.(i.qi).iids}
+	{some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in o.(i.qi).iids} //22
 	//24 {some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in o.(i.qi).iids}
 	//26 {some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in i.iidsKnown}
-	//26 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown}
+	//27 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown}
 }
 
 assert Theorem1 {
-not	some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in o.(i.qi).iids // 24
+	some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in o.(i.qi).iids // 24
     //some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface // 19
 		
 		/* original check 
