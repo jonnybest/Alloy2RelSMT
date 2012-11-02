@@ -86,15 +86,15 @@ fact lemmas {
 	//21 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | no o.(i.qi).iids}
 	//22 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in o.(i.qi).iids}
 	//24 {some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in o.(i.qi).iids}
-	some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in i.iidsKnown // 26
+	//26 {some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in i.iidsKnown}
 	
-	//some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown //27 
+	some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown //27 
 }
 
 assert Theorem1 {
-	//all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // inprovable
+	all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // inprovable
 	
-	some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown // 27	
+	//not some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown // 27	
     //some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface // 19		
 		/* original check 
 		// inprovable: all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // inprovable
