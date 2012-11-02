@@ -40,4 +40,4 @@ done
 
 cp=`dirname $0`"/build"
 
-$JAVA -classpath $cp edu.kit.asa.alloy2key.Main $arg
+$JAVA -classpath $cp edu.kit.asa.alloy2relsmt.Main $arg
