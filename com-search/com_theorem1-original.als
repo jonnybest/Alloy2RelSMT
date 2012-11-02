@@ -99,7 +99,7 @@ fact lemmas {
 }
 
 assert Theorem1 {
-	all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown
+	all c: LegalComponent | all i: c.interfaces | c.iids = i.iidsKnown
 		/* original check 
 		// inprovable: all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // inprovable
 		// proven // all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids		 // proven 
