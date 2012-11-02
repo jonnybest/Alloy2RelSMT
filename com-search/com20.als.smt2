@@ -318,7 +318,9 @@
  )
 (assert 
  (! 
-  (exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
+  (and 
+	(forall ((i Atom)) (=> (in_1 i Interface) (subset_2 (join_1x3 (a2r_1 i) qi) (prod_1x1 IID Interface))))	
+	(exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
     (in_1 i Interface)
     (in_1 i (join_1x2 (a2r_1 c) interfaces))
     (exists ((o Atom)) (and 
@@ -326,7 +328,7 @@
     (in_1 o (join_1x2 (a2r_1 c) iids1))
     (not (in_1 o (join_2x1 (join_1x3 (a2r_1 i) qi) Interface)))
   ))
-  )))) 
+  ))))) 
  :named a28 
  ) 
  )
