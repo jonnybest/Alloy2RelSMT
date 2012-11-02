@@ -92,7 +92,7 @@ fact lemmas {
 }
 
 assert Theorem1 {
-	all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // inprovable
+	all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // still inprovable
 	
 	//not some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown // 27	
     //some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface // 19		
