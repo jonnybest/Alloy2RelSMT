@@ -667,6 +667,9 @@ public final class RelTheory {
 			
 			if(lar == 2 && rar == 1 && !declareProduct(1, 1))
 			{
+				// This lemma is usually triggered when a ternary relation gets declared.
+				// The resulting ternary relation usually goes from this: sig A { R: B->C } to this:  (subset_3 R (prod_2x1 (prod_1x1 A B) C)) 
+				// At the moment, you could also use subset_3 as a trigger.
 				/*
 				 * (forall ((i Atom)(R Rel3)(A Rel1)(B Rel1)(C Rel1)) 	; R=qi, A=C=Interface, B=IID
 					(=>
@@ -687,10 +690,11 @@ public final class RelTheory {
 				TermVar B = TermVar.var("Rel1", "B");
 				TermVar C = TermVar.var("Rel1", "C");
 				TermVar R = TermVar.var("Rel3", "R");
-				Term lemma = Term.call("subset_3", R, Term.call("prod_2x1", Term.call("prod_1x1", A, B), C)).implies(
-						Term.reverseIn(A, a).implies(Term.call("subset_2", Term.call("join_1x3", a2r(a), R), Term.call("prod_1x1", B, C))));
+				Term lemma = Term.call("subset_3", R, Term.call("prod_2x1", Term.call("prod_1x1", A, B), C)).equal(
+						Term.call("subset_2", Term.call("join_1x3", a2r(a), R), Term.call("prod_1x1", B, C)));
+				// removed unneccessary "in_1" restriction
 				lemma = lemma.forall(a, A, B, C, R);
-				lemma.setComment("originally introduced for COM-theorem1 step 19->20 with R=qi, A=C=Interface, B=IID");
+				lemma.setComment("joinOfProdRel: originally introduced for COM-theorem1 step 19->20 with R=qi, A=C=Interface, B=IID");
 				file.addLemma(lemma);
 			}
 			
@@ -722,15 +726,15 @@ public final class RelTheory {
 				Term fn = Term.call(name, A, B);
 				
 				Term guard = Term.call("subset_" + resultArity , R, fn);
-				Term ainA = Term.reverseIn(A, a);
 				Term joinA = Term.call("join_" + lar + "x" + resultArity, Term.call("a2r_" + lar, a), R);
 				Term joinB = Term.call("join_" + resultArity + "x" + rar, R, B);
 				Term nojoinA = Term.call("no_" + (lar + resultArity - 2), joinA);
 				Term exclusionA = nojoinA;
 				Term exclusionB = Term.reverseIn(joinB, a).not();
-				Term body = ainA.implies((exclusionB.equal(exclusionA))).forall(a);
+				Term body = (exclusionB.equal(exclusionA)).forall(a);
+				// note: removed unneccessary "in_1" restriction
 				Term lemma = guard.implies(body).forall(R, A, B);
-				lemma.setComment("lemma about subset " + resultArity + " and product "+ lar + "x" + rar + " , using join");
+				lemma.setComment("lstep20: lemma about subset " + resultArity + " and product "+ lar + "x" + rar + " , using join");
 				file.addLemma(lemma);
 			}
 			
