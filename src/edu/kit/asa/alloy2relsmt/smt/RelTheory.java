@@ -632,7 +632,7 @@ public final class RelTheory {
 		}
 	}
 
-	public void declareProduct(int lar, int rar) throws ModelException {
+	public boolean declareProduct(int lar, int rar) throws ModelException {
 		if(lar < 1 || rar < 1)
 			throw new ModelException("The product is not defined for arguments of arity 0.");
 		declareAtom();
@@ -650,6 +650,7 @@ public final class RelTheory {
 		String resultRelar = "Rel" + /*concatenation*/ resultArity;
 		if(file.addFunction(resultRelar, name, leftRelar, rightRelar))
 		{
+			{
 			// add axiom
 			// these are the two parameters for the product function
 			TermVar A = TermVar.var(leftRelar, "A"),
@@ -662,6 +663,36 @@ public final class RelTheory {
 			Term xInAandYInB = Term.reverseIn(A, x).and(Term.reverseIn(B, y));
 			Term axiom = somethingIsInProduct.iff(xInAandYInB).forall(A, B).forall(x).forall(y);
 			file.addAxiom(axiom);
+			}
+			
+			if(lar == 2 && rar == 1 && !declareProduct(1, 1))
+			{
+				/*
+				 * (forall ((i Atom)(R Rel3)(A Rel1)(B Rel1)(C Rel1)) 	; R=qi, A=C=Interface, B=IID
+					(=>
+						(subset_3 R (prod_2x1 (prod_1x1 A B) C))
+						(=> (in_1 i A) (subset_2 (join_1x3 (a2r_1 i) R)(prod_1x1 B C)))
+					))
+				 */
+				declareRel(1);
+				declareRel(2);
+				declareIn(1);
+				declareSubset(2);
+				declareSubset(3);
+				declareJoin(1, 3);
+				declareA2r(1);
+				declareProduct(1, 1);
+				TermVar a = TermVar.var("Atom", "a");
+				TermVar A = TermVar.var("Rel1", "A");
+				TermVar B = TermVar.var("Rel1", "B");
+				TermVar C = TermVar.var("Rel1", "C");
+				TermVar R = TermVar.var("Rel3", "R");
+				Term lemma = Term.call("subset_3", R, Term.call("prod_2x1", Term.call("prod_1x1", A, B), C)).implies(
+						Term.reverseIn(A, a).implies(Term.call("subset_2", Term.call("join_1x3", a2r(a), R), Term.call("prod_1x1", B, C))));
+				lemma = lemma.forall(a, A, B, C, R);
+				lemma.setComment("originally introduced for COM-theorem1 step 19->20 with R=qi, A=C=Interface, B=IID");
+				file.addLemma(lemma);
+			}
 			
 			if(lar == 1 && rar == 1)
 			{
@@ -686,6 +717,9 @@ public final class RelTheory {
 				
 				TermVar R = TermVar.var(resultRelar, "R");
 				TermVar[] a = makeTuple(lar, "a");
+				TermVar A = TermVar.var(leftRelar, "A"),
+						B = TermVar.var(rightRelar, "B"); 
+				Term fn = Term.call(name, A, B);
 				
 				Term guard = Term.call("subset_" + resultArity , R, fn);
 				Term ainA = Term.reverseIn(A, a);
@@ -699,7 +733,10 @@ public final class RelTheory {
 				lemma.setComment("lemma about subset " + resultArity + " and product "+ lar + "x" + rar + " , using join");
 				file.addLemma(lemma);
 			}
+			
+			return true;
 		}
+		return false;
 	}
 
 	/** Declares the range restriction operator
@@ -815,6 +852,10 @@ public final class RelTheory {
 			Term axiom = subset.equal(inImpliesIn.forall(atomVars)).forall(x, y);
 			axiom.setComment("subset axiom for " + relSort);
 			file.addAxiom(axiom);  // add this axiom to the list of assertions
+			
+			if (ar == 3) {
+				//see declareProduct(2, 1)
+			}
 		}
 	}
 
@@ -949,7 +990,7 @@ public final class RelTheory {
 		return Term.call("a2r_"+ar, sub);
 	}
 
-	private Term a2r(TermVar[] vars) throws ModelException {
+	private Term a2r(TermVar... vars) throws ModelException {
 		return a2r(vars.length, vars);
 	}
 
