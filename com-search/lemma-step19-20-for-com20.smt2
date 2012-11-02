@@ -39,29 +39,33 @@
 
 (assert 
 (=> 
-	(not (in_1 o (join_2x1 (join_1x3 (a2r_1 i) qi) Interface)))
-	(no_1 (join_1x2 (a2r_1 o) (join_1x3 (a2r_1 i) qi)))
-))
+	(subset_2 
+		(join_1x3 (a2r_1 i) qi)
+		(prod_1x1 IID Interface))
+	(=> 
+		(not (in_1 o (join_2x1 (join_1x3 (a2r_1 i) qi) Interface)))
+		(no_1 (join_1x2 (a2r_1 o) (join_1x3 (a2r_1 i) qi)))
+	))
 
 ; general lemma 
 (assert
  (! 
   ; lemma for step 19->20
   ; some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface // 19
-  ; to
+  ; to (with Lemma (all A,B,R | ( R in A->B => (all a in A | no a in a.r => a not in B )))
   ; some c: LegalComponent | some i: c.interfaces | some o : c.iids | no o.(i.qi) // 20
-(forall ((A Rel1)(B Rel1)(R Rel2)(x Atom)) 
+(forall ((R Rel2)(A Rel1)(B Rel1)) 
 (=>
-	(=> (in_1 x A)
-	(=>
-		(not (in_1 x (join_2x1 R B)))
-		(no_1 (join_1x2 (a2r_1 x) R))))
-false ;(subset_2 R (prod_1x1 A B))
-)
-)
- :named l9 
+	(subset_2 R (prod_1x1 A B))
+	(forall ((x Atom))
+	(=> 
+		(in_1 x A)
+		(=
+			(not (in_1 x (join_2x1 R B)))
+			(no_1 (join_1x2 (a2r_1 x) R)))))))
+ :named lstep20
  ) 
  )
 ;; --end lemmas
 
-; lemma is not general
+; lemma is valid. but not useful.
