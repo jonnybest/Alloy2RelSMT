@@ -87,13 +87,12 @@ fact lemmas {
 	//22 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in o.(i.qi).iids}
 	//24 {some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in o.(i.qi).iids}
 	//26 {some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in i.iidsKnown}
-	
-	some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown //27 
+	// some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown //27 
+	some c: LegalComponent | some i: c.interfaces | c.iids not in i.iidsKnown //28
 }
 
 assert Theorem1 {
-	some c: LegalComponent | some i: c.interfaces | c.iids not in i.iidsKnown //28
-	all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // still inprovable
+	all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // still improvable 
 	
 	//not some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown // 27	
     //some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface // 19		
