@@ -698,7 +698,11 @@ public class Translator implements Identifiers {
 					assertExpression = item.b;
 					break;
 				}
-			} 
+			}
+			// before translating the command: declare 
+			Debug.println("Warning", "Please note that the translation may contain built-in Alloy " +
+					"operators, even if they do not occur in your benchmark.");
+			target.getTheory().declareNone();
 			target.addCmdAssertion(translateExpr(assertExpression.not()));
 		}
 	}
