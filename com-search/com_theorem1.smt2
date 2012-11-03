@@ -15,9 +15,11 @@
 (declare-fun subset_2 (Rel2 Rel2) Bool)
 (declare-fun join_1x2 (Rel1 Rel2) Rel1)
 (declare-fun a2r_1 (Atom) Rel1)
+(declare-fun join_2x2 (Rel2 Rel2) Rel2)
+(declare-fun a2r_2 (Atom Atom) Rel2)
+(declare-fun no_1 (Rel1) Bool)
 (declare-fun subset_1 (Rel1 Rel1) Bool)
 (declare-fun join_2x1 (Rel2 Rel1) Rel1)
-(declare-fun no_1 (Rel1) Bool)
 (declare-fun iids () Rel2)
 (declare-fun first () Rel2)
 (declare-fun identity () Rel2)
@@ -29,9 +31,6 @@
 (declare-fun prod_2x1 (Rel2 Rel1) Rel3)
 (declare-fun subset_3 (Rel3 Rel3) Bool)
 (declare-fun join_1x3 (Rel1 Rel3) Rel2)
-(declare-fun join_3x2 (Rel3 Rel2) Rel3)
-(declare-fun a2r_2 (Atom Atom) Rel2)
-(declare-fun no_2 (Rel2) Bool)
 (declare-fun lone_1 (Rel1) Bool)
 (declare-fun iids1 () Rel2)
 (declare-fun iidsKnown () Rel2)
@@ -42,19 +41,11 @@
 (declare-fun inter_1 (Rel1 Rel1) Rel1)
 (declare-fun some_1 (Rel1) Bool)
 (declare-fun diff_1 (Rel1 Rel1) Rel1)
-<<<<<<< HEAD
-(declare-fun LegalInterface () Rel1)
-(declare-fun Interface () Rel1)
-(declare-fun IID () Rel1)
-(declare-fun LegalComponent () Rel1)
-(declare-fun Component () Rel1)
-=======
 (declare-fun Component () Rel1)
 (declare-fun LegalComponent () Rel1)
-(declare-fun Interface () Rel1)
-(declare-fun LegalInterface () Rel1)
 (declare-fun IID () Rel1)
->>>>>>> 9955f75617c09f537d7a3b238631ed45394ca683
+(declare-fun LegalInterface () Rel1)
+(declare-fun Interface () Rel1)
 ;; --end functions
 
 ;; axioms
@@ -87,15 +78,15 @@
  )
 (assert 
  (! 
-  ; subset axiom for Rel1
-(forall ((x Rel1)(y Rel1)) (= (subset_1 x y) (forall ((a0 Atom)) (=> (in_1 a0 x) (in_1 a0 y))))) 
+  ; axiom for join_2x2
+(forall ((A Rel2)(B Rel2)(y0 Atom)(y1 Atom)) (= (in_2 y0 y1 (join_2x2 A B)) (exists ((x Atom)) (and (in_2 y0 x A) (in_2 x y1 B))))) 
  :named ax4 
  ) 
  )
 (assert 
  (! 
-  ; axiom for join_2x1
-(forall ((A Rel2)(B Rel1)(y0 Atom)) (= (in_1 y0 (join_2x1 A B)) (exists ((x Atom)) (and (in_2 y0 x A) (in_1 x B))))) 
+  ; axiom for the conversion function Atom -> Relation
+(forall ((x0 Atom)(x1 Atom)) (and (in_2 x0 x1 (a2r_2 x0 x1)) (forall ((y0 Atom)(y1 Atom)) (=> (in_2 y0 y1 (a2r_2 x0 x1)) (and (= x0 y0) (= x1 y1)))))) 
  :named ax5 
  ) 
  )
@@ -108,138 +99,109 @@
  )
 (assert 
  (! 
-  (forall ((X Rel1)) (= (one_1 X) (and (exists ((a0 Atom)) (in_1 a0 X)) (forall ((a0 Atom)(b0 Atom)) (=> (and (in_1 a0 X) (in_1 b0 X)) (= a0 b0)))))) 
+  ; subset axiom for Rel1
+(forall ((x Rel1)(y Rel1)) (= (subset_1 x y) (forall ((a0 Atom)) (=> (in_1 a0 x) (in_1 a0 y))))) 
  :named ax7 
  ) 
  )
 (assert 
  (! 
-  (forall ((y0 Atom)(x0 Atom)(x1 Atom)(A Rel2)(B Rel1)) (= (in_3 x0 x1 y0 (prod_2x1 A B)) (and (in_2 x0 x1 A) (in_1 y0 B)))) 
+  ; axiom for join_2x1
+(forall ((A Rel2)(B Rel1)(y0 Atom)) (= (in_1 y0 (join_2x1 A B)) (exists ((x Atom)) (and (in_2 y0 x A) (in_1 x B))))) 
  :named ax8 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((X Rel1)) (= (one_1 X) (and (exists ((a0 Atom)) (in_1 a0 X)) (forall ((a0 Atom)(b0 Atom)) (=> (and (in_1 a0 X) (in_1 b0 X)) (= a0 b0)))))) 
+ :named ax9 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((y0 Atom)(x0 Atom)(x1 Atom)(A Rel2)(B Rel1)) (= (in_3 x0 x1 y0 (prod_2x1 A B)) (and (in_2 x0 x1 A) (in_1 y0 B)))) 
+ :named ax10 
  ) 
  )
 (assert 
  (! 
   ; subset axiom for Rel3
 (forall ((x Rel3)(y Rel3)) (= (subset_3 x y) (forall ((a0 Atom)(a1 Atom)(a2 Atom)) (=> (in_3 a0 a1 a2 x) (in_3 a0 a1 a2 y))))) 
- :named ax9 
+ :named ax11 
  ) 
  )
 (assert 
  (! 
   ; axiom for join_1x3
 (forall ((A Rel1)(B Rel3)(y0 Atom)(y1 Atom)) (= (in_2 y0 y1 (join_1x3 A B)) (exists ((x Atom)) (and (in_1 x A) (in_3 x y0 y1 B))))) 
- :named ax10 
- ) 
- )
-(assert 
- (! 
-  ; axiom for join_3x2
-(forall ((A Rel3)(B Rel2)(y0 Atom)(y1 Atom)(y2 Atom)) (= (in_3 y0 y1 y2 (join_3x2 A B)) (exists ((x Atom)) (and (in_3 y0 y1 x A) (in_2 x y2 B))))) 
- :named ax11 
- ) 
- )
-(assert 
- (! 
-  ; axiom for the conversion function Atom -> Relation
-(forall ((x0 Atom)(x1 Atom)) (and (in_2 x0 x1 (a2r_2 x0 x1)) (forall ((y0 Atom)(y1 Atom)) (=> (in_2 y0 y1 (a2r_2 x0 x1)) (and (= x0 y0) (= x1 y1)))))) 
  :named ax12 
  ) 
  )
 (assert 
  (! 
-  ; axiom for 'the expression is empty'
-(forall ((a0 Atom)(a1 Atom)(R Rel2)) (=> (no_2 R) (not (in_2 a0 a1 R)))) 
- :named ax13 
- ) 
- )
-(assert 
- (! 
   (forall ((X Rel1)) (= (lone_1 X) (forall ((a0 Atom)(b0 Atom)) (=> (and (in_1 a0 X) (in_1 b0 X)) (= a0 b0))))) 
- :named ax14 
+ :named ax13 
  ) 
  )
 (assert 
  (! 
   ; (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))); alternative
 (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (not (and (in_1 a0 A) (in_1 a0 B)))))) 
- :named ax15 
+ :named ax14 
  ) 
  )
 (assert 
  (! 
   ; this axiom defines transitivity
 (forall ((r Rel2)) (= (trans r) (forall ((a1 Atom)(a2 Atom)(a3 Atom)) (=> (and (in_2 a1 a2 r) (in_2 a2 a3 r)) (in_2 a1 a3 r))))) 
+ :named ax15 
+ ) 
+ )
+(assert 
+ (! 
+  ; this axiom satisfies transitivity for transclos
+(forall ((r1 Rel2)) (trans (transClos r1))) 
  :named ax16 
  ) 
  )
 (assert 
  (! 
-  ; this axiom satisfies transitivity for transclos
-(forall ((r1 Rel2)) (trans (transClos r1))) 
+  ; this axioms satisfies that tcl is extensive
+(forall ((r1 Rel2)) (subset_2 r1 (transClos r1))) 
  :named ax17 
  ) 
  )
 (assert 
  (! 
-<<<<<<< HEAD
-  ; this axiom satisfies transitivity for transclos
-(forall ((r1 Rel2)) (trans (transClos r1))) 
-=======
-  ; this axioms satisfies that tcl is extensive
-(forall ((r1 Rel2)) (subset_2 r1 (transClos r1))) 
->>>>>>> 9955f75617c09f537d7a3b238631ed45394ca683
+  ; this axiom satisfies that transclos is increasing
+(forall ((r1 Rel2)(r2 Rel2)) (=> (subset_2 r1 r2) (subset_2 (transClos r1) r2))) 
  :named ax18 
  ) 
  )
 (assert 
  (! 
-<<<<<<< HEAD
-  ; this axioms satisfies that tcl is extensive
-(forall ((r1 Rel2)) (subset_2 r1 (transClos r1))) 
-=======
-  ; this axiom satisfies that transclos is increasing
-(forall ((r1 Rel2)(r2 Rel2)) (=> (subset_2 r1 r2) (subset_2 (transClos r1) r2))) 
->>>>>>> 9955f75617c09f537d7a3b238631ed45394ca683
+  ; this axiom satisfies that tcl should be idempotent
+(forall ((r1 Rel2)) (= (transClos (transClos r1)) (transClos r1))) 
  :named ax19 
- ) 
- )
-(assert 
- (! 
-<<<<<<< HEAD
-  ; this axiom satisfies that transclos is increasing
-(forall ((r1 Rel2)(r2 Rel2)) (=> (subset_2 r1 r2) (subset_2 (transClos r1) r2))) 
-=======
-  ; this axiom satisfies that tcl should be idempotent
-(forall ((r1 Rel2)) (= (transClos (transClos r1)) (transClos r1))) 
->>>>>>> 9955f75617c09f537d7a3b238631ed45394ca683
- :named ax20 
- ) 
- )
-(assert 
- (! 
-  ; this axiom satisfies that tcl should be idempotent
-(forall ((r1 Rel2)) (= (transClos (transClos r1)) (transClos r1))) 
- :named ax21 
  ) 
  )
 (assert 
  (! 
   ; axiom for intersection 1
 (forall ((a0 Atom)(R Rel1)(S Rel1)) (=> (in_1 a0 (inter_1 R S)) (or (in_1 a0 R) (in_1 a0 S)))) 
- :named ax22 
+ :named ax20 
  ) 
  )
 (assert 
  (! 
   (forall ((A Rel1)) (= (some_1 A) (exists ((a0 Atom)) (in_1 a0 A)))) 
- :named ax23 
+ :named ax21 
  ) 
  )
 (assert 
  (! 
   (forall ((A Rel1)(B Rel1)(a0 Atom)) (= (in_1 a0 (diff_1 A B)) (and (in_1 a0 A) (not (in_1 a0 B))))) 
- :named ax24 
+ :named ax22 
  ) 
  )
 ;; --end axioms
@@ -295,79 +257,67 @@
  )
 (assert 
  (! 
-  (subset_3 qi (prod_2x1 (prod_1x1 Interface IID) Interface)) 
+  (subset_1 LegalInterface Interface) 
  :named a8 
  ) 
  )
 (assert 
  (! 
-  (forall ((this Atom)) (=> (in_1 this Interface) (forall ((x0 Atom)) (=> (in_1 x0 IID) (lone_1 (join_1x2 (a2r_1 x0) (join_1x3 (a2r_1 this) qi))))))) 
+  (subset_3 qi (prod_2x1 (prod_1x1 Interface IID) Interface)) 
  :named a9 
  ) 
  )
 (assert 
  (! 
-  (subset_2 iids1 (prod_1x1 Interface IID)) 
+  (forall ((this Atom)) (=> (in_1 this Interface) (forall ((x0 Atom)) (=> (in_1 x0 IID) (lone_1 (join_1x2 (a2r_1 x0) (join_1x3 (a2r_1 this) qi))))))) 
  :named a10 
  ) 
  )
 (assert 
  (! 
-  (subset_2 iidsKnown (prod_1x1 Interface IID)) 
+  (subset_2 iids1 (prod_1x1 Interface IID)) 
  :named a11 
  ) 
  )
 (assert 
  (! 
-  (forall ((this Atom)) (=> (in_1 this Interface) (one_1 (join_1x2 (a2r_1 this) iidsKnown)))) 
+  (subset_2 iidsKnown (prod_1x1 Interface IID)) 
  :named a12 
  ) 
  )
 (assert 
  (! 
-  (subset_2 reaches (prod_1x1 Interface Interface)) 
+  (forall ((this Atom)) (=> (in_1 this Interface) (one_1 (join_1x2 (a2r_1 this) iidsKnown)))) 
  :named a13 
  ) 
  )
 (assert 
  (! 
-  (forall ((this Atom)) (=> (in_1 this Interface) (one_1 (join_1x2 (a2r_1 this) reaches)))) 
+  (subset_2 reaches (prod_1x1 Interface Interface)) 
  :named a14 
  ) 
  )
 (assert 
  (! 
-  (subset_1 LegalInterface Interface) 
+  (forall ((this Atom)) (=> (in_1 this Interface) (one_1 (join_1x2 (a2r_1 this) reaches)))) 
  :named a15 
  ) 
  )
 (assert 
  (! 
-<<<<<<< HEAD
-  (disjoint_1 Interface IID) 
-=======
-  (disjoint_1 Component Interface) 
->>>>>>> 9955f75617c09f537d7a3b238631ed45394ca683
+  (disjoint_1 Component IID) 
  :named a16 
  ) 
  )
 (assert 
  (! 
-<<<<<<< HEAD
-  (disjoint_1 Interface Component) 
-=======
-  (disjoint_1 Component IID) 
->>>>>>> 9955f75617c09f537d7a3b238631ed45394ca683
+  (disjoint_1 Component Interface) 
  :named a17 
  ) 
  )
 (assert 
  (! 
-<<<<<<< HEAD
-  (disjoint_1 IID Component) 
-=======
-  (disjoint_1 Interface IID) 
->>>>>>> 9955f75617c09f537d7a3b238631ed45394ca683
+  (disjoint_1 IID Interface) 
  :named a18 
  ) 
  )
@@ -440,19 +390,9 @@
 ;; command
 (assert 
  (! 
-<<<<<<< HEAD
-  (not (not (exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
-    (in_1 i Interface)
-    (in_1 i (join_1x2 (a2r_1 c) interfaces))
-    (exists ((o Atom)) (and 
-    (in_1 o IID)
-    (in_1 o (join_1x2 (a2r_1 c) iids1))
-    (no_1 (join_1x2 (a2r_1 o) (join_1x3 (a2r_1 i) qi)))
-  ))
-  )))))) 
-=======
-  (not (forall ((c Atom)) (=> (in_1 c LegalComponent) (forall ((i Atom)) (=> (and (in_1 i Interface) (in_1 i (join_1x2 (a2r_1 c) interfaces))) (subset_1 (join_1x2 (a2r_1 c) iids) (join_1x2 (a2r_1 i) iidsKnown))))))) 
->>>>>>> 9955f75617c09f537d7a3b238631ed45394ca683
+  ;(not 
+  (forall ((c Atom)) (=> (in_1 c LegalComponent) (forall ((i Atom)) (=> (and (in_1 i Interface) (in_1 i (join_1x2 (a2r_1 c) interfaces))) (subset_1 (join_1x2 (a2r_1 c) iids) (join_1x2 (a2r_1 i) iidsKnown))))))
+  ;) 
  :named c0 
  ) 
  )
@@ -477,23 +417,46 @@
  )
 (assert
  (! 
+  ; 1. lemma for join_2x2. direction: join to in
+(forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel2)) (=> (in_2 a2 a0 (join_2x2 ; (swapped)
+(a2r_2 a2 a1) r)) (in_2 a1 a0 r))) 
+ :named l2 
+ ) 
+ )
+(assert
+ (! 
+  ; 2. lemma for join_2x2. direction: in to join
+(forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel2)) (=> (in_2 a1 a0 r) (in_2 a2 a0 (join_2x2 ; (swapped)
+(a2r_2 a2 a1) r)))) 
+ :named l3 
+ ) 
+ )
+(assert
+ (! 
+  ; lemma for step 21 of the com-theorem1 for join_1x2: R=(i.qi) S=iids
+(forall ((R Rel2)(S Rel2)(x Atom)) (=> (no_1 (join_1x2 (a2r_1 x) R)) (no_1 (join_1x2 (a2r_1 x) (join_2x2 R S))))) 
+ :named l4 
+ ) 
+ )
+(assert
+ (! 
   ; 1. lemma for join_2x1. direction: join to in
 (forall ((a0 Atom)(a1 Atom)(r Rel2)) (=> (in_1 a0 (join_2x1 r (a2r_1 a1))) (in_2 a0 a1 r))) 
- :named l2 
+ :named l5 
  ) 
  )
 (assert
  (! 
   ; 2. lemma for join_2x1. direction: in to join
 (forall ((a0 Atom)(a1 Atom)(r Rel2)) (=> (in_2 a0 a1 r) (in_1 a0 (join_2x1 r (a2r_1 a1))))) 
- :named l3 
+ :named l6 
  ) 
  )
 (assert
  (! 
-  ; lemma about subset 2 and product 1x1 , using join
-(forall ((R Rel2)(A Rel1)(B Rel1)) (=> (subset_2 R (prod_1x1 A B)) (forall ((a0 Atom)) (=> (in_1 a0 A) (= (not (in_1 a0 (join_2x1 R B))) (no_1 (join_1x2 (a2r_1 a0) R))))))) 
- :named l4 
+  ; lstep20: lemma about subset 2 and product 1x1 , using join
+(forall ((R Rel2)(A Rel1)(B Rel1)) (=> (subset_2 R (prod_1x1 A B)) (forall ((a0 Atom)) (= (not (in_1 a0 (join_2x1 R B))) (no_1 (join_1x2 (a2r_1 a0) R)))))) 
+ :named l7 
  ) 
  )
 (assert
@@ -501,7 +464,7 @@
   ; 1. lemma for join_1x3. direction: join to in
 (forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_2 a1 a0 (join_1x3 ; (swapped)
 (a2r_1 a2) r)) (in_3 a2 a1 a0 r))) 
- :named l5 
+ :named l8 
  ) 
  )
 (assert
@@ -509,61 +472,30 @@
   ; 2. lemma for join_1x3. direction: in to join
 (forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_3 a2 a1 a0 r) (in_2 a1 a0 (join_1x3 ; (swapped)
 (a2r_1 a2) r)))) 
- :named l6 
- ) 
- )
-(assert
- (! 
-  ; 1. lemma for join_3x2. direction: join to in
-(forall ((a0 Atom)(a1 Atom)(a2 Atom)(a3 Atom)(r Rel3)) (=> (in_3 a0 a1 a3 (join_3x2 r (a2r_2 a2 a3))) (in_3 a0 a1 a2 r))) 
- :named l7 
- ) 
- )
-(assert
- (! 
-  ; 2. lemma for join_3x2. direction: in to join
-(forall ((a0 Atom)(a1 Atom)(a2 Atom)(a3 Atom)(r Rel3)) (=> (in_3 a0 a1 a2 r) (in_3 a0 a1 a3 (join_3x2 r (a2r_2 a2 a3))))) 
- :named l8 
- ) 
- )
-(assert
- (! 
-  ; lemma for step 21 of the com-theorem for join_1x3
-(forall ((R Rel3)(S Rel2)(x Atom)) (=> (no_2 (join_1x3 (a2r_1 x) R)) (no_2 (join_1x3 (a2r_1 x) (join_3x2 R S))))) 
  :named l9 
  ) 
  )
 (assert
  (! 
-  ; lemma 1 for transClos about the second-last 'middle element'
-(forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (forall ((a2 Atom)) (or (not (in_2 a1 a2 R)) (and (in_2 a1 a2 R) (in_2 a2 a3 (transClos R))))))) 
+  ; joinOfProdRel: originally introduced for COM-theorem1 step 19->20 with R=qi, A=C=Interface, B=IID
+(forall ((a Atom)(A Rel1)(B Rel1)(C Rel1)(R Rel3)) (= (subset_3 R (prod_2x1 (prod_1x1 A B) C)) (subset_2 (join_1x3 (a2r_1 a) R) (prod_1x1 B C)))) 
  :named l10 
  ) 
  )
 (assert
  (! 
-  ; lemma 1 for transClos about the second 'middle element'
-(forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (forall ((a2 Atom)) (or (not (in_2 a2 a3 R)) (and (in_2 a2 a3 R) (in_2 a1 a2 (transClos R))))))) 
+  ; lemma 1 for transClos about the second-last 'middle element'
+(forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (forall ((a2 Atom)) (or (not (in_2 a1 a2 R)) (and (in_2 a1 a2 R) (in_2 a2 a3 (transClos R))))))) 
  :named l11 
  ) 
  )
-<<<<<<< HEAD
-(assert
- (! 
-  ; lemma 1 for transClos about the second-last 'middle element'
-(forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (forall ((a2 Atom)) (or (not (in_2 a1 a2 R)) (and (in_2 a1 a2 R) (in_2 a2 a3 (transClos R))))))) 
- :named l12 
- ) 
- )
 (assert
  (! 
   ; lemma 1 for transClos about the second 'middle element'
 (forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (forall ((a2 Atom)) (or (not (in_2 a2 a3 R)) (and (in_2 a2 a3 R) (in_2 a1 a2 (transClos R))))))) 
- :named l13 
+ :named l12 
  ) 
  )
-=======
->>>>>>> 9955f75617c09f537d7a3b238631ed45394ca683
 ;; --end lemmas
 
 ;; -- key stuff for debugging --

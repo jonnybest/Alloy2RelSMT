@@ -470,7 +470,9 @@
 ;; command
 (assert 
  (! 
-  (not (forall ((c Atom)) (=> (in_1 c LegalComponent) (forall ((i Atom)) (=> (and (in_1 i Interface) (in_1 i (join_1x2 (a2r_1 c) interfaces))) (subset_1 (join_1x2 (a2r_1 c) iids1) (join_1x2 (a2r_1 i) iidsKnown))))))) 
+ ; (not
+  (forall ((c Atom)) (=> (in_1 c LegalComponent) (forall ((i Atom)) (=> (and (in_1 i Interface) (in_1 i (join_1x2 (a2r_1 c) interfaces))) (subset_1 (join_1x2 (a2r_1 c) iids1) (join_1x2 (a2r_1 i) iidsKnown))))))
+;  ) 
  :named c0 
  ) 
  )
