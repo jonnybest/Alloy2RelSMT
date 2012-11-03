@@ -53,7 +53,7 @@ public class TermBinOp extends Term {
 	private String buildTerm (String l, String r) {
 		switch (operator) {	
 		case IFF:
-			Debug.println("Warning", "\"iff\" operator is deprecated. Using \"=\" instead.");
+			//Debug.println("Warning", "\"iff\" operator is deprecated. Using \"=\" instead.");
 			return "(= "+ l + " " + r + ")";	// there is no more "iff" operator in SMT. replacing with equality
 		case IMPLIES:
 			return "(=> "+ l + " " + r + ")";	// smt-syntax
