@@ -284,38 +284,16 @@
  :named a22 
  ) 
  )
-(assert 
- (! 
-  (exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
-    (in_1 i Interface)
-    (in_1 i (join_1x2 (a2r_1 c) interfaces))
-    (not (subset_1 (join_1x2 (join_1x2 (a2r_1 c) interfaces) iids) (join_1x2 (a2r_1 i) iidsKnown)))
-  )))) 
- :named a23 
- ) 
- )
 ;; --end assertions
-;; my lemma
-(assert 
- (! 
-  (forall ((c Atom)) (and (in_1 c LegalComponent) (forall ((i Atom)) (and 
-	(in_1 i (join_1x2 (a2r_1 c) interfaces))
-    (subset_1
-		(join_1x2 (a2r_1 i) iids)
-		(join_1x2 (join_1x2 (a2r_1 c) interfaces) iids)
-		))))) 
- :named mylemma
- ) 
- )
-;; end my lemma
+
 ;; command
 (assert 
  (! 
-  (not (exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
+  (not (not (exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
     (in_1 i Interface)
     (in_1 i (join_1x2 (a2r_1 c) interfaces))
     (not (subset_1 (join_1x2 (a2r_1 i) iids) (join_1x2 (a2r_1 i) iidsKnown)))
-  ))))) 
+  )))))) 
  :named c0 
  ) 
  )

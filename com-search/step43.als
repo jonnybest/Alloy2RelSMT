@@ -43,10 +43,11 @@ fact Transitivity { all i, j : LegalInterface | j in i.reaches => j.iidsKnown in
 
 fact previousStep {
     //not all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown // A
-	some c: LegalComponent | some i: c.interfaces | c.interfaces.iids not in i.iidsKnown // step 42
+	//some c: LegalComponent | some i: c.interfaces | c.interfaces.iids not in i.iidsKnown // step 42
 }
+
 assert step43 {
-	some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown // step 43 - solvable
+	not some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown // step 43 - solvable
 	//not some i : LegalInterface | i.iids not in i.iidsKnown // step 44 solvable
 }
 check step43
