@@ -42,12 +42,14 @@ fact Transitivity { all i, j : LegalInterface | j in i.reaches => j.iidsKnown in
 //
 
 fact previousStep {
-    //not all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown // A
-	//some c: LegalComponent | some i: c.interfaces | c.interfaces.iids not in i.iidsKnown // step 42
+    // "Aus A folgt B bedeutet (A and not B) ist unerfüllbar." Das ist genau das, was Z3 hier prüfen wird.
+	// aus 42 ergibt sich, wegen 45 insbesondere
+	some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown // step 43 - not solvable
 }
 
 assert step43 {
-	not some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown // step 43 - solvable
+	some c: LegalComponent | some i: c.interfaces | c.interfaces.iids not in i.iidsKnown // step 42
+	
 	//not some i : LegalInterface | i.iids not in i.iidsKnown // step 44 solvable
 }
 check step43

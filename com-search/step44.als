@@ -1,4 +1,4 @@
-module exploration/com1_minified
+module exploration/com1_minified_44
 
 sig IID {}
 
@@ -42,12 +42,12 @@ fact Transitivity { all i, j : LegalInterface | j in i.reaches => j.iidsKnown in
 //
 
 fact previousStep {
-    some c: LegalComponent | some i: c.interfaces | c.iids not in i.iidsKnown // A2
-	// aus A2 mit l.65 (gdw):
+    // "Aus A folgt B bedeutet (A and not B) ist unerfüllbar." Das ist genau das, was Z3 hier prüfen wird.
+	-- aus 43 ergibt sich, wegen (c.interfaces in LegalInterface) ganz allgemein (gdw):
+	some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown // 43 	
 }
-assert step42 {
-	some c: LegalComponent | some i: c.interfaces | c.interfaces.iids not in i.iidsKnown // step 42
-	//not some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown // step 43 - solvable
-	//not some i : LegalInterface | i.iids not in i.iidsKnown // step 44 solvable
+
+assert step44 {
+	some i: LegalInterface | i.iids not in i.iidsKnown //44 	
 }
-check step42
+check step44

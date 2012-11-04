@@ -35,8 +35,8 @@
 (declare-fun none () Rel1)
 (declare-fun LegalComponent () Rel1)
 (declare-fun Component () Rel1)
-(declare-fun IID () Rel1)
 (declare-fun Interface () Rel1)
+(declare-fun IID () Rel1)
 (declare-fun LegalInterface () Rel1)
 ;; --end functions
 
@@ -220,19 +220,19 @@
  )
 (assert 
  (! 
-  (disjoint_1 Component IID) 
+  (disjoint_1 Component Interface) 
  :named a12 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 Component Interface) 
+  (disjoint_1 Component IID) 
  :named a13 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 IID Interface) 
+  (disjoint_1 Interface IID) 
  :named a14 
  ) 
  )
@@ -286,7 +286,11 @@
  )
 (assert 
  (! 
-  (not (forall ((c Atom)) (=> (in_1 c LegalComponent) (forall ((i Atom)) (=> (and (in_1 i Interface) (in_1 i (join_1x2 (a2r_1 c) interfaces))) (subset_1 (join_1x2 (a2r_1 c) iids) (join_1x2 (a2r_1 i) iidsKnown))))))) 
+  (exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
+    (in_1 i Interface)
+    (in_1 i (join_1x2 (a2r_1 c) interfaces))
+    (not (subset_1 (join_1x2 (a2r_1 c) iids) (join_1x2 (a2r_1 i) iidsKnown)))
+  )))) 
  :named a23 
  ) 
  )

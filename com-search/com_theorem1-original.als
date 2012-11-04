@@ -84,26 +84,13 @@ fact Aggregation {
       (some inner.interfaces & outer.interfaces)
       && (some o: outer.interfaces | all i: inner.interfaces - inner.first | all x: Component  | (x.iids).(i.qi) = (x.iids).(o.qi))
     }
-		
-fact lemmas {
-	all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids	 // proven
-	//all c: LegalComponent | all i: c.interfaces | all o: i.iidsKnown | o in c.iids // 16
-	//some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown // 17
-	//some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface //19 
-	//20 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | no o.(i.qi)}
-	//21 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | no o.(i.qi).iids}
-	//22 {some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in o.(i.qi).iids}
-	//24 {some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in o.(i.qi).iids}
-	//26 {some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in i.iidsKnown}
-	{some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown} //27
-}
 
 assert Theorem1 {
 	all c: LegalComponent | all i: c.interfaces | c.iids = i.iidsKnown
-		/* original check 
-		// inprovable: all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // inprovable
-		// proven // all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids		 // proven 
-		*/
+	
+	/* original check 
+	// all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown		// not provable by machine
+	// all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids		// proven by machine
+	*/
 }
 check Theorem1 for 9
-

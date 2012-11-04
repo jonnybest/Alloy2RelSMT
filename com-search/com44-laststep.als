@@ -1,4 +1,4 @@
-module exploration/com1_minified
+module exploration/com1_minified_44
 
 sig IID {}
 
@@ -37,17 +37,15 @@ fact { LegalComponent.interfaces in LegalInterface }
 
 fact Symmetry { all i, j : LegalInterface | j in i.reaches => i.iids in j.iidsKnown }
 
-fact Reflexivity { all i : LegalInterface | i.iids in i.iidsKnown }
+//fact Reflexivity { all i : LegalInterface | i.iids in i.iidsKnown }
 fact Transitivity { all i, j : LegalInterface | j in i.reaches => j.iidsKnown in i.iidsKnown }
 //
 
-fact previousStep {
-    some c: LegalComponent | some i: c.interfaces | c.iids not in i.iidsKnown // A2
-	// aus A2 mit l.65 (gdw):
+assert laststep {
+	not ( 
+		some i: LegalInterface | i.iids not in i.iidsKnown // 44
+	and 
+		all i: LegalInterface | i.iids in i.iidsKnown 			// 38 (reflexivity l.76)
+	)
 }
-assert step42 {
-	some c: LegalComponent | some i: c.interfaces | c.interfaces.iids not in i.iidsKnown // step 42
-	//not some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown // step 43 - solvable
-	//not some i : LegalInterface | i.iids not in i.iidsKnown // step 44 solvable
-}
-check step42
+check laststep
