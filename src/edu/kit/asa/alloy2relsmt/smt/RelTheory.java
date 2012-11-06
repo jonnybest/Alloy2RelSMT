@@ -864,12 +864,13 @@ public final class RelTheory {
 			
 			{
 				// equality-lemma. introduced for com-theorem1, since z3 can prove both "parts" of the assertion seperately, but not the equality
+				// penalty for this lemma is around 200 -> 500 seconds for com-theorem1 
 				// (A in B) and (B in A) => A = B 
 				TermVar A = TermVar.var(relSort, "A");
 				TermVar B = TermVar.var(relSort, "B");
-				Term lemma = Term.call(name, A, B).and(Term.call(name, B, A)).implies(A.equal(B)).forall(A, B);
-				lemma.setComment("lemma about the inclusion rule (A in B) and (B in A) => A = B. first introduced for com-theorem1.");
-				file.addLemma(lemma);
+				Term lemma = (Term.call(name, A, B).not().or(Term.call(name, B, A)).not()).implies(A.equal(B).not()).forall(A, B);
+				lemma.setComment("lemma about the inclusion rule (A in B) and (B in A) => A = B. first introduced for com-theorem1. This lemma is costly.");
+				//file.addLemma(lemma); // costly lemma!
 			}
 		}
 	}
