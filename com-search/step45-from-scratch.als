@@ -61,7 +61,7 @@ fact Aggregation {
 
 fact Lemma{
 	// full proof outline: ((((A2 und 14) <=> 42) und 45 ) => 43) <=> 44 ϟ 38
-	// this benchmark should show 45 ϟ 38
+	// this benchmark should show (45 ʌ ¬ VC) ϟ 38
 	// not all c: Component| all i:c.interfaces | i.iids in c.interfaces.iids // not 45 (unsat)
 	all c: Component| all i:c.interfaces | i.iids in c.interfaces.iids // 45 (valid)
 }

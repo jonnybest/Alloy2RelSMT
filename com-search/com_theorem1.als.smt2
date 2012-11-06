@@ -41,6 +41,7 @@
 (declare-fun inter_1 (Rel1 Rel1) Rel1)
 (declare-fun some_1 (Rel1) Bool)
 (declare-fun diff_1 (Rel1 Rel1) Rel1)
+(declare-fun none () Rel1)
 (declare-fun LegalInterface () Rel1)
 (declare-fun Interface () Rel1)
 (declare-fun IID () Rel1)
@@ -202,6 +203,13 @@
  (! 
   (forall ((A Rel1)(B Rel1)(a0 Atom)) (= (in_1 a0 (diff_1 A B)) (and (in_1 a0 A) (not (in_1 a0 B))))) 
  :named ax22 
+ ) 
+ )
+(assert 
+ (! 
+  ; axiom for empty set
+(forall ((a Atom)) (not (in_1 a none))) 
+ :named ax23 
  ) 
  )
 ;; --end axioms
@@ -387,82 +395,24 @@
  )
 (assert 
  (! 
-  (and 
-    (forall ((c Atom)) (=> (in_1 c LegalComponent) (forall ((i Atom)) (=> (and (in_1 i Interface) (in_1 i (join_1x2 (a2r_1 c) interfaces))) (subset_1 (join_1x2 (a2r_1 i) iidsKnown) (join_1x2 (a2r_1 c) iids1))))))
-    (exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
-    (in_1 i Interface)
-    (in_1 i (join_1x2 (a2r_1 c) interfaces))
-    (exists ((o Atom)) (and 
-    (in_1 o IID)
-    (in_1 o (join_1x2 (a2r_1 c) iids1))
-    (not (in_1 o (join_1x2 (a2r_1 i) iidsKnown)))
-  ))
-  ))))
-    (exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
-    (in_1 i Interface)
-    (in_1 i (join_1x2 (a2r_1 c) interfaces))
-    (exists ((o Atom)) (and 
-    (in_1 o IID)
-    (in_1 o (join_1x2 (a2r_1 c) iids1))
-    (not (in_1 o (join_2x1 (join_1x3 (a2r_1 i) qi) Interface)))
-  ))
-  ))))
-    (exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
-    (in_1 i Interface)
-    (in_1 i (join_1x2 (a2r_1 c) interfaces))
-    (exists ((o Atom)) (and 
-    (in_1 o IID)
-    (in_1 o (join_1x2 (a2r_1 c) iids1))
-    (no_1 (join_1x2 (a2r_1 o) (join_1x3 (a2r_1 i) qi)))
-  ))
-  ))))
-    (exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
-    (in_1 i Interface)
-    (in_1 i (join_1x2 (a2r_1 c) interfaces))
-    (exists ((o Atom)) (and 
-    (in_1 o IID)
-    (in_1 o (join_1x2 (a2r_1 c) iids1))
-    (no_1 (join_1x2 (join_1x2 (a2r_1 o) (join_1x3 (a2r_1 i) qi)) iids))
-  ))
-  ))))
-    (exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
-    (in_1 i Interface)
-    (in_1 i (join_1x2 (a2r_1 c) interfaces))
-    (exists ((o Atom)) (and 
-    (in_1 o IID)
-    (in_1 o (join_1x2 (a2r_1 c) iids1))
-    (not (in_1 o (join_1x2 (join_1x2 (a2r_1 o) (join_1x3 (a2r_1 i) qi)) iids)))
-  ))
-  ))))
-    (exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
-    (in_1 i Interface)
-    (in_1 i (join_1x2 (a2r_1 c) interfaces))
-    (exists ((o Atom)) (and 
-    (in_1 o IID)
-    (in_1 o (join_1x2 (join_1x2 (a2r_1 c) interfaces) iids))
-    (not (in_1 o (join_1x2 (join_1x2 (a2r_1 o) (join_1x3 (a2r_1 i) qi)) iids)))
-  ))
-  ))))
-    (exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
-    (in_1 i Interface)
-    (in_1 i (join_1x2 (a2r_1 c) interfaces))
-    (exists ((o Atom)) (and 
-    (in_1 o IID)
-    (in_1 o (join_1x2 (join_1x2 (a2r_1 c) interfaces) iids))
-    (not (in_1 o (join_1x2 (a2r_1 i) iidsKnown)))
-  ))
-  ))))
-    (exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
-    (in_1 i Interface)
-    (in_1 i (join_1x2 (a2r_1 c) interfaces))
-    (exists ((o Atom)) (and 
-    (in_1 o IID)
-    (in_1 o (join_1x2 (a2r_1 c) iids1))
-    (not (in_1 o (join_1x2 (a2r_1 i) iidsKnown)))
-  ))
-  ))))
-  ) 
+  (forall ((c Atom)) (=> (in_1 c Component) (forall ((i Atom)) (=> (and (in_1 i Interface) (in_1 i (join_1x2 (a2r_1 c) interfaces))) (subset_1 (join_1x2 (a2r_1 i) iids) (join_1x2 (join_1x2 (a2r_1 c) interfaces) iids)))))) 
  :named a29 
+ ) 
+ )
+(assert 
+ (! 
+  (exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
+    (in_1 i Interface)
+    (in_1 i (join_1x2 (a2r_1 c) interfaces))
+    (not (subset_1 (join_1x2 (a2r_1 i) iids) (join_1x2 (a2r_1 i) iidsKnown)))
+  )))) 
+ :named a30 
+ ) 
+ )
+(assert 
+ (! 
+  (not (exists ((i Atom)) (and (in_1 i LegalInterface) (not (subset_1 (join_1x2 (a2r_1 i) iids) (join_1x2 (a2r_1 i) iidsKnown)))))) 
+ :named a31 
  ) 
  )
 ;; --end assertions
@@ -470,9 +420,7 @@
 ;; command
 (assert 
  (! 
- ; (not
-  (forall ((c Atom)) (=> (in_1 c LegalComponent) (forall ((i Atom)) (=> (and (in_1 i Interface) (in_1 i (join_1x2 (a2r_1 c) interfaces))) (subset_1 (join_1x2 (a2r_1 c) iids1) (join_1x2 (a2r_1 i) iidsKnown))))))
-;  ) 
+  (not (forall ((c Atom)) (=> (in_1 c LegalComponent) (forall ((i Atom)) (=> (and (in_1 i Interface) (in_1 i (join_1x2 (a2r_1 c) interfaces))) (subset_1 (join_1x2 (a2r_1 c) iids1) (join_1x2 (a2r_1 i) iidsKnown))))))) 
  :named c0 
  ) 
  )

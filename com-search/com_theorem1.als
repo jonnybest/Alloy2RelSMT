@@ -84,19 +84,13 @@ fact Aggregation {
       (some inner.interfaces & outer.interfaces)
       && (some o: outer.interfaces | all i: inner.interfaces - inner.first | all x: Component  | (x.iids).(i.qi) = (x.iids).(o.qi))
     }
-		
-fact lemmas {
-	//all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids	 // proven
-	//all c: LegalComponent | all i: c.interfaces | all o: i.iidsKnown | o in c.iids // 16
 	
-	//some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown // 17
-	//some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.qi.Interface //19 
-	//{some c: LegalComponent | some i: c.interfaces | some o : c.iids | no o.(i.qi)} //20 
-	//{some c: LegalComponent | some i: c.interfaces | some o : c.iids | no o.(i.qi).iids} //21 
-	//{some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in o.(i.qi).iids} //22 
-	//{some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in o.(i.qi).iids} //24 
-	//{some c: LegalComponent | some i: c.interfaces | some o : c.interfaces.iids | o not in i.iidsKnown} //26 
-	//{some c: LegalComponent | some i: c.interfaces | some o : c.iids | o not in i.iidsKnown} //27
+// full proof outline: ((((A2 und 14) <=> 42) und 45 ) => 43) <=> 44 ? 38	
+fact lemma45 { all c: Component| all i:c.interfaces | i.iids in c.interfaces.iids // 45 (valid) 
+}
+fact lemma43 { some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown // 43 
+}
+fact lemma44 { not some i: LegalInterface | i.iids not in i.iidsKnown // 44' = not 44 (valid) 
 }
 
 assert Theorem1 {

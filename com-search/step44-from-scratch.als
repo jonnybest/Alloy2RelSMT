@@ -61,13 +61,12 @@ fact Aggregation {
 
 fact Lemma{
 	// full proof outline: ((((A2 und 14) <=> 42) und 45 ) => 43) <=> 44 ϟ 38
-	// this benchmark should show 44 ϟ 38
-//	some i: LegalInterface | i.iids not in i.iidsKnown //44 	(unsat)
-	not some i: LegalInterface | i.iids not in i.iidsKnown // not 44 (valid)
+	// this benchmark should show (44 ʌ ¬ VC) ϟ 38
+	//	some i: LegalInterface | i.iids not in i.iidsKnown //44 	(unsat)
+	not some i: LegalInterface | i.iids not in i.iidsKnown // 44' = not 44 (valid)
 }
 
 assert VC {
-//	some i: LegalInterface | i.iids not in i.iidsKnown //44 	(unsat)
 	all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown
 }
 check VC for 9
