@@ -92,13 +92,12 @@ fact Aggregation {
 // }
 
 assert Theorem1 {
-	// not some i: LegalInterface | i.iids not in i.iidsKnown // 44' = not 44 (valid) 
-	all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown
-	all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids
-		/* original check 
-		// 78 sec // all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // proven!
-		// 126 sec // all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids		 // proven 
-		*/
+	// proven in 589.39
+	all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown // 78 sec
+	all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids // 126 sec
+	/* original check 
+	all c: LegalComponent | all i: c.interfaces | c.iids = i.iidsKnown
+	*/
 }
 check Theorem1 for 9
 
