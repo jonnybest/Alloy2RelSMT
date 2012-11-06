@@ -1068,6 +1068,8 @@ public final class RelTheory {
 			}
 			{
 				/* general lemma (also from com-theorem1), related to step 42
+				 * (minor speedup observed: 85.78 sec -> 77.25 for 2nd half of com-theorem1)
+				 * (z3 managed to prove the whole com-theorem1 (split VC) within 10 minutes after adding this)
 				 * (assert (! ; (c.interfaces).iids = c.(interfaces.iids)
 					(forall ((C Rel1)(R Rel2)(S Rel2)) (= 
 						(join_1x2 (join_1x2 C R) S) 
@@ -1077,7 +1079,7 @@ public final class RelTheory {
 				TermVar C = TermVar.var("Rel1", "C");
 				Term associative = Term.call(name, Term.call(name, C, R), S).equal(Term.call(name, C, joinRS));
 				Term lemma = associative.forall(R, S, C);
-				lemma.setComment("lemma for step 42. not sure this is relevant though.");
+				lemma.setComment("lemma for com-theorem1, step 42 about joins being associative");
 				file.addLemma(lemma);
 			}
 			{
@@ -1094,7 +1096,23 @@ public final class RelTheory {
 				 *		(join_1x2 b (join_2x2 R S))
 				 * ))
 				 */
-				
+				declareProduct(1, 1);
+				declareSubset(1);
+				declareSubset(2);
+				TermVar C = TermVar.var("Rel1", "C");
+				TermVar a = TermVar.var("Rel1", "a");
+				TermVar b = TermVar.var("Rel1", "b");
+				TermVar A = TermVar.var("Rel1", "A");
+				TermVar B = TermVar.var("Rel1", "B");
+				Term subR = Term.call("subset_2", R, Term.call("prod_1x1", A, B));
+				Term subS = Term.call("subset_2", S, Term.call("prod_1x1", B, C));
+				Term joinbS = Term.call(name, b, S);
+				Term joinbRS = Term.call(name, b, joinRS);
+				Term guard  = Term.call("subset_1", a, A).and(Term.call("subset_1", b, B)).and(subR).and(subS);
+				Term deduction = Term.call("subset_1", joinbS,joinbRS);
+				Term lemma = guard.implies(deduction).forall(a, A, b, B, C, R, S);
+				lemma.setComment("lemma about subsets within joins, from com-theorem1, related to step 55");
+				file.addLemma(lemma);
 			}
 		}
 	}
