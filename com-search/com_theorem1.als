@@ -96,8 +96,8 @@ assert Theorem1 {
 	all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown
 	all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids
 		/* original check 
-		// inprovable: all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // inprovable
-		// proven // all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids		 // proven 
+		// 78 sec // all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // proven!
+		// 126 sec // all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids		 // proven 
 		*/
 }
 check Theorem1 for 9
