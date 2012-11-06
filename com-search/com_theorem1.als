@@ -86,15 +86,15 @@ fact Aggregation {
     }
 	
 // full proof outline: ((((A2 und 14) <=> 42) und 45 ) => 43) <=> 44 ? 38	
-fact lemma45 { all c: Component| all i:c.interfaces | i.iids in c.interfaces.iids // 45 (valid) 
-}
-fact lemma43 { some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown // 43 
-}
-fact lemma44 { not some i: LegalInterface | i.iids not in i.iidsKnown // 44' = not 44 (valid) 
-}
+//fact lemma45 { all c: Component| all i:c.interfaces | i.iids in c.interfaces.iids // 45 (valid) }
+//fact lemma43 { not some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown // 43' (valid)}
+// fact lemma44 { all i: LegalInterface | i.iids in i.iidsKnown // 44' = not 44 (valid) 
+// }
 
 assert Theorem1 {
+	// not some i: LegalInterface | i.iids not in i.iidsKnown // 44' = not 44 (valid) 
 	all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown
+	all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids
 		/* original check 
 		// inprovable: all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown    // inprovable
 		// proven // all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids		 // proven 
