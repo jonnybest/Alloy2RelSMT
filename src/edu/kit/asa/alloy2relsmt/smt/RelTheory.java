@@ -1032,36 +1032,70 @@ public final class RelTheory {
 		Term aInR = Term.reverseIn(r, relmembers);
 		String name = "join_" + lar + "x" + rar;
 		Term resultInJoin = Term.reverseIn(Term.call(name, lhs, rhs), result);
-		Term lemma = resultInJoin.implies(aInR).forall(Util.concat(atoms, r));
-		lemma.setComment("1. lemma for "+name+". direction: join to in");
-		file.addLemma(lemma);
-		lemma = aInR.implies(resultInJoin).forall(Util.concat(atoms, r));
-		lemma.setComment("2. lemma for "+name+". direction: in to join");
-		file.addLemma(lemma);
+		{
+			Term lemma = resultInJoin.implies(aInR).forall(Util.concat(atoms, r));
+			lemma.setComment("1. lemma for "+name+". direction: join to in");
+			file.addLemma(lemma);
+			lemma = aInR.implies(resultInJoin).forall(Util.concat(atoms, r));
+			lemma.setComment("2. lemma for "+name+". direction: in to join");
+			file.addLemma(lemma);
+		}
 		
 		if(lar == 1 && rar == 2){
-			/* lemma for the com-theorem1
-			 * ; R=(i.qi) S=iids
+			declareJoin(2, 2);
+			TermVar R = TermVar.var("Rel2", "R");
+			TermVar S = TermVar.var("Rel2", "S");
+			Term joinRS = Term.call("join_2x2", R, S);
+			{
+				/* lemma for the com-theorem1
+				 * ; R=(i.qi) S=iids
 				(assert (! (forall ((R Rel2)(S Rel2)(x Atom))
 					(=>
 						(no_2 (join_1x2 (a2r_1 x) R)) 
 						(no_2 (join_1x2 (a2r_1 x) (join_2x2 R S))))))
 						:named step21
 				)
-			*/
-			declareJoin(2, 2);
-			declareA2r(1);
-			declareNo(1);
-			TermVar R = TermVar.var("Rel2", "R");
-			TermVar S = TermVar.var("Rel2", "S");
-			TermVar x = TermVar.var("Atom", "x");
-			Term Xrel = Term.call("a2r_1", x);
-			Term joinRS = Term.call("join_2x2", R, S);
-			Term guard = Term.call("no_1", Term.call(name, Xrel, R));
-			Term body = Term.call("no_1", Term.call(name, Xrel, joinRS));
-			lemma = guard.implies(body).forall(R, S, x);
-			lemma.setComment("lemma for step 21 of the com-theorem1 for join_1x2: R=(i.qi) S=iids");
-			file.addLemma(lemma);
+				 */
+				declareA2r(1);
+				declareNo(1);
+				TermVar x = TermVar.var("Atom", "x");
+				Term Xrel = Term.call("a2r_1", x);
+				Term guard = Term.call("no_1", Term.call(name, Xrel, R));
+				Term body = Term.call("no_1", Term.call(name, Xrel, joinRS));
+				Term lemma = guard.implies(body).forall(R, S, x);
+				lemma.setComment("lemma for step 21 of the com-theorem1 for join_1x2: R=(i.qi) S=iids");
+				file.addLemma(lemma);
+			}
+			{
+				/* general lemma (also from com-theorem1), related to step 42
+				 * (assert (! ; (c.interfaces).iids = c.(interfaces.iids)
+					(forall ((C Rel1)(R Rel2)(S Rel2)) (= 
+						(join_1x2 (join_1x2 C R) S) 
+						(join_1x2 C (join_2x2 R S))))
+					:named lemmaA22))
+				 */
+				TermVar C = TermVar.var("Rel1", "C");
+				Term associative = Term.call(name, Term.call(name, C, R), S).equal(Term.call(name, C, joinRS));
+				Term lemma = associative.forall(R, S, C);
+				lemma.setComment("lemma for step 42. not sure this is relevant though.");
+				file.addLemma(lemma);
+			}
+			{
+				/* another general lemma (from com-theorem1), related to step 55
+				 * (=>
+				 * 	(and
+				 * 		(subset_1 a A)
+				 * 		(subset_1 b B) 
+				 * 		(subset_2 R (prod_1x1 A B)) 
+				 * 		(subset_2 S (prod_1x1 B C))
+				 * 	)
+				 * (subset_1 
+				 *		(join_1x2 b S)
+				 *		(join_1x2 b (join_2x2 R S))
+				 * ))
+				 */
+				
+			}
 		}
 	}
 
