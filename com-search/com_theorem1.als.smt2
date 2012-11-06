@@ -446,30 +446,42 @@
  )
 (assert
  (! 
-  ; lemma for step 42. not sure this is relevant though.
+  ; lemma for com-theorem1, step 42 about joins being associative
 (forall ((R Rel2)(S Rel2)(C Rel1)) (= (join_1x2 (join_1x2 C R) S) (join_1x2 C (join_2x2 R S)))) 
  :named l5 
  ) 
  )
 (assert
  (! 
+  ; lemma about subsets within joins, from com-theorem1, related to step 55
+(forall ((a Rel1)(A Rel1)(b Rel1)(B Rel1)(C Rel1)(R Rel2)(S Rel2)) (=> (and 
+    (subset_1 a A)
+    (subset_1 b B)
+    (subset_2 R (prod_1x1 A B))
+    (subset_2 S (prod_1x1 B C))
+  ) (subset_1 (join_1x2 b S) (join_1x2 b (join_2x2 R S))))) 
+ :named l6 
+ ) 
+ )
+(assert
+ (! 
   ; 1. lemma for join_2x1. direction: join to in
 (forall ((a0 Atom)(a1 Atom)(r Rel2)) (=> (in_1 a0 (join_2x1 r (a2r_1 a1))) (in_2 a0 a1 r))) 
- :named l6 
+ :named l7 
  ) 
  )
 (assert
  (! 
   ; 2. lemma for join_2x1. direction: in to join
 (forall ((a0 Atom)(a1 Atom)(r Rel2)) (=> (in_2 a0 a1 r) (in_1 a0 (join_2x1 r (a2r_1 a1))))) 
- :named l7 
+ :named l8 
  ) 
  )
 (assert
  (! 
   ; lstep20: lemma about subset 2 and product 1x1 , using join
 (forall ((R Rel2)(A Rel1)(B Rel1)) (=> (subset_2 R (prod_1x1 A B)) (forall ((a0 Atom)) (= (not (in_1 a0 (join_2x1 R B))) (no_1 (join_1x2 (a2r_1 a0) R)))))) 
- :named l8 
+ :named l9 
  ) 
  )
 (assert
@@ -477,7 +489,7 @@
   ; 1. lemma for join_1x3. direction: join to in
 (forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_2 a1 a0 (join_1x3 ; (swapped)
 (a2r_1 a2) r)) (in_3 a2 a1 a0 r))) 
- :named l9 
+ :named l10 
  ) 
  )
 (assert
@@ -485,28 +497,28 @@
   ; 2. lemma for join_1x3. direction: in to join
 (forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_3 a2 a1 a0 r) (in_2 a1 a0 (join_1x3 ; (swapped)
 (a2r_1 a2) r)))) 
- :named l10 
+ :named l11 
  ) 
  )
 (assert
  (! 
   ; joinOfProdRel: originally introduced for COM-theorem1 step 19->20 with R=qi, A=C=Interface, B=IID
 (forall ((a Atom)(A Rel1)(B Rel1)(C Rel1)(R Rel3)) (= (subset_3 R (prod_2x1 (prod_1x1 A B) C)) (subset_2 (join_1x3 (a2r_1 a) R) (prod_1x1 B C)))) 
- :named l11 
+ :named l12 
  ) 
  )
 (assert
  (! 
   ; lemma 1 for transClos about the second-last 'middle element'
 (forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (forall ((a2 Atom)) (or (not (in_2 a1 a2 R)) (and (in_2 a1 a2 R) (in_2 a2 a3 (transClos R))))))) 
- :named l12 
+ :named l13 
  ) 
  )
 (assert
  (! 
   ; lemma 1 for transClos about the second 'middle element'
 (forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (forall ((a2 Atom)) (or (not (in_2 a2 a3 R)) (and (in_2 a2 a3 R) (in_2 a1 a2 (transClos R))))))) 
- :named l13 
+ :named l14 
  ) 
  )
 ;; --end lemmas
