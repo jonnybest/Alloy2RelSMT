@@ -840,7 +840,8 @@ public final class RelTheory {
 		// declare subset function, e.g. (declare-fun subset_2 (Rel2, Rel2) bool)
 		// add declaration
 		String relSort = "Rel"+ar;
-		if(file.addFunction("Bool", "subset_" + ar, relSort, relSort)){			
+		String name = "subset_" + ar;
+		if(file.addFunction("Bool", name, relSort, relSort)){			
 			// if successfully added; add axiom(s) as well
 			// prepare parameter list for in()
 			List<TermVar> atomVars = new LinkedList<TermVar>();
@@ -850,7 +851,7 @@ public final class RelTheory {
 			// declare variables
 			TermVar x = TermVar.var(relSort, "x");	// a Set or Relation
 			TermVar y = TermVar.var(relSort, "y");	// another Set or Relation
-			Term subset = Term.call("subset_"+ar, x, y);  // x is subset of y
+			Term subset = Term.call(name, x, y);  // x is subset of y
 			Term inImpliesIn = Term.in(atomVars, x).implies(Term.in(atomVars, y));  // if an atom is in x, it is also in y 
 			// now quantify the two expressions for all x, y and atoms
 			Term axiom = subset.equal(inImpliesIn.forall(atomVars)).forall(x, y);
@@ -859,6 +860,16 @@ public final class RelTheory {
 			
 			if (ar == 3) {
 				//see declareProduct(2, 1)
+			}
+			
+			{
+				// equality-lemma. introduced for com-theorem1, since z3 can prove both "parts" of the assertion seperately, but not the equality
+				// (A in B) and (B in A) => A = B 
+				TermVar A = TermVar.var(relSort, "A");
+				TermVar B = TermVar.var(relSort, "B");
+				Term lemma = Term.call(name, A, B).and(Term.call(name, B, A)).implies(A.equal(B)).forall(A, B);
+				lemma.setComment("lemma about the inclusion rule (A in B) and (B in A) => A = B. first introduced for com-theorem1.");
+				file.addLemma(lemma);
 			}
 		}
 	}
@@ -1084,6 +1095,7 @@ public final class RelTheory {
 			}
 			{
 				/* another general lemma (from com-theorem1), related to step 55
+				 * (minor speedup observed: 584.85 sec -> 159.30 on the whole com-theorem1 (split VC))
 				 * (=>
 				 * 	(and
 				 * 		(subset_1 a A)
