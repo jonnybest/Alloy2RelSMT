@@ -407,10 +407,17 @@
 ;; lemmas
 (assert
  (! 
+  ; lemma about the inclusion rule (A in B) and (B in A) => A = B. first introduced for com-theorem1.
+(forall ((A Rel2)(B Rel2)) (=> (and (subset_2 A B) (subset_2 B A)) (= A B))) 
+ :named l0 
+ ) 
+ )
+(assert
+ (! 
   ; 1. lemma for join_1x2. direction: join to in
 (forall ((a1 Atom)(a0 Atom)(r Rel2)) (=> (in_1 a0 (join_1x2 ; (swapped)
 (a2r_1 a1) r)) (in_2 a1 a0 r))) 
- :named l0 
+ :named l1 
  ) 
  )
 (assert
@@ -418,7 +425,7 @@
   ; 2. lemma for join_1x2. direction: in to join
 (forall ((a1 Atom)(a0 Atom)(r Rel2)) (=> (in_2 a1 a0 r) (in_1 a0 (join_1x2 ; (swapped)
 (a2r_1 a1) r)))) 
- :named l1 
+ :named l2 
  ) 
  )
 (assert
@@ -426,7 +433,7 @@
   ; 1. lemma for join_2x2. direction: join to in
 (forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel2)) (=> (in_2 a2 a0 (join_2x2 ; (swapped)
 (a2r_2 a2 a1) r)) (in_2 a1 a0 r))) 
- :named l2 
+ :named l3 
  ) 
  )
 (assert
@@ -434,21 +441,28 @@
   ; 2. lemma for join_2x2. direction: in to join
 (forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel2)) (=> (in_2 a1 a0 r) (in_2 a2 a0 (join_2x2 ; (swapped)
 (a2r_2 a2 a1) r)))) 
- :named l3 
+ :named l4 
  ) 
  )
 (assert
  (! 
   ; lemma for step 21 of the com-theorem1 for join_1x2: R=(i.qi) S=iids
 (forall ((R Rel2)(S Rel2)(x Atom)) (=> (no_1 (join_1x2 (a2r_1 x) R)) (no_1 (join_1x2 (a2r_1 x) (join_2x2 R S))))) 
- :named l4 
+ :named l5 
  ) 
  )
 (assert
  (! 
   ; lemma for com-theorem1, step 42 about joins being associative
 (forall ((R Rel2)(S Rel2)(C Rel1)) (= (join_1x2 (join_1x2 C R) S) (join_1x2 C (join_2x2 R S)))) 
- :named l5 
+ :named l6 
+ ) 
+ )
+(assert
+ (! 
+  ; lemma about the inclusion rule (A in B) and (B in A) => A = B. first introduced for com-theorem1.
+(forall ((A Rel1)(B Rel1)) (=> (and (subset_1 A B) (subset_1 B A)) (= A B))) 
+ :named l7 
  ) 
  )
 (assert
@@ -460,28 +474,35 @@
     (subset_2 R (prod_1x1 A B))
     (subset_2 S (prod_1x1 B C))
   ) (subset_1 (join_1x2 b S) (join_1x2 b (join_2x2 R S))))) 
- :named l6 
+ :named l8 
  ) 
  )
 (assert
  (! 
   ; 1. lemma for join_2x1. direction: join to in
 (forall ((a0 Atom)(a1 Atom)(r Rel2)) (=> (in_1 a0 (join_2x1 r (a2r_1 a1))) (in_2 a0 a1 r))) 
- :named l7 
+ :named l9 
  ) 
  )
 (assert
  (! 
   ; 2. lemma for join_2x1. direction: in to join
 (forall ((a0 Atom)(a1 Atom)(r Rel2)) (=> (in_2 a0 a1 r) (in_1 a0 (join_2x1 r (a2r_1 a1))))) 
- :named l8 
+ :named l10 
  ) 
  )
 (assert
  (! 
   ; lstep20: lemma about subset 2 and product 1x1 , using join
 (forall ((R Rel2)(A Rel1)(B Rel1)) (=> (subset_2 R (prod_1x1 A B)) (forall ((a0 Atom)) (= (not (in_1 a0 (join_2x1 R B))) (no_1 (join_1x2 (a2r_1 a0) R)))))) 
- :named l9 
+ :named l11 
+ ) 
+ )
+(assert
+ (! 
+  ; lemma about the inclusion rule (A in B) and (B in A) => A = B. first introduced for com-theorem1.
+(forall ((A Rel3)(B Rel3)) (=> (and (subset_3 A B) (subset_3 B A)) (= A B))) 
+ :named l12 
  ) 
  )
 (assert
@@ -489,7 +510,7 @@
   ; 1. lemma for join_1x3. direction: join to in
 (forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_2 a1 a0 (join_1x3 ; (swapped)
 (a2r_1 a2) r)) (in_3 a2 a1 a0 r))) 
- :named l10 
+ :named l13 
  ) 
  )
 (assert
@@ -497,28 +518,28 @@
   ; 2. lemma for join_1x3. direction: in to join
 (forall ((a2 Atom)(a1 Atom)(a0 Atom)(r Rel3)) (=> (in_3 a2 a1 a0 r) (in_2 a1 a0 (join_1x3 ; (swapped)
 (a2r_1 a2) r)))) 
- :named l11 
+ :named l14 
  ) 
  )
 (assert
  (! 
   ; joinOfProdRel: originally introduced for COM-theorem1 step 19->20 with R=qi, A=C=Interface, B=IID
 (forall ((a Atom)(A Rel1)(B Rel1)(C Rel1)(R Rel3)) (= (subset_3 R (prod_2x1 (prod_1x1 A B) C)) (subset_2 (join_1x3 (a2r_1 a) R) (prod_1x1 B C)))) 
- :named l12 
+ :named l15 
  ) 
  )
 (assert
  (! 
   ; lemma 1 for transClos about the second-last 'middle element'
 (forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (forall ((a2 Atom)) (or (not (in_2 a1 a2 R)) (and (in_2 a1 a2 R) (in_2 a2 a3 (transClos R))))))) 
- :named l13 
+ :named l16 
  ) 
  )
 (assert
  (! 
   ; lemma 1 for transClos about the second 'middle element'
 (forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (forall ((a2 Atom)) (or (not (in_2 a2 a3 R)) (and (in_2 a2 a3 R) (in_2 a1 a2 (transClos R))))))) 
- :named l14 
+ :named l17 
  ) 
  )
 ;; --end lemmas
