@@ -91,22 +91,24 @@ fact Aggregation {
 // fact lemma44 { all i: LegalInterface | i.iids in i.iidsKnown // 44' = not 44 (valid) 
 // }
 
-fact lemma45 { all c: Component| all i:c.interfaces | i.iids in c.interfaces.iids }
+// fact lemma45 { all c: Component| all i:c.interfaces | i.iids in c.interfaces.iids } // genügt nicht
 -- aus A2 mit 14 (gdw):
-fact not42 { not some c: LegalComponent | some i: c.interfaces | c.interfaces.iids not in i.iidsKnown }
+// fact not42 { not some c: LegalComponent | some i: c.interfaces | c.interfaces.iids not in i.iidsKnown } // is enough!
+// fact not42 { all c: LegalComponent | all i: c.interfaces | c.interfaces.iids in i.iidsKnown } //  also enough!
+fact step42 { some c: LegalComponent | some i: c.interfaces | c.interfaces.iids not in i.iidsKnown } // not enough
 -- aus 42 ergibt sich, wegen 45 insbesondere ((((A2 und 14) <=> 42) und 45 ) => 43):
-fact not43 { not some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown }
+// fact not43 { not some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown } 
+// fact step43 { some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown }
 -- aus 43 ergibt sich, wegen (c.interfaces in LegalInterface) ganz allgemein (gdw): ((((A2 und 14) <=> 42) und 45 ) => 43) <=> 44 ? 38
-fact not44 { not some i: LegalInterface | i.iids not in i.iidsKnown }
+// fact not44 { not some i: LegalInterface | i.iids not in i.iidsKnown } // is enough!
+// fact step44 { some i: LegalInterface | i.iids not in i.iidsKnown } 
 -- reflexivity l.76
-//fact not38 { all i: LegalInterface | i.iids in i.iidsKnown }
--- 38 steht nun im Widerspruch zu 44. wzbw ?
-
+// step 38 fact Reflexivity { all i : LegalInterface | i.iids in i.iidsKnown }
 
 assert Theorem1 {
-	// proven in 589.39
+	// A2:
 	all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown // 78 sec
-	all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids // 126 sec
+	
 	/* original check 
 	all c: LegalComponent | all i: c.interfaces | c.iids = i.iidsKnown
 	*/

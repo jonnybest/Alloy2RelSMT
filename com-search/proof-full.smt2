@@ -186,19 +186,49 @@
 (assert (!
 (forall ((c Atom)) (=> (in_1 c Component) (= (join_1x2 (a2r_1 c) iids) (join_1x2 (join_1x2 (a2r_1 c) interfaces) iids1))))
 :named a22))
-(assert (! ; (c.interfaces).iids = c.(interfaces.iids)
-(forall ((C Rel1)(R Rel2)(S Rel2)) (= 
-	(join_1x2 (join_1x2 C R) S) 
-	(join_1x2 C (join_2x2 R S))))
-:named lemmaA22))
 ; -- ganz allgemein gilt auch folgendes Lemma (obda):
 ; 45 all c: Component| all i:c.interfaces | i.iids in c.interfaces.iids
+(assert 
+ (! 
+  (forall ((c Atom)) (=> (in_1 c Component) (forall ((i Atom)) (=> (and (in_1 i Interface) (in_1 i (join_1x2 (a2r_1 c) interfaces))) (subset_1 (join_1x2 (a2r_1 i) iids1) (join_1x2 (join_1x2 (a2r_1 c) interfaces) iids1)))))) 
+ :named a29 
+ ) 
+ )
 ; -- aus A2 mit 14 (gdw):
 ; 42 some c: LegalComponent | some i: c.interfaces | c.interfaces.iids not in i.iidsKnown
+; fact not42 { not some c: LegalComponent | some i: c.interfaces | c.interfaces.iids not in i.iidsKnown }
+(assert 
+ (! 
+  (not (exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
+    (in_1 i Interface)
+    (in_1 i (join_1x2 (a2r_1 c) interfaces))
+    (not (subset_1 (join_1x2 (join_1x2 (a2r_1 c) interfaces) iids1) (join_1x2 (a2r_1 i) iidsKnown)))
+  ))))) 
+ :named a30 
+ ) 
+ )
 ; -- aus 42 ergibt sich, wegen 45 insbesondere ((((A2 und 14) <=> 42) und 45 ) => 43):
 ; 43 some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown
+; fact not43 { not some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown }
+(assert 
+ (! 
+  (not (exists ((c Atom)) (and (in_1 c LegalComponent) (exists ((i Atom)) (and 
+    (in_1 i Interface)
+    (in_1 i (join_1x2 (a2r_1 c) interfaces))
+    (not (subset_1 (join_1x2 (a2r_1 i) iids1) (join_1x2 (a2r_1 i) iidsKnown)))
+  ))))) 
+ :named a31 
+ ) 
+ )
 ; -- aus 43 ergibt sich, wegen (c.interfaces in LegalInterface) ganz allgemein (gdw): ((((A2 und 14) <=> 42) und 45 ) => 43) <=> 44 ? 38
 ; 44 some i: LegalInterface | i.iids not in i.iidsKnown
+; fact not44 { not some i: LegalInterface | i.iids not in i.iidsKnown }
+(assert 
+ (! 
+  (not (exists ((i Atom)) (and (in_1 i LegalInterface) (not (subset_1 (join_1x2 (a2r_1 i) iids) (join_1x2 (a2r_1 i) iidsKnown)))))) 
+ :named a32 
+ ) 
+ )
 ; -- reflexivity l.76
 ; 38 all i: LegalInterface | i.iids in i.iidsKnown
 ; -- 38 steht nun im Widerspruch zu 44. wzbw ?
