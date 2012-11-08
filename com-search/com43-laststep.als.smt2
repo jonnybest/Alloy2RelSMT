@@ -316,12 +316,34 @@
  :named a25 
  ) 
  )
-(assert 
- (! 
-  (exists ((i Atom)) (and (in_1 i LegalInterface) (not (subset_1 (join_1x2 (a2r_1 i) iids) (join_1x2 (a2r_1 i) iidsKnown))))) 
- :named a26 
- ) 
- )
+ (assert
+(=> 
+	(and 								; prerequisites
+		(subset_1 LegalInterface Interface)  			; optional
+		(subset_2 interfaces (prod_1x1 Component Interface))
+		(subset_1 (join_1x2 LegalComponent interfaces) LegalInterface) 
+	)
+	(= 
+		(exists ((c Atom)) 					; step 43
+		(and 
+			(in_1 c LegalComponent) 			
+			(exists ((i Atom)) 
+			(and 
+				(in_1 i Interface)			; optional
+				(in_1 i (join_1x2 (a2r_1 c) interfaces))
+				(not (subset_1 			; this could be any Expression E
+					(join_1x2 (a2r_1 i) iids) 
+					(join_1x2 (a2r_1 i) iidsKnown)))))))
+		(exists ((i Atom)) 					; step 44
+		(and 
+			(in_1 i LegalInterface) 
+			(not (subset_1 				; this could be any Expression E
+				(join_1x2 (a2r_1 i) iids)
+				(join_1x2 (a2r_1 i) iidsKnown)))))
+
+	)))
+
+; (assert  (!   (exists ((i Atom)) (and (in_1 i LegalInterface) (not (subset_1 (join_1x2 (a2r_1 i) iids) (join_1x2 (a2r_1 i) iidsKnown)))))  :named a26  )  )
 ;; --end assertions
 
 ;; command
