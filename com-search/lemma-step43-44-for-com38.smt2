@@ -1,58 +1,64 @@
-;; all c: LegalComponent | all i: c.interfaces | i.iids in i.iidsKnown // 43' 
+;; 43 (not valid)
 ;; => 
-;; all i: LegalInterface | i.iids in i.iidsKnown // 44' = not 44 (valid) 
+;; 44 (not valid)
 
 (assert ; 43
- (! (forall ((c Atom)) (=> 
-	(in_1 c T) 
-	(forall ((i Atom)) (=> 
+ (! 
+  (exists ((c Atom)) 					; step 43
 		(and 
-			(in_1 i B) 
-			(in_1 i (join_1x2 (a2r_1 c) A))) 
-			(subset_1 
-				R 
-				S))))) 
- :named a30 
+			(in_1 c LegalComponent) 
+			(exists ((i Atom)) 
+			(and 
+				(in_1 i Interface)			; optional
+				(in_1 i (join_1x2 (a2r_1 c) interfaces))
+				(not (subset_1 
+					(join_1x2 (a2r_1 i) iids1) 
+					(join_1x2 (a2r_1 i) iidsKnown)))))))
+
+ :named a31 
  ) 
  )
-;; implies
-(assert ; 44'
+;; gdw.
+(assert ; 44
  (! 
-  (forall ((i Atom)) (=> 
-	(in_1 i LegalInterface) 
-	(subset_1 
-		R
-		S))) 
- :named a31 	
+  (exists ((i Atom)) 					; step 44
+		(and 
+			(in_1 i LegalInterface) 
+			(not (subset_1 
+				(join_1x2 (a2r_1 i) iids1)
+				(join_1x2 (a2r_1 i) iidsKnown)))))
+
+ :named a31 
  ) 
  )
  
 ;; as lemma: 
-(assert ; 43->44
-(forall ((a Rel1)(b Rel1)(r1 Rel2)(r2 Rel2))
-(=>
-	(subset_1 b a)
-	(=>  
-		(subset_1 
-			(join_1x2 a r1) 
-			(join_1x2 a r2))
-		(subset_1 
-			(join_1x2 b r1) 
-			(join_1x2 b r2)))) 
- ))
- ;; as a negative lemma: 
-(assert ; 43->44
-(exists ((i Atom)(a Rel1)(b Rel1)(r1 Rel2)(r2 Rel2))
-(and
-	(not (in_1 i b))
-	(subset_1 b a)
-	(=>  
-		(not (subset_1 
-			(join_1x2 a r1) 
-			(join_1x2 a r2)))
-		(not (subset_1 
-			(join_1x2 b r1) 
-			(join_1x2 b r2)))))))
+(=> 
+	(and
+		(subset_1 LegalInterface Interface) 
+		(subset_2 interfaces (prod_1x1 Component Interface))
+		(subset_1 (join_1x2 LegalComponent interfaces) LegalInterface) 
+	)
+	(= 
+		(exists ((c Atom))
+		(and 
+			(in_1 c LegalComponent) 
+			(exists ((i Atom)) 
+			(and 
+				(in_1 i Interface)
+				(in_1 i (join_1x2 (a2r_1 c) interfaces))
+				(not (subset_1 
+					(join_1x2 (a2r_1 i) iids1) 
+					(join_1x2 (a2r_1 i) iidsKnown)))))))
+		(exists ((i Atom)) 
+		(and 
+			(in_1 i LegalInterface) 
+			(not (subset_1 
+				(join_1x2 (a2r_1 i) iids1)
+				(join_1x2 (a2r_1 i) iidsKnown)))))
+
+	)
+)
  
 ;; general lemma:
 ;; 
