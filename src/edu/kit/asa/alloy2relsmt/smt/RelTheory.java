@@ -1079,7 +1079,7 @@ public final class RelTheory {
 				file.addLemma(lemma);
 			}
 			{
-				/* general lemma (also from com-theorem1), related to step 42
+				/* invalid lemma (also from com-theorem1), related to step 42
 				 * (minor speedup observed: 85.78 sec -> 77.25 for 2nd half of com-theorem1)
 				 * (z3 managed to prove the whole com-theorem1 (split VC) within 10 minutes after adding this)
 				 * (assert (! ; (c.interfaces).iids = c.(interfaces.iids)
@@ -1092,39 +1092,31 @@ public final class RelTheory {
 				Term associative = Term.call(name, Term.call(name, C, R), S).equal(Term.call(name, C, joinRS));
 				Term lemma = associative.forall(R, S, C);
 				lemma.setComment("lemma for com-theorem1, step 42 about joins being associative");
-				file.addLemma(lemma);
+				//file.addLemma(lemma); // lemmas is not valid because join is not associative
 			}
 			{
-				/* another general lemma (from com-theorem1), related to step 55
+				/* another general lemma (from com-theorem1), related to step 45
 				 * (minor speedup observed: 584.85 sec -> 159.30 on the whole com-theorem1 (split VC))
 				 * (=>
-				 * 	(and
-				 * 		(subset_1 a A)
-				 * 		(subset_1 b B) 
-				 * 		(subset_2 R (prod_1x1 A B)) 
-				 * 		(subset_2 S (prod_1x1 B C))
-				 * 	)
-				 * (subset_1 
-				 *		(join_1x2 b S)
-				 *		(join_1x2 b (join_2x2 R S))
+				 * 	 (subset_1 a A) 
+				 *   (subset_1 
+				 *		(join_1x2 a R)
+				 *		(join_1x2 A R)
 				 * ))
 				 */
 				declareProduct(1, 1);
 				declareSubset(1);
 				declareSubset(2);
-				TermVar C = TermVar.var("Rel1", "C");
 				TermVar a = TermVar.var("Rel1", "a");
-				TermVar b = TermVar.var("Rel1", "b");
 				TermVar A = TermVar.var("Rel1", "A");
 				TermVar B = TermVar.var("Rel1", "B");
-				Term subR = Term.call("subset_2", R, Term.call("prod_1x1", A, B));
-				Term subS = Term.call("subset_2", S, Term.call("prod_1x1", B, C));
-				Term joinbS = Term.call(name, b, S);
-				Term joinbRS = Term.call(name, b, joinRS);
-				Term guard  = Term.call("subset_1", a, A).and(Term.call("subset_1", b, B)).and(subR).and(subS);
-				Term deduction = Term.call("subset_1", joinbS,joinbRS);
-				Term lemma = guard.implies(deduction).forall(a, A, b, B, C, R, S);
-				lemma.setComment("lemma about subsets within joins, from com-theorem1, related to step 55");
+//				Term subR = Term.call("subset_2", R, Term.call("prod_1x1", A, B));
+				Term joinSmallSet = Term.call(name, a, R);
+				Term joinLargeSet = Term.call(name, A, R);
+				Term guard  = Term.call("subset_1", a, A); // .and(subR);
+				Term deduction = Term.call("subset_1", joinSmallSet,joinLargeSet);
+				Term lemma = guard.implies(deduction).forall(a, A, B, R);
+				lemma.setComment("lemma about subsets within joins, from com-theorem1, related to step 45");
 				file.addLemma(lemma);
 			}
 		}
