@@ -63,55 +63,46 @@ fact IdentityAxiom {
 fact ComponentProps {
   all c : Component {
     c.iids = c.interfaces.iids
-    all i : c.interfaces | all x : IID | x.(i.qi) in c.interfaces
+    // all i : c.interfaces | all x : IID | x.(i.qi) in c.interfaces
   }
 }
 
 sig LegalInterface extends Interface { }
-fact { all i : LegalInterface | all x : i.iidsKnown | x in x.(i.qi).iids}
+// fact { all i : LegalInterface | all x : i.iidsKnown | x in x.(i.qi).iids}
 
 sig LegalComponent extends Component { }
 fact { LegalComponent.interfaces in LegalInterface }
 
 fact Reflexivity { all i : LegalInterface | i.iids in i.iidsKnown }
-fact Symmetry { all i, j : LegalInterface | j in i.reaches => i.iids in j.iidsKnown }
-fact Transitivity { all i, j : LegalInterface | j in i.reaches => j.iidsKnown in i.iidsKnown }
+// fact Symmetry { all i, j : LegalInterface | j in i.reaches => i.iids in j.iidsKnown }
+// fact Transitivity { all i, j : LegalInterface | j in i.reaches => j.iidsKnown in i.iidsKnown }
 
 
-fact Aggregation {
-    no c : Component | c in c.^aggregates
-    all outer : Component | all inner : outer.aggregates |
-      (some inner.interfaces & outer.interfaces)
-      && (some o: outer.interfaces | all i: inner.interfaces - inner.first | all x: Component  | (x.iids).(i.qi) = (x.iids).(o.qi))
-    }
+// fact Aggregation {
+    // no c : Component | c in c.^aggregates
+    // all outer : Component | all inner : outer.aggregates |
+      // (some inner.interfaces & outer.interfaces)
+      // && (some o: outer.interfaces | all i: inner.interfaces - inner.first | all x: Component  | (x.iids).(i.qi) = (x.iids).(o.qi))
+    // }
 	
-// full proof outline: ((((A2 und 14) <=> 42) und 45 ) => 43) <=> 44 ? 38	
-//fact lemma45 { all c: Component| all i:c.interfaces | i.iids in c.interfaces.iids // 45 (valid) }
-//fact lemma43 { not some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown // 43' (valid)}
-// fact lemma44 { all i: LegalInterface | i.iids in i.iidsKnown // 44' = not 44 (valid) 
-// }
-
-// fact lemma45 { all c: Component| all i:c.interfaces | i.iids in c.interfaces.iids } // gen�gt nicht
--- aus A2 mit 14 (gdw):
-// fact not42 { not some c: LegalComponent | some i: c.interfaces | c.interfaces.iids not in i.iidsKnown } // is enough!
-// fact not42 { all c: LegalComponent | all i: c.interfaces | c.interfaces.iids in i.iidsKnown } //  also enough!
+-- full proof outline: ((((A2 and ComponentProps) <=> step42) and lemma45) => step43) <=> step44 ϟ Reflexivity
+-- aus ComponentProps ergibt sich im Allgemeinen:
+fact lemma45 { all c: Component| all i:c.interfaces | i.iids in c.interfaces.iids } // not enough
+-- aus A2 mit ComponentProps (gdw):
 fact step42 { some c: LegalComponent | some i: c.interfaces | c.interfaces.iids not in i.iidsKnown } // not enough
--- aus 42 ergibt sich, wegen 45 insbesondere ((((A2 und 14) <=> 42) und 45 ) => 43):
-// fact not43 { not some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown } 
-// fact step43 { some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown }
--- aus 43 ergibt sich, wegen (c.interfaces in LegalInterface) ganz allgemein (gdw): ((((A2 und 14) <=> 42) und 45 ) => 43) <=> 44 ? 38
-// fact not44 { not some i: LegalInterface | i.iids not in i.iidsKnown } // is enough!
-// fact step44 { some i: LegalInterface | i.iids not in i.iidsKnown } 
--- reflexivity l.76
-// step 38 fact Reflexivity { all i : LegalInterface | i.iids in i.iidsKnown }
+-- aus 42 ergibt sich, wegen 45 insbesondere ((((A2 und ComponentProps) <=> 42) und 45 ) => 43): 
+// fact step43 { some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown } // not enough on its own
+fact not43 { all c: LegalComponent | all i: c.interfaces | i.iids in i.iidsKnown } // not enough 
+-- aus 43 ergibt sich, wegen (c.interfaces in LegalInterface) ganz allgemein (gdw): ((((A2 und ComponentProps) <=> 42) und 45 ) => 43) <=> 44 ϟ 38
+// fact step44 { some i: LegalInterface | i.iids not in i.iidsKnown } // enough!
 
-assert Theorem1 {
-	// A2:
-	all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown // 78 sec
+assert A2 {
+	some i: LegalInterface | i.iids not in i.iidsKnown
+	all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown
 	
 	/* original check 
 	all c: LegalComponent | all i: c.interfaces | c.iids = i.iidsKnown
 	*/
 }
-check Theorem1 for 9
+check A2 for 9
 
