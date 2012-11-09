@@ -38,7 +38,7 @@ sig Interface {
 
 fact {
   all i: Interface |
-     (i.iidsKnown = i.qi.Interface) and
+     // (i.iidsKnown = i.qi.Interface) and
      (i.reaches = IID.(i.qi))
 }
 
@@ -50,10 +50,10 @@ sig Component {
   aggregates : set Component
 }
 
-fact defineEqs {
-  all c1, c2: Component |
-    c1->c2 in eqs <=> c1.identity = c2.identity
-}
+// fact defineEqs {
+  // all c1, c2: Component |
+    // c1->c2 in eqs <=> c1.identity = c2.identity
+// }
 
 fact IdentityAxiom {
   some unknown : IID | all c : Component |
@@ -78,20 +78,14 @@ fact Symmetry { all i, j : LegalInterface | j in i.reaches => i.iids in j.iidsKn
 fact Transitivity { all i, j : LegalInterface | j in i.reaches => j.iidsKnown in i.iidsKnown }
 
 
-fact Aggregation {
-    no c : Component | c in c.^aggregates
-    all outer : Component | all inner : outer.aggregates |
-      (some inner.interfaces & outer.interfaces)
-      && (some o: outer.interfaces | all i: inner.interfaces - inner.first | all x: Component  | (x.iids).(i.qi) = (x.iids).(o.qi))
-    }
+// fact Aggregation {
+    // no c : Component | c in c.^aggregates
+    // all outer : Component | all inner : outer.aggregates |
+      // (some inner.interfaces & outer.interfaces)
+      // && (some o: outer.interfaces | all i: inner.interfaces - inner.first | all x: Component  | (x.iids).(i.qi) = (x.iids).(o.qi))
+    // }
 
-fact previousStep {
-    //some c: LegalComponent | some i: c.interfaces | c.iids not in i.iidsKnown // A2
-	// aus A2 mit l.65 (gdw):
-}
 assert step42 {
 	not some c: LegalComponent | some i: c.interfaces | c.interfaces.iids not in i.iidsKnown // step 42
-	//not some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown // step 43 - solvable
-	//not some i : LegalInterface | i.iids not in i.iidsKnown // step 44 solvable
 }
 check step42

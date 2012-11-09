@@ -78,12 +78,12 @@ fact Symmetry { all i, j : LegalInterface | j in i.reaches => i.iids in j.iidsKn
 fact Transitivity { all i, j : LegalInterface | j in i.reaches => j.iidsKnown in i.iidsKnown }
 
 
-fact Aggregation {
-    no c : Component | c in c.^aggregates
-    all outer : Component | all inner : outer.aggregates |
-      (some inner.interfaces & outer.interfaces)
-      && (some o: outer.interfaces | all i: inner.interfaces - inner.first | all x: Component  | (x.iids).(i.qi) = (x.iids).(o.qi))
-    }
+// fact Aggregation {
+    // no c : Component | c in c.^aggregates
+    // all outer : Component | all inner : outer.aggregates |
+      // (some inner.interfaces & outer.interfaces)
+      // && (some o: outer.interfaces | all i: inner.interfaces - inner.first | all x: Component  | (x.iids).(i.qi) = (x.iids).(o.qi))
+    // }
 
 fact previousStep {
     //some c: LegalComponent | some i: c.interfaces | c.iids not in i.iidsKnown // A2

@@ -36,11 +36,6 @@
 (declare-fun iidsKnown () Rel2)
 (declare-fun reaches () Rel2)
 (declare-fun disjoint_1 (Rel1 Rel1) Bool)
-(declare-fun trans (Rel2) Bool)
-(declare-fun transClos (Rel2) Rel2)
-(declare-fun inter_1 (Rel1 Rel1) Rel1)
-(declare-fun some_1 (Rel1) Bool)
-(declare-fun diff_1 (Rel1 Rel1) Rel1)
 (declare-fun none () Rel1)
 (declare-fun LegalComponent () Rel1)
 (declare-fun Component () Rel1)
@@ -153,63 +148,9 @@
  )
 (assert 
  (! 
-  ; this axiom defines transitivity
-(forall ((r Rel2)) (= (trans r) (forall ((a1 Atom)(a2 Atom)(a3 Atom)) (=> (and (in_2 a1 a2 r) (in_2 a2 a3 r)) (in_2 a1 a3 r))))) 
- :named ax15 
- ) 
- )
-(assert 
- (! 
-  ; this axiom satisfies transitivity for transclos
-(forall ((r1 Rel2)) (trans (transClos r1))) 
- :named ax16 
- ) 
- )
-(assert 
- (! 
-  ; this axioms satisfies that tcl is extensive
-(forall ((r1 Rel2)) (subset_2 r1 (transClos r1))) 
- :named ax17 
- ) 
- )
-(assert 
- (! 
-  ; this axiom satisfies that transclos is increasing
-(forall ((r1 Rel2)(r2 Rel2)) (=> (subset_2 r1 r2) (subset_2 (transClos r1) r2))) 
- :named ax18 
- ) 
- )
-(assert 
- (! 
-  ; this axiom satisfies that tcl should be idempotent
-(forall ((r1 Rel2)) (= (transClos (transClos r1)) (transClos r1))) 
- :named ax19 
- ) 
- )
-(assert 
- (! 
-  ; axiom for intersection 1
-(forall ((a0 Atom)(R Rel1)(S Rel1)) (=> (in_1 a0 (inter_1 R S)) (or (in_1 a0 R) (in_1 a0 S)))) 
- :named ax20 
- ) 
- )
-(assert 
- (! 
-  (forall ((A Rel1)) (= (some_1 A) (exists ((a0 Atom)) (in_1 a0 A)))) 
- :named ax21 
- ) 
- )
-(assert 
- (! 
-  (forall ((A Rel1)(B Rel1)(a0 Atom)) (= (in_1 a0 (diff_1 A B)) (and (in_1 a0 A) (not (in_1 a0 B))))) 
- :named ax22 
- ) 
- )
-(assert 
- (! 
   ; axiom for empty set
 (forall ((a Atom)) (not (in_1 a none))) 
- :named ax23 
+ :named ax15 
  ) 
  )
 ;; --end axioms
@@ -383,16 +324,6 @@
  :named a27 
  ) 
  )
-(assert 
- (! 
-  (and (not (exists ((c Atom)) (and (in_1 c Component) (in_1 c (join_1x2 (a2r_1 c) (transClos aggregates)))))) (forall ((outer Atom)) (=> (in_1 outer Component) (forall ((inner Atom)) (=> (and (in_1 inner Component) (in_1 inner (join_1x2 (a2r_1 outer) aggregates))) (and (some_1 (inter_1 (join_1x2 (a2r_1 inner) interfaces) (join_1x2 (a2r_1 outer) interfaces))) (exists ((o Atom)) (and 
-    (in_1 o Interface)
-    (in_1 o (join_1x2 (a2r_1 outer) interfaces))
-    (forall ((i Atom)) (=> (and (in_1 i Interface) (in_1 i (diff_1 (join_1x2 (a2r_1 inner) interfaces) (join_1x2 (a2r_1 inner) first)))) (forall ((x Atom)) (=> (in_1 x Component) (= (join_1x2 (join_1x2 (a2r_1 x) iids) (join_1x3 (a2r_1 i) qi)) (join_1x2 (join_1x2 (a2r_1 x) iids) (join_1x3 (a2r_1 o) qi)))))))
-  )))))))) 
- :named a28 
- ) 
- )
 ;; --end assertions
 
 ;; command
@@ -497,20 +428,6 @@
   ; joinOfProdRel: originally introduced for COM-theorem1 step 19->20 with R=qi, A=C=Interface, B=IID
 (forall ((a Atom)(A Rel1)(B Rel1)(C Rel1)(R Rel3)) (= (subset_3 R (prod_2x1 (prod_1x1 A B) C)) (subset_2 (join_1x3 (a2r_1 a) R) (prod_1x1 B C)))) 
  :named l11 
- ) 
- )
-(assert
- (! 
-  ; lemma 1 for transClos about the second-last 'middle element'
-(forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (forall ((a2 Atom)) (or (not (in_2 a1 a2 R)) (and (in_2 a1 a2 R) (in_2 a2 a3 (transClos R))))))) 
- :named l12 
- ) 
- )
-(assert
- (! 
-  ; lemma 1 for transClos about the second 'middle element'
-(forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (forall ((a2 Atom)) (or (not (in_2 a2 a3 R)) (and (in_2 a2 a3 R) (in_2 a1 a2 (transClos R))))))) 
- :named l13 
  ) 
  )
 ;; --end lemmas
