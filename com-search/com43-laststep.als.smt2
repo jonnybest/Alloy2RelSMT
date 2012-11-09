@@ -22,6 +22,7 @@
 (declare-fun join_2x1 (Rel2 Rel1) Rel1)
 (declare-fun in_3 (Atom Atom Atom Rel3) Bool)
 (declare-fun prod_2x1 (Rel2 Rel1) Rel3)
+(declare-fun prod_1x2 (Rel1 Rel2) Rel3)
 (declare-fun subset_3 (Rel3 Rel3) Bool)
 (declare-fun join_1x3 (Rel1 Rel3) Rel2)
 (declare-fun lone_1 (Rel1) Bool)
@@ -113,6 +114,20 @@
  :named ax9 
  ) 
  )
+(assert 
+ (! 
+  (forall ((y0 Atom)(x0 Atom)(x1 Atom)(A Rel2)(B Rel1)) (= (in_3 y0 x0 x1 (prod_1x2 B A)) (and  (in_1 y0 B)(in_2 x0 x1 A))))
+ :named noAx 
+ ) 
+ )
+  
+(assert
+	(forall ((a Rel1)(b Rel1)(c Rel1))
+	(= 
+		(prod_2x1 (prod_1x1 a b) c)
+		(prod_1x2 a (prod_1x1 b c))
+	))
+)
 (assert 
  (! 
   ; subset axiom for Rel3
@@ -316,32 +331,34 @@
  ; :named a25 
  ; ) 
  ; )
- (assert
-(=> 
-	(and 								; prerequisites
+ ; (assert
+; (=> 
+	; (and 								; prerequisites
 		; (subset_1 LegalInterface Interface)  			; optional
-		(subset_2 interfaces (prod_1x1 Component Interface))
-		(subset_1 (join_1x2 LegalComponent interfaces) LegalInterface) 
-	)
-	(= 
-		(exists ((c Atom)) 					; step 43
-		(and 
-			(in_1 c LegalComponent) 			
-			(exists ((i Atom)) 
-			(and 
+		; (subset_2 interfaces (prod_1x1 Component Interface))
+		; (subset_1 (join_1x2 LegalComponent interfaces) LegalInterface) 
+	; )
+	; (= 
+		; (exists ((c Atom)) 					; step 43
+		; (and 
+			; (in_1 c LegalComponent) 			
+			; (exists ((i Atom)) 
+			; (and 
 				; (in_1 i Interface)			; optional
-				(in_1 i (join_1x2 (a2r_1 c) interfaces))
-				(not (subset_1 			; this could be any Expression E
-					(join_1x2 (a2r_1 i) iids) 
-					(join_1x2 (a2r_1 i) iidsKnown)))))))
-		(exists ((i Atom)) 					; step 44
-		(and 
-			(in_1 i LegalInterface) 
-			(not (subset_1 				; this could be any Expression E
-				(join_1x2 (a2r_1 i) iids)
-				(join_1x2 (a2r_1 i) iidsKnown)))))
+				; (in_1 i (join_1x2 (a2r_1 c) interfaces))
+				; (not (subset_1 			; this could be any Expression E
+					; (join_1x2 (a2r_1 i) iids) 
+					; (join_1x2 (a2r_1 i) iidsKnown)))))))
+		; (exists ((i Atom)) 					; step 44
+		; (and 
+			; (in_1 i LegalInterface) 
+			; (not (subset_1 				; this could be any Expression E
+				; (join_1x2 (a2r_1 i) iids)
+				; (join_1x2 (a2r_1 i) iidsKnown)))))
 
-	)))
+	; )))
+	
+
 
 ; (assert  (!   (exists ((i Atom)) (and (in_1 i LegalInterface) (not (subset_1 (join_1x2 (a2r_1 i) iids) (join_1x2 (a2r_1 i) iidsKnown)))))  :named a26  )  )
 ;; --end assertions

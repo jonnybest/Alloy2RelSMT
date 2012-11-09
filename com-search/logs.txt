@@ -1,53 +1,23 @@
 PS D:\Entwicklung\workspace\alloy2relsmt\com-search> z3 .\com43-laststep.als.smt2
-WARNING: For problems containing quantifiers, the model finding capabilities of Z3 w
- contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate n
+09.11.2012 01:51:58
+WARNING: For problems containing quantifiers, the model finding capabilities of Z3
+ contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate
 unsat
-(:added-eqs                   2319412
- :binary-propagations         443080
- :conflicts                   763
- :decisions                   250909
- :del-clause                  4064112
- :max-generation              11
- :max-missed-qa-cost          11.00
- :memory                      115.21
+(:added-eqs                   2344577
+ :binary-propagations         1113815
+ :conflicts                   1047
+ :decisions                   354571
+ :del-clause                  4475786
+ :max-generation              12
+ :max-missed-qa-cost          12.00
+ :memory                      126.31
  :min-missed-qa-cost          11.00
- :minimized-lits              12
- :missed-quant-instantiations 114752
- :mk-clause                   4077924
- :propagations                1577553
- :quant-instantiations        3219952
- :restarts                    3
- :time                        1743.46
- :total-time                  1743.36)
- 
-PS D:\Entwicklung\workspace\alloy2relsmt\com-search> check .\com_theorem1-half.als
-D:\Entwicklung\workspace\alloy2relsmt\com-search
-Successfully parsed D:\Entwicklung\workspace\alloy2relsmt\com-search.\com_theorem1-half.als as examples/cas
-
-### declExpr: this/IID ->lone this/Interface
-    exprChain: [IID 1, Interface 1]
-Warning: Please note that the translation may contain built-in Alloy operators, even if they do not occur i
-ark.
-Model successfully translated.
-Output written to D:\Entwicklung\workspace\alloy2relsmt\com-search\.\com_theorem1-half.als.smt2
-True
-WARNING: For problems containing quantifiers, the model finding capabilities of Z3 work better when the for
- contain nested quantifiers. You can use PULL_NESTED_QUANTIFIERS=true to eliminate nested quantifiers.
-unsat
-(:added-eqs                   1994193
- :binary-propagations         519289
- :conflicts                   768
- :decisions                   277281
- :del-clause                  3330948
- :max-generation              11
- :max-missed-qa-cost          11.00
- :memory                      113.38
- :min-missed-qa-cost          11.00
- :minimized-lits              4
- :missed-quant-instantiations 109005
- :mk-clause                   3354049
- :propagations                1531377
- :quant-instantiations        2522962
- :restarts                    3
- :time                        2847.71
- :total-time                  2847.55)
+ :minimized-lits              11
+ :missed-quant-instantiations 177450
+ :mk-clause                   4490404
+ :propagations                2822425
+ :quant-instantiations        3429282
+ :restarts                    4
+ :time                        1958.83
+ :total-time                  1958.72)
+09.11.2012 02:24:36
