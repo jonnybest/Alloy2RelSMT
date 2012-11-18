@@ -39,6 +39,8 @@ sig Interface {
 fact {
   all i: Interface |
      // (i.iidsKnown = i.qi.Interface) and
+	 (i.iidsKnown in i.qi.Interface) and
+	 (i.qi.Interface in i.iidsKnown) and
      (i.reaches = IID.(i.qi))
 }
 
