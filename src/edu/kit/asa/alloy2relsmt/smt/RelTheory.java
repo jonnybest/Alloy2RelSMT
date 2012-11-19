@@ -899,21 +899,6 @@ public final class RelTheory {
 
 	// arity is always 2
 	public void declareTransitiveClosure() throws ModelException {
-		/* This should be something like here https://en.wikipedia.org/wiki/Closure_operator
-		 * so we need 4 axioms:
-		 * 1 transitive
-		 * 2 extensive
-		 * 3 increasing
-		 * 4 idempotent
-		 * 	| <math>X \subseteq \operatorname{cl}(X)</math>
-			| (cl is ''extensive'')
-			|-
-			| <math>X\subseteq Y \Rightarrow \operatorname{cl}(X) \subseteq \operatorname{cl}(Y)</math>
-			| (cl is ''increasing'')
-			|-
-			| <math> \operatorname{cl}(\operatorname{cl}(X))=\operatorname{cl}(X)</math>
-			| (cl is ''idempotent'')
-		 * */
 		declareAtom();
 		declareIn(2);
 		declareRel(2);
@@ -925,27 +910,22 @@ public final class RelTheory {
 			/// add axiom
 			// we define what a transitive closure is
 			// this is split into 3 assertions
-			// 1. assert that the transitive closure is -in fact- transitive
+			// 1. assert r in trans(r)
+			TermVar r = TermVar.var("Rel2", "r");
+			Term ax1 = Term.call("subset_2", r, Term.call(name, r)).forall(r);
+			ax1.setComment("this axioms satisfies that r should be in transclos of r");
+			file.addAxiom(ax1);
+			// 2. assert that the transitive closure is -in fact- transitive
+			Term ax2 = Term.call("trans", Term.call(name, r)).forall(r);
+			ax2.setComment("this axiom satisfies transitivity for transclos");
+			file.addAxiom(ax2);
+			// 3. assert that tcl is minimal
 			TermVar r1 = TermVar.var("Rel2", "r1");
-			Term tcl = Term.call(name, r1);
-			Term transitive = Term.call("trans", tcl).forall(r1);
-			transitive.setComment("this axiom satisfies transitivity for transclos");
-			file.addAxiom(transitive);
-			// 2. assert that transcl(r) is extensive
-			Term extensive = Term.call("subset_2", r1, Term.call(name, r1)).forall(r1);
-			extensive.setComment("this axioms satisfies that tcl is extensive");
-			file.addAxiom(extensive);
-			// 3. assert that tcl is increasing
 			TermVar r2 = TermVar.var("Rel2", "r2");
-			Term subset = Term.call("subset_2", r1, r2);
-			Term increasing = subset.implies(Term.call("subset_2", tcl, r2)).forall(r1, r2);
-			increasing.setComment("this axiom satisfies that transclos is increasing");
-			file.addAxiom(increasing);
-			// 4. assert that tcl is idempotent
-			Term closclos = Term.call(name, tcl);
-			Term idempotent = closclos.equal(tcl).forall(r1);
-			idempotent.setComment("this axiom satisfies that tcl should be idempotent");
-			file.addAxiom(idempotent);
+			Term subsetAndTrans = Term.call("subset_2", r1, r2).and(Term.call("trans", r2));
+			Term minimalaxiom = subsetAndTrans.implies(Term.call("subset_2", Term.call(name, r1), r2)).forall(r1, r2);
+			minimalaxiom.setComment("this axiom satisfies minimality of transclos");
+			file.addAxiom(minimalaxiom);
 			// also, add some lemma about in_2 and the transCl
 			assertLemmasTCL("transClos");
 		}
