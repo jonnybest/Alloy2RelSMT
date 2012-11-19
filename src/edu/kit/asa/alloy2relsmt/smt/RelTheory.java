@@ -868,9 +868,9 @@ public final class RelTheory {
 				// (A in B) and (B in A) => A = B 
 				TermVar A = TermVar.var(relSort, "A");
 				TermVar B = TermVar.var(relSort, "B");
-				Term lemma = (Term.call(name, A, B).not().or(Term.call(name, B, A)).not()).implies(A.equal(B).not()).forall(A, B);
+				Term lemma = (Term.call(name, A, B).and(Term.call(name, B, A))).implies(A.equal(B)).forall(A, B);
 				lemma.setComment("lemma about the inclusion rule (A in B) and (B in A) => A = B. first introduced for com-theorem1. This lemma is costly.");
-				//file.addLemma(lemma); // costly lemma!
+				file.addLemma(lemma); // costly lemma!
 			}
 		}
 	}
