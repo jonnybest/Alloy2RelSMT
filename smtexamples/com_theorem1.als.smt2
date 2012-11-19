@@ -160,56 +160,49 @@
  )
 (assert 
  (! 
-  ; this axiom satisfies transitivity for transclos
-(forall ((r1 Rel2)) (trans (transClos r1))) 
+  ; this axioms satisfies that r should be in transclos of r
+(forall ((r Rel2)) (subset_2 r (transClos r))) 
  :named ax16 
  ) 
  )
 (assert 
  (! 
-  ; this axioms satisfies that tcl is extensive
-(forall ((r1 Rel2)) (subset_2 r1 (transClos r1))) 
+  ; this axiom satisfies transitivity for transclos
+(forall ((r Rel2)) (trans (transClos r))) 
  :named ax17 
  ) 
  )
 (assert 
  (! 
-  ; this axiom satisfies that transclos is increasing
-(forall ((r1 Rel2)(r2 Rel2)) (=> (subset_2 r1 r2) (subset_2 (transClos r1) r2))) 
+  ; this axiom satisfies minimality of transclos
+(forall ((r1 Rel2)(r2 Rel2)) (=> (and (subset_2 r1 r2) (trans r2)) (subset_2 (transClos r1) r2))) 
  :named ax18 
- ) 
- )
-(assert 
- (! 
-  ; this axiom satisfies that tcl should be idempotent
-(forall ((r1 Rel2)) (= (transClos (transClos r1)) (transClos r1))) 
- :named ax19 
  ) 
  )
 (assert 
  (! 
   ; axiom for intersection 1
 (forall ((a0 Atom)(R Rel1)(S Rel1)) (=> (in_1 a0 (inter_1 R S)) (or (in_1 a0 R) (in_1 a0 S)))) 
- :named ax20 
+ :named ax19 
  ) 
  )
 (assert 
  (! 
   (forall ((A Rel1)) (= (some_1 A) (exists ((a0 Atom)) (in_1 a0 A)))) 
- :named ax21 
+ :named ax20 
  ) 
  )
 (assert 
  (! 
   (forall ((A Rel1)(B Rel1)(a0 Atom)) (= (in_1 a0 (diff_1 A B)) (and (in_1 a0 A) (not (in_1 a0 B))))) 
- :named ax22 
+ :named ax21 
  ) 
  )
 (assert 
  (! 
   ; axiom for empty set
 (forall ((a Atom)) (not (in_1 a none))) 
- :named ax23 
+ :named ax22 
  ) 
  )
 ;; --end axioms
