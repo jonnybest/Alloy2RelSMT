@@ -233,7 +233,18 @@ public class Translator implements Identifiers {
 	/** stack of temporary identifiers **/
 	private Stack<ExprHasName> tmpIds;
 
+	/*** Indicates the command line switch --relationalequality. 	
+	 * <br> If the users decides to use relational equality, the translator replaces the term (= A B) 
+	 * with a term (p A B) that satisfies (= (p A B) (= A B)) for all relations.
+	 * Right now, this is (and (subset A B) (subset B A)).
+	 */
+	private boolean useRelationalEquality = false;
+
 	
+	public void setUseRelationalEquality(boolean useRelationalEquality) {
+		this.useRelationalEquality = useRelationalEquality;
+	}
+
 	/**
 	 * @return
 	 * the KeY identifier associated with a given
@@ -946,7 +957,7 @@ public class Translator implements Identifiers {
 				return Term.call("prod_"+ar1+"x"+ar2, e1, e2);
 			case EQUALS:                                             // e1 = e2
 			{
-				if(be.left.type().is_bool || be.left.type().is_int)
+				if(!useRelationalEquality  || be.left.type().is_bool || be.left.type().is_int)
 				{
 					return e1.equal(e2);
 				}
@@ -958,7 +969,7 @@ public class Translator implements Identifiers {
 			}
 			case NOT_EQUALS:                                         // e1 != e2
 			{
-				if(be.left.type().is_bool || be.left.type().is_int)
+				if(!useRelationalEquality || be.left.type().is_bool || be.left.type().is_int)
 				{
 					return e1.equal(e2).not();
 				}

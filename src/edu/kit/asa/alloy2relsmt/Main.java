@@ -36,6 +36,7 @@ public class Main {
 	private String[] finiteSigs;
 	
 	private boolean valid;
+	private boolean relationalequality = false;
 	
 	/**
 	 * parse the command line arguments and set
@@ -66,6 +67,11 @@ public class Main {
 				// save finite signatures
 				finiteSigs = m.group(1).split(",");
 				continue;
+			}
+			// parse the switch for enabling relational equality
+			if(Pattern.matches("^--relationalequality$", args[i]))
+			{
+				relationalequality = true;
 			}
 			// if no other switches have been found, assign input and output
 			if (input == null)
@@ -114,6 +120,11 @@ public class Main {
 			// finitizer may return false for invalid signatures
 			if (!translator.finitize(finiteSigs[i]))
 				System.err.println ("WARNING: Could not find signature "+finiteSigs[i]+" in the model.");
+		}
+		if (relationalequality) {
+			// if the user has told us to use relational Equality instead of '=', set it here  
+			translator.setUseRelationalEquality(relationalequality);
+			System.out.println("Using relational equality instead of '=' for relational formulas.");
 		}
 		// return the key model
 		try {
