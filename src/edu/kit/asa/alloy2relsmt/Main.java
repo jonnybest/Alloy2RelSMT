@@ -17,6 +17,7 @@ import edu.mit.csail.sdg.alloy4.parser.ParsedModule;
 
 /**
  * @author Ulrich Geilmann
+ * @author Jonny Best
  */
 public class Main {
 

@@ -63,6 +63,7 @@ import edu.mit.csail.sdg.alloy4.parser.ParsedModule.Open;
  * - binding more than one quantification variable for one/lone
  * 
  * @author Ulrich Geilmann
+ * @author Jonny Best
  * 
  *
  */
