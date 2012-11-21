@@ -63,6 +63,7 @@ import edu.mit.csail.sdg.alloy4.parser.ParsedModule.Open;
  * - binding more than one quantification variable for one/lone
  * 
  * @author Ulrich Geilmann
+ * @author Jonny Best
  * 
  *
  */
@@ -232,7 +233,18 @@ public class Translator implements Identifiers {
 	/** stack of temporary identifiers **/
 	private Stack<ExprHasName> tmpIds;
 
+	/*** Indicates the command line switch --relationalequality. 	
+	 * <br> If the users decides to use relational equality, the translator replaces the term (= A B) 
+	 * with a term (p A B) that satisfies (= (p A B) (= A B)) for all relations.
+	 * Right now, this is (and (subset A B) (subset B A)).
+	 */
+	private boolean useRelationalEquality = false;
+
 	
+	public void setUseRelationalEquality(boolean useRelationalEquality) {
+		this.useRelationalEquality = useRelationalEquality;
+	}
+
 	/**
 	 * @return
 	 * the KeY identifier associated with a given
@@ -944,9 +956,29 @@ public class Translator implements Identifiers {
 				target.getTheory().declareProduct(ar1, ar2);
 				return Term.call("prod_"+ar1+"x"+ar2, e1, e2);
 			case EQUALS:                                             // e1 = e2
-				return e1.equal(e2);
+			{
+				if(!useRelationalEquality  || be.left.type().is_bool || be.left.type().is_int)
+				{
+					return e1.equal(e2);
+				}
+				else 
+				{
+					target.getTheory().declareSubset(ar1);
+					return Term.call("subset_" + ar1, e1, e2).and(Term.call("subset_" + ar1, e2, e1));
+				}
+			}
 			case NOT_EQUALS:                                         // e1 != e2
-				return e1.equal(e2).not();
+			{
+				if(!useRelationalEquality || be.left.type().is_bool || be.left.type().is_int)
+				{
+					return e1.equal(e2).not();
+				}
+				else 
+				{
+					target.getTheory().declareSubset(ar1);
+					return Term.call("subset_" + ar1, e1, e2).and(Term.call("subset_" + ar1, e2, e1)).not();
+				}
+			}
 			case IMPLIES:                                            // c1 => c2
 				return e1.implies(e2);
 			case IN:                                                 // e1 in e2
