@@ -38,7 +38,9 @@ sig Interface {
 
 fact {
   all i: Interface |
-     (i.iidsKnown = i.qi.Interface) and
+	 // (i.iidsKnown = i.qi.Interface) and
+     (i.iidsKnown in i.qi.Interface) and
+	 (i.qi.Interface in i.iidsKnown) and
      (i.reaches = IID.(i.qi))
 }
 
@@ -86,8 +88,9 @@ fact Aggregation {
     }
 
 assert Theorem1 {
-     all c: LegalComponent | all i: c.interfaces | i.iidsKnown = c.iids
-	 //all c: LegalComponent | all i: c.interfaces | c.iids in i.iidsKnown
+     // all c: LegalComponent | all i: c.interfaces | i.iidsKnown = c.iids
+	 all c: LegalComponent | all i: c.interfaces | i.iidsKnown in c.iids and c.iids in i.iidsKnown
+	 
      }
 check Theorem1 for 16
 
