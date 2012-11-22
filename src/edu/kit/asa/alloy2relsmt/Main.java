@@ -72,6 +72,7 @@ public class Main {
 			if(Pattern.matches("^--relationalequality$", args[i]))
 			{
 				relationalequality = true;
+				continue;
 			}
 			// if no other switches have been found, assign input and output
 			if (input == null)
