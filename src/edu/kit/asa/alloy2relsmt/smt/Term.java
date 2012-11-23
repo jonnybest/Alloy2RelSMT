@@ -14,6 +14,11 @@ public abstract class Term implements Comparable<Term> {
 	public int compareTo(Term o) {
 		return this.hashCode() - o.hashCode();
 	}
+	
+	@Override
+	public int hashCode() {
+		return this.toString().hashCode();
+	}
 
 	protected String comment = null;
 	
