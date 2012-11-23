@@ -858,6 +858,12 @@ public final class RelTheory {
 			axiom.setComment("subset axiom for " + relSort);
 			file.addAxiom(axiom);  // add this axiom to the list of assertions
 			
+			if(ar == 1)
+			{
+				Term equalityLemma = x.equal(y).implies(Term.call(name, x, y).and(Term.call(name, y, x))).forall(x, y);
+				equalityLemma.setComment("equality Lemma (newly introduced. Be careful, this is very costly.");
+				file.addLemma(equalityLemma);
+			}
 		}
 	}
 
