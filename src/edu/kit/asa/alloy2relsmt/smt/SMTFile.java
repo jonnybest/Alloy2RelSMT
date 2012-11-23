@@ -6,7 +6,9 @@ package edu.kit.asa.alloy2relsmt.smt;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import edu.kit.asa.alloy2relsmt.modules.KeYModule;
@@ -22,30 +24,30 @@ import edu.kit.asa.alloy2relsmt.util.Util;
  */
 public class SMTFile {
 
-	private Collection<Term> asserts;
+	private List<Term> asserts;
 	
-	private Collection<Term> assump;
+	private List<Term> assump;
 	
-	private Collection<Term> axioms;
+	private List<Term> axioms;
 	
-	private Collection<Term> cmdasserts;
+	private List<Term> cmdasserts;
 	
-	private Collection<Term> concl;
+	private List<Term> concl;
 	
-	private Collection<String> funcs;	
+	private List<String> funcs;	
 	
-	private Collection<String> includes;	
+	private List<String> includes;	
 	
-	private Collection<Term> lemmas;
+	private List<Term> lemmas;
 	
 	/** referred modules */
 	public Queue<KeYModule> modules = KeYModule.NIL;
 	
-	private Collection<String> preds;
+	private List<String> preds;
 	
 	private Collection<Taclet> rules;
 	
-	private Collection<String> sorts;
+	private List<String> sorts;
 	
 	private RelTheory theory;
 	
@@ -193,6 +195,19 @@ public class SMTFile {
 	}
 
 	public void output(OutputStream os) {
+		// sort lists to ensure a reproducible result
+		Collections.sort(includes);
+		Collections.sort(includes); 
+		Collections.sort(sorts); 
+		Collections.sort(funcs);
+		Collections.sort(preds);
+		Collections.sort(assump);
+		Collections.sort(concl);
+		Collections.sort(asserts);
+		Collections.sort(lemmas);
+		Collections.sort(axioms);
+		Collections.sort(cmdasserts);
+		
 		PrintWriter out = new PrintWriter(os);
 		//printTheory(out);
 //		out.println ("\\include \"theory/alloyHeader.key\";");
@@ -219,7 +234,7 @@ public class SMTFile {
 		
 		int i = 0;
 		for (Term a : axioms) {
-			out.println (String.format("(assert \n (! \n  %s \n %s \n ) \n )", a.toString(), ":named ax" + i++));
+			out.println (String.format("(assert \n (! \n  %s \n %s \n ) \n )", a.toString(), ":named axiom" + a.hashCode()));
 		}
 		
 		out.println (";; --end axioms\n");
@@ -227,7 +242,7 @@ public class SMTFile {
 		
 		int j = 0;
 		for (Term a : asserts) {
-			out.println (String.format("(assert \n (! \n  %s \n %s \n ) \n )", a.toString(), ":named a" + j++));
+			out.println (String.format("(assert \n (! \n  %s \n %s \n ) \n )", a.toString(), ":named assert" + a.hashCode()));
 		}
 		
 		out.println (";; --end assertions\n");
@@ -235,7 +250,7 @@ public class SMTFile {
 		
 		int k = 0;
 		for (Term a : cmdasserts) {
-			out.println (String.format("(assert \n (! \n  %s \n %s \n ) \n )", a.toString(), ":named c" + k++));
+			out.println (String.format("(assert \n (! \n  %s \n %s \n ) \n )", a.toString(), ":named command" + a.hashCode()));
 		}
 		
 		out.println (";; --end command\n");
@@ -243,7 +258,7 @@ public class SMTFile {
 		
 		int l = 0;
 		for (Term a : lemmas) {
-			out.println (String.format("(assert\n (! \n  %s \n %s \n ) \n )", a.toString(), ":named l" + l++));
+			out.println (String.format("(assert\n (! \n  %s \n %s \n ) \n )", a.toString(), ":named lemma" + a.hashCode()));
 		}
 		
 		out.println (";; --end lemmas\n");
