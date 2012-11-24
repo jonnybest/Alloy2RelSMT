@@ -1,17 +1,31 @@
-# 1. traverse folders with python
-# 2. look at each file and print the content
+# 1. traverse folders with python - ok
+# 2. look at each file and print the content -ok
 # 3. write the content to a central log file
 
-import glob
-import sys
 import os
-path = os.path.dirname(__file__)
-print path
-filter = path + os.path.altsep + "*"#+"*.als"
-print filter
+from os.path import join
+#from z3 import *
 
-theBigG = glob.glob(filter)
-print theBigG
-for f in theBigG:
-    with open(f, "r") as myfile:
-        print myfile.readline()
+thisfile = os.path.realpath(__file__)
+thispath = os.path.dirname(thisfile )
+
+print "This path is :" + thispath
+print "This directory is known as :" + os.curdir
+print "We run in file: " + __file__
+os.chdir(thispath)
+
+with open("experiment.log", "w") as resultfile:
+    
+    for dirpath, dirnames, filenames in os.walk(thispath, topdown=False):
+        print "new folder found"
+        if '.git' in dirnames:
+            dirnames.remove('.git')
+        print dirpath
+        print dirnames
+        print filenames
+        for file in filenames:
+            file = join(dirpath, file)
+            with open(file, "r") as myfile:
+                resultfile.write ( "I found some text in " + myfile.name + "\n") #str(myfile.read()))
+    resultfile.write("\n")
+print "done"
