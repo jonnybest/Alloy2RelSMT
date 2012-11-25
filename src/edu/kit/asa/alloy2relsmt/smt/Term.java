@@ -12,7 +12,7 @@ public abstract class Term implements Comparable<Term> {
 	
 	@Override
 	public int compareTo(Term o) {
-		return this.hashCode() - o.hashCode();
+		return Integer.toHexString(this.hashCode()).compareTo(Integer.toHexString(o.hashCode()));
 	}
 	
 	@Override
