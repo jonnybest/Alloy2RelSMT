@@ -4,6 +4,7 @@
 package edu.kit.asa.alloy2relsmt.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,6 +12,8 @@ import java.net.JarURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -176,5 +179,44 @@ public class Util {
 		    result[i] = reverseme[reverseme.length - 1 - i];
 		}
 		return result;
+	}
+
+	public static String tryHashFile(String sourcefilename) {
+		StringBuilder hash = new StringBuilder();
+		File sourcefile = new File(sourcefilename);
+		if(sourcefile.exists()){
+			try {
+			InputStream fis =  new FileInputStream(sourcefilename);
+	        try
+	        {
+	             byte[] buffer = new byte[1024];
+	             MessageDigest complete = MessageDigest.getInstance("MD5"); 
+	             int numRead;
+	             do 
+	             {
+	                 numRead = fis.read(buffer);
+	                 if (numRead > 0) 
+	                 {
+	                     complete.update(buffer, 0, numRead);
+	                 }
+	             } while (numRead != -1);
+	             byte[] byteresult = complete.digest();
+	             
+	             for(byte b : byteresult){
+	            	 hash.append(String.format("%2X", b));
+	             }	             
+	         } catch (NoSuchAlgorithmException e) {
+				System.err.println("MD5 is not available on this system. Some checksums may be missing from output file.");
+			}
+	         finally
+	         {
+	             fis.close();
+	         }
+			}
+			catch(IOException e){
+				System.err.println("Could not open file " + sourcefilename + " for checksum generation. Some checksums may be missing from output file.");
+			}
+		}
+		return hash.toString();
 	}
 }
