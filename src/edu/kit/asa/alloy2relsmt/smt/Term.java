@@ -12,6 +12,8 @@ public abstract class Term implements Comparable<Term> {
 	
 	@Override
 	public int compareTo(Term o) {
+		// this comparison sorts all Terms by their hash-code's hex representation
+		// (this proved to be more stable than sorting just by integer. integers can overflow.)
 		return Integer.toHexString(this.hashCode()).compareTo(Integer.toHexString(o.hashCode()));
 	}
 	
