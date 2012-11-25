@@ -95,6 +95,9 @@ public class Translator implements Identifiers {
 		this.mod = m;
 		// the target model (a keyfile or maybe a smtfile)
 		Translator.target = new SMTFile();
+		String sourcefile = m.pos().filename;
+		target.setSourceFileName(sourcefile);
+		target.setSourceHash(Util.tryHashFile(sourcefile));
 		// all referenced external modules
 		this.external = new HashSet<Sig>();
 		// all instantiated ordering modules

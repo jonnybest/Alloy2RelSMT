@@ -50,6 +50,10 @@ public class SMTFile {
 	private List<String> sorts;
 	
 	private RelTheory theory;
+
+	private String sourcefilename;
+
+	private String sourcefilehash;
 	
 	public SMTFile () {
 		includes = new LinkedList<String>();
@@ -209,6 +213,9 @@ public class SMTFile {
 		Collections.sort(cmdasserts);
 		
 		PrintWriter out = new PrintWriter(os);
+		// print the unique identifier of the source file
+		out.println(String.format("; file: %s \n; hash: %s", sourcefilename, sourcefilehash));
+		
 		//printTheory(out);
 //		out.println ("\\include \"theory/alloyHeader.key\";");
 //		for (String s : includes)
@@ -285,5 +292,13 @@ public class SMTFile {
 			out.println ("(get-unsat-core)");
 		
 		out.close();
+	}
+
+	public void setSourceFileName(String filename) {
+		this.sourcefilename = filename;		
+	}
+
+	public void setSourceHash(String filehash) {
+		this.sourcefilehash = filehash;		
 	}
 }
