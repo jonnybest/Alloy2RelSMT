@@ -12,7 +12,7 @@
 		</copy>
 	</target>
 	<target name="jar" depends="compile" description="compile and built jar archive">
-		<jar destfile="./alloy2resmt.jar" basedir="./build/">
+		<jar destfile="./alloy2relsmt.jar" basedir="./build/">
 			<manifest>
 				<attribute name="Main-Class" value="edu.kit.asa.alloy2relsmt.Main" />
 			</manifest>
