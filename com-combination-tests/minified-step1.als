@@ -44,6 +44,6 @@ fact assumptions {
 	// blank
 }
 assert step1 {
-	some c: LegalComponent | some i: c.interfaces | i.iidsKnown != c.iids // step1
+	not some c: LegalComponent | some i: c.interfaces | i.iidsKnown != c.iids // step1
 }
 check step1

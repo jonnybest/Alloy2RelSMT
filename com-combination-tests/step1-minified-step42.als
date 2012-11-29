@@ -41,9 +41,9 @@ fact Reflexivity { all i : LegalInterface | i.iids in i.iidsKnown }
 fact Transitivity { all i, j : LegalInterface | j in i.reaches => j.iidsKnown in i.iidsKnown }
 //
 fact assumptions {
-	some c: LegalComponent | some i: c.interfaces | i.iidsKnown != c.iids // step1
+	not some c: LegalComponent | some i: c.interfaces | i.iidsKnown != c.iids // step1
 }
 assert step42 {
-	
+	not some c: LegalComponent | some i: c.interfaces | c.interfaces.iids not in i.iidsKnown // step42
 }
 check step42
