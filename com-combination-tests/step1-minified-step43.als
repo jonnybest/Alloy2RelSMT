@@ -1,4 +1,4 @@
-module exploration/com1_minified_step1
+module exploration/com1_minified_step43
 
 sig IID {}
 
@@ -41,9 +41,9 @@ fact Reflexivity { all i : LegalInterface | i.iids in i.iidsKnown }
 fact Transitivity { all i, j : LegalInterface | j in i.reaches => j.iidsKnown in i.iidsKnown }
 //
 fact assumptions {
-	// blank
-}
-assert step1 {
 	some c: LegalComponent | some i: c.interfaces | i.iidsKnown != c.iids // step1
 }
-check step1
+assert step43 {
+	
+}
+check step43
