@@ -433,13 +433,7 @@
  :named lemma50960a04 
  ) 
  )
-(assert
- (! 
-  ; equality Lemma (newly introduced. Be careful, this is very costly.
-(forall ((x Rel1)(y Rel1)) (=> (= x y) (and (subset_1 x y) (subset_1 y x)))) 
- :named lemma68418934 
- ) 
- )
+; removed lemma about equality
 (assert
  (! 
   ; 2. lemma for join_1x2. direction: in to join
