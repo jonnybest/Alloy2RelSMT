@@ -85,13 +85,7 @@ fact Aggregation {
       && (some o: outer.interfaces | all i: inner.interfaces - inner.first | all x: Component  | (x.iids).(i.qi) = (x.iids).(o.qi))
     }
 
-fact previousStep {
-    //some c: LegalComponent | some i: c.interfaces | c.iids not in i.iidsKnown // A2
-	// aus A2 mit l.65 (gdw):
-}
 assert step42 {
 	not some c: LegalComponent | some i: c.interfaces | c.interfaces.iids not in i.iidsKnown // step 42
-	//not some c: LegalComponent | some i: c.interfaces | i.iids not in i.iidsKnown // step 43 - solvable
-	//not some i : LegalInterface | i.iids not in i.iidsKnown // step 44 solvable
 }
-check step42
+check step42 for 9
