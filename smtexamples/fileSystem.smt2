@@ -307,13 +307,7 @@
  :named lemma8f0bdd2 
  ) 
  )
-(assert
- (! 
-  ; lemma 1 for transClos about the second 'middle element'
-(forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (forall ((a2 Atom)) (or (not (in_2 a2 a3 R)) (and (in_2 a2 a3 R) (in_2 a1 a2 (transClos R))))))) 
- :named lemma96546ef5 
- ) 
- )
+(assert (forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (transClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 (transClos r)) (in_2 a3 a2 r))))))
 (assert
  (! 
   ; 1. lemma for join_2x2. direction: join to in
