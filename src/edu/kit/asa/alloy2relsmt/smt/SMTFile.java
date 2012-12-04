@@ -265,7 +265,7 @@ public class SMTFile {
 		
 		int l = 0;
 		for (Term a : lemmas) {
-			out.println (String.format("(assert\n (! \n  %s \n %s \n ) \n )", a.toString(), ":named lemma" + Integer.toHexString(a.hashCode())));
+			//out.println (String.format("(assert\n (! \n  %s \n %s \n ) \n )", a.toString(), ":named lemma" + Integer.toHexString(a.hashCode())));
 		}
 		
 		out.println (";; --end lemmas\n");
