@@ -295,6 +295,13 @@
  )
 (assert
  (! 
+  ; lemma 1 for transClos about the second 'middle element'
+(forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (forall ((a2 Atom)) (or (not (in_2 a2 a3 R)) (in_2 a1 a2 (transClos R)))))) 
+ :named lemma705ef4fb 
+ ) 
+ )
+(assert
+ (! 
   ; lemma for step 21 of the com-theorem1 for join_1x2: R=(i.qi) S=iids
 (forall ((R Rel2)(S Rel2)(x Atom)) (=> (no_1 (join_1x2 (a2r_1 x) R)) (no_1 (join_1x2 (a2r_1 x) (join_2x2 R S))))) 
  :named lemma844803cd 
@@ -307,7 +314,6 @@
  :named lemma8f0bdd2 
  ) 
  )
-(assert (forall ((a1 Atom)(a2 Atom)(r Rel2)) (=> (in_2 a1 a2 (transClos r)) (exists ((a3 Atom)) (and (in_2 a1 a3 (transClos r)) (in_2 a3 a2 r))))))
 (assert
  (! 
   ; 1. lemma for join_2x2. direction: join to in
