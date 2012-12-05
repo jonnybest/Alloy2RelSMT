@@ -1136,7 +1136,7 @@ public final class RelTheory {
 		{
 			Term inR = Term.reverseIn(R, a2, a3);
 			Term middleInTCL = Term.reverseIn(tCl, a1, a2);
-			Term body = inR.not().or(inR.and(middleInTCL)).forall(a2);
+			Term body = inR.not().or(middleInTCL).forall(a2);
 			Term lemma2 = guard.implies(body).forall(a1, a3, R);
 			lemma2.setComment("lemma 1 for " + name + " about the second 'middle element'");
 			file.addLemma(lemma2);
