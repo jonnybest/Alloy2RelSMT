@@ -15,14 +15,11 @@
 (declare-fun subset_2 (Rel2 Rel2) Bool)
 (declare-fun join_1x2 (Rel1 Rel2) Rel1)
 (declare-fun a2r_1 (Atom) Rel1)
-(declare-fun join_2x2 (Rel2 Rel2) Rel2)
-(declare-fun a2r_2 (Atom Atom) Rel2)
-(declare-fun no_1 (Rel1) Bool)
-(declare-fun join_2x1 (Rel2 Rel1) Rel1)
 (declare-fun disjoint_1 (Rel1 Rel1) Bool)
 (declare-fun parent () Rel2)
 (declare-fun lone_1 (Rel1) Bool)
 (declare-fun one_1 (Rel1) Bool)
+(declare-fun no_1 (Rel1) Bool)
 (declare-fun trans (Rel2) Bool)
 (declare-fun transClos (Rel2) Rel2)
 (declare-fun union_1 (Rel1 Rel1) Rel1)
@@ -30,8 +27,8 @@
 (declare-fun none () Rel1)
 (declare-fun diff_1 (Rel1 Rel1) Rel1)
 (declare-fun Dir () Rel1)
-(declare-fun File () Rel1)
 (declare-fun FSO () Rel1)
+(declare-fun File () Rel1)
 (declare-fun Root () Rel1)
 ;; --end functions
 
@@ -72,104 +69,83 @@
  )
 (assert 
  (! 
-  ; axiom for join_2x2
-(forall ((A Rel2)(B Rel2)(y0 Atom)(y1 Atom)) (= (in_2 y0 y1 (join_2x2 A B)) (exists ((x Atom)) (and (in_2 y0 x A) (in_2 x y1 B))))) 
+  ; (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))); alternative
+(forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (not (and (in_1 a0 A) (in_1 a0 B)))))) 
  :named ax5 
  ) 
  )
 (assert 
  (! 
-  ; axiom for the conversion function Atom -> Relation
-(forall ((x0 Atom)(x1 Atom)) (and (in_2 x0 x1 (a2r_2 x0 x1)) (forall ((y0 Atom)(y1 Atom)) (=> (in_2 y0 y1 (a2r_2 x0 x1)) (and (= x0 y0) (= x1 y1)))))) 
+  (forall ((X Rel1)) (= (lone_1 X) (forall ((a0 Atom)(b0 Atom)) (=> (and (in_1 a0 X) (in_1 b0 X)) (= a0 b0))))) 
  :named ax6 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((X Rel1)) (= (one_1 X) (and (exists ((a0 Atom)) (in_1 a0 X)) (forall ((a0 Atom)(b0 Atom)) (=> (and (in_1 a0 X) (in_1 b0 X)) (= a0 b0)))))) 
+ :named ax7 
  ) 
  )
 (assert 
  (! 
   ; axiom for 'the expression is empty'
 (forall ((a0 Atom)(R Rel1)) (=> (no_1 R) (not (in_1 a0 R)))) 
- :named ax7 
- ) 
- )
-(assert 
- (! 
-  ; axiom for join_2x1
-(forall ((A Rel2)(B Rel1)(y0 Atom)) (= (in_1 y0 (join_2x1 A B)) (exists ((x Atom)) (and (in_2 y0 x A) (in_1 x B))))) 
  :named ax8 
- ) 
- )
-(assert 
- (! 
-  ; (forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (=> (in_1 a0 A) (not (in_1 a0 B)))))); alternative
-(forall ((A Rel1)(B Rel1)) (= (disjoint_1 A B) (forall ((a0 Atom)) (not (and (in_1 a0 A) (in_1 a0 B)))))) 
- :named ax9 
- ) 
- )
-(assert 
- (! 
-  (forall ((X Rel1)) (= (lone_1 X) (forall ((a0 Atom)(b0 Atom)) (=> (and (in_1 a0 X) (in_1 b0 X)) (= a0 b0))))) 
- :named ax10 
- ) 
- )
-(assert 
- (! 
-  (forall ((X Rel1)) (= (one_1 X) (and (exists ((a0 Atom)) (in_1 a0 X)) (forall ((a0 Atom)(b0 Atom)) (=> (and (in_1 a0 X) (in_1 b0 X)) (= a0 b0)))))) 
- :named ax11 
  ) 
  )
 (assert 
  (! 
   ; this axiom defines transitivity
 (forall ((r Rel2)) (= (trans r) (forall ((a1 Atom)(a2 Atom)(a3 Atom)) (=> (and (in_2 a1 a2 r) (in_2 a2 a3 r)) (in_2 a1 a3 r))))) 
- :named ax12 
+ :named ax9 
  ) 
  )
 (assert 
  (! 
   ; this axioms satisfies that r should be in transclos of r
 (forall ((r Rel2)) (subset_2 r (transClos r))) 
- :named ax13 
+ :named ax10 
  ) 
  )
 (assert 
  (! 
   ; this axiom satisfies transitivity for transclos
 (forall ((r Rel2)) (trans (transClos r))) 
- :named ax14 
+ :named ax11 
  ) 
  )
 (assert 
  (! 
   ; this axiom satisfies minimality of transclos
 (forall ((r1 Rel2)(r2 Rel2)) (=> (and (subset_2 r1 r2) (trans r2)) (subset_2 (transClos r1) r2))) 
- :named ax15 
+ :named ax12 
  ) 
  )
 (assert 
  (! 
   ; axiom for union of Rel1
 (forall ((x0 Atom)(A Rel1)(B Rel1)) (= (in_1 x0 (union_1 A B)) (or (in_1 x0 A) (in_1 x0 B)))) 
- :named ax16 
+ :named ax13 
  ) 
  )
 (assert 
  (! 
   ; axiom for transposition
 (forall ((a0 Atom)(a1 Atom)(R Rel2)) (= (in_2 a0 a1 (transp R)) (in_2 a1 a0 R))) 
- :named ax17 
+ :named ax14 
  ) 
  )
 (assert 
  (! 
   ; axiom for empty set
 (forall ((a Atom)) (not (in_1 a none))) 
- :named ax18 
+ :named ax15 
  ) 
  )
 (assert 
  (! 
   (forall ((A Rel1)(B Rel1)(a0 Atom)) (= (in_1 a0 (diff_1 A B)) (and (in_1 a0 A) (not (in_1 a0 B))))) 
- :named ax19 
+ :named ax16 
  ) 
  )
 ;; --end axioms
@@ -189,31 +165,31 @@
  )
 (assert 
  (! 
-  (subset_1 File FSO) 
+  (forall ((this Atom)) (=> (in_1 this FSO) (or (in_1 this File) (in_1 this Dir)))) 
  :named a2 
  ) 
  )
 (assert 
  (! 
-  (forall ((this Atom)) (=> (in_1 this FSO) (or (in_1 this File) (in_1 this Dir)))) 
+  (disjoint_1 File Dir) 
  :named a3 
  ) 
  )
 (assert 
  (! 
-  (disjoint_1 File Dir) 
+  (subset_2 parent (prod_1x1 FSO Dir)) 
  :named a4 
  ) 
  )
 (assert 
  (! 
-  (subset_2 parent (prod_1x1 FSO Dir)) 
+  (forall ((this Atom)) (=> (in_1 this FSO) (lone_1 (join_1x2 (a2r_1 this) parent)))) 
  :named a5 
  ) 
  )
 (assert 
  (! 
-  (forall ((this Atom)) (=> (in_1 this FSO) (lone_1 (join_1x2 (a2r_1 this) parent)))) 
+  (subset_1 File FSO) 
  :named a6 
  ) 
  )
@@ -252,18 +228,27 @@
   ; 2. lemma for join_1x2. direction: in to join
 (forall ((a1 Atom)(a0 Atom)(r Rel2)) (=> (in_2 a1 a0 r) (in_1 a0 (join_1x2 ; (swapped)
 (a2r_1 a1) r)))) 
- :named l2 
+ :named l0 
  ) 
  )
-
 (assert
  (! 
   ; weak lemma 1 for transClos about the second-last 'middle element'
 (forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (exists ((a2 Atom)) (in_2 a2 a3 R)))) 
- :named l10 
+ :named l1 
  ) 
  )
 ;; --end lemmas
 
+;; -- key stuff for debugging --
+;\problem {(
+;
+;)-> (
+;
+;;\predicates {
+
+;;}
+
 ;; -- END key stuff --
 (check-sat)
+(echo "hi")
