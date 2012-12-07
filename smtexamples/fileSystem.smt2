@@ -1,5 +1,5 @@
 ; file: D:\Entwicklung\workspace\alloy2relsmt\smtexamples\fileSystem.als 
-; hash: 97A5E31386 1FC91FF926F5019DB5D55
+; hash: 9595BEA455458663EF1D 6F686B8BA21
 (set-logic AUFLIA)
 (set-option :macro-finder true)
 ;; sorts
@@ -17,7 +17,6 @@
 (declare-fun diff_1 (Rel1 Rel1) Rel1)
 (declare-fun disjoint_1 (Rel1 Rel1) Bool)
 (declare-fun entries () Rel2)
-(declare-fun iden () Rel2)
 (declare-fun in_1 (Atom Rel1) Bool)
 (declare-fun in_2 (Atom Atom Rel2) Bool)
 (declare-fun join_1x2 (Rel1 Rel2) Rel1)
@@ -32,10 +31,17 @@
 (declare-fun trans (Rel2) Bool)
 (declare-fun transClos (Rel2) Rel2)
 (declare-fun transp (Rel2) Rel2)
-(declare-fun union_2 (Rel2 Rel2) Rel2)
+(declare-fun union_1 (Rel1 Rel1) Rel1)
 ;; --end functions
 
 ;; axioms
+(assert 
+ (! 
+  ; axiom for union of Rel1
+(forall ((x0 Atom)(A Rel1)(B Rel1)) (= (in_1 x0 (union_1 A B)) (or (in_1 x0 A) (in_1 x0 B)))) 
+ :named axiom105b8187 
+ ) 
+ )
 (assert 
  (! 
   ; this axiom defines transitivity
@@ -118,19 +124,6 @@
  )
 (assert 
  (! 
-  ; axiom for union of Rel2
-(forall ((x0 Atom)(x1 Atom)(A Rel2)(B Rel2)) (= (in_2 x0 x1 (union_2 A B)) (or (in_2 x0 x1 A) (in_2 x0 x1 B)))) 
- :named axiomac2ef766 
- ) 
- )
-(assert 
- (! 
-  (forall ((a0 Atom)) (in_2 a0 a0 iden)) 
- :named axiomb9cd35e2 
- ) 
- )
-(assert 
- (! 
   ; axiom for join_1x2
 (forall ((A Rel1)(B Rel2)(y0 Atom)) (= (in_1 y0 (join_1x2 A B)) (exists ((x Atom)) (and (in_1 x A) (in_2 x y0 B))))) 
  :named axiomc43ab575 
@@ -198,18 +191,6 @@
  )
 (assert 
  (! 
-  (and 
-    (one_1 Root)
-    (no_1 (join_1x2 Root parent))
-    (= FSO (join_1x2 Root (union_2 (transClos entries) iden)))
-    (forall ((o Atom)(d Atom)) (=> (and (in_1 o FSO) (in_1 d Dir)) (=> (in_1 o (join_1x2 (a2r_1 d) entries)) (= (join_1x2 (a2r_1 o) parent) (a2r_1 d)))))
-    (= entries (transp parent))
-  ) 
- :named assert65f6582c 
- ) 
- )
-(assert 
- (! 
   (subset_2 parent (prod_1x1 FSO Dir)) 
  :named assert7051d726 
  ) 
@@ -218,6 +199,18 @@
  (! 
   (forall ((this Atom)) (=> (in_1 this FSO) (or (in_1 this File) (in_1 this Dir)))) 
  :named assertd4b9f50f 
+ ) 
+ )
+(assert 
+ (! 
+  (and 
+    (one_1 Root)
+    (no_1 (join_1x2 Root parent))
+    (= FSO (union_1 Root (join_1x2 Root (transClos entries))))
+    (forall ((o Atom)(d Atom)) (=> (and (in_1 o FSO) (in_1 d Dir)) (=> (in_1 o (join_1x2 (a2r_1 d) entries)) (= (join_1x2 (a2r_1 o) parent) (a2r_1 d)))))
+    (= entries (transp parent))
+  ) 
+ :named asserte14a6687 
  ) 
  )
 ;; --end assertions
