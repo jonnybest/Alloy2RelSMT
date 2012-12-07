@@ -1,0 +1,1372 @@
+========= Parsing+Typechecking from-model-to-step1.als =============
+============ Command Check step1: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-model-to-step1.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-model-to-step1.smt2
+=========== Parsing+Typechecking from-model-to-step2.als =============
+============ Command Check step2: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-model-to-step2.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-model-to-step2.smt2
+=========== Parsing+Typechecking from-model-to-step3.als =============
+============ Command Check step3: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-model-to-step3.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-model-to-step3.smt2
+=========== Parsing+Typechecking from-model-to-step42.als =============
+============ Command Check step42: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-model-to-step42.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-model-to-step42.smt2
+=========== Parsing+Typechecking from-model-to-step43.als =============
+============ Command Check step43: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-model-to-step43.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-model-to-step43.smt2
+=========== Parsing+Typechecking from-model-to-step44.als =============
+============ Command Check step44: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-model-to-step44.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-model-to-step44.smt2
+=========== Parsing+Typechecking from-model-to-stepA2.als =============
+============ Command Check A2: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-model-to-stepA2.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-model-to-stepA2.smt2
+=========== Parsing+Typechecking from-step1-to-step2.als =============
+============ Command Check step2: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step1-to-step2.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step1-to-step2.smt2
+=========== Parsing+Typechecking from-step1-to-step3.als =============
+============ Command Check step3: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step1-to-step3.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step1-to-step3.smt2
+=========== Parsing+Typechecking from-step1-to-step42.als =============
+============ Command Check step42: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step1-to-step42.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step1-to-step42.smt2
+=========== Parsing+Typechecking from-step1-to-step43.als =============
+============ Command Check step43: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step1-to-step43.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step1-to-step43.smt2
+=========== Parsing+Typechecking from-step1-to-step44.als =============
+============ Command Check step44: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step1-to-step44.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step1-to-step44.smt2
+=========== Parsing+Typechecking from-step1-to-stepA2.als =============
+============ Command Check A2: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step1-to-stepA2.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step1-to-stepA2.smt2
+=========== Parsing+Typechecking from-step2-to-step3.als =============
+============ Command Check step3: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step2-to-step3.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step2-to-step3.smt2
+=========== Parsing+Typechecking from-step2-to-step42.als =============
+============ Command Check step42: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step2-to-step42.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step2-to-step42.smt2
+=========== Parsing+Typechecking from-step2-to-step43.als =============
+============ Command Check step43: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step2-to-step43.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step2-to-step43.smt2
+=========== Parsing+Typechecking from-step2-to-step44.als =============
+============ Command Check step44: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step2-to-step44.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step2-to-step44.smt2
+=========== Parsing+Typechecking from-step2-to-stepA2.als =============
+============ Command Check A2: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step2-to-stepA2.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step2-to-stepA2.smt2
+=========== Parsing+Typechecking from-step3-to-step42.als =============
+============ Command Check step42: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step3-to-step42.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step3-to-step42.smt2
+=========== Parsing+Typechecking from-step3-to-step43.als =============
+============ Command Check step43: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step3-to-step43.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step3-to-step43.smt2
+=========== Parsing+Typechecking from-step3-to-step44.als =============
+============ Command Check step44: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step3-to-step44.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step3-to-step44.smt2
+=========== Parsing+Typechecking from-step3-to-stepA2.als =============
+============ Command Check A2: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step3-to-stepA2.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step3-to-stepA2.smt2
+=========== Parsing+Typechecking from-step42-to-step43.als =============
+============ Command Check step43: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step42-to-step43.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step42-to-step43.smt2
+=========== Parsing+Typechecking from-step42-to-step44.als =============
+============ Command Check step44: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step42-to-step44.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step42-to-step44.smt2
+=========== Parsing+Typechecking from-step43-to-step44.als =============
+============ Command Check step44: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-step43-to-step44.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-step43-to-step44.smt2
+=========== Parsing+Typechecking from-stepA2-to-step42.als =============
+============ Command Check step42: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-stepA2-to-step42.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-stepA2-to-step42.smt2
+=========== Parsing+Typechecking from-stepA2-to-step43.als =============
+============ Command Check step43: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-stepA2-to-step43.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-stepA2-to-step43.smt2
+=========== Parsing+Typechecking from-stepA2-to-step44.als =============
+============ Command Check step44: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed from-stepA2-to-step44.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\from-stepA2-to-step44.smt2
+=========== Parsing+Typechecking minified-step1.als =============
+============ Command Check step1: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed minified-step1.als as exploration/com1_minified_step1
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\minified-step1.smt2
+=========== Parsing+Typechecking minified-step2.als =============
+============ Command Check step2: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed minified-step2.als as exploration/com1_minified_step2
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\minified-step2.smt2
+=========== Parsing+Typechecking minified-step3.als =============
+============ Command Check step3: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed minified-step3.als as exploration/com1_minified_step3
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\minified-step3.smt2
+=========== Parsing+Typechecking minified-step42.als =============
+============ Command Check step42: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed minified-step42.als as exploration/com1_minified_step42
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\minified-step42.smt2
+=========== Parsing+Typechecking minified-step43.als =============
+============ Command Check step43: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed minified-step43.als as exploration/com1_minified_step43
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\minified-step43.smt2
+=========== Parsing+Typechecking minified-step44.als =============
+============ Command Check step44: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed minified-step44.als as exploration/com1_minified_step44
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\minified-step44.smt2
+=========== Parsing+Typechecking minified-stepA2.als =============
+============ Command Check A2: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed minified-stepA2.als as exploration/com1_minified_A2
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\minified-stepA2.smt2
+=========== Parsing+Typechecking step1-minified-step2.als =============
+============ Command Check step2: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed step1-minified-step2.als as exploration/com1_minified_step2
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\step1-minified-step2.smt2
+=========== Parsing+Typechecking step1-minified-step3.als =============
+============ Command Check step3: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed step1-minified-step3.als as exploration/com1_minified_step3
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\step1-minified-step3.smt2
+=========== Parsing+Typechecking step1-minified-step42.als =============
+============ Command Check step42: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed step1-minified-step42.als as exploration/com1_minified_step42
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\step1-minified-step42.smt2
+=========== Parsing+Typechecking step1-minified-step43.als =============
+============ Command Check step43: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed step1-minified-step43.als as exploration/com1_minified_step43
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\step1-minified-step43.smt2
+=========== Parsing+Typechecking step1-minified-step44.als =============
+============ Command Check step44: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed step1-minified-step44.als as exploration/com1_minified_step44
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\step1-minified-step44.smt2
+=========== Parsing+Typechecking step1-minified-stepA2.als =============
+============ Command Check A2: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed step1-minified-stepA2.als as exploration/com1_minified_A2
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\step1-minified-stepA2.smt2
+=========== Parsing+Typechecking step2-minified-step3.als =============
+============ Command Check step3: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed step2-minified-step3.als as exploration/com1_minified_step3
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\step2-minified-step3.smt2
+=========== Parsing+Typechecking step2-minified-step42.als =============
+============ Command Check step42: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed step2-minified-step42.als as exploration/com1_minified_step42
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\step2-minified-step42.smt2
+=========== Parsing+Typechecking step2-minified-step43.als =============
+============ Command Check step43: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed step2-minified-step43.als as exploration/com1_minified_step43
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\step2-minified-step43.smt2
+=========== Parsing+Typechecking step2-minified-step44.als =============
+============ Command Check step44: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed step2-minified-step44.als as exploration/com1_minified_step44
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\step2-minified-step44.smt2
+=========== Parsing+Typechecking step2-minified-stepA2.als =============
+============ Command Check A2: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed step2-minified-stepA2.als as exploration/com1_minified_A2
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\step2-minified-stepA2.smt2
+=========== Parsing+Typechecking step3-minified-step42.als =============
+============ Command Check step42: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed step3-minified-step42.als as exploration/com1_minified_step42
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\step3-minified-step42.smt2
+=========== Parsing+Typechecking step3-minified-step43.als =============
+============ Command Check step43: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed step3-minified-step43.als as exploration/com1_minified_step43
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\step3-minified-step43.smt2
+=========== Parsing+Typechecking step3-minified-step44.als =============
+============ Command Check step44: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed step3-minified-step44.als as exploration/com1_minified_step44
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\step3-minified-step44.smt2
+=========== Parsing+Typechecking step42-minified-step43.als =============
+============ Command Check step43: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed step42-minified-step43.als as exploration/com1_minified_step43
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\step42-minified-step43.smt2
+=========== Parsing+Typechecking step42-minified-step44.als =============
+============ Command Check step44: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed step42-minified-step44.als as exploration/com1_minified_step44
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\step42-minified-step44.smt2
+=========== Parsing+Typechecking step43-minified-step44.als =============
+============ Command Check step44: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed step43-minified-step44.als as exploration/com1_minified_step44
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\step43-minified-step44.smt2
+=========== Parsing+Typechecking stepA2-minified-step42.als =============
+============ Command Check step42: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed stepA2-minified-step42.als as exploration/com1_minified_step42
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\stepA2-minified-step42.smt2
+=========== Parsing+Typechecking stepA2-minified-step43.als =============
+============ Command Check step43: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed stepA2-minified-step43.als as exploration/com1_minified_step43
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\stepA2-minified-step43.smt2
+=========== Parsing+Typechecking stepA2-minified-step44.als =============
+============ Command Check step44: ============
+---OUTCOME---
+Unsatisfiable.
+
+Successfully parsed stepA2-minified-step44.als as exploration/com1_minified_step44
+Model successfully translated.
+Output written to D:\Entwicklung\workspace\alloy2relsmt\com-combination-tests\stepA2-minified-step44.smt2
+z34 -st -v:1 -smt2 -T:550 from-model-to-step1.smt2
+Begin check-sat 12/07/2012 17:55:53
+timeout
+(:added-eqs                   2602817
+ :binary-propagations         101810
+ :conflicts                   445
+ :decisions                   1469357
+ :del-clause                  11943520
+ :final-checks                442
+ :lazy-quant-instantiations   60814096
+ :max-generation              13
+ :memory                      123.17
+ :minimized-lits              19
+ :missed-quant-instantiations 73933
+ :mk-clause                   11962522
+ :propagations                2666406
+ :quant-instantiations        8793829
+ :restarts                    2
+ :total-time                  549.97)
+End check-sat 12/07/2012 18:05:03
+z34 -st -v:1 -smt2 -T:550 from-model-to-step2.smt2
+Begin check-sat 12/07/2012 18:05:03
+timeout
+(:added-eqs                   1570916
+ :binary-propagations         156069
+ :conflicts                   375
+ :decisions                   1642180
+ :del-clause                  10594978
+ :final-checks                269
+ :lazy-quant-instantiations   53056371
+ :max-generation              13
+ :memory                      171.11
+ :minimized-lits              20
+ :missed-quant-instantiations 552681
+ :mk-clause                   10691200
+ :propagations                2204323
+ :quant-instantiations        7974725
+ :restarts                    2
+ :total-time                  549.97)
+End check-sat 12/07/2012 18:14:13
+z34 -st -v:1 -smt2 -T:550 from-model-to-step3.smt2
+Begin check-sat 12/07/2012 18:14:13
+timeout
+(:added-eqs                   1491858
+ :binary-propagations         128534
+ :conflicts                   361
+ :decisions                   1145205
+ :del-clause                  7135031
+ :final-checks                205
+ :lazy-quant-instantiations   25796610
+ :max-generation              12
+ :memory                      101.58
+ :missed-quant-instantiations 120776
+ :mk-clause                   7170264
+ :propagations                1967084
+ :quant-instantiations        4984217
+ :restarts                    2
+ :total-time                  550.02)
+End check-sat 12/07/2012 18:23:23
+z34 -st -v:1 -smt2 -T:550 from-model-to-step42.smt2
+Begin check-sat 12/07/2012 18:23:23
+timeout
+(:added-eqs                   1507594
+ :binary-propagations         119570
+ :conflicts                   354
+ :decisions                   1174747
+ :del-clause                  5643270
+ :final-checks                189
+ :lazy-quant-instantiations   34631059
+ :max-generation              12
+ :memory                      118.94
+ :missed-quant-instantiations 174435
+ :mk-clause                   5674100
+ :propagations                1384191
+ :quant-instantiations        5244447
+ :restarts                    2
+ :total-time                  550.01)
+End check-sat 12/07/2012 18:32:33
+z34 -st -v:1 -smt2 -T:550 from-model-to-step43.smt2
+Begin check-sat 12/07/2012 18:32:33
+unsat
+(:added-eqs                   4412
+ :binary-propagations         7439
+ :conflicts                   35
+ :decisions                   5200
+ :del-clause                  3134
+ :max-generation              10
+ :max-missed-qa-cost          11.00
+ :memory                      20.85
+ :min-missed-qa-cost          11.00
+ :missed-quant-instantiations 43215
+ :mk-clause                   3499
+ :propagations                8180
+ :quant-instantiations        22667
+ :time                        1.55
+ :total-time                  1.54)
+End check-sat 12/07/2012 18:32:35
+z34 -st -v:1 -smt2 -T:550 from-model-to-step44.smt2
+Begin check-sat 12/07/2012 18:32:35
+unsat
+(:added-eqs            2
+ :binary-propagations  14
+ :conflicts            1
+ :max-generation       2
+ :memory               0.81
+ :mk-clause            22
+ :propagations         14
+ :quant-instantiations 38
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 18:32:35
+z34 -st -v:1 -smt2 -T:550 from-model-to-stepA2.smt2
+Begin check-sat 12/07/2012 18:32:35
+timeout
+(:added-eqs                   1623983
+ :binary-propagations         111997
+ :conflicts                   370
+ :decisions                   885044
+ :del-clause                  5094172
+ :final-checks                225
+ :lazy-quant-instantiations   34396847
+ :max-generation              12
+ :max-missed-qa-cost          11.00
+ :memory                      98.51
+ :min-missed-qa-cost          11.00
+ :missed-quant-instantiations 145469
+ :mk-clause                   5102593
+ :propagations                1315651
+ :quant-instantiations        4696588
+ :restarts                    2
+ :total-time                  550.01)
+End check-sat 12/07/2012 18:41:45
+z34 -st -v:1 -smt2 -T:550 from-step1-to-step2.smt2
+Begin check-sat 12/07/2012 18:41:45
+unsat
+(:added-eqs                   12072
+ :binary-propagations         10008
+ :conflicts                   2
+ :decisions                   1
+ :del-clause                  11183
+ :max-generation              10
+ :max-missed-qa-cost          11.00
+ :memory                      34.53
+ :min-missed-qa-cost          11.00
+ :missed-quant-instantiations 83530
+ :mk-clause                   11462
+ :propagations                11848
+ :quant-instantiations        20928
+ :time                        1.73
+ :total-time                  1.73)
+End check-sat 12/07/2012 18:41:46
+z34 -st -v:1 -smt2 -T:550 from-step1-to-step3.smt2
+Begin check-sat 12/07/2012 18:41:46
+unsat
+(:added-eqs                   12072
+ :binary-propagations         10053
+ :conflicts                   2
+ :decisions                   1
+ :del-clause                  11189
+ :max-generation              10
+ :max-missed-qa-cost          11.00
+ :memory                      34.53
+ :min-missed-qa-cost          11.00
+ :missed-quant-instantiations 83528
+ :mk-clause                   11468
+ :propagations                11851
+ :quant-instantiations        20922
+ :time                        1.68
+ :total-time                  1.67)
+End check-sat 12/07/2012 18:41:48
+z34 -st -v:1 -smt2 -T:550 from-step1-to-step42.smt2
+Begin check-sat 12/07/2012 18:41:48
+unsat
+(:added-eqs            13
+ :binary-propagations  58
+ :conflicts            1
+ :max-generation       2
+ :memory               0.91
+ :mk-clause            38
+ :propagations         58
+ :quant-instantiations 65
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 18:41:48
+z34 -st -v:1 -smt2 -T:550 from-step1-to-step43.smt2
+Begin check-sat 12/07/2012 18:41:48
+unsat
+(:added-eqs            164
+ :binary-propagations  284
+ :conflicts            1
+ :max-generation       5
+ :memory               1.47
+ :mk-clause            231
+ :propagations         309
+ :quant-instantiations 393
+ :time                 0.02
+ :total-time           0.03)
+End check-sat 12/07/2012 18:41:48
+z34 -st -v:1 -smt2 -T:550 from-step1-to-step44.smt2
+Begin check-sat 12/07/2012 18:41:48
+unsat
+(:added-eqs            2
+ :binary-propagations  14
+ :conflicts            1
+ :max-generation       2
+ :memory               0.81
+ :mk-clause            22
+ :propagations         14
+ :quant-instantiations 39
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 18:41:48
+z34 -st -v:1 -smt2 -T:550 from-step1-to-stepA2.smt2
+Begin check-sat 12/07/2012 18:41:48
+unsat
+(:added-eqs            16
+ :binary-propagations  54
+ :conflicts            1
+ :max-generation       2
+ :memory               0.81
+ :mk-clause            37
+ :propagations         54
+ :quant-instantiations 62
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 18:41:48
+z34 -st -v:1 -smt2 -T:550 from-step2-to-step3.smt2
+Begin check-sat 12/07/2012 18:41:48
+unsat
+(:added-eqs                   5735
+ :binary-propagations         4503
+ :conflicts                   2
+ :decisions                   1
+ :del-clause                  2318
+ :max-generation              10
+ :max-missed-qa-cost          11.00
+ :memory                      20.01
+ :min-missed-qa-cost          11.00
+ :missed-quant-instantiations 49854
+ :mk-clause                   2630
+ :propagations                4949
+ :quant-instantiations        9162
+ :time                        0.58
+ :total-time                  0.58)
+End check-sat 12/07/2012 18:41:49
+z34 -st -v:1 -smt2 -T:550 from-step2-to-step42.smt2
+Begin check-sat 12/07/2012 18:41:49
+unsat
+(:added-eqs            13
+ :binary-propagations  60
+ :conflicts            1
+ :max-generation       3
+ :memory               1.13
+ :mk-clause            84
+ :propagations         60
+ :quant-instantiations 158
+ :time                 0.02
+ :total-time           0.01)
+End check-sat 12/07/2012 18:41:49
+z34 -st -v:1 -smt2 -T:550 from-step2-to-step43.smt2
+Begin check-sat 12/07/2012 18:41:49
+unsat
+(:added-eqs            232
+ :binary-propagations  294
+ :conflicts            1
+ :max-generation       5
+ :memory               1.83
+ :mk-clause            332
+ :propagations         320
+ :quant-instantiations 556
+ :time                 0.03
+ :total-time           0.03)
+End check-sat 12/07/2012 18:41:49
+z34 -st -v:1 -smt2 -T:550 from-step2-to-step44.smt2
+Begin check-sat 12/07/2012 18:41:49
+unsat
+(:added-eqs            2
+ :binary-propagations  14
+ :conflicts            1
+ :max-generation       2
+ :memory               0.81
+ :mk-clause            22
+ :propagations         14
+ :quant-instantiations 39
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 18:41:49
+z34 -st -v:1 -smt2 -T:550 from-step2-to-stepA2.smt2
+Begin check-sat 12/07/2012 18:41:49
+unsat
+(:added-eqs            18
+ :binary-propagations  56
+ :conflicts            1
+ :max-generation       3
+ :memory               1.01
+ :mk-clause            80
+ :propagations         56
+ :quant-instantiations 133
+ :time                 0.02
+ :total-time           0.03)
+End check-sat 12/07/2012 18:41:49
+z34 -st -v:1 -smt2 -T:550 from-step3-to-step42.smt2
+Begin check-sat 12/07/2012 18:41:49
+unsat
+(:added-eqs            13
+ :binary-propagations  79
+ :conflicts            1
+ :max-generation       3
+ :memory               1.13
+ :mk-clause            84
+ :propagations         83
+ :quant-instantiations 160
+ :time                 0.02
+ :total-time           0.01)
+End check-sat 12/07/2012 18:41:49
+z34 -st -v:1 -smt2 -T:550 from-step3-to-step43.smt2
+Begin check-sat 12/07/2012 18:41:49
+unsat
+(:added-eqs            233
+ :binary-propagations  288
+ :conflicts            1
+ :max-generation       5
+ :memory               1.81
+ :mk-clause            337
+ :propagations         312
+ :quant-instantiations 569
+ :time                 0.03
+ :total-time           0.03)
+End check-sat 12/07/2012 18:41:49
+z34 -st -v:1 -smt2 -T:550 from-step3-to-step44.smt2
+Begin check-sat 12/07/2012 18:41:49
+unsat
+(:added-eqs            2
+ :binary-propagations  14
+ :conflicts            1
+ :max-generation       2
+ :memory               0.81
+ :mk-clause            22
+ :propagations         14
+ :quant-instantiations 39
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 18:41:49
+z34 -st -v:1 -smt2 -T:550 from-step3-to-stepA2.smt2
+Begin check-sat 12/07/2012 18:41:49
+unsat
+(:added-eqs            29
+ :binary-propagations  81
+ :conflicts            1
+ :max-generation       3
+ :memory               1.00
+ :mk-clause            80
+ :propagations         86
+ :quant-instantiations 135
+ :time                 0.02
+ :total-time           0.01)
+End check-sat 12/07/2012 18:41:49
+z34 -st -v:1 -smt2 -T:550 from-step42-to-step43.smt2
+Begin check-sat 12/07/2012 18:41:49
+unsat
+(:added-eqs            230
+ :binary-propagations  272
+ :conflicts            1
+ :max-generation       5
+ :memory               1.82
+ :mk-clause            304
+ :propagations         296
+ :quant-instantiations 524
+ :time                 0.03
+ :total-time           0.02)
+End check-sat 12/07/2012 18:41:49
+z34 -st -v:1 -smt2 -T:550 from-step42-to-step44.smt2
+Begin check-sat 12/07/2012 18:41:49
+unsat
+(:added-eqs            2
+ :binary-propagations  14
+ :conflicts            1
+ :max-generation       2
+ :memory               0.81
+ :mk-clause            22
+ :propagations         14
+ :quant-instantiations 39
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 18:41:49
+z34 -st -v:1 -smt2 -T:550 from-step43-to-step44.smt2
+Begin check-sat 12/07/2012 18:41:49
+unsat
+(:added-eqs            2
+ :binary-propagations  14
+ :conflicts            1
+ :max-generation       2
+ :memory               0.81
+ :mk-clause            22
+ :propagations         14
+ :quant-instantiations 39
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 18:41:49
+z34 -st -v:1 -smt2 -T:550 from-stepA2-to-step42.smt2
+Begin check-sat 12/07/2012 18:41:49
+unsat
+(:added-eqs            13
+ :binary-propagations  58
+ :conflicts            1
+ :max-generation       3
+ :memory               1.01
+ :mk-clause            79
+ :propagations         58
+ :quant-instantiations 157
+ :time                 0.02
+ :total-time           0.02)
+End check-sat 12/07/2012 18:41:49
+z34 -st -v:1 -smt2 -T:550 from-stepA2-to-step43.smt2
+Begin check-sat 12/07/2012 18:41:49
+unsat
+(:added-eqs            230
+ :binary-propagations  272
+ :conflicts            1
+ :max-generation       5
+ :memory               1.82
+ :mk-clause            304
+ :propagations         296
+ :quant-instantiations 524
+ :time                 0.03
+ :total-time           0.03)
+End check-sat 12/07/2012 18:41:49
+z34 -st -v:1 -smt2 -T:550 from-stepA2-to-step44.smt2
+Begin check-sat 12/07/2012 18:41:49
+unsat
+(:added-eqs            2
+ :binary-propagations  14
+ :conflicts            1
+ :max-generation       2
+ :memory               0.81
+ :mk-clause            22
+ :propagations         14
+ :quant-instantiations 39
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 18:41:49
+z34 -st -v:1 -smt2 -T:550 minified-step1.smt2
+Begin check-sat 12/07/2012 18:41:49
+timeout
+(:added-eqs                   292573
+ :binary-propagations         35998
+ :conflicts                   625
+ :decisions                   346768
+ :del-clause                  1396113
+ :final-checks                1220
+ :lazy-quant-instantiations   2244137
+ :max-generation              22
+ :max-missed-qa-cost          22.00
+ :memory                      49.81
+ :min-missed-qa-cost          21.00
+ :minimized-lits              100
+ :missed-quant-instantiations 68620
+ :mk-clause                   1413137
+ :propagations                528229
+ :quant-instantiations        617019
+ :restarts                    20
+ :total-time                  550.01)
+End check-sat 12/07/2012 18:50:59
+z34 -st -v:1 -smt2 -T:550 minified-step2.smt2
+Begin check-sat 12/07/2012 18:50:59
+timeout
+(:added-eqs                   114405
+ :binary-propagations         12081
+ :conflicts                   284
+ :decisions                   143393
+ :del-clause                  566981
+ :final-checks                764
+ :lazy-quant-instantiations   653651
+ :max-generation              21
+ :max-missed-qa-cost          22.00
+ :memory                      34.18
+ :min-missed-qa-cost          21.00
+ :minimized-lits              34
+ :missed-quant-instantiations 10031
+ :mk-clause                   572007
+ :propagations                235315
+ :quant-instantiations        223156
+ :restarts                    33
+ :total-time                  550.01)
+End check-sat 12/07/2012 19:00:09
+z34 -st -v:1 -smt2 -T:550 minified-step3.smt2
+Begin check-sat 12/07/2012 19:00:09
+timeout
+(:added-eqs                   84783
+ :binary-propagations         12707
+ :conflicts                   254
+ :decisions                   123601
+ :del-clause                  438408
+ :final-checks                559
+ :lazy-quant-instantiations   591413
+ :max-generation              21
+ :max-missed-qa-cost          21.00
+ :memory                      36.23
+ :min-missed-qa-cost          21.00
+ :minimized-lits              30
+ :missed-quant-instantiations 14597
+ :mk-clause                   444425
+ :propagations                179603
+ :quant-instantiations        183055
+ :restarts                    21
+ :total-time                  550.01)
+End check-sat 12/07/2012 19:09:19
+z34 -st -v:1 -smt2 -T:550 minified-step42.smt2
+Begin check-sat 12/07/2012 19:09:19
+timeout
+(:added-eqs                   131746
+ :binary-propagations         10274
+ :conflicts                   264
+ :decisions                   168383
+ :del-clause                  660659
+ :final-checks                497
+ :lazy-quant-instantiations   1400334
+ :max-generation              21
+ :max-missed-qa-cost          22.00
+ :memory                      41.67
+ :min-missed-qa-cost          21.00
+ :minimized-lits              32
+ :missed-quant-instantiations 45204
+ :mk-clause                   671328
+ :propagations                242615
+ :quant-instantiations        282472
+ :restarts                    10
+ :total-time                  550.00)
+End check-sat 12/07/2012 19:18:29
+z34 -st -v:1 -smt2 -T:550 minified-step43.smt2
+Begin check-sat 12/07/2012 19:18:29
+unsat
+(:added-eqs                   393
+ :binary-propagations         391
+ :conflicts                   5
+ :decisions                   16
+ :del-clause                  214
+ :max-generation              10
+ :max-missed-qa-cost          11.00
+ :memory                      1.30
+ :min-missed-qa-cost          11.00
+ :missed-quant-instantiations 106
+ :mk-clause                   241
+ :propagations                427
+ :quant-instantiations        411
+ :time                        0.02
+ :total-time                  0.01)
+End check-sat 12/07/2012 19:18:29
+z34 -st -v:1 -smt2 -T:550 minified-step44.smt2
+Begin check-sat 12/07/2012 19:18:29
+unsat
+(:added-eqs            1
+ :binary-propagations  12
+ :conflicts            1
+ :max-generation       2
+ :memory               0.73
+ :mk-clause            12
+ :propagations         12
+ :quant-instantiations 31
+ :time                 0.01)
+End check-sat 12/07/2012 19:18:29
+z34 -st -v:1 -smt2 -T:550 minified-stepA2.smt2
+Begin check-sat 12/07/2012 19:18:29
+timeout
+(:added-eqs                   138342
+ :binary-propagations         13637
+ :conflicts                   281
+ :decisions                   174225
+ :del-clause                  582256
+ :final-checks                718
+ :lazy-quant-instantiations   1191800
+ :max-generation              21
+ :max-missed-qa-cost          22.00
+ :memory                      38.37
+ :min-missed-qa-cost          21.00
+ :minimized-lits              31
+ :missed-quant-instantiations 25118
+ :mk-clause                   589179
+ :propagations                236054
+ :quant-instantiations        260325
+ :restarts                    24
+ :total-time                  550.01)
+End check-sat 12/07/2012 19:27:39
+z34 -st -v:1 -smt2 -T:550 step1-minified-step2.smt2
+Begin check-sat 12/07/2012 19:27:39
+unsat
+(:added-eqs                   613
+ :binary-propagations         548
+ :conflicts                   2
+ :decisions                   1
+ :del-clause                  320
+ :max-generation              10
+ :max-missed-qa-cost          11.00
+ :memory                      1.54
+ :min-missed-qa-cost          11.00
+ :missed-quant-instantiations 139
+ :mk-clause                   352
+ :propagations                603
+ :quant-instantiations        553
+ :time                        0.03
+ :total-time                  0.01)
+End check-sat 12/07/2012 19:27:39
+z34 -st -v:1 -smt2 -T:550 step1-minified-step3.smt2
+Begin check-sat 12/07/2012 19:27:39
+unsat
+(:added-eqs                   613
+ :binary-propagations         550
+ :conflicts                   2
+ :decisions                   1
+ :del-clause                  320
+ :max-generation              10
+ :max-missed-qa-cost          11.00
+ :memory                      1.54
+ :min-missed-qa-cost          11.00
+ :missed-quant-instantiations 139
+ :mk-clause                   352
+ :propagations                605
+ :quant-instantiations        553
+ :time                        0.03
+ :total-time                  0.03)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 step1-minified-step42.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs            10
+ :binary-propagations  41
+ :conflicts            1
+ :max-generation       2
+ :memory               0.73
+ :mk-clause            24
+ :propagations         41
+ :quant-instantiations 49
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 step1-minified-step43.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs            84
+ :binary-propagations  118
+ :conflicts            1
+ :max-generation       5
+ :memory               0.92
+ :mk-clause            80
+ :propagations         129
+ :quant-instantiations 139
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 step1-minified-step44.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs            1
+ :binary-propagations  12
+ :conflicts            1
+ :max-generation       2
+ :memory               0.73
+ :mk-clause            12
+ :propagations         12
+ :quant-instantiations 32
+ :time                 0.01)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 step1-minified-stepA2.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs            13
+ :binary-propagations  37
+ :conflicts            1
+ :max-generation       2
+ :memory               0.73
+ :mk-clause            23
+ :propagations         37
+ :quant-instantiations 47
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 step2-minified-step3.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs                   527
+ :binary-propagations         501
+ :conflicts                   2
+ :decisions                   1
+ :del-clause                  315
+ :max-generation              10
+ :max-missed-qa-cost          11.00
+ :memory                      1.54
+ :min-missed-qa-cost          11.00
+ :missed-quant-instantiations 157
+ :mk-clause                   359
+ :propagations                551
+ :quant-instantiations        527
+ :time                        0.03
+ :total-time                  0.03)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 step2-minified-step42.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs            10
+ :binary-propagations  43
+ :conflicts            1
+ :max-generation       3
+ :memory               0.84
+ :mk-clause            44
+ :propagations         43
+ :quant-instantiations 92
+ :time                 0.01
+ :total-time           0.02)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 step2-minified-step43.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs            93
+ :binary-propagations  122
+ :conflicts            1
+ :max-generation       6
+ :memory               0.94
+ :mk-clause            108
+ :propagations         134
+ :quant-instantiations 185
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 step2-minified-step44.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs            1
+ :binary-propagations  12
+ :conflicts            1
+ :max-generation       2
+ :memory               0.73
+ :mk-clause            12
+ :propagations         12
+ :quant-instantiations 32
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 step2-minified-stepA2.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs            15
+ :binary-propagations  39
+ :conflicts            1
+ :max-generation       3
+ :memory               0.73
+ :mk-clause            41
+ :propagations         39
+ :quant-instantiations 76
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 step3-minified-step42.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs            10
+ :binary-propagations  56
+ :conflicts            1
+ :max-generation       3
+ :memory               0.84
+ :mk-clause            44
+ :propagations         58
+ :quant-instantiations 94
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 step3-minified-step43.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs            94
+ :binary-propagations  116
+ :conflicts            1
+ :max-generation       6
+ :memory               0.94
+ :mk-clause            108
+ :propagations         126
+ :quant-instantiations 189
+ :time                 0.02
+ :total-time           0.02)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 step3-minified-step44.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs            1
+ :binary-propagations  12
+ :conflicts            1
+ :max-generation       2
+ :memory               0.73
+ :mk-clause            12
+ :propagations         12
+ :quant-instantiations 32
+ :time                 0.01)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 step42-minified-step43.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs            91
+ :binary-propagations  106
+ :conflicts            1
+ :max-generation       6
+ :memory               0.86
+ :mk-clause            88
+ :propagations         116
+ :quant-instantiations 167
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 step42-minified-step44.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs            1
+ :binary-propagations  12
+ :conflicts            1
+ :max-generation       2
+ :memory               0.73
+ :mk-clause            12
+ :propagations         12
+ :quant-instantiations 32
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 step43-minified-step44.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs            1
+ :binary-propagations  12
+ :conflicts            1
+ :max-generation       2
+ :memory               0.73
+ :mk-clause            12
+ :propagations         12
+ :quant-instantiations 32
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 stepA2-minified-step42.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs            10
+ :binary-propagations  41
+ :conflicts            1
+ :max-generation       3
+ :memory               0.84
+ :mk-clause            41
+ :propagations         41
+ :quant-instantiations 91
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 stepA2-minified-step43.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs            91
+ :binary-propagations  106
+ :conflicts            1
+ :max-generation       6
+ :memory               0.86
+ :mk-clause            88
+ :propagations         116
+ :quant-instantiations 167
+ :time                 0.02
+ :total-time           0.01)
+End check-sat 12/07/2012 19:27:40
+z34 -st -v:1 -smt2 -T:550 stepA2-minified-step44.smt2
+Begin check-sat 12/07/2012 19:27:40
+unsat
+(:added-eqs            1
+ :binary-propagations  12
+ :conflicts            1
+ :max-generation       2
+ :memory               0.73
+ :mk-clause            12
+ :propagations         12
+ :quant-instantiations 32
+ :time                 0.01
+ :total-time           0.01)
+End check-sat 12/07/2012 19:27:40
