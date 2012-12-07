@@ -1,0 +1,281 @@
+--- filesystem_fileInDir.als ---
+Successfully parsed /amd.home/home/best/experiment/filesystem/filesystem_fileInDir.als as chapter4/filesystem
+Model successfully translated.
+Output written to /amd.home/home/best/experiment/filesystem/filesystem_fileInDir.als.smt2
+timeout
+(:added-eqs                   2002713
+ :binary-propagations         55021
+ :conflicts                   486
+ :decisions                   318216
+ :del-clause                  1615077
+ :final-checks                519
+ :lazy-quant-instantiations   2638951
+ :max-generation              21
+ :max-missed-qa-cost          21.00
+ :memory                      218.39
+ :min-missed-qa-cost          21.00
+ :minimized-lits              29
+ :missed-quant-instantiations 143081
+ :mk-clause                   1663210
+ :propagations                825969
+ :quant-instantiations        1445186
+ :restarts                    10
+ :time                        550.00
+ :total-time                  549.92)
+
+--- filesystem_oneParent.als ---
+Successfully parsed /amd.home/home/best/experiment/filesystem/filesystem_oneParent.als as unknown
+Model successfully translated.
+Output written to /amd.home/home/best/experiment/filesystem/filesystem_oneParent.als.smt2
+unsat
+(:added-eqs            103
+ :binary-propagations  58
+ :conflicts            2
+ :decisions            1
+ :del-clause           104
+ :max-generation       9
+ :memory               1.05
+ :mk-clause            106
+ :propagations         72
+ :quant-instantiations 101
+ :time                 0.01)
+
+--- filesystem_someDir.als ---
+Successfully parsed /amd.home/home/best/experiment/filesystem/filesystem_someDir.als as chapter4/filesystem
+Model successfully translated.
+Output written to /amd.home/home/best/experiment/filesystem/filesystem_someDir.als.smt2
+timeout
+(:added-eqs                   554095
+ :binary-propagations         66896
+ :conflicts                   577
+ :decisions                   351256
+ :del-clause                  1028139
+ :final-checks                1081
+ :lazy-quant-instantiations   1406537
+ :max-generation              21
+ :max-missed-qa-cost          21.00
+ :memory                      107.70
+ :min-missed-qa-cost          21.00
+ :minimized-lits              19
+ :missed-quant-instantiations 21902
+ :mk-clause                   1037885
+ :propagations                525730
+ :quant-instantiations        656067
+ :restarts                    11
+ :time                        550.00
+ :total-time                  549.92)
+
+--- com_th4a.als ---
+Successfully parsed /amd.home/home/best/experiment/com/com_th4a.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to /amd.home/home/best/experiment/com/com_th4a.als.smt2
+timeout
+(:added-eqs                   307508
+ :binary-propagations         38697
+ :conflicts                   390
+ :decisions                   351490
+ :del-clause                  861194
+ :final-checks                732
+ :lazy-quant-instantiations   1344359
+ :max-generation              21
+ :max-missed-qa-cost          21.00
+ :memory                      79.00
+ :min-missed-qa-cost          21.00
+ :minimized-lits              31
+ :missed-quant-instantiations 46371
+ :mk-clause                   874520
+ :propagations                297288
+ :quant-instantiations        513590
+ :restarts                    8
+ :time                        550.00
+ :total-time                  549.91)
+
+--- com_th3.als ---
+Successfully parsed /amd.home/home/best/experiment/com/com_th3.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to /amd.home/home/best/experiment/com/com_th3.als.smt2
+timeout
+(:added-eqs                   3173368
+ :binary-propagations         74664
+ :conflicts                   501
+ :decisions                   2738964
+ :del-clause                  6808715
+ :final-checks                273
+ :lazy-quant-instantiations   24535054
+ :max-generation              16
+ :max-missed-qa-cost          15.00
+ :memory                      372.98
+ :min-missed-qa-cost          11.00
+ :minimized-lits              6
+ :missed-quant-instantiations 152110
+ :mk-clause                   6842325
+ :propagations                1722886
+ :quant-instantiations        5060430
+ :restarts                    6
+ :time                        550.00
+ :total-time                  549.91)
+
+--- com_th2.als ---
+Successfully parsed /amd.home/home/best/experiment/com/com_th2.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to /amd.home/home/best/experiment/com/com_th2.als.smt2
+timeout
+(:added-eqs                   4773388
+ :binary-propagations         141003
+ :conflicts                   1603
+ :decisions                   3055864
+ :del-clause                  10442357
+ :final-checks                1818
+ :lazy-quant-instantiations   27116223
+ :max-generation              21
+ :max-missed-qa-cost          21.00
+ :memory                      269.11
+ :min-missed-qa-cost          15.00
+ :minimized-lits              65
+ :missed-quant-instantiations 89336
+ :mk-clause                   10468586
+ :propagations                2829445
+ :quant-instantiations        7630014
+ :restarts                    7
+ :time                        550.00
+ :total-time                  549.91)
+
+--- com_th4b.als ---
+Successfully parsed /amd.home/home/best/experiment/com/com_th4b.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to /amd.home/home/best/experiment/com/com_th4b.als.smt2
+timeout
+(:added-eqs                   3196861
+ :binary-propagations         408337
+ :conflicts                   2308
+ :decisions                   5107645
+ :del-clause                  13066174
+ :final-checks                3311
+ :lazy-quant-instantiations   35379725
+ :max-generation              21
+ :max-missed-qa-cost          21.00
+ :memory                      626.98
+ :min-missed-qa-cost          21.00
+ :minimized-lits              96
+ :missed-quant-instantiations 244322
+ :mk-clause                   13115060
+ :propagations                4066640
+ :quant-instantiations        6821407
+ :restarts                    8
+ :time                        550.00
+ :total-time                  549.91)
+
+--- com_th1.als ---
+Successfully parsed /amd.home/home/best/experiment/com/com_th1.als as examples/case_studies/com
+### declExpr: this/IID ->lone this/Interface 
+    exprChain: [IID 1, Interface 1]
+Model successfully translated.
+Output written to /amd.home/home/best/experiment/com/com_th1.als.smt2
+timeout
+(:added-eqs                   940027
+ :binary-propagations         49852
+ :conflicts                   544
+ :decisions                   977327
+ :del-clause                  5840355
+ :final-checks                1216
+ :lazy-quant-instantiations   22476057
+ :max-generation              21
+ :max-missed-qa-cost          21.00
+ :memory                      374.80
+ :min-missed-qa-cost          21.00
+ :minimized-lits              71
+ :missed-quant-instantiations 716874
+ :mk-clause                   5933218
+ :propagations                1728124
+ :quant-instantiations        2668713
+ :restarts                    7
+ :time                        550.00
+ :total-time                  549.91)
+
+--- marksweepgc_completeness.als ---
+Successfully parsed /amd.home/home/best/experiment/marksweepgc/marksweepgc_completeness.als as examples/systems/marksweepgc
+### declExpr: this/Node ->lone this/Node 
+    exprChain: [Node 1, Node 1]
+### declExpr: this/Node ->lone this/Node 
+    exprChain: [Node 1, Node 1]
+Model successfully translated.
+Output written to /amd.home/home/best/experiment/marksweepgc/marksweepgc_completeness.als.smt2
+timeout
+(:added-eqs                   4551579
+ :binary-propagations         969191
+ :conflicts                   2851
+ :decisions                   5651088
+ :del-clause                  11040352
+ :final-checks                2884
+ :lazy-quant-instantiations   12355098
+ :max-generation              21
+ :max-missed-qa-cost          21.00
+ :memory                      348.33
+ :min-missed-qa-cost          21.00
+ :minimized-lits              124
+ :missed-quant-instantiations 27336
+ :mk-clause                   11061705
+ :propagations                5407491
+ :quant-instantiations        8841535
+ :restarts                    11
+ :time                        550.00
+ :total-time                  549.91)
+
+--- marksweepgc_soundness1.als ---
+Successfully parsed /amd.home/home/best/experiment/marksweepgc/marksweepgc_soundness1.als as examples/systems/marksweepgc
+### declExpr: this/Node ->lone this/Node 
+    exprChain: [Node 1, Node 1]
+### declExpr: this/Node ->lone this/Node 
+    exprChain: [Node 1, Node 1]
+Model successfully translated.
+Output written to /amd.home/home/best/experiment/marksweepgc/marksweepgc_soundness1.als.smt2
+unsat
+(:added-eqs            27
+ :binary-propagations  35
+ :conflicts            1
+ :max-generation       2
+ :memory               1.04
+ :mk-clause            29
+ :propagations         38
+ :quant-instantiations 55
+ :time                 0.01
+ :total-time           0.01)
+
+--- marksweepgc_soundness2.als ---
+Successfully parsed /amd.home/home/best/experiment/marksweepgc/marksweepgc_soundness2.als as examples/systems/marksweepgc
+### declExpr: this/Node ->lone this/Node 
+    exprChain: [Node 1, Node 1]
+### declExpr: this/Node ->lone this/Node 
+    exprChain: [Node 1, Node 1]
+Model successfully translated.
+Output written to /amd.home/home/best/experiment/marksweepgc/marksweepgc_soundness2.als.smt2
+timeout
+(:added-eqs                   9854658
+ :binary-propagations         2396276
+ :conflicts                   5287
+ :decisions                   7536618
+ :del-clause                  13818606
+ :final-checks                13013
+ :lazy-quant-instantiations   17493943
+ :max-generation              21
+ :max-missed-qa-cost          21.00
+ :memory                      258.75
+ :min-missed-qa-cost          21.00
+ :minimized-lits              207
+ :missed-quant-instantiations 26613
+ :mk-clause                   13836425
+ :propagations                10912508
+ :quant-instantiations        13521555
+ :restarts                    11
+ :time                        550.00
+ :total-time                  549.91)
+
+--- run-experiments.py ---
