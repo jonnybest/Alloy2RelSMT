@@ -1118,27 +1118,37 @@ public final class RelTheory {
 		Term tCl = Term.call(name, R);
 				
 		Term guard = Term.reverseIn(tCl, a1, a3);
+		
+		boolean useLemma1 = true;
+		if(useLemma1)
 		{
-			Term inR = Term.reverseIn(R, a1, a2);
-			Term middleInTCL = Term.reverseIn(tCl, a2, a3);
-			Term body = inR.not().or(inR.and(middleInTCL)).forall(a2);
+			//(forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R))(exists ((a2 Atom)) (in_2 a1 a2 R))))
+			Term body = Term.reverseIn(R, a2, a3).exists(a2);
 			Term lemma1 = guard.implies(body).forall(a1, a3, R);
-			lemma1.setComment("lemma 1 for " + name + " about the second-last 'middle element'");
+			lemma1.setComment("weak lemma 1 for " + name + " about the second-last 'middle element'");
 			file.addLemma(lemma1);
 		}
 		/* lemma 2 about the "second element":
 		 * (forall ((a1 Atom)(a3 Atom)(r Rel2)) (=> 
 		 * (in_2 a1 a3 (transClos r))							; guard 
-		 * (exists ((a2 Atom)) (or 
-		 * 	(not (in_2 a2 a3 r)) 								; not inR
-		 * 	(and (in_2 a2 a3 r) (in_2 a1 a2 (transClos r)))))) 
+		 * (exists ((a2 Atom))  
+		 * 	(in_2 a2 a3 r) 										; not inR
+		 * 	 
 		 */
+		boolean useWeakLemma2 = false;
+		if(useWeakLemma2)
 		{
-			Term inR = Term.reverseIn(R, a2, a3);
-			Term middleInTCL = Term.reverseIn(tCl, a1, a2);
-			Term body = inR.not().or(middleInTCL).forall(a2);
+			//(forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R))(exists ((a2 Atom)) (in_2 a1 a2 R))))
+			Term body = Term.reverseIn(R, a1, a2).exists(a2);
 			Term lemma2 = guard.implies(body).forall(a1, a3, R);
-			lemma2.setComment("lemma 1 for " + name + " about the second 'middle element'");
+			lemma2.setComment("weak lemma 2 for " + name + " about the second 'middle element'");
+			file.addLemma(lemma2);
+		}
+		else {
+			// (forall ((a1 Atom)(a3 Atom)(r Rel2)) (=> (in_2 a1 a3 (transClos r)) (or (in_2 a1 a3 r) (exists ((a2 Atom)) (and (in_2 a1 a2 r) (in_2 a2 a3)(transClos r)))))))
+			Term body = (Term.reverseIn(R, a1, a3)).or((Term.reverseIn(R, a1, a2).and(Term.reverseIn(tCl, a2, a3))).exists(a2));
+			Term lemma2 = guard.implies(body).forall(a1, a3, R);
+			lemma2.setComment("strong lemma 2 for " + name + " about the second 'middle element'");
 			file.addLemma(lemma2);
 		}
 	}
