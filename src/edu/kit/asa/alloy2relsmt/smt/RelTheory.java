@@ -77,29 +77,6 @@ public final class RelTheory {
 				Term axiom = guard.implies(validCard).forall(Util.concat(a, R));
 				axiom.setComment("axiom about finite Relations having a card > ord > 1");
 				file.addAxiom(axiom);
-			}	
-			// ∀r: Reln , i: int | (finite n (r) ∧ 1 ≤ i ≤ card n (r)) 
-			//		⇒ ∃a1:n : Atom | inn (a1:n , r) ∧ ordn (r, a1:n ) = i
-			{
-				TermVar i = TermVar.var("Int", "i");
-				Term guard = finR.and(validCard);
-				Term axiom = guard.implies(Term.reverseIn(R, a).and(ordA.equal(i)).exists(i)).forall(R, i).forall(a);
-				axiom.setComment("axiom about finite Relations having atoms for certain numbers in ord");
-				file.addAxiom(axiom);
-			}
-			{
-				// lemma about a2r_1 having card_1				
-				Term call = Term.call("a2r_" + ar, a);
-				Term lemma = Term.call(name, call).equal(one).forall(a);
-				lemma.setComment("lemma about a2r_x having card_x");
-				file.addLemma(lemma);
-			}
-			{
-				// lemma about some having card_1 > 0				
-				Term call = Term.call("some_" + ar, R);
-				Term lemma = call.implies(Term.call(name, R).gt(zero)).forall(R);
-				lemma.setComment("lemma about some_x having card_x > 0");
-				file.addLemma(lemma);
 			}
 		}
 	}
@@ -663,80 +640,7 @@ public final class RelTheory {
 			Term xInAandYInB = Term.reverseIn(A, x).and(Term.reverseIn(B, y));
 			Term axiom = somethingIsInProduct.iff(xInAandYInB).forall(A, B).forall(x).forall(y);
 			file.addAxiom(axiom);
-			}
-			
-			if(lar == 2 && rar == 1 && !declareProduct(1, 1))
-			{
-				// This lemma is usually triggered when a ternary relation gets declared.
-				// The resulting ternary relation usually goes from this: sig A { R: B->C } to this:  (subset_3 R (prod_2x1 (prod_1x1 A B) C)) 
-				// At the moment, you could also use subset_3 as a trigger.
-				/*
-				 * (forall ((i Atom)(R Rel3)(A Rel1)(B Rel1)(C Rel1)) 	; R=qi, A=C=Interface, B=IID
-					(=>
-						(subset_3 R (prod_2x1 (prod_1x1 A B) C))
-						(=> (in_1 i A) (subset_2 (join_1x3 (a2r_1 i) R)(prod_1x1 B C)))
-					))
-				 */
-				declareRel(1);
-				declareRel(2);
-				declareIn(1);
-				declareSubset(2);
-				declareSubset(3);
-				declareJoin(1, 3);
-				declareA2r(1);
-				declareProduct(1, 1);
-				TermVar a = TermVar.var("Atom", "a");
-				TermVar A = TermVar.var("Rel1", "A");
-				TermVar B = TermVar.var("Rel1", "B");
-				TermVar C = TermVar.var("Rel1", "C");
-				TermVar R = TermVar.var("Rel3", "R");
-				Term lemma = Term.call("subset_3", R, Term.call("prod_2x1", Term.call("prod_1x1", A, B), C)).equal(
-						Term.call("subset_2", Term.call("join_1x3", a2r(a), R), Term.call("prod_1x1", B, C)));
-				// removed unneccessary "in_1" restriction
-				lemma = lemma.forall(a, A, B, C, R);
-				lemma.setComment("joinOfProdRel: originally introduced for COM-theorem1 step 19->20 with R=qi, A=C=Interface, B=IID");
-				file.addLemma(lemma);
-			}
-			
-			if(lar == 1 && rar == 1)
-			{
-				/* something like:
-				 *  (assert
-					(forall ((R Rel2)(A Rel1)(B Rel1)) 
-						(=>
-							(subset_2 R (prod_1x1 A B))  ; R=(i.qi) A=IID B=Interface	; guard
-							(forall ((a0 Atom)) 										; body
-							(=>
-								(in_1 a0 A)												; a in A
-								(= 	(not (in_1 a0 (join_2x1 R B)))						; exclusionB
-									(no_1 (join_1x2 (a2r_1 a0) R))))))))				; exclusionA
-				 */
-				// lemma for subset and product
-				
-				declareJoin(lar, resultArity);
-				declareJoin(resultArity, rar);
-				declareSubset(resultArity);
-				// declareIn?
-				declareNo((lar + resultArity - 2));
-				
-				TermVar R = TermVar.var(resultRelar, "R");
-				TermVar[] a = makeTuple(lar, "a");
-				TermVar A = TermVar.var(leftRelar, "A"),
-						B = TermVar.var(rightRelar, "B"); 
-				Term fn = Term.call(name, A, B);
-				
-				Term guard = Term.call("subset_" + resultArity , R, fn);
-				Term joinA = Term.call("join_" + lar + "x" + resultArity, Term.call("a2r_" + lar, a), R);
-				Term joinB = Term.call("join_" + resultArity + "x" + rar, R, B);
-				Term nojoinA = Term.call("no_" + (lar + resultArity - 2), joinA);
-				Term exclusionA = nojoinA;
-				Term exclusionB = Term.reverseIn(joinB, a).not();
-				Term body = (exclusionB.equal(exclusionA)).forall(a);
-				// note: removed unneccessary "in_1" restriction
-				Term lemma = guard.implies(body).forall(R, A, B);
-				lemma.setComment("lstep20: lemma about subset " + resultArity + " and product "+ lar + "x" + rar + " , using join");
-				file.addLemma(lemma);
-			}
+			}			
 			
 			return true;
 		}
@@ -857,13 +761,6 @@ public final class RelTheory {
 			Term axiom = subset.equal(inImpliesIn.forall(atomVars)).forall(x, y);
 			axiom.setComment("subset axiom for " + relSort);
 			file.addAxiom(axiom);  // add this axiom to the list of assertions
-			
-			if(ar == 1)
-			{
-				Term equalityLemma = x.equal(y).implies(Term.call(name, x, y).and(Term.call(name, y, x))).forall(x, y);
-				equalityLemma.setComment("equality Lemma (newly introduced. Be careful, this is very costly.");
-				file.addLemma(equalityLemma);
-			}
 		}
 	}
 
@@ -1017,80 +914,10 @@ public final class RelTheory {
 		String name = "join_" + lar + "x" + rar;
 		Term resultInJoin = Term.reverseIn(Term.call(name, lhs, rhs), result);
 		{
-			Term lemma = resultInJoin.implies(aInR).forall(Util.concat(atoms, r));
-			lemma.setComment("1. lemma for "+name+". direction: join to in");
-			file.addLemma(lemma);
+			Term lemma;
 			lemma = aInR.implies(resultInJoin).forall(Util.concat(atoms, r));
 			lemma.setComment("2. lemma for "+name+". direction: in to join");
 			file.addLemma(lemma);
-		}
-		
-		if(lar == 1 && rar == 2){
-			declareJoin(2, 2);
-			TermVar R = TermVar.var("Rel2", "R");
-			TermVar S = TermVar.var("Rel2", "S");
-			Term joinRS = Term.call("join_2x2", R, S);
-			{
-				/* lemma for the com-theorem1
-				 * ; R=(i.qi) S=iids
-				(assert (! (forall ((R Rel2)(S Rel2)(x Atom))
-					(=>
-						(no_2 (join_1x2 (a2r_1 x) R)) 
-						(no_2 (join_1x2 (a2r_1 x) (join_2x2 R S))))))
-						:named step21
-				)
-				 */
-				declareA2r(1);
-				declareNo(1);
-				TermVar x = TermVar.var("Atom", "x");
-				Term Xrel = Term.call("a2r_1", x);
-				Term guard = Term.call("no_1", Term.call(name, Xrel, R));
-				Term body = Term.call("no_1", Term.call(name, Xrel, joinRS));
-				Term lemma = guard.implies(body).forall(R, S, x);
-				lemma.setComment("lemma for step 21 of the com-theorem1 for join_1x2: R=(i.qi) S=iids");
-				file.addLemma(lemma);
-			}
-			{
-				/* invalid lemma (also from com-theorem1), related to step 42
-				 * (minor speedup observed: 85.78 sec -> 77.25 for 2nd half of com-theorem1)
-				 * (z3 managed to prove the whole com-theorem1 (split VC) within 10 minutes after adding this)
-				 * (assert (! ; (c.interfaces).iids = c.(interfaces.iids)
-					(forall ((C Rel1)(R Rel2)(S Rel2)) (= 
-						(join_1x2 (join_1x2 C R) S) 
-						(join_1x2 C (join_2x2 R S))))
-					:named lemmaA22))
-				 */
-				TermVar C = TermVar.var("Rel1", "C");
-				Term associative = Term.call(name, Term.call(name, C, R), S).equal(Term.call(name, C, joinRS));
-				Term lemma = associative.forall(R, S, C);
-				lemma.setComment("lemma for com-theorem1, step 42 about joins being associative");
-				//file.addLemma(lemma); // lemmas is not valid because join is not associative
-			}
-			{
-				/* another general lemma (from com-theorem1), related to step 45
-				 * (minor speedup observed: 584.85 sec -> 159.30 on the whole com-theorem1 (split VC))
-				 * (=>
-				 * 	 (subset_1 a A) 
-				 *   (subset_1 
-				 *		(join_1x2 a R)
-				 *		(join_1x2 A R)
-				 * ))
-				 */
-				declareProduct(1, 1);
-				declareSubset(1);
-				declareSubset(2);
-				TermVar a = TermVar.var("Rel1", "a");
-				TermVar A = TermVar.var("Rel1", "A");
-				TermVar B = TermVar.var("Rel1", "B");
-//				Term subR = Term.call("subset_2", R, Term.call("prod_1x1", A, B));
-				Term joinSmallSet = Term.call(name, a, R);
-				Term joinLargeSet = Term.call(name, A, R);
-				Term guard  = Term.call("subset_1", a, A); // .and(subR);
-				Term deduction = Term.call("subset_1", joinSmallSet,joinLargeSet);
-				Term lemma = guard.implies(deduction).forall(a, A, B, R);
-				lemma.setComment("lemma about subsets within joins, from com-theorem1, related to step 45");
-				file.addLemma(lemma);
-			}
 		}
 	}
 
@@ -1122,34 +949,11 @@ public final class RelTheory {
 		boolean useLemma1 = true;
 		if(useLemma1)
 		{
-			//(forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R))(exists ((a2 Atom)) (in_2 a1 a2 R))))
+			//(forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (exists ((a2 Atom)) (in_2 a2 a3 R)))) 
 			Term body = Term.reverseIn(R, a2, a3).exists(a2);
 			Term lemma1 = guard.implies(body).forall(a1, a3, R);
 			lemma1.setComment("weak lemma 1 for " + name + " about the second-last 'middle element'");
 			file.addLemma(lemma1);
-		}
-		/* lemma 2 about the "second element":
-		 * (forall ((a1 Atom)(a3 Atom)(r Rel2)) (=> 
-		 * (in_2 a1 a3 (transClos r))							; guard 
-		 * (exists ((a2 Atom))  
-		 * 	(in_2 a2 a3 r) 										; not inR
-		 * 	 
-		 */
-		boolean useWeakLemma2 = false;
-		if(useWeakLemma2)
-		{
-			//(forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R))(exists ((a2 Atom)) (in_2 a1 a2 R))))
-			Term body = Term.reverseIn(R, a1, a2).exists(a2);
-			Term lemma2 = guard.implies(body).forall(a1, a3, R);
-			lemma2.setComment("weak lemma 2 for " + name + " about the second 'middle element'");
-			file.addLemma(lemma2);
-		}
-		else {
-			// (forall ((a1 Atom)(a3 Atom)(r Rel2)) (=> (in_2 a1 a3 (transClos r)) (or (in_2 a1 a3 r) (exists ((a2 Atom)) (and (in_2 a1 a2 r) (in_2 a2 a3)(transClos r)))))))
-			Term body = (Term.reverseIn(R, a1, a3)).or((Term.reverseIn(R, a1, a2).and(Term.reverseIn(tCl, a2, a3))).exists(a2));
-			Term lemma2 = guard.implies(body).forall(a1, a3, R);
-			lemma2.setComment("strong lemma 2 for " + name + " about the second 'middle element'");
-			file.addLemma(lemma2);
 		}
 	}
 
