@@ -111,8 +111,8 @@
 ;; assertions
 (assert 
  (! 
-  (disjoint_1 Process State) 
- :named assert1e7c4693 
+  (disjoint_1 State Mutex) 
+ :named assert1f7b983 
  ) 
  )
 (assert 
@@ -135,14 +135,14 @@
  )
 (assert 
  (! 
-  (disjoint_1 Mutex State) 
- :named assert9a005403 
+  (= Deadlock (and (some_1 Process) (exists ((s Atom)) (and (in_1 s State) (forall ((p Atom)) (=> (in_1 p Process) (some_1 (join_1x2 (a2r_1 p) (join_1x3 (a2r_1 s) waits))))))))) 
+ :named asserte800516c 
  ) 
  )
 (assert 
  (! 
-  (= Deadlock (and (some_1 Process) (exists ((s Atom)) (and (in_1 s State) (forall ((p Atom)) (=> (in_1 p Process) (some_1 (join_1x2 (a2r_1 p) (join_1x3 (a2r_1 s) waits))))))))) 
- :named asserte800516c 
+  (disjoint_1 State Process) 
+ :named assertf3345053 
  ) 
  )
 ;; --end assertions

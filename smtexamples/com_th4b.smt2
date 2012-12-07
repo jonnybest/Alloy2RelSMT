@@ -196,8 +196,14 @@
 ;; assertions
 (assert 
  (! 
-  (forall ((c Atom)) (=> (in_1 c Component) (and (= (join_1x2 (a2r_1 c) iids1) (join_1x2 (join_1x2 (a2r_1 c) interfaces) iids)) (forall ((i Atom)) (=> (and (in_1 i Interface) (in_1 i (join_1x2 (a2r_1 c) interfaces))) (forall ((x Atom)) (=> (in_1 x IID) (subset_1 (join_1x2 (a2r_1 x) (join_1x3 (a2r_1 i) qi)) (join_1x2 (a2r_1 c) interfaces))))))))) 
- :named assert1f4df55a 
+  (forall ((c Atom)) (=> (in_1 c Component) (and (= (join_1x2 (a2r_1 c) iids) (join_1x2 (join_1x2 (a2r_1 c) interfaces) iids1)) (forall ((i Atom)) (=> (and (in_1 i Interface) (in_1 i (join_1x2 (a2r_1 c) interfaces))) (forall ((x Atom)) (=> (in_1 x IID) (subset_1 (join_1x2 (a2r_1 x) (join_1x3 (a2r_1 i) qi)) (join_1x2 (a2r_1 c) interfaces))))))))) 
+ :named assert18ebddda 
+ ) 
+ )
+(assert 
+ (! 
+  (subset_2 iids (prod_1x1 Component IID)) 
+ :named assert1c53bbdd 
  ) 
  )
 (assert 
@@ -214,6 +220,12 @@
  )
 (assert 
  (! 
+  (forall ((i Atom)) (=> (in_1 i LegalInterface) (subset_1 (join_1x2 (a2r_1 i) iids1) (join_1x2 (a2r_1 i) iidsKnown)))) 
+ :named assert5254527d 
+ ) 
+ )
+(assert 
+ (! 
   (subset_2 iidsKnown (prod_1x1 Interface IID)) 
  :named assert5474ebd8 
  ) 
@@ -222,6 +234,12 @@
  (! 
   (subset_2 eqs (prod_1x1 Component Component)) 
  :named assert589a4e48 
+ ) 
+ )
+(assert 
+ (! 
+  (subset_2 iids1 (prod_1x1 Interface IID)) 
+ :named assert5a02da66 
  ) 
  )
 (assert 
@@ -244,6 +262,12 @@
  )
 (assert 
  (! 
+  (disjoint_1 Component Interface) 
+ :named assert7037379d 
+ ) 
+ )
+(assert 
+ (! 
   (forall ((i Atom)) (=> (in_1 i Interface) (and (= (join_1x2 (a2r_1 i) iidsKnown) (join_2x1 (join_1x3 (a2r_1 i) qi) Interface)) (= (join_1x2 (a2r_1 i) reaches) (join_1x2 IID (join_1x3 (a2r_1 i) qi)))))) 
  :named assert88a89e21 
  ) 
@@ -253,9 +277,9 @@
   (and (not (exists ((c Atom)) (and (in_1 c Component) (in_1 c (join_1x2 (a2r_1 c) (transClos aggregates)))))) (forall ((outer Atom)) (=> (in_1 outer Component) (forall ((inner Atom)) (=> (and (in_1 inner Component) (in_1 inner (join_1x2 (a2r_1 outer) aggregates))) (and (some_1 (inter_1 (join_1x2 (a2r_1 inner) interfaces) (join_1x2 (a2r_1 outer) interfaces))) (exists ((o Atom)) (and 
     (in_1 o Interface)
     (in_1 o (join_1x2 (a2r_1 outer) interfaces))
-    (forall ((i Atom)) (=> (and (in_1 i Interface) (in_1 i (diff_1 (join_1x2 (a2r_1 inner) interfaces) (join_1x2 (a2r_1 inner) first)))) (forall ((x Atom)) (=> (in_1 x Component) (= (join_1x2 (join_1x2 (a2r_1 x) iids1) (join_1x3 (a2r_1 i) qi)) (join_1x2 (join_1x2 (a2r_1 x) iids1) (join_1x3 (a2r_1 o) qi)))))))
+    (forall ((i Atom)) (=> (and (in_1 i Interface) (in_1 i (diff_1 (join_1x2 (a2r_1 inner) interfaces) (join_1x2 (a2r_1 inner) first)))) (forall ((x Atom)) (=> (in_1 x Component) (= (join_1x2 (join_1x2 (a2r_1 x) iids) (join_1x3 (a2r_1 i) qi)) (join_1x2 (join_1x2 (a2r_1 x) iids) (join_1x3 (a2r_1 o) qi)))))))
   )))))))) 
- :named assert8acd3412 
+ :named assert89ce5514 
  ) 
  )
 (assert 
@@ -290,32 +314,20 @@
  )
 (assert 
  (! 
-  (subset_2 iids1 (prod_1x1 Component IID)) 
- :named assertb4a2a72a 
+  (forall ((i Atom)(j Atom)) (=> (and (in_1 i LegalInterface) (in_1 j LegalInterface)) (=> (in_1 j (join_1x2 (a2r_1 i) reaches)) (subset_1 (join_1x2 (a2r_1 i) iids1) (join_1x2 (a2r_1 j) iidsKnown))))) 
+ :named assertb86ae29f 
  ) 
  )
 (assert 
  (! 
-  (subset_2 iids (prod_1x1 Interface IID)) 
- :named assertc1b3ef19 
+  (disjoint_1 IID Interface) 
+ :named assertbc6f7676 
  ) 
  )
 (assert 
  (! 
   (subset_3 qi (prod_2x1 (prod_1x1 Interface IID) Interface)) 
  :named assertc394fc36 
- ) 
- )
-(assert 
- (! 
-  (disjoint_1 Interface IID) 
- :named assertc5ab5f6 
- ) 
- )
-(assert 
- (! 
-  (forall ((i Atom)) (=> (in_1 i LegalInterface) (subset_1 (join_1x2 (a2r_1 i) iids) (join_1x2 (a2r_1 i) iidsKnown)))) 
- :named assertc7a7d492 
  ) 
  )
 (assert 
@@ -332,24 +344,6 @@
  )
 (assert 
  (! 
-  (forall ((i Atom)(j Atom)) (=> (and (in_1 i LegalInterface) (in_1 j LegalInterface)) (=> (in_1 j (join_1x2 (a2r_1 i) reaches)) (subset_1 (join_1x2 (a2r_1 i) iids) (join_1x2 (a2r_1 j) iidsKnown))))) 
- :named assertd42a6246 
- ) 
- )
-(assert 
- (! 
-  (disjoint_1 Interface Component) 
- :named assertd8fdf29d 
- ) 
- )
-(assert 
- (! 
-  (forall ((i Atom)) (=> (in_1 i LegalInterface) (forall ((x Atom)) (=> (and (in_1 x IID) (in_1 x (join_1x2 (a2r_1 i) iidsKnown))) (in_1 x (join_1x2 (join_1x2 (a2r_1 x) (join_1x3 (a2r_1 i) qi)) iids)))))) 
- :named asserte1248f70 
- ) 
- )
-(assert 
- (! 
   (forall ((i Atom)(j Atom)) (=> (and (in_1 i LegalInterface) (in_1 j LegalInterface)) (=> (in_1 j (join_1x2 (a2r_1 i) reaches)) (subset_1 (join_1x2 (a2r_1 j) iidsKnown) (join_1x2 (a2r_1 i) iidsKnown))))) 
  :named asserte2b27e6f 
  ) 
@@ -358,6 +352,12 @@
  (! 
   (subset_1 LegalInterface Interface) 
  :named asserte3e0e0c 
+ ) 
+ )
+(assert 
+ (! 
+  (forall ((i Atom)) (=> (in_1 i LegalInterface) (forall ((x Atom)) (=> (and (in_1 x IID) (in_1 x (join_1x2 (a2r_1 i) iidsKnown))) (in_1 x (join_1x2 (join_1x2 (a2r_1 x) (join_1x3 (a2r_1 i) qi)) iids1)))))) 
+ :named assertea9f38c1 
  ) 
  )
 ;; --end assertions

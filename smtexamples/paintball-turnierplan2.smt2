@@ -206,12 +206,6 @@
  )
 (assert 
  (! 
-  (disjoint_1 Round Map) 
- :named assert300594a9 
- ) 
- )
-(assert 
- (! 
   (= Test true) 
  :named assert3d29ff58 
  ) 
@@ -246,12 +240,6 @@
  )
 (assert 
  (! 
-  (disjoint_1 Match Team) 
- :named assert553d2987 
- ) 
- )
-(assert 
- (! 
   (one_1 Speedball) 
  :named assert566c2af3 
  ) 
@@ -266,6 +254,12 @@
  (! 
   (forall ((this Atom)) (=> (in_1 this Match) (one_1 (join_1x2 (a2r_1 this) map)))) 
  :named assert58db6425 
+ ) 
+ )
+(assert 
+ (! 
+  (disjoint_1 Map Match) 
+ :named assert5b2a152 
  ) 
  )
 (assert 
@@ -318,6 +312,12 @@
  )
 (assert 
  (! 
+  (disjoint_1 Map Team) 
+ :named assert84b4455e 
+ ) 
+ )
+(assert 
+ (! 
   (forall ((this Atom)) (=> (in_1 this Map) (one_1 (join_1x2 (a2r_1 this) type)))) 
  :named assert89c5b868 
  ) 
@@ -347,12 +347,6 @@
  )
 (assert 
  (! 
-  (disjoint_1 Team Map) 
- :named assert99180226 
- ) 
- )
-(assert 
- (! 
   (one_1 Hyperball) 
  :named assert9c3cfbee 
  ) 
@@ -371,20 +365,26 @@
  )
 (assert 
  (! 
-  (disjoint_1 Match Map) 
- :named asserta7e5f6d2 
- ) 
- )
-(assert 
- (! 
   (disjoint_1 Speedball Woodland) 
  :named assertaf5b2c6d 
  ) 
  )
 (assert 
  (! 
+  (disjoint_1 Team Match) 
+ :named assertb322c89d 
+ ) 
+ )
+(assert 
+ (! 
   (forall ((this Atom)) (=> (in_1 this Map) (subset_1 (join_1x2 (a2r_1 this) type) (I (+ 0 1))))) 
  :named assertb3742fa5 
+ ) 
+ )
+(assert 
+ (! 
+  (disjoint_1 Team Round) 
+ :named assertbc70e9f4 
  ) 
  )
 (assert 
@@ -413,12 +413,6 @@
  )
 (assert 
  (! 
-  (disjoint_1 Round Team) 
- :named assertd1114690 
- ) 
- )
-(assert 
- (! 
   (subset_2 map (prod_1x1 Match Map)) 
  :named assertd80f2344 
  ) 
@@ -439,6 +433,12 @@
  (! 
   (subset_1 Hyperball Map) 
  :named assertee693a46 
+ ) 
+ )
+(assert 
+ (! 
+  (disjoint_1 Map Round) 
+ :named assertf00c2a9 
  ) 
  )
 (assert 
