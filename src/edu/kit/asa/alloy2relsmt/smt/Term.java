@@ -8,8 +8,18 @@ import edu.kit.asa.alloy2relsmt.smt.TermQuant.Quant;
 import edu.mit.csail.sdg.alloy4.Pair;
 
 /** represents a SMT expression **/
-public abstract class Term {
+public abstract class Term implements Comparable<Term> {
 	
+	@Override
+	public int compareTo(Term o) {
+		return Integer.toHexString(this.hashCode()).compareTo(Integer.toHexString(o.hashCode()));
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.toString().hashCode();
+	}
+
 	protected String comment = null;
 	
 	protected String getFormattedComment()
