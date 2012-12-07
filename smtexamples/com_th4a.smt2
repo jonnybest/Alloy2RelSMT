@@ -1,5 +1,5 @@
-; file: D:\Entwicklung\workspace\alloy2relsmt\smtexamples\provable_half_of_com_theorem1.als 
-; hash: 8793BD2A93 256AFA1E93A77AEA1E1DF
+; file: D:\Entwicklung\workspace\alloy2relsmt\smtexamples\com_th4a.als 
+; hash:  0A5CEA0E4C931846D36D798FDACD7BB
 (set-logic AUFLIA)
 (set-option :macro-finder true)
 ;; sorts
@@ -268,12 +268,6 @@
  )
 (assert 
  (! 
-  (forall ((this Atom)) (=> (in_1 this Interface) (one_1 (join_1x2 (a2r_1 this) iidsKnown)))) 
- :named assert8367b169 
- ) 
- )
-(assert 
- (! 
   (forall ((i Atom)) (=> (in_1 i Interface) (and (= (join_1x2 (a2r_1 i) iidsKnown) (join_2x1 (join_1x3 (a2r_1 i) qi) Interface)) (= (join_1x2 (a2r_1 i) reaches) (join_1x2 IID (join_1x3 (a2r_1 i) qi)))))) 
  :named assert88a89e21 
  ) 
@@ -316,12 +310,6 @@
  (! 
   (disjoint_1 Component IID) 
  :named asserta3ec40b2 
- ) 
- )
-(assert 
- (! 
-  (forall ((this Atom)) (=> (in_1 this Interface) (one_1 (join_1x2 (a2r_1 this) reaches)))) 
- :named assertb39992b6 
  ) 
  )
 (assert 
@@ -377,8 +365,8 @@
 ;; command
 (assert 
  (! 
-  (not (forall ((c Atom)) (=> (in_1 c LegalComponent) (forall ((i Atom)) (=> (and (in_1 i Interface) (in_1 i (join_1x2 (a2r_1 c) interfaces))) (subset_1 (join_1x2 (a2r_1 i) iidsKnown) (join_1x2 (a2r_1 c) iids))))))) 
- :named commanda83f3472 
+  (not (forall ((c1 Atom)(c2 Atom)) (=> (and (in_1 c1 Component) (in_1 c2 LegalComponent)) (=> (some_1 (inter_1 (join_1x2 (a2r_1 c1) interfaces) (join_1x2 (a2r_1 c2) interfaces))) (subset_1 (join_1x2 (a2r_1 c2) iids) (join_1x2 (a2r_1 c1) iids)))))) 
+ :named commandb704a7e0 
  ) 
  )
 ;; --end command

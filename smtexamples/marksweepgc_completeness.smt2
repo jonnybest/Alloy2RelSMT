@@ -1,5 +1,5 @@
-; file: D:\Entwicklung\workspace\alloy2relsmt\smtexamples\marksweepgc_soundness1.als 
-; hash: EAEEEE4DBBD76CB23A3666FDA94A3BED
+; file: D:\Entwicklung\workspace\alloy2relsmt\smtexamples\marksweepgc_completeness.als 
+; hash: 1BC8EB474FF88DA1CC704EC5723CACC9
 (set-logic AUFLIA)
 (set-option :macro-finder true)
 ;; sorts
@@ -228,6 +228,12 @@
  )
 (assert 
  (! 
+  (disjoint_1 Node HeapState) 
+ :named assert8baa718 
+ ) 
+ )
+(assert 
+ (! 
   (subset_3 right (prod_2x1 (prod_1x1 HeapState Node) Node)) 
  :named asserta36e1ac7 
  ) 
@@ -280,12 +286,6 @@
  :named assertead86bd5 
  ) 
  )
-(assert 
- (! 
-  (disjoint_1 HeapState Node) 
- :named assertfdbe7c2 
- ) 
- )
 ;; --end assertions
 
 ;; command
@@ -295,8 +295,8 @@
     (in_1 h HeapState)
     (in_1 h_ HeapState)
     (in_1 root Node)
-  ) (=> (GC (a2r_1 h) (a2r_1 root) (a2r_1 h_)) (forall ((live Atom)) (=> (and (in_1 live Node) (in_1 live (reachable (a2r_1 h) (a2r_1 root)))) (and (= (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h_) left)) (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h) left))) (= (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h_) right)) (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h) right)))))))))) 
- :named command4bafab06 
+  ) (=> (GC (a2r_1 h) (a2r_1 root) (a2r_1 h_)) (subset_1 (diff_1 Node (reachable (a2r_1 h_) (a2r_1 root))) (reachable (a2r_1 h_) (join_1x2 (a2r_1 h_) freeList))))))) 
+ :named commandb897f30f 
  ) 
  )
 ;; --end command

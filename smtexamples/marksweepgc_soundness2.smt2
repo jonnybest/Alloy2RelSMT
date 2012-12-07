@@ -1,5 +1,5 @@
-; file: D:\Entwicklung\workspace\alloy2relsmt\smtexamples\marksweepgc_soundness1.als 
-; hash: EAEEEE4DBBD76CB23A3666FDA94A3BED
+; file: D:\Entwicklung\workspace\alloy2relsmt\smtexamples\marksweepgc_soundness2.als 
+; hash: F3E11871F0941B24D0C165 2A899D027
 (set-logic AUFLIA)
 (set-option :macro-finder true)
 ;; sorts
@@ -22,6 +22,7 @@
 (declare-fun in_1 (Atom Rel1) Bool)
 (declare-fun in_2 (Atom Atom Rel2) Bool)
 (declare-fun in_3 (Atom Atom Atom Rel3) Bool)
+(declare-fun inter_1 (Rel1 Rel1) Rel1)
 (declare-fun join_1x2 (Rel1 Rel2) Rel1)
 (declare-fun join_1x3 (Rel1 Rel3) Rel2)
 (declare-fun left () Rel3)
@@ -168,6 +169,13 @@
  )
 (assert 
  (! 
+  ; axiom for intersection 1
+(forall ((a0 Atom)(R Rel1)(S Rel1)) (=> (in_1 a0 (inter_1 R S)) (or (in_1 a0 R) (in_1 a0 S)))) 
+ :named axiombeb924e6 
+ ) 
+ )
+(assert 
+ (! 
   ; axiom for join_1x2
 (forall ((A Rel1)(B Rel2)(y0 Atom)) (= (in_1 y0 (join_1x2 A B)) (exists ((x Atom)) (and (in_1 x A) (in_2 x y0 B))))) 
  :named axiomc43ab575 
@@ -228,6 +236,12 @@
  )
 (assert 
  (! 
+  (disjoint_1 Node HeapState) 
+ :named assert8baa718 
+ ) 
+ )
+(assert 
+ (! 
   (subset_3 right (prod_2x1 (prod_1x1 HeapState Node) Node)) 
  :named asserta36e1ac7 
  ) 
@@ -280,12 +294,6 @@
  :named assertead86bd5 
  ) 
  )
-(assert 
- (! 
-  (disjoint_1 HeapState Node) 
- :named assertfdbe7c2 
- ) 
- )
 ;; --end assertions
 
 ;; command
@@ -295,8 +303,8 @@
     (in_1 h HeapState)
     (in_1 h_ HeapState)
     (in_1 root Node)
-  ) (=> (GC (a2r_1 h) (a2r_1 root) (a2r_1 h_)) (forall ((live Atom)) (=> (and (in_1 live Node) (in_1 live (reachable (a2r_1 h) (a2r_1 root)))) (and (= (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h_) left)) (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h) left))) (= (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h_) right)) (join_1x2 (a2r_1 live) (join_1x3 (a2r_1 h) right)))))))))) 
- :named command4bafab06 
+  ) (=> (GC (a2r_1 h) (a2r_1 root) (a2r_1 h_)) (no_1 (inter_1 (reachable (a2r_1 h_) (a2r_1 root)) (reachable (a2r_1 h_) (join_1x2 (a2r_1 h_) freeList)))))))) 
+ :named commande59d7e99 
  ) 
  )
 ;; --end command

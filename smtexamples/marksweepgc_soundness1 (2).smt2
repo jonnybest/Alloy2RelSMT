@@ -1,5 +1,5 @@
-; file: D:\Entwicklung\workspace\alloy2relsmt\smtexamples\marksweepgc_soundness1.als 
-; hash: EAEEEE4DBBD76CB23A3666FDA94A3BED
+; file: D:\Entwicklung\workspace\alloy2relsmt\smtexamples\marksweepgc_soundness1 (2).als 
+; hash: 15C0FB391CD3D389 6712F185B BA5 7
 (set-logic AUFLIA)
 (set-option :macro-finder true)
 ;; sorts
@@ -228,6 +228,12 @@
  )
 (assert 
  (! 
+  (disjoint_1 Node HeapState) 
+ :named assert8baa718 
+ ) 
+ )
+(assert 
+ (! 
   (subset_3 right (prod_2x1 (prod_1x1 HeapState Node) Node)) 
  :named asserta36e1ac7 
  ) 
@@ -278,12 +284,6 @@
     (= (join_1x3 hs_ right) (join_1x3 hs right))
   ))) 
  :named assertead86bd5 
- ) 
- )
-(assert 
- (! 
-  (disjoint_1 HeapState Node) 
- :named assertfdbe7c2 
  ) 
  )
 ;; --end assertions
