@@ -1125,6 +1125,13 @@ public final class RelTheory {
 			lemma1.setComment("weak lemma 1 for " + name + " about the second-last 'middle element'");
 			file.addLemma(lemma1);
 		}
+		{
+			//(forall ((a1 Atom)(a3 Atom)(R Rel2)) (=> (in_2 a1 a3 (transClos R)) (exists ((a2 Atom)) (in_2 a1 a2 R)))) 
+			Term body = Term.reverseIn(R, a1, a2).exists(a2);
+			Term lemma2 = guard.implies(body).forall(a1, a3, R);
+			lemma2.setComment("weak lemma 2 for " + name + " about the second 'middle element'");
+			file.addLemma(lemma2);
+		}
 	}
 
 }
