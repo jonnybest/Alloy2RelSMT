@@ -123,4 +123,7 @@ for dirpath, dirnames, filenames in os.walk(thispath, topdown=False):
             print output
 # end of doing stuff to file
             resultfile.write("\n")
+
+with open(resultfilename, "a") as resultfile:
+    resultfile.write("\n=== done ===\n")
 print "done"
