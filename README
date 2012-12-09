@@ -4,14 +4,15 @@ Alloy2RelSMT
 This applications translates a given Alloy model to first-order logic in SMT.
 
 ## Command line options
-alloy2relsmt <alloyfile> <smtfile> [-f|--force] [--finite=<Sig1>[,<Sig2>,…]] [--relationalequality]
+alloy2relsmt <alloyfile> <smtfile> [-f|--force] [--finite=<Sig1>[,<Sig2>,…]] [-nre]
 	<alloyfile>			denotes an input file
 	<smtfile>			name of the output file
 
 Optional:
-	--force, -f 				forces overwriting the output file if exists
-	--finite=<Sig1>[,<Sig2>,…]	assume that signatures Sig1, Sig2,… are finite
-	--relationalequality		do not use = operator for relational expressions [usually not a good idea]
+	--force, -f 					forces overwriting the output file if exists
+	--finite=<Sig1>[,<Sig2>,…]		assume that signatures Sig1, Sig2,… are finite
+	--relationalequality, -re		writes "equality" formulas as two subset expressions [default]
+	--no-relationalequality, -nre	use = operator for relational expressions instead of subset
 
 -----------------------------
 Original Readme

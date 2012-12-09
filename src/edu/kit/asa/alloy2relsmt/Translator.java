@@ -246,6 +246,7 @@ public class Translator implements Identifiers {
 	
 	public void setUseRelationalEquality(boolean useRelationalEquality) {
 		this.useRelationalEquality = useRelationalEquality;
+		target.getTheory().setUseRelationalEquality(useRelationalEquality);
 	}
 
 	/**

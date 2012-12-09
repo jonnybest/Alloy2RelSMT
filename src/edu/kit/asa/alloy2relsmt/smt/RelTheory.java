@@ -14,6 +14,7 @@ import edu.kit.asa.alloy2relsmt.util.Util;
 public final class RelTheory {
 	
 	private SMTFile file;
+	private boolean useRelationalEquality;
 	
 	public RelTheory (SMTFile target){
 		file = target;
@@ -858,10 +859,10 @@ public final class RelTheory {
 			axiom.setComment("subset axiom for " + relSort);
 			file.addAxiom(axiom);  // add this axiom to the list of assertions
 			
-			if(ar == 1)
+			if(!useRelationalEquality && ar == 1)
 			{
-				Term equalityLemma = x.equal(y).implies(Term.call(name, x, y).and(Term.call(name, y, x))).forall(x, y);
-				equalityLemma.setComment("equality Lemma (newly introduced. Be careful, this is very costly.");
+				Term equalityLemma = x.equal(y).implies(Term.call(name, x, y)).forall(x, y);
+				equalityLemma.setComment("equality Lemma (introduced for com-theorem1 but not used). Be careful, this can become very costly.");
 				file.addLemma(equalityLemma);
 			}
 		}
@@ -1132,6 +1133,10 @@ public final class RelTheory {
 			lemma2.setComment("weak lemma 2 for " + name + " about the second 'middle element'");
 			file.addLemma(lemma2);
 		}
+	}
+
+	public void setUseRelationalEquality(boolean useRelationalEquality) {
+		this.useRelationalEquality = useRelationalEquality;
 	}
 
 }

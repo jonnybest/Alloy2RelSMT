@@ -36,7 +36,7 @@ public class Main {
 	private String[] finiteSigs;
 	
 	private boolean valid;
-	private boolean relationalequality = false;
+	private boolean relationalequality = true;
 	
 	/**
 	 * parse the command line arguments and set
@@ -69,9 +69,14 @@ public class Main {
 				continue;
 			}
 			// parse the switch for enabling relational equality
-			if(Pattern.matches("^--relationalequality$", args[i]))
+			if(Pattern.matches("^--relationalequality$", args[i]) || Pattern.matches("^-re$", args[i]))
 			{
 				relationalequality = true;
+				continue;
+			}
+			else if(Pattern.matches("^--no-relationalequality$", args[i]) || Pattern.matches("^-nre$", args[i]))
+			{
+				relationalequality = false;
 				continue;
 			}
 			// if no other switches have been found, assign input and output
@@ -125,7 +130,11 @@ public class Main {
 		if (relationalequality) {
 			// if the user has told us to use relational Equality instead of '=', set it here  
 			translator.setUseRelationalEquality(relationalequality);
-			System.out.println("Using relational equality instead of '=' for relational formulas.");
+			System.out.println("\tUsing relational equality for relational formulas. \n\tUse the -nre switch to use '=' instead.");
+		} else if (!relationalequality) {
+			// if the user has told us to use object Equality instead of relational equality, set it here  
+			translator.setUseRelationalEquality(relationalequality);
+			System.out.println("Using '=' as equality for relational formulas.");
 		}
 		// return the key model
 		try {
